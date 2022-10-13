@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>vue2和vue3的区别(vue2向vue3迁移)(一) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="vue2的源码使用Flow进行类型检测的，vue3使用Typescript进行重构，比vue2更好的对typescript进行支持。 vue3中使用Proxy来实现对数据劫持，vue2中使用Object.defineProperty来劫持数据的getter和setter方法的，这这种方式存在缺点就是在给对象添加和删除属性的时候，是无法劫持和监听的。所以必须使用$set和$delete方法。 vu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue2和vue3的区别(vue2向vue3迁移)(一)">
+<meta property="og:url" content="http://example.com/2022/08/12/VUE3%E5%92%8CVUE2%E7%9A%84%E5%8C%BA%E5%88%AB(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="vue2的源码使用Flow进行类型检测的，vue3使用Typescript进行重构，比vue2更好的对typescript进行支持。 vue3中使用Proxy来实现对数据劫持，vue2中使用Object.defineProperty来劫持数据的getter和setter方法的，这这种方式存在缺点就是在给对象添加和删除属性的时候，是无法劫持和监听的。所以必须使用$set和$delete方法。 vu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-08-12T11:35:32.000Z">
+<meta property="article:modified_time" content="2022-10-13T15:05:20.871Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-VUE3和VUE2的区别(一)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/08/12/VUE3%E5%92%8CVUE2%E7%9A%84%E5%8C%BA%E5%88%AB(%E4%B8%80)/" class="article-date">
+  <time datetime="2022-08-12T11:35:32.000Z" itemprop="datePublished">2022-08-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/vue/">vue</a>►<a class="article-category-link" href="/categories/vue/daily/">daily</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      vue2和vue3的区别(vue2向vue3迁移)(一)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><h3 id="vue2的源码使用Flow进行类型检测的，vue3使用Typescript进行重构，比vue2更好的对typescript进行支持。"><a href="#vue2的源码使用Flow进行类型检测的，vue3使用Typescript进行重构，比vue2更好的对typescript进行支持。" class="headerlink" title="vue2的源码使用Flow进行类型检测的，vue3使用Typescript进行重构，比vue2更好的对typescript进行支持。"></a>vue2的源码使用Flow进行类型检测的，vue3使用Typescript进行重构，比vue2更好的对typescript进行支持。</h3></li>
+<li><h3 id="vue3中使用Proxy来实现对数据劫持，vue2中使用Object-defineProperty来劫持数据的getter和setter方法的，这这种方式存在缺点就是在给对象添加和删除属性的时候，是无法劫持和监听的。所以必须使用-set和-delete方法。"><a href="#vue3中使用Proxy来实现对数据劫持，vue2中使用Object-defineProperty来劫持数据的getter和setter方法的，这这种方式存在缺点就是在给对象添加和删除属性的时候，是无法劫持和监听的。所以必须使用-set和-delete方法。" class="headerlink" title="vue3中使用Proxy来实现对数据劫持，vue2中使用Object.defineProperty来劫持数据的getter和setter方法的，这这种方式存在缺点就是在给对象添加和删除属性的时候，是无法劫持和监听的。所以必须使用$set和$delete方法。"></a>vue3中使用Proxy来实现对数据劫持，vue2中使用Object.defineProperty来劫持数据的getter和setter方法的，这这种方式存在缺点就是在给对象添加和删除属性的时候，是无法劫持和监听的。所以必须使用$set和$delete方法。</h3></li>
+<li><h3 id="vue3删除了-set和-off-once-移除了filter-内敛模板等特性"><a href="#vue3删除了-set和-off-once-移除了filter-内敛模板等特性" class="headerlink" title="vue3删除了$set和$off,$once.移除了filter,内敛模板等特性"></a>vue3删除了$set和$off,$once.移除了filter,内敛模板等特性</h3></li>
+<li><h3 id="在编译方面做了优化：生成Block-tree-Slot编译优化，diff算法优"><a href="#在编译方面做了优化：生成Block-tree-Slot编译优化，diff算法优" class="headerlink" title="在编译方面做了优化：生成Block tree,Slot编译优化，diff算法优"></a>在编译方面做了优化：生成Block tree,Slot编译优化，diff算法优</h3></li>
+<li><h3 id="vue3中已经去掉了事件总线，可以使用mitt"><a href="#vue3中已经去掉了事件总线，可以使用mitt" class="headerlink" title="vue3中已经去掉了事件总线，可以使用mitt"></a>vue3中已经去掉了事件总线，可以使用mitt</h3></li>
+<li><h3 id="vue3中增加了componsition-API"><a href="#vue3中增加了componsition-API" class="headerlink" title="vue3中增加了componsition API"></a>vue3中增加了componsition API</h3></li>
+<li><h3 id="vue3中移除了-children"><a href="#vue3中移除了-children" class="headerlink" title="vue3中移除了$children"></a>vue3中移除了$children</h3></li>
+<li><h3 id="vue3中的推荐的构建工具已经从vue-cli转成vite"><a href="#vue3中的推荐的构建工具已经从vue-cli转成vite" class="headerlink" title="vue3中的推荐的构建工具已经从vue cli转成vite"></a>vue3中的推荐的构建工具已经从vue cli转成vite</h3></li>
+<li><h3 id="vue3中的推荐的状态管理工具已经从vuex转成pinia"><a href="#vue3中的推荐的状态管理工具已经从vuex转成pinia" class="headerlink" title="vue3中的推荐的状态管理工具已经从vuex转成pinia"></a>vue3中的推荐的状态管理工具已经从vuex转成pinia</h3></li>
+<li><h3 id="IDE支持Vetur-gt-Volar"><a href="#IDE支持Vetur-gt-Volar" class="headerlink" title="IDE支持Vetur-&gt;Volar"></a>IDE支持Vetur-&gt;Volar</h3></li>
+<li><h3 id="vue3的响应式是使用了proxy，proxy不支持IE，所以vue3也不支持IE，目前IE已经不再进行更新，已经被淘汰"><a href="#vue3的响应式是使用了proxy，proxy不支持IE，所以vue3也不支持IE，目前IE已经不再进行更新，已经被淘汰" class="headerlink" title="vue3的响应式是使用了proxy，proxy不支持IE，所以vue3也不支持IE，目前IE已经不再进行更新，已经被淘汰"></a>vue3的响应式是使用了proxy，proxy不支持IE，所以vue3也不支持IE，目前IE已经不再进行更新，已经被淘汰</h3></li>
+<li><h3 id="添加了全新的全局api-createApp-来替代new-Vue-来创建vue实例"><a href="#添加了全新的全局api-createApp-来替代new-Vue-来创建vue实例" class="headerlink" title="添加了全新的全局api :createApp()来替代new Vue()来创建vue实例"></a>添加了全新的全局api :createApp()来替代new Vue()来创建vue实例</h3></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>2.x Global API</th>
+<th>3.x Instance API (<code>app</code>)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Vue.config</td>
+<td>app.config</td>
+</tr>
+<tr>
+<td>Vue.config.productionTip</td>
+<td>删除</td>
+</tr>
+<tr>
+<td>Vue.config.ignoredElements</td>
+<td>app.config.compilerOptions.isCustomElement</td>
+</tr>
+<tr>
+<td>Vue.component</td>
+<td>app.component</td>
+</tr>
+<tr>
+<td>Vue.directive</td>
+<td>app.directive</td>
+</tr>
+<tr>
+<td>Vue.mixin</td>
+<td>app.mixin</td>
+</tr>
+<tr>
+<td>Vue.use</td>
+<td>app.use</td>
+</tr>
+<tr>
+<td>Vue.prototype</td>
+<td>app.config.globalProperties</td>
+</tr>
+<tr>
+<td>Vue.extend</td>
+<td>删除</td>
+</tr>
+</tbody></table>
+<h3 id="13-全局-API-Treeshaking"><a href="#13-全局-API-Treeshaking" class="headerlink" title="13.全局 API Treeshaking"></a>13.全局 API Treeshaking</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#x27;vue&#x27;</span><br><span class="line"></span><br><span class="line">Vue.nextTick(() =&gt; &#123;</span><br><span class="line">  // something DOM-related</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在Vue2.X中Vue.nextTick()是一个暴露在单个Vue对象中的全局的api，事实上，实例方法$nextTick()只是一个包装器，为了方便Vue.nextTick()，回调函数的this会自动绑定到当前实例中，但是在vite和webpack中，Vue.nextTick不可以进行treeshaking,所以在Vue3中做了优化，让nextTick可以进行treeShaking,全局的模块只能作为ES模块构建的命名导出来进行访问，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import &#123; nextTick &#125; from &#x27;vue&#x27;</span><br><span class="line"></span><br><span class="line">nextTick(() =&gt; &#123;</span><br><span class="line">  // something DOM-related</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123; shallowMount &#125; from &#x27;@vue/test-utils&#x27;</span><br><span class="line">import &#123; MyComponent &#125; from &#x27;./MyComponent.vue&#x27;</span><br><span class="line">import &#123; nextTick &#125; from &#x27;vue&#x27;</span><br><span class="line"></span><br><span class="line">test(&#x27;an async feature&#x27;, async () =&gt; &#123;</span><br><span class="line">  const wrapper = shallowMount(MyComponent)</span><br><span class="line"></span><br><span class="line">  // execute some DOM-related tasks</span><br><span class="line"></span><br><span class="line">  await nextTick()</span><br><span class="line"></span><br><span class="line">  // run your assertions</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果在Vue3中使用Vue.nextTick()会导致臭名昭著的<code>undefined is not a function</code>错误</p>
+<p>通过此更改，如果模块捆绑器支持 tree-shaking，则未在 Vue 应用程序中使用的全局 API 将从最终捆绑包中删除，从而获得最佳文件大小</p>
+<h5 id="以下Vue2的全局QAPI会受到影响"><a href="#以下Vue2的全局QAPI会受到影响" class="headerlink" title="以下Vue2的全局QAPI会受到影响"></a>以下Vue2的全局QAPI会受到影响</h5><ul>
+<li><code>Vue.nextTick</code></li>
+<li><code>Vue.observable</code>（替换为<code>Vue.reactive</code>）</li>
+<li><code>Vue.version</code></li>
+<li><code>Vue.compile</code>（仅在完整版本中）</li>
+<li><code>Vue.set</code>（仅在兼容版本中）//不要使用</li>
+<li><code>Vue.delete</code>（仅在兼容版本中）//不要使用</li>
+</ul>
+<p>除了如上全局API之外，许多内部组件将不再作为默认导入的一部分，需要使用到时再导入，有利于treeShaking,</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;transition&gt;</span><br><span class="line">  &lt;div v-show=&quot;ok&quot;&gt;hello&lt;/div&gt;</span><br><span class="line">&lt;/transition&gt;</span><br></pre></td></tr></table></figure>
+
+<p>会被编译成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import &#123; h, Transition, withDirectives, vShow &#125; from &#x27;vue&#x27;</span><br><span class="line"></span><br><span class="line">export function render() &#123;</span><br><span class="line">  return h(Transition, [withDirectives(h(&#x27;div&#x27;, &#x27;hello&#x27;), [[vShow, this.ok]])])</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以减少包的大小</p>
+<p><strong>notice</strong></p>
+<p><strong>上述内容仅适用于与支持 tree-shaking 的捆绑器一起使用的<a target="_blank" rel="noopener" href="https://github.com/vuejs/core/tree/master/packages/vue#which-dist-file-to-use">ES 模块构建</a>- UMD 构建仍然包含所有功能并在 Vue 全局变量上公开所有内容（并且编译器将生成适当的输出以使用全局 API 而不是导入）。</strong></p>
+<p>再插件中使用时</p>
+<p>Vue2.x中使用全局api</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plugin = &#123;</span><br><span class="line">  <span class="attr">install</span>: <span class="function"><span class="params">Vue</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Vue3.x使用全局API</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; nextTick &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> plugin = &#123;</span><br><span class="line">  <span class="attr">install</span>: <span class="function"><span class="params">app</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在webpack中如果把上诉代码打包成一个buddle,他会把vue源码也会打包进去，如果要避免这样的发生可以使用externals排除</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">/*...*/</span></span><br><span class="line">  <span class="attr">externals</span>: &#123;</span><br><span class="line">    <span class="attr">vue</span>: <span class="string">&#x27;Vue&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>rollUp中的写法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// rollup.config.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="comment">/*...*/</span></span><br><span class="line">  <span class="attr">external</span>: [<span class="string">&#x27;vue&#x27;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="14-v-model"><a href="#14-v-model" class="headerlink" title="14.v-model"></a>14.v-model</h3><p>在组建中使用v-model</p>
+<p>在vue2.x,<code>v-model</code>在组件上使用 a 相当于传递一个<code>value</code>prop 并发出一个<code>input</code>事件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;ChildComponent v-model=&quot;pageTitle&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- would be shorthand for: --&gt;</span><br><span class="line"></span><br><span class="line">&lt;ChildComponent :value=&quot;pageTitle&quot; @input=&quot;pageTitle = $event&quot; /&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果想更改属性名和事件的时候，需要使用在组件中添加model选项，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- ParentComponent.vue --&gt;</span><br><span class="line"></span><br><span class="line">&lt;ChildComponent v-model=&quot;pageTitle&quot; /&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ChildComponent.vue</span></span><br><span class="line"></span><br><span class="line">export default <span class="punctuation">&#123;</span></span><br><span class="line">  model<span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    prop<span class="punctuation">:</span> &#x27;title&#x27;<span class="punctuation">,</span></span><br><span class="line">    event<span class="punctuation">:</span> &#x27;change&#x27;</span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  props<span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// this allows using the `value` prop for a different purpose</span></span><br><span class="line">    value<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// use `title` as the prop which take the place of `value`</span></span><br><span class="line">    title<span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      type<span class="punctuation">:</span> String<span class="punctuation">,</span></span><br><span class="line">      default<span class="punctuation">:</span> &#x27;Default title&#x27;</span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>所以v-model实际上时这样的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ChildComponent :title=&quot;pageTitle&quot; @change=&quot;pageTitle = $event&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用v-bind-sync"><a href="#使用v-bind-sync" class="headerlink" title="使用v-bind.sync#"></a>使用<code>v-bind.sync</code><a target="_blank" rel="noopener" href="https://v3-migration.vuejs.org/breaking-changes/v-model.html#using-v-bind-sync">#</a></h3><p>在某些情况下，我们可能需要一个道具的“双向绑定”（有时除了现有<code>v-model</code>的不同道具之外）。为此，我们建议以<code>update:myPropName</code>. 例如，对于<code>ChildComponent</code>上一个带有<code>title</code>prop 的示例，我们可以通过以下方式传达分配新值的意图：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.$emit(&#x27;update:title&#x27;, newValue)</span><br></pre></td></tr></table></figure>
+
+<p>然后，如果需要，父级可以侦听该事件并更新本地数据属性。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ChildComponent :title=&quot;pageTitle&quot; @update:title=&quot;pageTitle = $event&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>.sync</code>为方便起见，我们使用修饰符对这种模式进行了简写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ChildComponent :title.sync=&quot;pageTitle&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在Vue3.x中 自定义组件的双向数据绑定时使用modelValue，@update:modelValue来替代</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;ChildComponent v-model=&quot;pageTitle&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- would be shorthand for: --&gt;</span><br><span class="line"></span><br><span class="line">&lt;ChildComponent</span><br><span class="line">  :modelValue=&quot;pageTitle&quot;</span><br><span class="line">  @update:modelValue=&quot;pageTitle = $event&quot;</span><br><span class="line">/&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果需要修改model的名称则直接修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;ChildComponent v-model:title=&quot;pageTitle&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- would be shorthand for: --&gt;</span><br><span class="line"></span><br><span class="line">&lt;ChildComponent :title=&quot;pageTitle&quot; @update:title=&quot;pageTitle = $event&quot; /&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>也可以作为.sync的替代，可以在组件中双向数据绑定多个值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">ChildComponent</span> v-<span class="attr">model</span>:title=<span class="string">&quot;pageTitle&quot;</span> v-<span class="attr">model</span>:content=<span class="string">&quot;pageContent&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- would be shorthand <span class="attr">for</span>: --&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">ChildComponent</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">:title</span>=<span class="string">&quot;pageTitle&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  @<span class="attr">update:title</span>=<span class="string">&quot;pageTitle = $event&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">:content</span>=<span class="string">&quot;pageContent&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  @<span class="attr">update:content</span>=<span class="string">&quot;pageContent = $event&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">/&gt;</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/08/12/VUE3%E5%92%8CVUE2%E7%9A%84%E5%8C%BA%E5%88%AB(%E4%B8%80)/" data-id="cl9770wlo0007k2oo7wdz0fda" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/14/%E7%AC%94%E8%AE%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          前端系统课笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/08/12/Vue3%E5%92%8CVue%E7%9A%84%E5%8C%BA%E5%88%AB(%E4%BA%8C)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">vue2和vue3的区别(vue2向vue3迁移)(二)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/">Electron</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Puppeteer/">Puppeteer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/interview/">interview</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/interview/daily/">daily</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%8E%9F%E7%90%86/">原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E6%90%9C%E9%9B%86/">搜集</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/node/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/note/">note</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/note/%E5%89%8D%E7%AB%AF%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%AC%94%E8%AE%B0/">前端系统课笔记</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/">react</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/react/Typescript/">Typescript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/mobx/">mobx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/">typescript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/daily/">daily</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/">前端八股文</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">单元测试</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/Enzyme/">Enzyme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/jest/">jest</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">常用构建工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/glup/">glup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/rollup/">rollup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/vite/">vite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/webpack/">webpack</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Ajax/">Ajax</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/axios/">axios</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/fetch/">fetch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/">websocket</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/11/08/Puppeteer/">什么是Puppeteer</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/13/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/12/canvas%E7%AC%94%E8%AE%B0/">canvas笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/">mobx的使用3⃣️</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/">mobx的使用二</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

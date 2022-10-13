@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>node学习笔记 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node学习笔记">
+<meta property="og:url" content="http://example.com/2022/09/09/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/T30nJvRF.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/TXLJdkIn.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/gbD9UytN.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/ladw1Jt6.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/gbfKncoB.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/z58jVfjS.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/yyxGHUMi.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/TduZGuBK.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/QggeUwVk.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/14Ca9DGs.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/09/11/14Ca9DGs.png">
+<meta property="article:published_time" content="2022-09-09T07:58:19.000Z">
+<meta property="article:modified_time" content="2022-10-13T15:05:20.871Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img1.imgtp.com/2022/09/11/T30nJvRF.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-node学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/09/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2022-09-09T07:58:19.000Z" itemprop="datePublished">2022-09-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node/">node</a>►<a class="article-category-link" href="/categories/node/note/">note</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      node学习笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">1.node的输出</span><br><span class="line">	console.log()</span><br><span class="line">	console.clear()</span><br><span class="line">	console.trace()</span><br><span class="line">2.常见的全局对象</span><br><span class="line">	特殊的全局对象，是各个模块都有的，但不是属于全局的</span><br><span class="line">	__dirname//获取当前文件所在的路径，不包括后面的文件名</span><br><span class="line">	__filename//获取当前文件所在的路径名称包括文件名</span><br><span class="line">	exports</span><br><span class="line">	module</span><br><span class="line">	require</span><br><span class="line">	</span><br><span class="line">	常见的全局对象</span><br><span class="line">		process对象</span><br><span class="line">		console对象</span><br><span class="line">		定时器对象</span><br><span class="line">3.global和window的区别</span><br><span class="line">	node中每一个文件都是一个独立的模块</span><br><span class="line">4.模块化</span><br><span class="line">	立即调用函数(IIFE)是解决模块化的一种方式</span><br><span class="line">	CommonJS(CJS)</span><br><span class="line">	ESmodule</span><br><span class="line">	每个模块都有exports,他会默认指向空对象,exports指向的一个对象并在另外一个模块中被引用时，他们是指向同一个对象</span><br><span class="line">	require是对exports的浅拷贝</span><br><span class="line">	浅拷贝的本质就是引用赋值</span><br><span class="line">	exports中修改变量会使require发生变化</span><br><span class="line">	require中的修改不会对exports造成影响，因为require是对exports的拷贝</span><br><span class="line">5.module.exports</span><br><span class="line">	每一个模块都有一个module实例</span><br><span class="line">	commomjs中没有module.export的概念，node中使用的是Moudle类，每一个模块都是Modlue的实例，也是module</span><br><span class="line">	所以在Node中真正导出的其实不是export,而是module.exports</span><br><span class="line">	为什么exports也可以导出</span><br><span class="line">		因为module对象的exports属性是export对象的一个引用，也就是module.exports=exports</span><br><span class="line">		module.export导出的值才是require的值，默认module.export==export,如果module.export指向另外一个值，则require会引用这个值，而不是export的值</span><br><span class="line">	module.export的赋值是在顶层的</span><br><span class="line">	</span><br><span class="line">	module.exports=exports</span><br><span class="line">	</span><br><span class="line">	exports=123//module.exports在顶层引用的，如果后面再次修改exports的指向，则会无效</span><br><span class="line">6.require()的查找规则</span><br><span class="line">	1.如果x是核心模块，直接会返回核心模块，require(&quot;x&quot;)//会直接返回，停止查找</span><br><span class="line">	2.x是以./或者../或者/开头的</span><br><span class="line">		会先将x当作一个文件先查找，如果有后缀名，则按后缀名格式查找，如果没有后缀名则</span><br><span class="line">			1.直接查找文件x</span><br><span class="line">			2.查找x.js</span><br><span class="line">			3.查找x.json</span><br><span class="line">			4.查找x.node</span><br><span class="line">		如果没有找到对应的文件，则会把他当成一个目录，查找里面的index文件</span><br><span class="line">			1.x/index.js</span><br><span class="line">			2.x/index.json</span><br><span class="line">			3.x/index.node</span><br><span class="line">		否则报错 not found</span><br><span class="line">	3.如果直接是一个X(没有路径) 并且X不是一个核心模块</span><br><span class="line">	则从最里面的node_module-&gt;最外面的node_module中去寻找</span><br><span class="line">7.require的加载过程是同步的 </span><br><span class="line">8.module.export=&#123;&#125; exports=module.export===export=&#123;&#125; module.export=exports</span><br><span class="line">9.在源码中exports=module.exports</span><br><span class="line">10.模块的加载过程</span><br><span class="line">	模块在被第一次引入时，模块中的js代码会被运行一次</span><br><span class="line">	模块被对此引入时，会被缓存，最终只会被加载一次</span><br><span class="line">	如果有循环引入，他会按深度优先搜索遍历的方式进行加载</span><br><span class="line">11.ES modules中</span><br><span class="line">	export &#123;&#125;//不是一个对象，里面放置要到处的变量的列表</span><br><span class="line">	import默认必须放到顶部，import是异步加载，import加载模块不可以放到逻辑代码中</span><br><span class="line">	import().then()//进行动态加载</span><br><span class="line">12.commonJS加载过程</span><br><span class="line">	commonjs加载js文件的过程是运行时加载，并且是同步的，就是js引擎在执行代码的过程中加载模块</span><br><span class="line">	同步意味着一个文件在没有加载结束之前，后面的代码都不加在</span><br><span class="line">	commonjs通过module.exports的导出一个对象，导出的是一个对象意味者可以将这个对象的引用在其他模块中赋值给其他变量，但是最终他们会指向同一个变量，那么一个变量修改了对象的属性，所有地方都会修改</span><br><span class="line">	注意：require进行解构的时候不会修改，因为解构会固定下当前的值</span><br><span class="line">13.ES module的加载过程</span><br><span class="line">   ES MODULE加载js是编译的时候加载的，并且是异步的</span><br><span class="line">   编译时加载意味着import不能和运行相关的内容放在一起使用</span><br><span class="line">   比如from后面的路径要动态获取</span><br><span class="line">   比如不能将import放到if语句的代码块里面，所以es module时静态解析</span><br><span class="line">   异步意味着js引擎遇到import时会获取到这个js文件，但是这个获取的过程是异步的，并不会阻塞进程的执行</span><br><span class="line">   type-=module相当于script上的async属性，如果后面还有js代码，他不会阻塞js代码的执行</span><br><span class="line">   ES Module通过export导出的是变量本身的引用：</span><br><span class="line">	 export在导出一个变量时，js引擎会解析这个语法，并且创建模块环境记录（module environment </span><br><span class="line">record）；</span><br><span class="line"> 模块环境记录会和变量进行 绑定（binding），并且这个绑定是实时的；</span><br><span class="line"> 而在导入的地方，我们是可以实时的获取到绑定的最新值的；</span><br><span class="line">  所以，如果在导出的模块中修改了变化，那么导入的地方可以实时获取最新的变量；</span><br><span class="line">  注意：在导入的地方不可以修改变量，因为它只是被绑定到了这个变量上（其实是一个常量）</span><br><span class="line">  </span><br><span class="line"> 14.在node中要使用es module</span><br><span class="line"> 	方式一：package.json中配置type:module</span><br><span class="line"> 	方式二:使用以.mjs结尾的文件</span><br><span class="line"> 15.内置模块path</span><br><span class="line"> 		从路径获取信息</span><br><span class="line"> 			dirname()//获取文件的父文件夹</span><br><span class="line"> 			basename()//获取文件名</span><br><span class="line"> 			extname()//获取文件扩展名</span><br><span class="line"> 		路径的拼接</span><br><span class="line"> 			如果我们希望将多个路径进行拼接，但是不同的操作系统可能是使用不同的分隔符</span><br><span class="line"> 			这个时候我们可以使用path.join函数</span><br><span class="line"> 		将文件和某个文件夹拼接</span><br><span class="line"> 			如果我们希望将某个文件和文件夹拼接，可以使用path.resolve</span><br><span class="line"> 			resolve函数会判断我们拼接的路径前面是否有/或者../或者./</span><br><span class="line"> 			如果有表示是一个绝对路径，会返回对应的拼接路径</span><br><span class="line"> 			如果没有，那么会和当前执行文件所在的文件夹进行路径的拼接</span><br><span class="line"> 			path.resolve() 方法将路径或路径片段的序列解析为绝对路径。</span><br><span class="line"> 			如果没有传入 path 片段，则 path.resolve() 将返回当前工作目录的绝对路径。</span><br><span class="line"> 			</span><br><span class="line"> 			path.resolve(&#x27;/foo/bar&#x27;, &#x27;./baz&#x27;);</span><br><span class="line">            // 返回: &#x27;/foo/bar/baz&#x27;</span><br><span class="line"></span><br><span class="line">            path.resolve(&#x27;/foo/bar&#x27;, &#x27;/tmp/file/&#x27;);</span><br><span class="line">            // 返回: &#x27;/tmp/file&#x27;</span><br><span class="line"></span><br><span class="line">            path.resolve(&#x27;wwwroot&#x27;, &#x27;static_files/png/&#x27;, &#x27;../gif/image.gif&#x27;);</span><br><span class="line">            // 如果当前工作目录是 /home/myself/node，</span><br><span class="line">            // 则返回 &#x27;/home/myself/node/wwwroot/static_files/gif/image.gif&#x27;</span><br><span class="line"> 16.fs模块</span><br><span class="line"> 	fs操作文件的三种方式</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img1.imgtp.com/2022/09/11/T30nJvRF.png" alt="QQ截图20220618120700.png"></p>
+<p>17.文件描述符</p>
+<p>​    在POSIX系统上，对于每个进程，内核都维护者一张当前打开的资源和文件的表格</p>
+<p>​    每个打开的文件都会分配一个称为文件秒师傅的简单数字标识符</p>
+<p>​    在系统层，所有系统操作都是使用这些文件描述符来标识和跟踪每一个特定文件</p>
+<p>​    windows系统有不同的机制</p>
+<p>​    fs.open()用于分配新的文件描述符，一旦被分配，则文件描述符可用于文件的读取数据，向文件写入数据或者请求关于文件的信息</p>
+<p><img src="https://img1.imgtp.com/2022/09/11/TXLJdkIn.png" alt="QQ截图20220619093740.png"></p>
+<p>18.文件的读写</p>
+<p>​    </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fs.readFile(path,options?,callback)   //读取文件的内容</span><br><span class="line">fs.writeFile(file,data,options?,callback) //写入文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img1.imgtp.com/2022/09/11/gbD9UytN.png" alt="QQ截图20220619094754.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">options中的属性</span><br><span class="line">flag:写入的方式</span><br><span class="line">	w:打开文件写入，默认值</span><br><span class="line">	w+:打开文件进行读写，如果不存在则会创建文件</span><br><span class="line">	r+:打开文件进行读写，如果不存在就会抛出异常</span><br><span class="line">	r:打开文件读取，读取时的默认值</span><br><span class="line">	a:打开要写入的文件，将流放在文件的末尾，如果不存在则会创建文件</span><br><span class="line">	a+:打开文件进行读写，将流放到文件末尾，如果不存在则创建</span><br><span class="line">encoding:字符的编码</span><br><span class="line">	现在基本上使用utf-8</span><br><span class="line">	如果不填encoding则会返回buffer</span><br></pre></td></tr></table></figure>
+
+<p>19.文件夹的操作</p>
+<p><img src="https://img1.imgtp.com/2022/09/11/ladw1Jt6.png" alt="QQ截图20220619093820.png"><br>20.events模块</p>
+<p>​     Node中的核心API都是基于异步事件驱动的：</p>
+<p>​     发出事件和监听事件都是通过EventEmitter类来完成，他们都是属于events对象</p>
+<p>​      </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const emitter=new EventEmitter()</span><br><span class="line">emitter.on(eventName.listener)//监听事件，也可以使用addListener</span><br><span class="line">emitter.off(eventName.listener)//移出事件监听，也可以使用removeLitener</span><br><span class="line">emitter.emit(eventName,...args?)//发出事件，可以携带参数</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img1.imgtp.com/2022/09/11/gbfKncoB.png" alt="QQ截图20220619135051.png"><br><img src="https://img1.imgtp.com/2022/09/11/z58jVfjS.png" alt="QQ截图20220619135226.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">emitter.once(eventName,listener)事件只监听一次</span><br><span class="line">emitter.prependListener()将监听事件添加到最前面</span><br><span class="line">emitter.prependOnceListener()将监听事件添加到最前面但只监听一次</span><br><span class="line">emitter.removeAllListeners(eventName?)移除所有事件</span><br></pre></td></tr></table></figure>
+
+<p>21、npm包管理工具</p>
+<p>​            npm run start=&gt;npm start</p>
+<p>​            npm run test=&gt;npm test</p>
+<p>​            npm run stop=&gt;npm stop</p>
+<p>​            npm run restart=&gt;npm restart</p>
+<p>22.npm config get cache //cmd中执行查看缓存所在目录</p>
+<p>23.Buffer类</p>
+<p>​    使用Buffer来存储二进制</p>
+<p>​    buf=Buffer.from()//转换成buffer</p>
+<p>​    中文会转换成unicode编码  3个unicode编码代表一个汉字 默认是utf8编码</p>
+<p>​    <code>buf.toString([encoding[, start[, end]]])</code>//解码 encode默认是utf8</p>
+<p>​    buffer的另外一种创建方式</p>
+<p>​    <code>Buffer.alloc(size[, fill[, encoding]])</code> size表示创建的大小 默认是utf8</p>
+<p>​    buffer可以将图片转换成二进制流进行传输，也可以把二进制转换成图片存储</p>
+<p>24.读取文件返回的是一个二进制流</p>
+<p><img src="https://img1.imgtp.com/2022/09/11/yyxGHUMi.png" alt="QQ截图20220623141058.png"><br>25.读取图片并且写入到另外一个文件</p>
+<p><img src="https://img1.imgtp.com/2022/09/11/TduZGuBK.png" alt="QQ截图20220623141209.png"><br>26.sharp插件进行设置图片</p>
+<p>27.Buffer的创建过程</p>
+<p>​    事实上我们创建Buffer时，并不会频繁的向操作系统申请内存，它会默认先申请一个8 * 1024个字节大小的内存， 也就是8kb</p>
+<p>28.Buffer的源码</p>
+<p>29.进程和线程</p>
+<p>​    进程:启动一个程序，既可以默认开启一个进程（也可以多进程）</p>
+<p>​    线程：操作系统能够运行调度的最小单位</p>
+<p>30.Node事件循环的阶段</p>
+<p>​     一次完整的事件循环Tick分成很多个阶段</p>
+<p>​    定时器(Timer):本阶段执行已经被 setTimeout() 和 setInterval() 的调度回调函数</p>
+<p>​    待定回调（Pending Callback）：对某些系统操作（如TCP错误类型）执行回调，比如TCP连接时接收到 ECONNREFUSED</p>
+<p>​    idle, prepare：仅系统内部使用</p>
+<p>​    轮询（Poll）：检索新的 I/O 事件；执行与 I/O 相关的回调</p>
+<p>​    检测：setImmediate() 回调函数在这里执行</p>
+<p>​    关闭的回调函数：一些关闭的回调函数，如：socket.on(‘close’, …)</p>
+<p>31.Node的微任务和宏任务</p>
+<p>​    微任务队列</p>
+<p>​    nettick queue:process.nextTick</p>
+<p>​    other queue:Promise的then回调，queueMicrotask</p>
+<p>​    宏任务队列</p>
+<p>​    timer queue:setTimeout,setInterval    </p>
+<p>​    poll queue :IO事件</p>
+<p>​    check queue:setImmediate</p>
+<p>​    close queue:close事件</p>
+<p>32.Stream可以读取或者写入部分</p>
+<p>​    4.中基本的流类型</p>
+<p>​        writable:可以向其写人数据的流 fs.createWriteStream()</p>
+<p>​        Readable:可以从中读取数据的流 fs.createReadStream()</p>
+<p>​        Duplex：同时为Readable和wratable net.Socket</p>
+<p>​        Transform:Duplex可以在写入和读取数据时修改或者转换数据的流  zlib.createDeflate()</p>
+<p>33.Readable</p>
+<p><img src="https://img1.imgtp.com/2022/09/11/QggeUwVk.png" alt="QQ截图20220624165628.png"><br>34.writable</p>
+<p><img src="https://img1.imgtp.com/2022/09/11/14Ca9DGs.png" alt="QQ截图20220624183130.png"><br>35.pipe</p>
+<p>从读取到输出到另外一个文件也可以这么写</p>
+<p><img src="https://img1.imgtp.com/2022/09/11/14Ca9DGs.png" alt="QQ截图20220624183130.png"><br>36.http</p>
+<p>安装nodemon来热更新自动启动</p>
+<p>37.axios可以在浏览器用也可以在node中用，浏览器用的是xhr,node中使用的是http内置模块</p>
+<p>38.文件上传</p>
+<p>39.express</p>
+<p>​        express核心是中间件</p>
+<p>​        安装express</p>
+<p>​        1.创建一个文件夹 </p>
+<p>​        2.npx express-generator</p>
+<p>​        3.npm install</p>
+<p>​        4.DEBUG=express:* npm start</p>
+<p>​        第二种安装方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm init</span><br><span class="line">npm install express</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>40.中间件</p>
+<p>41.文件上传</p>
+<p>​    使用multer  npm install multer</p>
+<p>42.打印日志</p>
+<p>​    使用morgan npm install morgan</p>
+<p>43express路由</p>
+<p>44.使用express部署静态资源，将express作为静态资源服务器</p>
+<p>45.错误处理</p>
+<p>46.调用express()到底创建的是什么</p>
+<p>47.app.listen()启动服务器</p>
+<p>​        如何可以结合原生来启动服务器</p>
+<p>​        express-&gt;http.createServer.listen</p>
+<p>48.app.use(中间件)内部发生了什么</p>
+<p>49.用户发送了请求，中间件是如何被回调</p>
+<p>50.next的为什么会执行下一个中间件</p>
+<p>51.koa洋葱模型</p>
+<p>​        koa的同步和异步都是符合洋葱模型的</p>
+<p>​        express只有同步代码才会符合洋葱模型</p>
+<p>52.koa和express的区别</p>
+<p>​    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/09/09/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cl9770wmk000xk2oo1zn10lwa" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/09/09/http3%E4%BA%86%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          http3了解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/09/09/%E4%BD%BF%E7%94%A8axios%E5%B0%81%E8%A3%85%E8%AF%B7%E6%B1%82%E5%B7%A5%E5%85%B7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用axios封装请求工具</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/">Electron</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Puppeteer/">Puppeteer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/interview/">interview</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/interview/daily/">daily</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%8E%9F%E7%90%86/">原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E6%90%9C%E9%9B%86/">搜集</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/node/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/note/">note</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/note/%E5%89%8D%E7%AB%AF%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%AC%94%E8%AE%B0/">前端系统课笔记</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/">react</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/react/Typescript/">Typescript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/mobx/">mobx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/">typescript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/daily/">daily</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/">前端八股文</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">单元测试</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/Enzyme/">Enzyme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/jest/">jest</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">常用构建工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/glup/">glup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/rollup/">rollup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/vite/">vite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/webpack/">webpack</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Ajax/">Ajax</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/axios/">axios</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/fetch/">fetch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/">websocket</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/11/08/Puppeteer/">什么是Puppeteer</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/13/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/12/canvas%E7%AC%94%E8%AE%B0/">canvas笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/">mobx的使用3⃣️</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/">mobx的使用二</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

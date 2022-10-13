@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>typescript笔记 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.在定义一个变量时，基本数据类型可以用类型推断，不用定义类型 1let msg &#x3D; &quot;hello there!&quot;;  2.ts的常用的数据类型 1string,number,boolean,arrays,any,function,object,union type,Type Aliases,Interfaces，Type Assertions，bigint，symbol,Ty">
+<meta property="og:type" content="article">
+<meta property="og:title" content="typescript笔记">
+<meta property="og:url" content="http://example.com/2022/08/05/typescript%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.在定义一个变量时，基本数据类型可以用类型推断，不用定义类型 1let msg &#x3D; &quot;hello there!&quot;;  2.ts的常用的数据类型 1string,number,boolean,arrays,any,function,object,union type,Type Aliases,Interfaces，Type Assertions，bigint，symbol,Ty">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/Lt1elC2b.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/PyfvKidj.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/8e9QZ1fu.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/UiMI6HEs.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/Itu8eHI1.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/4knXfTJ1.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/xI0aQEuD.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/T6LzBxdD.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/TaGoHMzn.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/xmoxhxl5.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/DnVQP9fW.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/ECM7n6A2.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/eDTnB12m.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/s38SLBN0.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/E4FrxA0i.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/5GU46enS.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/0pGV9IBH.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/b2Gi65SO.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/PLXzyda7.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/Xl0sI2DM.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/obc6YOcv.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/GQd3h5pF.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/NwBuKZH2.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/95zR2UQ2.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/Pw02xjP0.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/KrYErakm.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/eVx6dPgv.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/ESG5cMLo.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/XmcOILgK.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/3ANVJqpG.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/1pM1SZre.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/xVRVoVov.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/VlVrCRbV.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/gvacaNKp.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/kExwu85c.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/LVx7kzYn.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/UxFV3w0L.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/JUcGQCK2.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/i4HcVm8N.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/A6dtGWoy.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/A6dtGWoy.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/2ZbKkBg2.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/c0ucka5e.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/A9jQ0E9R.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/qr2xvkmZ.png">
+<meta property="og:image" content="https://img1.imgtp.com/2022/08/05/Eq2OIARP.png">
+<meta property="article:published_time" content="2022-08-05T10:57:32.000Z">
+<meta property="article:modified_time" content="2022-10-13T15:05:20.871Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img1.imgtp.com/2022/08/05/Lt1elC2b.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-typescript笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/08/05/typescript%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2022-08-05T10:57:32.000Z" itemprop="datePublished">2022-08-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/typescript/">typescript</a>►<a class="article-category-link" href="/categories/typescript/note/">note</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      typescript笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.在定义一个变量时，基本数据类型可以用类型推断，不用定义类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let msg = &quot;hello there!&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>2.ts的常用的数据类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string,number,boolean,arrays,any,function,object,union type,Type Aliases,Interfaces，Type Assertions，bigint，symbol,Type Assertions,.Literal Types,Enums ,null,undefined,any,unknown,void,never ,Tuple</span><br></pre></td></tr></table></figure>
+
+<p>3.interface和type aliases的区别</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">实现继承的方式不同</span><br><span class="line">interface Animal &#123;</span><br><span class="line">  name: string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface Bear extends Animal &#123;</span><br><span class="line">  honey: boolean</span><br><span class="line">&#125;</span><br><span class="line">type Animal = &#123;</span><br><span class="line">  name: string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Bear = Animal &amp; &#123; </span><br><span class="line">  honey: boolean </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">添加新的字段</span><br><span class="line">interface Window &#123;</span><br><span class="line">  title: string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface Window &#123;</span><br><span class="line">  ts: TypeScriptAPI</span><br><span class="line">&#125;</span><br><span class="line">类型别名不能够修改已经创建的字段</span><br><span class="line">type Window = &#123;</span><br><span class="line">  title: string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Window = &#123;</span><br><span class="line">  ts: TypeScriptAPI</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> // Error: Duplicate identifier &#x27;Window&#x27;.</span><br><span class="line">const src = &#x27;const a = &quot;Hello World&quot;&#x27;;</span><br><span class="line">window.ts.transpileModule(src, &#123;&#125;);</span><br><span class="line">接口只能声明对象，不能够重命名原语</span><br><span class="line">类型别名不能够声明合并，但是接口可以</span><br><span class="line"></span><br><span class="line">如果是定义非对象类型，通常推荐使用type</span><br><span class="line">如果是定义对象类型，那么他们是有区别的：</span><br><span class="line">interface 可以重复的对某个接口来定义属性和方法；</span><br><span class="line">而type定义的是别名，别名是不能重复的</span><br></pre></td></tr></table></figure>
+
+<p>4.Type Assertions类型断言</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TypeScript 只允许类型断言转换为更具体或更不具体的类型版本，而不可以转成没有关系的类型</span><br><span class="line"></span><br><span class="line">const a = (expr as any) as T;  可以将两种不相关的类型进行转换时，要进行两次断言，先断雁城any或者unknown</span><br></pre></td></tr></table></figure>
+
+<p>5.Literal Types 文本类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const constantString = &quot;Hello World&quot;;//使用const定义的常量类型</span><br><span class="line"></span><br><span class="line">function printText(s: string, alignment: &quot;left&quot; | &quot;right&quot; | &quot;center&quot;) &#123;</span><br><span class="line">  // ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">您可以使用 as const 将整个对象转换为类型文字：</span><br><span class="line">const req = &#123; url: &quot;https://example.com&quot;, method: &quot;GET&quot; &#125; as const;</span><br><span class="line">handleRequest(req.url, req.method);</span><br></pre></td></tr></table></figure>
+
+<p>.Enums 枚举</p>
+<p>7.ts的运行环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">方式一：tsc math.ts   node math.js  这种方式会比较麻烦</span><br><span class="line">方式二：webpack中配置本地的运行环境  使用ts-loader</span><br><span class="line">方式三：使用ts-node</span><br><span class="line">npm install ts-node -g</span><br><span class="line">npm install tslib @types/node -g</span><br><span class="line">ts-node math.ts</span><br></pre></td></tr></table></figure>
+
+<p>8.unkonwn类型和any类型的区别</p>
+<p>任何类型都可以是any类型,ts不会对any类型的变量进行类型检测，任何类型也是可以赋值给unknown,但是使用这个变量必须进行类型检查，否则就会报错</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/Lt1elC2b.png" alt="QQ截图20220715095600.png"></p>
+<p>9.Tuple类型(元组)</p>
+<p>元组类型就是不同类型的数组的集合</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/PyfvKidj.png" alt="QQ截图20220715101013.png"></p>
+<p>10.Never类型</p>
+<h5 id="Never类型指永不存在的类型。-例如，never-类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型"><a href="#Never类型指永不存在的类型。-例如，never-类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型" class="headerlink" title="Never类型指永不存在的类型。 例如，never 类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型"></a>Never类型指永不存在的类型。 例如，never 类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型</h5><p>11.函数参数</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/8e9QZ1fu.png" alt="QQ截图20220715111132.png"></p>
+<ol start="12">
+<li>匿名函数的参数类型</li>
+</ol>
+<p><img src="https://img1.imgtp.com/2022/08/05/UiMI6HEs.png" alt="QQ截图20220715111344.png"></p>
+<p>13.函数参数的对象类型</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/Itu8eHI1.png" alt="QQ截图20220715112229.png"></p>
+<p>14.函数参数对象可选参数</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/4knXfTJ1.png" alt="QQ截图20220715112745.png"></p>
+<p>15.联合类型</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/xI0aQEuD.png" alt="QQ截图20220715114922.png"></p>
+<p>16.一个参数一个可选类型的时候, 它其实类似于是这个参数是 类型|undefined 的联合类型</p>
+<p>17.非空类型断言!</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/T6LzBxdD.png" alt="QQ截图20220715142334.png"></p>
+<p>18.可选链操作</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/TaGoHMzn.png" alt="QQ截图20220715151237.png"><br>19.!!运算符</p>
+<p>可以将其他数据类型转换成boolean</p>
+<p>20.??操作符  空值合并操作符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const messgae1 = &quot;1111&quot;;</span><br><span class="line">const content = messgae1 ?? &quot;你好&quot;;</span><br><span class="line">如果message1是null或者undefined,content就会使用后面的值，message是空字符串不生效</span><br></pre></td></tr></table></figure>
+
+<p>21.类型缩小  Type Narrowing</p>
+<p>类型缩小就是将例如联合类型进行精确到具体的类型</p>
+<p>常见的类型保护有</p>
+<p>typeof</p>
+<p>===，！==</p>
+<p>instanceof</p>
+<p>in</p>
+<p>…..</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/xmoxhxl5.png" alt="QQ截图20220716003305.png"></p>
+<p><img src="https://img1.imgtp.com/2022/08/05/DnVQP9fW.png" alt="QQ截图20220716003335.png"></p>
+<p><img src="https://img1.imgtp.com/2022/08/05/ECM7n6A2.png" alt="QQ截图20220716003417"></p>
+<p><img src="https://img1.imgtp.com/2022/08/05/eDTnB12m.png" alt="QQ截图20220716003433"></p>
+<p><img src="https://img1.imgtp.com/2022/08/05/s38SLBN0.png" alt="QQ截图20220716003446"></p>
+<p>22.函数类型定义</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/E4FrxA0i.png"></p>
+<p>23.参数的可选类型</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/5GU46enS.png"></p>
+<p>24.参数的默认值</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/0pGV9IBH.png"></p>
+<p>25.剩余参数</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/b2Gi65SO.png"></p>
+<p>26.指定this的绑定</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/PLXzyda7.png"></p>
+<p>27.函数的重载</p>
+<p>通过联合类型的有两个缺点：</p>
+<p>​ 1.需要进行很多类型逻辑判断</p>
+<p>​ 2.返回值类型不能判定</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/Xl0sI2DM.png"></p>
+<p><img src="https://img1.imgtp.com/2022/08/05/obc6YOcv.png"></p>
+<p>27.类的定义</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/GQd3h5pF.png"></p>
+<p>28.类的继承</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/NwBuKZH2.png"></p>
+<p>29.类的多态</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/95zR2UQ2.png"></p>
+<p>30.类的成员修饰符</p>
+<p>private 修饰的属性和方法只能在该类内部使用</p>
+<p>protected修饰的属性和方法只能在类本身及其子类内部使用</p>
+<p>public是默认的成员修饰符，可以在外部，类，子类使用</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/Pw02xjP0.png"></p>
+<p>31.readonly修饰符</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/KrYErakm.png"></p>
+<p>32.访问器setter/getter</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/eVx6dPgv.png"></p>
+<p>33.类的静态成员</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/ESG5cMLo.png"></p>
+<p>34.抽象类abstract</p>
+<p>什么是 抽象方法? 在TypeScript中没有具体实现的方法(没有方法体)，就是抽象方法</p>
+<p>抽象方法，必须存在于抽象类中</p>
+<p>抽象类是使用abstract声明的类</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/XmcOILgK.png"></p>
+<p>35.类本身也可以作为另外一变量的类型</p>
+<p>36.接口的声明</p>
+<p>​ <img src="https://img1.imgtp.com/2022/08/05/3ANVJqpG.png"></p>
+<p>37.接口的索引类型</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/1pM1SZre.png"></p>
+<p>38.函数类型</p>
+<p>interface也可以定义函数，建议使用类型别名列定义函数</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/xVRVoVov.png"></p>
+<p>39.接口的继承</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/VlVrCRbV.png"></p>
+<p><img src="https://img1.imgtp.com/2022/08/05/gvacaNKp.png"></p>
+<p>40.交叉类型</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/kExwu85c.png"></p>
+<p>41.字面量赋值</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/LVx7kzYn.png"></p>
+<p><img src="https://img1.imgtp.com/2022/08/05/UxFV3w0L.png" alt="QQ截图20220716171033.png"></p>
+<p>42.枚举类型</p>
+<p>枚举其实就是将一组可能出现的值，一个个列举出来，定义在一个类型中，这个类型就是枚举类型； p枚举允许开发者定义一组命名常量，常量可以是数字、字符串类型</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/JUcGQCK2.png" alt="QQ截图20220716172406.png"></p>
+<p><img src="https://img1.imgtp.com/2022/08/05/i4HcVm8N.png" alt="QQ截图20220716172417.png"></p>
+<p>43.泛型</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/A6dtGWoy.png" alt="QQ截图20220717020140.png"></p>
+<p><img src="https://img1.imgtp.com/2022/08/05/A6dtGWoy.png" alt="QQ截图20220717020140.png"></p>
+<p>44.泛型接口的定义</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/2ZbKkBg2.png" alt="QQ截图20220717020609.png"></p>
+<p>45.泛型作为类</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/c0ucka5e.png" alt="QQ截图20220717092242.png"></p>
+<p>46.泛型约束</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/A9jQ0E9R.png" alt="QQ截图20220717092443.png"></p>
+<p>47.namespace</p>
+<p>namespace会形成独立的空间，里面的内容需要使用export，外部才可以使用，否则外部无法访问</p>
+<p><img src="https://img1.imgtp.com/2022/08/05/qr2xvkmZ.png" alt="QQ截图20220717174941.png"><br><img src="https://img1.imgtp.com/2022/08/05/Eq2OIARP.png" alt="QQ截图20220717175005.png"><br>48.命名空间的拆分</p>
+<p>可以将命名空间的内容拆分到多个文件中</p>
+<p>49..d.ts文件  类型声明文件</p>
+<p>它仅仅用来做类型检测，告知typescript我们有哪 些类型</p>
+<p>那么typescript会在哪里查找我们的类型声明呢？</p>
+<p>内置类型声明；</p>
+<p>外部定义类型声明；</p>
+<p>自己定义类型声明；</p>
+<p>类型声明文件主要适用于外部类库，例如引入的npm包没有做类型声明，则需要自己写类型声明文件</p>
+<p>50.内置类型声明</p>
+<p>内置类型声明是typescript自带的、帮助我们内置了JavaScript运行时的一些标准化API的声明文件。包括比如Math、Date等内置类型，也包括DOM API，比如Window、Document等； 内置类型声明通常在我们安装typescript的环境中会带有的；</p>
+<p>51.外部定义类型声明和自定义声明</p>
+<p>外部类型声明通常是我们使用一些库（比如第三方库）时，需要的一些类型声明</p>
+<p>这些库通常有两种类型声明方式：</p>
+<p> 方式一：在自己库中进行类型声明（编写.d.ts文件），比如axios</p>
+<p>方式二：通过社区的一个公有库DefinitelyTyped存放类型声明文件</p>
+<p>该库的GitHub地址：<a target="_blank" rel="noopener" href="https://github.com/DefinitelyTyped/DefinitelyTyped/">https://github.com/DefinitelyTyped/DefinitelyTyped/</a></p>
+<p>该库查找声明安装方式的地址：<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/dt/search?search">https://www.typescriptlang.org/dt/search?search</a>=</p>
+<p>比如我们安装react的类型声明： npm i @types/react –save-dev</p>
+<p> 什么情况下需要自己来定义声明文件呢？</p>
+<p>情况一：我们使用的第三方库是一个纯的JavaScript库，没有对应的声明文件；比如lodash</p>
+<p>情况二：我们给自己的代码中声明一些类型，方便在其他地方直接进行使用；</p>
+<p>52.tsconfig.js文件</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/08/05/typescript%E7%AC%94%E8%AE%B0/" data-id="cl9770wmq0016k2oo35nzhjo4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/12/Vue3%E5%92%8CVue%E7%9A%84%E5%8C%BA%E5%88%AB(%E4%BA%8C)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          vue2和vue3的区别(vue2向vue3迁移)(二)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/08/04/interview02/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">面试问题记录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/">Electron</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Puppeteer/">Puppeteer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/interview/">interview</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/interview/daily/">daily</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%8E%9F%E7%90%86/">原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E6%90%9C%E9%9B%86/">搜集</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/node/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/note/">note</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/note/%E5%89%8D%E7%AB%AF%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%AC%94%E8%AE%B0/">前端系统课笔记</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/">react</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/react/Typescript/">Typescript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/mobx/">mobx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/">typescript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/daily/">daily</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/">前端八股文</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">单元测试</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/Enzyme/">Enzyme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/jest/">jest</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">常用构建工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/glup/">glup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/rollup/">rollup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/vite/">vite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/webpack/">webpack</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Ajax/">Ajax</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/axios/">axios</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/fetch/">fetch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/">websocket</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/11/08/Puppeteer/">什么是Puppeteer</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/13/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/12/canvas%E7%AC%94%E8%AE%B0/">canvas笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/">mobx的使用3⃣️</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/">mobx的使用二</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
