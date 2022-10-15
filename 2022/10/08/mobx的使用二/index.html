@@ -1,140 +1,320 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
 
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>mobx的使用二 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="集成React（react-integration）用法: 123import &amp;#123; observer &amp;#125; from &quot;mobx-react-lite&quot; &#x2F;&#x2F; Or &quot;mobx-react&quot;.const MyComponent &#x3D; observer(props &#x3D;&gt; ReactElement)  MobX 可以独立于 React 运行">
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="集成React（react-integration）用法: 123import &amp;#123; observer &amp;#125; from &quot;mobx-react-lite&quot; &#x2F;&#x2F; Or &quot;mobx-react&quot;.const MyComponent &#x3D; observer(props &#x3D;&gt; ReactElement)  MobX 可以独立于 React 运行">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mobx的使用二">
 <meta property="og:url" content="http://example.com/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="集成React（react-integration）用法: 123import &amp;#123; observer &amp;#125; from &quot;mobx-react-lite&quot; &#x2F;&#x2F; Or &quot;mobx-react&quot;.const MyComponent &#x3D; observer(props &#x3D;&gt; ReactElement)  MobX 可以独立于 React 运行">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-08T22:40:53.000Z">
-<meta property="article:modified_time" content="2022-10-13T15:05:20.871Z">
+<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
 <meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+<meta name="twitter:card" content="summary_large_image">
   
   
-    <link rel="icon" href="/favicon.png">
   
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <title>mobx的使用二 - Hexo</title>
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 5.4.2"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Piggy的记录版</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="mobx的使用二"></span>
+          
+        </div>
+
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-08 22:40" pubdate>
+          2022年10月8日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          9.8k 字
         
-      </nav>
-      <nav id="sub-nav">
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        
+          82 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
   </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-mobx的使用二" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/" class="article-date">
-  <time datetime="2022-10-08T22:40:53.000Z" itemprop="datePublished">2022-10-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/react/">react</a>►<a class="article-category-link" href="/categories/react/mobx/">mobx</a>
-  </div>
+</div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      mobx的使用二
-    </h1>
-  
+</div>
 
-      </header>
+  </header>
+
+  <main>
     
-    <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="集成React（react-integration）"><a href="#集成React（react-integration）" class="headerlink" title="集成React（react-integration）"></a>集成React（react-integration）</h1><p>用法:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; observer &#125; <span class="keyword">from</span> <span class="string">&quot;mobx-react-lite&quot;</span> <span class="comment">// Or &quot;mobx-react&quot;.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">MyComponent</span> = <span class="title function_">observer</span>(<span class="function"><span class="params">props</span> =&gt;</span> <span class="title class_">ReactElement</span>)</span><br></pre></td></tr></table></figure>
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">mobx的使用二</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="集成React（react-integration）"><a href="#集成React（react-integration）" class="headerlink" title="集成React（react-integration）"></a>集成React（react-integration）</h1><p>用法:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; observer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react-lite&quot;</span> <span class="hljs-comment">// Or &quot;mobx-react&quot;.</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">MyComponent</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function"><span class="hljs-params">props</span> =&gt;</span> <span class="hljs-title class_">ReactElement</span>)<br></code></pre></td></tr></table></figure>
 
 <p>MobX 可以独立于 React 运行, 但是他们通常是结合在一起使用, 在 <a target="_blank" rel="noopener" href="https://zh.mobx.js.org/the-gist-of-mobx.html">Mobx的宗旨（The gist of MobX）</a> 一文中你会经常看见集成React最重要的一部分：用于包裹React Component的 <code>observer</code> <a target="_blank" rel="noopener" href="https://reactjs.org/docs/higher-order-components.html">HOC</a>方法。</p>
 <p><code>observer</code> 是你可以自主选择的，<a target="_blank" rel="noopener" href="https://zh.mobx.js.org/installation.html#installation">在安装时（during installation）</a>独立提供的 React bindings 包。 在下面的例子中,我们将使用更加轻量的<a target="_blank" rel="noopener" href="https://github.com/mobxjs/mobx/tree/main/packages/mobx-react-lite"><code>mobx-react-lite</code> 包</a>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&quot;react&quot;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ReactDOM</span> <span class="keyword">from</span> <span class="string">&quot;react-dom&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; makeAutoObservable &#125; <span class="keyword">from</span> <span class="string">&quot;mobx&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; observer &#125; <span class="keyword">from</span> <span class="string">&quot;mobx-react-lite&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Timer</span> &#123;</span><br><span class="line">    secondsPassed = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="title function_">makeAutoObservable</span>(<span class="variable language_">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">increaseTimer</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">secondsPassed</span> += <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> myTimer = <span class="keyword">new</span> <span class="title class_">Timer</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">//被`observer`包裹的函数式组件会被监听在它每一次调用前发生的任何变化</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(<span class="function">(<span class="params">&#123; timer &#125;</span>) =&gt;</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">TimerView</span> <span class="attr">timer</span>=<span class="string">&#123;myTimer&#125;</span> /&gt;</span></span>, <span class="variable language_">document</span>.<span class="property">body</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    myTimer.<span class="title function_">increaseTimer</span>()</span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactDOM</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span><br><span class="hljs-keyword">import</span> &#123; makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><span class="hljs-keyword">import</span> &#123; observer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react-lite&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Timer</span> &#123;<br>    secondsPassed = <span class="hljs-number">0</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br><br>    <span class="hljs-title function_">increaseTimer</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span> += <span class="hljs-number">1</span><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> myTimer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Timer</span>()<br><br><span class="hljs-comment">//被`observer`包裹的函数式组件会被监听在它每一次调用前发生的任何变化</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">(<span class="hljs-params">&#123; timer &#125;</span>) =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>)<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> <span class="hljs-attr">timer</span>=<span class="hljs-string">&#123;myTimer&#125;</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)<br><br><span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    myTimer.<span class="hljs-title function_">increaseTimer</span>()<br>&#125;, <span class="hljs-number">1000</span>)<br></code></pre></td></tr></table></figure>
 
 <p><code>observer</code> HOC 将自动订阅 React components 中任何 <em>在渲染期间</em> 被使用的 <em>可被观察的对象</em> 。 因此, 当任何可被观察的对象 <em>变化</em> 发生时候 组件会自动进行重新渲染（re-render）。 它还会确保组件在 <em>没有变化</em> 发生的时候不会进行重新渲染（re-render）。 但是, 更改组件的可观察对象的不可读属性, 也不会触发重新渲染（re-render）。</p>
 <p>在实际项目中，这一特性使得MobX应用程序能够很好的进行开箱即用的优化，并且通常不需要任何额外的代码来防止过度渲染。</p>
 <p>要想让<code>observer</code>生效, 并不需要关心这些对象 <em>如何传递到</em> 组件的（它们只要能传递给组件即可 ·译者注）, 只需要关心他们是否是可读的。 深层嵌套的可观察对象也没有问题, 复杂的表达式类似 <code>todos[0].author.displayName</code> 也是可以使用的。 与其他必须显式声明或预先计算数据依赖关系的框架（例如 selectors）相比，这种发生的订阅机制就显得更加精确和高效。</p>
 <h3 id="observer-组件中使用外部状态-（Using-external-state-in-observer-components）"><a href="#observer-组件中使用外部状态-（Using-external-state-in-observer-components）" class="headerlink" title="observer 组件中使用外部状态 （Using external state in observer components）"></a><code>observer</code> 组件中使用外部状态 （Using external state in <code>observer</code> components）</h3><p>使用props的方式</p>
 <p>可被观察对象可以通过组件的props属性传入 (在下面的例子中):</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; observer &#125; <span class="keyword">from</span> <span class="string">&quot;mobx-react-lite&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> myTimer = <span class="keyword">new</span> <span class="title class_">Timer</span>() <span class="comment">// See the Timer definition above.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(<span class="function">(<span class="params">&#123; timer &#125;</span>) =&gt;</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过props传递myTimer.</span></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">TimerView</span> <span class="attr">timer</span>=<span class="string">&#123;myTimer&#125;</span> /&gt;</span></span>, <span class="variable language_">document</span>.<span class="property">body</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; observer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react-lite&quot;</span><br><br><span class="hljs-keyword">const</span> myTimer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Timer</span>() <span class="hljs-comment">// See the Timer definition above.</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">(<span class="hljs-params">&#123; timer &#125;</span>) =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>)<br><br><span class="hljs-comment">// 通过props传递myTimer.</span><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> <span class="hljs-attr">timer</span>=<span class="hljs-string">&#123;myTimer&#125;</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)<br></code></pre></td></tr></table></figure>
 
 <p>使用全局变量的方式</p>
 <p>虽然我们不关心是 <em>如何</em> 引用（reference）的可观察对象,但是我们可以使用 （consume） 外部作用域（outer scopes directly）的可观察对象 (类似通过 import这样的方法, 等等)：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myTimer = <span class="keyword">new</span> <span class="title class_">Timer</span>() <span class="comment">//  Timer 定义在上面.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 没有props, `myTimer` 立刻变成了闭包。</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(<span class="function">() =&gt;</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;myTimer.secondsPassed&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">TimerView</span> /&gt;</span></span>, <span class="variable language_">document</span>.<span class="property">body</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> myTimer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Timer</span>() <span class="hljs-comment">//  Timer 定义在上面.</span><br><br><span class="hljs-comment">// 没有props, `myTimer` 立刻变成了闭包。</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;myTimer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>)<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)<br></code></pre></td></tr></table></figure>
 
 <p>直接使用可观察对象效果很好，但是这通常会是通过模块引入，这种写法可能会使单元测试变得复杂。 因此，我们建议使用React Context。</p>
 <p>使用<a target="_blank" rel="noopener" href="https://reactjs.org/docs/context.html">React Context</a>共享整个可观察子树是一种很不错的选择：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;observer&#125; <span class="keyword">from</span> <span class="string">&#x27;mobx-react-lite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123;createContext, useContext&#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerContext</span> = createContext&lt;<span class="title class_">Timer</span>&gt;()</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 从context中获取timer.</span></span><br><span class="line">    <span class="keyword">const</span> timer = <span class="title function_">useContext</span>(<span class="title class_">TimerContext</span>) <span class="comment">// 可以在上面查看 Timer的定义。</span></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">TimerContext.Provider</span> <span class="attr">value</span>=<span class="string">&#123;new</span> <span class="attr">Timer</span>()&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">TimerView</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">TimerContext.Provider</span>&gt;</span></span>,</span><br><span class="line">    <span class="variable language_">document</span>.<span class="property">body</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;observer&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;mobx-react-lite&#x27;</span><br><span class="hljs-keyword">import</span> &#123;createContext, useContext&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerContext</span> = createContext&lt;<span class="hljs-title class_">Timer</span>&gt;()<br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// 从context中获取timer.</span><br>    <span class="hljs-keyword">const</span> timer = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">TimerContext</span>) <span class="hljs-comment">// 可以在上面查看 Timer的定义。</span><br>    <span class="hljs-keyword">return</span> (<br>        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>    )<br>&#125;)<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&#123;new</span> <span class="hljs-attr">Timer</span>()&#125;&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> /&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">TimerContext.Provider</span>&gt;</span></span>,<br>    <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span><br>)<br></code></pre></td></tr></table></figure>
 
 <p>需要注意的是我们并不推荐每一个不同的 <code>值（value）</code> 都通过不同的 <code>Provider</code>来传递 . 在使用Mobx的过程中不需要这样做, 因为共享的可观察对象会更新他自己。</p>
 <h3 id="在observer-组件中使用全局可观察对象（Using-local-observable-state-in-observer-components）"><a href="#在observer-组件中使用全局可观察对象（Using-local-observable-state-in-observer-components）" class="headerlink" title="在observer 组件中使用全局可观察对象（Using local observable state in observer components）"></a>在<code>observer</code> 组件中使用全局可观察对象（Using local observable state in <code>observer</code> components）</h3><p>因为使用 <code>observer</code> 的可观察对象可以来自任何地方, 他们也可以使用local state（全局的state·译者注）。 再次声明，不同操作方式对于我们而言都是有价值的。</p>
 <p>使用全局可观察对象的最简单的方式就是通过<code>useState</code>去存储一个全局可观察对象的引用。 需要注意的是, 因为我们不需要替换全局可观察对象的引用,所以我们其实可以完全不声明<code>useState</code>的更新方法:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; observer &#125; <span class="keyword">from</span> <span class="string">&quot;mobx-react-lite&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> [timer] = <span class="title function_">useState</span>(<span class="function">() =&gt;</span> <span class="keyword">new</span> <span class="title class_">Timer</span>()) <span class="comment">// Timer的定义在上面（正如上面所说的那样这里我们忽略了更新方法的定义·译者注）。</span></span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">TimerView</span> /&gt;</span></span>, <span class="variable language_">document</span>.<span class="property">body</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; observer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react-lite&quot;</span><br><span class="hljs-keyword">import</span> &#123; useState &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> [timer] = <span class="hljs-title function_">useState</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Timer</span>()) <span class="hljs-comment">// Timer的定义在上面（正如上面所说的那样这里我们忽略了更新方法的定义·译者注）。</span><br>    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>&#125;)<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)<br></code></pre></td></tr></table></figure>
 
 <p>如果你想要类似我们官方的例子那样自动更新 timer , 使用<code>useEffect</code> 可能是 React 中比较典型的写法：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> handle = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        timer.<span class="title function_">increaseTimer</span>()</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">clearInterval</span>(handle)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, [timer])</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> handle = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>        timer.<span class="hljs-title function_">increaseTimer</span>()<br>    &#125;, <span class="hljs-number">1000</span>)<br>    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> &#123;<br>        <span class="hljs-built_in">clearInterval</span>(handle)<br>    &#125;<br>&#125;, [timer])<br></code></pre></td></tr></table></figure>
 
 <p>如刚才说的那样, 直接创建一个可观察的对象，而不是使用classes（这里的类指的是全局定义的Mobx state，在它们是使用class声明的）。 我们可以参考 <a target="_blank" rel="noopener" href="https://zh.mobx.js.org/observable-state.html#observable">observable</a>这篇文章：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; observer &#125; <span class="keyword">from</span> <span class="string">&quot;mobx-react-lite&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; observable &#125; <span class="keyword">from</span> <span class="string">&quot;mobx&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> [timer] = <span class="title function_">useState</span>(<span class="function">() =&gt;</span></span><br><span class="line">        <span class="title function_">observable</span>(&#123;</span><br><span class="line">            <span class="attr">secondsPassed</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="title function_">increaseTimer</span>(<span class="params"></span>) &#123;</span><br><span class="line">                <span class="variable language_">this</span>.<span class="property">secondsPassed</span>++</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">TimerView</span> /&gt;</span></span>, <span class="variable language_">document</span>.<span class="property">body</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; observer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react-lite&quot;</span><br><span class="hljs-keyword">import</span> &#123; observable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><span class="hljs-keyword">import</span> &#123; useState &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> [timer] = <span class="hljs-title function_">useState</span>(<span class="hljs-function">() =&gt;</span><br>        <span class="hljs-title function_">observable</span>(&#123;<br>            <span class="hljs-attr">secondsPassed</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-title function_">increaseTimer</span>(<span class="hljs-params"></span>) &#123;<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span>++<br>            &#125;<br>        &#125;)<br>    )<br>    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>&#125;)<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)<br></code></pre></td></tr></table></figure>
 
 <p><code>const [store] = useState(() =&gt; observable(&#123; /* something */&#125;))</code> 是非常通用的一套写法， 为了简化这个写法我们可以调用<code>mobx-react-lite</code> 包中的 <a target="_blank" rel="noopener" href="https://github.com/mobxjs/mobx-react#uselocalobservable-hook"><code>useLocalObservable</code></a> hook ,可以将上面的例子简化成：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; observer, useLocalObservable &#125; <span class="keyword">from</span> <span class="string">&quot;mobx-react-lite&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> timer = <span class="title function_">useLocalObservable</span>(<span class="function">() =&gt;</span> (&#123;</span><br><span class="line">        <span class="attr">secondsPassed</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="title function_">increaseTimer</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">secondsPassed</span>++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;))</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">TimerView</span> /&gt;</span></span>, <span class="variable language_">document</span>.<span class="property">body</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; observer, useLocalObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react-lite&quot;</span><br><span class="hljs-keyword">import</span> &#123; useState &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> timer = <span class="hljs-title function_">useLocalObservable</span>(<span class="hljs-function">() =&gt;</span> (&#123;<br>        <span class="hljs-attr">secondsPassed</span>: <span class="hljs-number">0</span>,<br>        <span class="hljs-title function_">increaseTimer</span>(<span class="hljs-params"></span>) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span>++<br>        &#125;<br>    &#125;))<br>    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>&#125;)<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)<br></code></pre></td></tr></table></figure>
 
 <h3 id="不要将可观察对象传递到-不是observer的组件中（Don’t-pass-observables-into-components-that-aren’t-observer）"><a href="#不要将可观察对象传递到-不是observer的组件中（Don’t-pass-observables-into-components-that-aren’t-observer）" class="headerlink" title="不要将可观察对象传递到 不是observer的组件中（Don’t pass observables into components that aren’t observer）"></a>不要将可观察对象传递到 不是<code>observer</code>的组件中（Don’t pass observables into components that aren’t <code>observer</code>）</h3><p>通过<code>observer</code>包裹的组件 <em>只可以</em> 订阅到在 <em>他们自己</em> 渲染的期间的可观察对象. 如果要将可观察对象 objects / arrays / maps 传递到子组件中, 他们必须被 <code>observer</code> 包裹。 通过callback回调的组件也是一样。</p>
 <p>如果你非要传递可观察对象到未被<code>observer</code>包裹的组件中， 要么是因为它是第三方组件，要么你需要组件对Mobx无感知，那你必须在传递前 <a target="_blank" rel="noopener" href="https://zh.mobx.js.org/observable-state.html#%E5%B0%86-observable-%E8%BD%AC%E6%8D%A2%E5%9B%9E%E6%99%AE%E9%80%9A%E7%9A%84-javascript-%E9%9B%86%E5%90%88">转换可观察对象为显式 （convert the observables to plain JavaScript values or structures）</a> 。</p>
 <p>关于上述的详细描述, 可以看一下下面的使用 <code>todo</code> 对象的例子， 一个 <code>TodoView</code> (observer)组件和一个虚构的接收一组对象映射入参的不是<code>observer</code>的<code>GridRow</code>组件</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Todo</span> &#123;</span><br><span class="line">    title = <span class="string">&quot;test&quot;</span></span><br><span class="line">    done = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="title function_">makeAutoObservable</span>(<span class="variable language_">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TodoView</span> = <span class="title function_">observer</span>(<span class="function">(<span class="params">&#123; todo &#125;: &#123; todo: Todo &#125;</span>) =&gt;</span></span><br><span class="line">   <span class="comment">// 错误: GridRow 不能获取到 todo.title/ todo.done 的变更</span></span><br><span class="line">   <span class="comment">//       因为他不是一个观察者（observer。</span></span><br><span class="line">   <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">GridRow</span> <span class="attr">data</span>=<span class="string">&#123;todo&#125;</span> /&gt;</span></span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// 正确:在 `TodoView` 中显式的声明相关的`todo` ，</span></span><br><span class="line">   <span class="comment">//      到data中。</span></span><br><span class="line">   <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">GridRow</span> <span class="attr">data</span>=<span class="string">&#123;&#123;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">       <span class="attr">title:</span> <span class="attr">todo.title</span>,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">       <span class="attr">done:</span> <span class="attr">todo.done</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">   &#125;&#125; /&gt;</span></span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// 正确: 使用 `toJS`也是可以的, 并且是更清晰直白的方式。</span></span><br><span class="line">   <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">GridRow</span> <span class="attr">data</span>=<span class="string">&#123;toJS(todo)&#125;</span> /&gt;</span></span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Todo</span> &#123;<br>    title = <span class="hljs-string">&quot;test&quot;</span><br>    done = <span class="hljs-literal">true</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TodoView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">(<span class="hljs-params">&#123; todo &#125;: &#123; todo: Todo &#125;</span>) =&gt;</span><br>   <span class="hljs-comment">// 错误: GridRow 不能获取到 todo.title/ todo.done 的变更</span><br>   <span class="hljs-comment">//       因为他不是一个观察者（observer。</span><br>   <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">GridRow</span> <span class="hljs-attr">data</span>=<span class="hljs-string">&#123;todo&#125;</span> /&gt;</span></span><br><br>   <span class="hljs-comment">// 正确:在 `TodoView` 中显式的声明相关的`todo` ，</span><br>   <span class="hljs-comment">//      到data中。</span><br>   <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">GridRow</span> <span class="hljs-attr">data</span>=<span class="hljs-string">&#123;&#123;</span></span></span><br><span class="hljs-tag"><span class="language-xml">       <span class="hljs-attr">title:</span> <span class="hljs-attr">todo.title</span>,</span></span><br><span class="hljs-tag"><span class="language-xml">       <span class="hljs-attr">done:</span> <span class="hljs-attr">todo.done</span></span></span><br><span class="hljs-tag"><span class="language-xml">   &#125;&#125; /&gt;</span></span><br><br>   <span class="hljs-comment">// 正确: 使用 `toJS`也是可以的, 并且是更清晰直白的方式。</span><br>   <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">GridRow</span> <span class="hljs-attr">data</span>=<span class="hljs-string">&#123;toJS(todo)&#125;</span> /&gt;</span></span><br>)<br></code></pre></td></tr></table></figure>
 
 <h3 id="回调组件可能会需要-lt-Observer-gt-（-Callback-components-might-require-lt-Observer-gt-）"><a href="#回调组件可能会需要-lt-Observer-gt-（-Callback-components-might-require-lt-Observer-gt-）" class="headerlink" title="回调组件可能会需要&lt;Observer&gt;（ Callback components might require &lt;Observer&gt;）"></a>回调组件可能会需要<code>&lt;Observer&gt;</code>（ Callback components might require <code>&lt;Observer&gt;</code>）</h3><p>想象一下在同样的例子中, <code>GridRow</code> 携带一个 <code>onRender</code>回调函数。 <code>onRender</code> 是 <code>GridRow</code>渲染生命周期的一部分, 而不是 <code>TodoView</code> 的render (甚至在语法层面都能看出来)，我们不得不保证回调组件是一个 <code>observer</code> 组件。 或者，我们可以使用 <a target="_blank" rel="noopener" href="https://github.com/mobxjs/mobx-react#observer">``</a>创建一个匿名观察者：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">TodoView</span> = <span class="title function_">observer</span>(<span class="function">(<span class="params">&#123; todo &#125;: &#123; todo: Todo &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 错误: GridRow.onRender 不能获得 todo.title / todo.done 中的改变</span></span><br><span class="line">    <span class="comment">//        因为它不是一个观察者（observer） 。</span></span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">GridRow</span> <span class="attr">onRender</span>=<span class="string">&#123;()</span> =&gt;</span> <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;todo.title&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span>&#125; /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 正确: 将回调组件通过Observer包裹将会正确的获得变化。</span></span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">GridRow</span> <span class="attr">onRender</span>=<span class="string">&#123;()</span> =&gt;</span> <span class="tag">&lt;<span class="name">Observer</span>&gt;</span>&#123;() =&gt; <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;todo.title&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span>&#125;<span class="tag">&lt;/<span class="name">Observer</span>&gt;</span>&#125; /&gt;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title class_">TodoView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">(<span class="hljs-params">&#123; todo &#125;: &#123; todo: Todo &#125;</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 错误: GridRow.onRender 不能获得 todo.title / todo.done 中的改变</span><br>    <span class="hljs-comment">//        因为它不是一个观察者（observer） 。</span><br>    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">GridRow</span> <span class="hljs-attr">onRender</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>&#123;todo.title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>&#125; /&gt;</span><br><br>    <span class="hljs-comment">// 正确: 将回调组件通过Observer包裹将会正确的获得变化。</span><br>    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">GridRow</span> <span class="hljs-attr">onRender</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">Observer</span>&gt;</span>&#123;() =&gt; <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>&#123;todo.title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">Observer</span>&gt;</span>&#125; /&gt;</span><br>&#125;)<br></code></pre></td></tr></table></figure>
 
 <p><strong>mobx-react vs. mobx-react-lite</strong></p>
 <p>在本文中我们使用 <code>mobx-react-lite</code> 作为默认包。 <a target="_blank" rel="noopener" href="https://github.com/mobxjs/mobx-react/">mobx-react</a> 是他的大兄弟，它里面也引用了 <code>mobx-react-lite</code> 包。 它提供了很多在新项目中不再需要的特性， mobx-react附加的特性有：</p>
@@ -148,155 +328,387 @@
 <p><code>observer</code> 会自动的使用 <code>memo</code>, 所以 <code>observer</code> 不需要再包裹 <code>memo</code>。 <code>memo</code> 会被 observer 组件安全的使用，因为任何在props中的改变(很深的) 都会被<code>observer</code>响应。</p>
 <p><strong>应用<code>observer</code> 到基于class的组件</strong></p>
 <p>如上所述，class 组件只在<code>mobx-react</code>包中得到支持， <code>mobx-react-lite</code>并不支持。 简而言之，你可以和函数式组件一样使用 <code>observer</code>包裹class 组件：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&quot;React&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">TimerView</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">        <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">const</span> &#123; timer &#125; = <span class="variable language_">this</span>.<span class="property">props</span></span><br><span class="line">            <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125; <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;React&quot;</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">TimerView</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> &#123;<br>        <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>            <span class="hljs-keyword">const</span> &#123; timer &#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span><br>            <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125; <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>        &#125;<br>    &#125;<br>)<br></code></pre></td></tr></table></figure>
 
 <p>可以阅读 <a target="_blank" rel="noopener" href="https://github.com/mobxjs/mobx-react#api-documentation">mobx-react 文档</a> 获得更详细的信息。</p>
 <p><strong>当你想要将<code>observer</code> 和其他高阶组件（HOC·译者注）一起使用, 需要首先调用 <code>observer</code></strong></p>
 <p>当 <code>observer</code> 需要和装饰器或者其他高阶组件（HOC）一起使用时，请确保 <code>observer</code> 是最内层的 (最先调用的) 装饰器，否则的话它可能不会工作</p>
 <p><strong>从 props导出计算属性</strong></p>
 <p>在某些情况下你的组件本地可观察对象（local observables）的计算属性可能依赖于一些你组件接受到的参数（props）。 但是,这一系列从React组件接收到的参数（props）本身并不是可观察对象，所以更改这些组件的属性（props）并不会使得计算属性响应。你可能需要手动的从最新的数据来更新全局可观察对象的状态来触发计算属性更新。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; observer, useLocalObservable &#125; <span class="keyword">from</span> <span class="string">&quot;mobx-react-lite&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; useEffect &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(<span class="function">(<span class="params">&#123; offset &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> timer = <span class="title function_">useLocalObservable</span>(<span class="function">() =&gt;</span> (&#123;</span><br><span class="line">        offset, <span class="comment">// 初始化offset</span></span><br><span class="line">        <span class="attr">secondsPassed</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="title function_">increaseTimer</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">secondsPassed</span>++</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="keyword">get</span> <span class="title function_">offsetTime</span>() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">secondsPassed</span> - <span class="variable language_">this</span>.<span class="property">offset</span> <span class="comment">// 这里的&#x27;offset&#x27;不是&#x27;props&#x27;传入的那个</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;))</span><br><span class="line"></span><br><span class="line">    <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">//同步来自 &#x27;props&#x27; 的偏差到可观察对象 &#x27;timer&#x27;</span></span><br><span class="line">        timer.<span class="property">offset</span> = offset</span><br><span class="line">    &#125;, [offset])</span><br><span class="line"></span><br><span class="line">    <span class="comment">//作为demo用途，初始化一个定时器.</span></span><br><span class="line">    <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> handle = <span class="built_in">setInterval</span>(timer.<span class="property">increaseTimer</span>, <span class="number">1000</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">clearInterval</span>(handle)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, [])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;timer.offsetTime&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">TimerView</span> /&gt;</span></span>, <span class="variable language_">document</span>.<span class="property">body</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; observer, useLocalObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react-lite&quot;</span><br><span class="hljs-keyword">import</span> &#123; useEffect &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">(<span class="hljs-params">&#123; offset &#125;</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> timer = <span class="hljs-title function_">useLocalObservable</span>(<span class="hljs-function">() =&gt;</span> (&#123;<br>        offset, <span class="hljs-comment">// 初始化offset</span><br>        <span class="hljs-attr">secondsPassed</span>: <span class="hljs-number">0</span>,<br>        <span class="hljs-title function_">increaseTimer</span>(<span class="hljs-params"></span>) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span>++<br>        &#125;,<br>        <span class="hljs-keyword">get</span> <span class="hljs-title function_">offsetTime</span>() &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span> - <span class="hljs-variable language_">this</span>.<span class="hljs-property">offset</span> <span class="hljs-comment">// 这里的&#x27;offset&#x27;不是&#x27;props&#x27;传入的那个</span><br>        &#125;<br>    &#125;))<br><br>    <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>        <span class="hljs-comment">//同步来自 &#x27;props&#x27; 的偏差到可观察对象 &#x27;timer&#x27;</span><br>        timer.<span class="hljs-property">offset</span> = offset<br>    &#125;, [offset])<br><br>    <span class="hljs-comment">//作为demo用途，初始化一个定时器.</span><br>    <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>        <span class="hljs-keyword">const</span> handle = <span class="hljs-built_in">setInterval</span>(timer.<span class="hljs-property">increaseTimer</span>, <span class="hljs-number">1000</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-built_in">clearInterval</span>(handle)<br>        &#125;<br>    &#125;, [])<br><br>    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;timer.offsetTime&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>&#125;)<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)<br></code></pre></td></tr></table></figure>
 
 <p>在实际项目中你可能很少需要这种写法, 因为 <code>return &lt;span&gt;Seconds passed: &#123;timer.secondsPassed - offset&#125;&lt;/span&gt;</code> 更加简单, 虽然是稍微低效率的解决方案。</p>
 <p><strong>useEffect 与 可观察对象</strong></p>
 <p><code>useEffect</code> 可以被用于触发需要发生的副作用, 它将会被约束在React 组建的生命周期中。 使用 <code>useEffect</code>需要指定详细的依赖。 对于 MobX 却不是必须的, 因为 MobX 拥有一种真正的能检查到依赖发发生的方法， <code>autorun</code>。 结合 <code>autorun</code>可以很轻松的在生命周期组件中使用<code>useEffect</code>：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; observer, useLocalObservable, useAsObservableSource &#125; <span class="keyword">from</span> <span class="string">&quot;mobx-react-lite&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TimerView</span> = <span class="title function_">observer</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> timer = <span class="title function_">useLocalObservable</span>(<span class="function">() =&gt;</span> (&#123;</span><br><span class="line">        <span class="attr">secondsPassed</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="title function_">increaseTimer</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">secondsPassed</span>++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在Effect方法之上触发可观察对象变化。</span></span><br><span class="line">    <span class="title function_">useEffect</span>(</span><br><span class="line">        <span class="function">() =&gt;</span></span><br><span class="line">            <span class="title function_">autorun</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (timer.<span class="property">secondsPassed</span> &gt; <span class="number">60</span>) <span class="title function_">alert</span>(<span class="string">&quot;Still there. It&#x27;s a minute already?!!&quot;</span>)</span><br><span class="line">            &#125;),</span><br><span class="line">        []</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 作为demo用途在Effect里定义一个定时器。</span></span><br><span class="line">    <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> handle = <span class="built_in">setInterval</span>(timer.<span class="property">increaseTimer</span>, <span class="number">1000</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">clearInterval</span>(handle)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, [])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">TimerView</span> /&gt;</span></span>, <span class="variable language_">document</span>.<span class="property">body</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; observer, useLocalObservable, useAsObservableSource &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react-lite&quot;</span><br><span class="hljs-keyword">import</span> &#123; useState &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> timer = <span class="hljs-title function_">useLocalObservable</span>(<span class="hljs-function">() =&gt;</span> (&#123;<br>        <span class="hljs-attr">secondsPassed</span>: <span class="hljs-number">0</span>,<br>        <span class="hljs-title function_">increaseTimer</span>(<span class="hljs-params"></span>) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span>++<br>        &#125;<br>    &#125;))<br><br>    <span class="hljs-comment">// 在Effect方法之上触发可观察对象变化。</span><br>    <span class="hljs-title function_">useEffect</span>(<br>        <span class="hljs-function">() =&gt;</span><br>            <span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>                <span class="hljs-keyword">if</span> (timer.<span class="hljs-property">secondsPassed</span> &gt; <span class="hljs-number">60</span>) <span class="hljs-title function_">alert</span>(<span class="hljs-string">&quot;Still there. It&#x27;s a minute already?!!&quot;</span>)<br>            &#125;),<br>        []<br>    )<br><br>    <span class="hljs-comment">// 作为demo用途在Effect里定义一个定时器。</span><br>    <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>        <span class="hljs-keyword">const</span> handle = <span class="hljs-built_in">setInterval</span>(timer.<span class="hljs-property">increaseTimer</span>, <span class="hljs-number">1000</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-built_in">clearInterval</span>(handle)<br>        &#125;<br>    &#125;, [])<br><br>    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Seconds passed: &#123;timer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>&#125;)<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)<br></code></pre></td></tr></table></figure>
 
 <p>需要注意的是我们在effect方法返回了一个创建自<code>autorun</code> 的清除方法。 这一点是非常重要的, 因为他确保了 <code>autorun</code> 在组件卸载的时候被清除了！</p>
 <p>依赖数组可以保持为空，除非是一个不可观察对象的值需要触发autorun重新运行，你才需要将它添加到这里面。 请确保你的格式正确,你可以创建一个<code>定时器（timer）</code> (上面的例子中) 作为依赖。 这是安全并且无副作用的， 因为它引用的依赖根本不会改变。</p>
 <p>如果你不想显式的在Effect中定义可观察对象请使用<code>reaction</code>而不是<code>autorun</code>，他们的传参是完全相同的。</p>
 <h1 id="优化React组件渲染-🚀"><a href="#优化React组件渲染-🚀" class="headerlink" title="优化React组件渲染 {🚀}"></a>优化React组件渲染 {🚀}</h1>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/" data-id="cl9770wmh000vk2oo2w787gyb" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
+
+<span class="category-chains">
+  
   
     
-<nav id="article-nav">
+      <span class="category-chain">
+        
+  <a href="/categories/react/" class="category-chain-item">react</a>
   
-    <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          mobx的使用3⃣️
-        
+  
+    <span>></span>
+    
+  <a href="/categories/react/mobx/" class="category-chain-item">mobx</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>mobx的使用二</div>
+      <div>http://example.com/2022/10/08/mobx的使用二/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/" title="mobx的使用3⃣️">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">mobx的使用3⃣️</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/06/%E6%9D%80%E6%89%8B%E7%BA%A7%E7%9A%84TypeScript%E5%8A%9F%E8%83%BD%EF%BC%9Aconst%E6%96%AD%E8%A8%80/" title="杀手级的TypeScript功能：const断言">
+                        <span class="hidden-mobile">杀手级的TypeScript功能：const断言</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
       </div>
-    </a>
-  
-  
-    <a href="/2022/10/06/%E6%9D%80%E6%89%8B%E7%BA%A7%E7%9A%84TypeScript%E5%8A%9F%E8%83%BD%EF%BC%9Aconst%E6%96%AD%E8%A8%80/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">杀手级的TypeScript功能：const断言</div>
-    </a>
-  
-</nav>
+    </div>
 
-  
-</article>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/">Electron</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Puppeteer/">Puppeteer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/interview/">interview</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/interview/daily/">daily</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%8E%9F%E7%90%86/">原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E6%90%9C%E9%9B%86/">搜集</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/node/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/note/">note</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/note/%E5%89%8D%E7%AB%AF%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%AC%94%E8%AE%B0/">前端系统课笔记</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/">react</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/react/Typescript/">Typescript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/mobx/">mobx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/">typescript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/daily/">daily</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/">前端八股文</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">单元测试</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/Enzyme/">Enzyme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/jest/">jest</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">常用构建工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/glup/">glup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/rollup/">rollup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/vite/">vite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/webpack/">webpack</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Ajax/">Ajax</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/axios/">axios</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/fetch/">fetch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/">websocket</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+
+
+  </aside>
+
+
     </div>
   </div>
+</div>
+
+
+
 
 
   
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
 
-  
     
-  
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
-    </div>
-  </div>
 
-
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/11/08/Puppeteer/">什么是Puppeteer</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/13/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/12/canvas%E7%AC%94%E8%AE%B0/">canvas笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/">mobx的使用3⃣️</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/">mobx的使用二</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2022 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+</div>
+
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
 
 
   
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
 
   
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
-<script src="/js/script.js"></script>
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
 
-
-  </div>
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>

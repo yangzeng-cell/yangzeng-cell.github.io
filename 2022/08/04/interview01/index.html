@@ -1,98 +1,278 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
 
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>牛客网收集面试题答案 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.说一说cookie sessionStorage localStorage 区别？我的回答：cookie的大小只有4k,cookie是在浏览器中存储的，分为两种，内存cookie和硬盘cookie,默认的cookie就是内存cookie,没有设置过期时间，默认情况下就是浏览器关闭，cookie就会被浏览器删除，硬盘cookie是有设置过期时间，在过期时间之前，浏览器关闭，cookie不会被删除">
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1.说一说cookie sessionStorage localStorage 区别？我的回答：cookie的大小只有4k,cookie是在浏览器中存储的，分为两种，内存cookie和硬盘cookie,默认的cookie就是内存cookie,没有设置过期时间，默认情况下就是浏览器关闭，cookie就会被浏览器删除，硬盘cookie是有设置过期时间，在过期时间之前，浏览器关闭，cookie不会被删除">
 <meta property="og:type" content="article">
 <meta property="og:title" content="牛客网收集面试题答案">
 <meta property="og:url" content="http://example.com/2022/08/04/interview01/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="1.说一说cookie sessionStorage localStorage 区别？我的回答：cookie的大小只有4k,cookie是在浏览器中存储的，分为两种，内存cookie和硬盘cookie,默认的cookie就是内存cookie,没有设置过期时间，默认情况下就是浏览器关闭，cookie就会被浏览器删除，硬盘cookie是有设置过期时间，在过期时间之前，浏览器关闭，cookie不会被删除">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-04T11:46:19.000Z">
-<meta property="article:modified_time" content="2022-10-13T15:05:20.871Z">
+<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
 <meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+<meta name="twitter:card" content="summary_large_image">
   
   
-    <link rel="icon" href="/favicon.png">
   
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <title>牛客网收集面试题答案 - Hexo</title>
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 5.4.2"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Piggy的记录版</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="牛客网收集面试题答案"></span>
+          
+        </div>
+
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-04 11:46" pubdate>
+          2022年8月4日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          26k 字
         
-      </nav>
-      <nav id="sub-nav">
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        
+          213 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
   </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-interview01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/08/04/interview01/" class="article-date">
-  <time datetime="2022-08-04T11:46:19.000Z" itemprop="datePublished">2022-08-04</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/interview/">interview</a>►<a class="article-category-link" href="/categories/interview/daily/">daily</a>
-  </div>
+</div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      牛客网收集面试题答案
-    </h1>
-  
+</div>
 
-      </header>
+  </header>
+
+  <main>
     
-    <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="1-说一说cookie-sessionStorage-localStorage-区别？"><a href="#1-说一说cookie-sessionStorage-localStorage-区别？" class="headerlink" title="1.说一说cookie sessionStorage localStorage 区别？"></a>1.说一说cookie sessionStorage localStorage 区别？</h4><p><strong>我的回答：</strong>cookie的大小只有4k,cookie是在浏览器中存储的，分为两种，内存cookie和硬盘cookie,默认的cookie就是内存cookie,没有设置过期时间，默认情况下就是浏览器关闭，cookie就会被浏览器删除，硬盘cookie是有设置过期时间，在过期时间之前，浏览器关闭，cookie不会被删除。把过期时间设置为负数或者0，可以删除cookie。</p>
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">牛客网收集面试题答案</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h4 id="1-说一说cookie-sessionStorage-localStorage-区别？"><a href="#1-说一说cookie-sessionStorage-localStorage-区别？" class="headerlink" title="1.说一说cookie sessionStorage localStorage 区别？"></a>1.说一说cookie sessionStorage localStorage 区别？</h4><p><strong>我的回答：</strong>cookie的大小只有4k,cookie是在浏览器中存储的，分为两种，内存cookie和硬盘cookie,默认的cookie就是内存cookie,没有设置过期时间，默认情况下就是浏览器关闭，cookie就会被浏览器删除，硬盘cookie是有设置过期时间，在过期时间之前，浏览器关闭，cookie不会被删除。把过期时间设置为负数或者0，可以删除cookie。</p>
 <p>sessionStorage和localStorage不会自动存储，需要手动的存储数据，存储的数据量会比cookie大。sessionStorage只会在本次会话中存储，不会在新的页面中被获取。localStorage在页面关闭并且重新打开时不会被清除，sessionStorage会被清除。在页面内发生跳转不打开新的页面的时候，sessionStorage和localstorage不会被删除，在页面中跳转打开新的页面的时候，sessionStorage不保存，localstorage会保存</p>
 <p><strong>参考答案：</strong>得分点 数据存储位置，生命周期，存储大小，写入方式，数据共享，发送请求是否携带，应用场景。相同点Cookie,SessionStorage，LocalStorage都是存储在浏览器本地的，不同点，cookie默认是浏览器关闭时候会被删除，可以设置过期时间，在过期时间内浏览器关闭，cookie不会删除。cookie一般是由服务端写入的，SessionStorage和LocalStorage是在客户端写入的，cookie的生命周期是由服务端设置好的，而LocalStorage是永远存在的，如果没有手动删除。SessionStorage页面关闭会被清除。sessionStorage只会在本次会话中存储，不会在新的页面中被获取，页面内发生跳转不打开新的页面时候，sessionStorage不会被清除，cookie的存储大小为4k,sessionStorage和localStorage存储大小为5M。cookie，sessionStorage,localStorage数据共享都是遵循同源策略原则，SessionStorage还必须限制在同一个页面。前端向后端发送数据的时候，cookie会自动携带，而localStorage和sessionStorage中的数据必须手动添加。应用场景：cookie可以存储登录的验证信息SessionId和token,localStorage通常存储不易变动的数据来减轻服务器的压力，SessionStorage可以用来检测用户是否刷新进入页面，像音乐播放器恢复播放进度条的功能</p>
 <h4 id="2-说一说JS数据类型有哪些-区别是什么？"><a href="#2-说一说JS数据类型有哪些-区别是什么？" class="headerlink" title="2.说一说JS数据类型有哪些,区别是什么？"></a>2.说一说JS数据类型有哪些,区别是什么？</h4><p>数据类型有Null,undefined,Boolean,Number.String,Symbol,Bigint,Object8种数据类型</p>
@@ -268,7 +448,7 @@
 <li><p>触发过渡</p>
 </li>
 </ul>
-<h4 id="53-说一说vue-router-实现懒加载的方法？"><a href="#53-说一说vue-router-实现懒加载的方法？" class="headerlink" title="53.说一说vue-router 实现懒加载的方法？"></a>53.说一说vue-router 实现懒加载的方法？</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vue实现懒加载的两种方法</span><br><span class="line">component：resolve=&gt;require([&quot;./app.vue&quot;],resolve)</span><br><span class="line">component:()i=&gt;import(/*webpackChunkName:app*/&quot;./app.vue&quot;)</span><br><span class="line"></span><br><span class="line">webpackChunkName可以不写</span><br><span class="line">不要在路由中使用异步组件。异步组件仍然可以在路由组件中使用，但路由组件本身就是动态导入的。</span><br><span class="line">webpack会进行代码分隔，进行独立打包，当使用道德时候才会加载，vue-router只会第一次加载时获取，以后都会使用缓存</span><br></pre></td></tr></table></figure>
+<h4 id="53-说一说vue-router-实现懒加载的方法？"><a href="#53-说一说vue-router-实现懒加载的方法？" class="headerlink" title="53.说一说vue-router 实现懒加载的方法？"></a>53.说一说vue-router 实现懒加载的方法？</h4><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs livescript">vue实现懒加载的两种方法<br>component：resolve=&gt;<span class="hljs-built_in">require</span>([<span class="hljs-string">&quot;./app.vue&quot;</span>],resolve)<br>component:()i=&gt;<span class="hljs-keyword">import</span>(<span class="hljs-comment">/*webpackChunkName:app*/</span><span class="hljs-string">&quot;./app.vue&quot;</span>)<br><br>webpackChunkName可以不写<br>不要在路由中使用异步组件。异步组件仍然可以在路由组件中使用，但路由组件本身就是动态导入的。<br>webpack会进行代码分隔，进行独立打包，当使用道德时候才会加载，vue-router只会第一次加载时获取，以后都会使用缓存<br></code></pre></td></tr></table></figure>
 
 <h4 id="55-ReactRouter基本用法是什么？"><a href="#55-ReactRouter基本用法是什么？" class="headerlink" title="55.ReactRouter基本用法是什么？"></a>55.ReactRouter基本用法是什么？</h4><h4 id="56-setState是同步还是异步的？"><a href="#56-setState是同步还是异步的？" class="headerlink" title="56.setState是同步还是异步的？"></a>56.setState是同步还是异步的？</h4><p>setState在组件生命周期或者react合成事件中，setState是异步的</p>
 <p>在原生的dom事件中，setTimeout中，setState是同步的</p>
@@ -289,7 +469,7 @@
 <p>created钩子函数会在组件实例被创完成后被立即同步调用，此时$watch,computed,method,data等属性可以被调用，但是挂载阶段还没开始，所以$el属性还不可以使用，</p>
 <p>beforeMount钩子函数被调用时，该钩子函数会在挂载前调用，render函数首次被调用，在服务器端渲染期间不会被调用</p>
 <p>mounted钩子函数被调用时，在实例挂载完成后调用，这时候传给app.mount的元素已经被新创建的vm.$el替换，mounted不会保证所有子组件都被挂载完成。如果想执行在这个视图渲染完毕后执行代码，可以在mounted内部使用vm.$nextTick</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">mounted</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.$nextTick(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 仅在整个视图都被渲染之后才会运行的代码</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">this</span>.$nextTick(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 仅在整个视图都被渲染之后才会运行的代码</span><br>  &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>该钩子函数不会再服务端渲染时调用</p>
 <p>beforeUpdate钩子函数是在数据发生变化之后DOM更新之前调用，适合在DOM更新之前访问它，例如移除手动添加的事件监听器。<strong>该钩子在服务器端渲染期间不被调用，因为只有初次渲染会在服务器端进行。</strong></p>
@@ -336,7 +516,7 @@
 <p>meta元素定义的元数据的类型包括以下几类</p>
 <p>如果设置了charset meta元素就是一个字符集声明，告诉文档使用那种字符编码</p>
 <p>如果设置了http-equiv属性，meta元素则是编译指令  主要是做兼容性处理，告诉IE浏览器去模仿那个浏览器的行为，IE模仿edge的行为，chrome使用1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;meta <span class="hljs-attribute">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attribute">content</span>=<span class="hljs-string">&quot;IE=edge,chrome=1&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
 
 <p>如果设置了name属性，meta元素提供的是文档级别的元数据，应用于整个页面</p>
 <h4 id="106-说一下css的优先级，important的缺点"><a href="#106-说一下css的优先级，important的缺点" class="headerlink" title="106.说一下css的优先级，important的缺点"></a>106.说一下css的优先级，important的缺点</h4><p>css的优先级是按照css的权重来叠加的，</p>
@@ -375,7 +555,7 @@
 <p>​        poll queue：IO事件；</p>
 <p>​        check queue：setImmediate； ü close queue：close事件</p>
 <p>执行宏任务的时候都必须先判断微任务队列是否有值</p>
-<h4 id="110-实现一个柯里化函数（写代码）"><a href="#110-实现一个柯里化函数（写代码）" class="headerlink" title="110.实现一个柯里化函数（写代码）"></a>110.实现一个柯里化函数（写代码）</h4><h4 id="111-实现函数的链式调用（写代码，compose函数）"><a href="#111-实现函数的链式调用（写代码，compose函数）" class="headerlink" title="111.实现函数的链式调用（写代码，compose函数）"></a>111.实现函数的链式调用（写代码，compose函数）</h4><h4 id="112-如何配置less文件的loader"><a href="#112-如何配置less文件的loader" class="headerlink" title="112.如何配置less文件的loader"></a>112.如何配置less文件的loader</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">test:/\.less$/,</span><br><span class="line">use:[</span><br><span class="line">style-loader,css-loader,postcss-loader,less-loader</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="110-实现一个柯里化函数（写代码）"><a href="#110-实现一个柯里化函数（写代码）" class="headerlink" title="110.实现一个柯里化函数（写代码）"></a>110.实现一个柯里化函数（写代码）</h4><h4 id="111-实现函数的链式调用（写代码，compose函数）"><a href="#111-实现函数的链式调用（写代码，compose函数）" class="headerlink" title="111.实现函数的链式调用（写代码，compose函数）"></a>111.实现函数的链式调用（写代码，compose函数）</h4><h4 id="112-如何配置less文件的loader"><a href="#112-如何配置less文件的loader" class="headerlink" title="112.如何配置less文件的loader"></a>112.如何配置less文件的loader</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">test</span>:/\.<span class="hljs-keyword">less</span>$/,<br>use:[<br>style-loader,css-loader,postcss-loader,<span class="hljs-keyword">less</span>-loader<br>]<br></code></pre></td></tr></table></figure>
 
 
 
@@ -432,7 +612,7 @@
 <p>4.new绑定   使用new创建的对象，构造函数中的this会指向新创建的对象</p>
 <h4 id="126-说一下v-model的原理"><a href="#126-说一下v-model的原理" class="headerlink" title="126.说一下v-model的原理"></a>126.说一下v-model的原理</h4><p>v-model就是如下的语糖</p>
 <p>对于input，textarea元素</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;input</span><br><span class="line">  :value=&quot;text&quot;</span><br><span class="line">  @input=&quot;event =&gt; text = event.target.value&quot;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;input<br>  :<span class="hljs-attribute">value</span>=<span class="hljs-string">&quot;text&quot;</span><br>  @<span class="hljs-attribute">input</span>=<span class="hljs-string">&quot;event =&gt; text = event.target.value&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
 
 <p>对于文本元素text，textarea会绑定value property监听input事件，checkbox和radio会绑定checked property 监听change事件，select属性会绑定value属性，监听change事件</p>
 <h4 id="127-如何封装一个弹窗组件，需要考虑那些问题"><a href="#127-如何封装一个弹窗组件，需要考虑那些问题" class="headerlink" title="127.如何封装一个弹窗组件，需要考虑那些问题"></a>127.如何封装一个弹窗组件，需要考虑那些问题</h4><h4 id="128-说一下keep-alive的原理，以及如果超出缓存长度，如何处理"><a href="#128-说一下keep-alive的原理，以及如果超出缓存长度，如何处理" class="headerlink" title="128.说一下keep-alive的原理，以及如果超出缓存长度，如何处理"></a>128.说一下keep-alive的原理，以及如果超出缓存长度，如何处理</h4><h4 id="129-说一下你对jwt认证机制的理解，它的优缺点"><a href="#129-说一下你对jwt认证机制的理解，它的优缺点" class="headerlink" title="129.说一下你对jwt认证机制的理解，它的优缺点"></a>129.说一下你对jwt认证机制的理解，它的优缺点</h4><h4 id="130-说一下new创建实例的时候都做了什么"><a href="#130-说一下new创建实例的时候都做了什么" class="headerlink" title="130.说一下new创建实例的时候都做了什么"></a>130.说一下new创建实例的时候都做了什么</h4><p>new创建实例的过程</p>
@@ -471,132 +651,363 @@
 <h4 id="135-如何用ES5实现ES6的class的static和private"><a href="#135-如何用ES5实现ES6的class的static和private" class="headerlink" title="135.如何用ES5实现ES6的class的static和private"></a>135.如何用ES5实现ES6的class的static和private</h4><p>static:ES5中是直接在构造函数中添加</p>
 <p>private:默认使用_来替代，并且定义get set方法</p>
 <h4 id="136-用promise封装实现readfile和writefile的同步请求（写代码）"><a href="#136-用promise封装实现readfile和writefile的同步请求（写代码）" class="headerlink" title="136.用promise封装实现readfile和writefile的同步请求（写代码）"></a>136.用promise封装实现readfile和writefile的同步请求（写代码）</h4><h4 id="137-手写ES6的模板字符串（写代码"><a href="#137-手写ES6的模板字符串（写代码" class="headerlink" title="137.手写ES6的模板字符串（写代码"></a>137.手写ES6的模板字符串（写代码</h4>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/08/04/interview01/" data-id="cl9770wq10079k2oo1rvy5nv2" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
+
+<span class="category-chains">
+  
   
     
-<nav id="article-nav">
+      <span class="category-chain">
+        
+  <a href="/categories/interview/" class="category-chain-item">interview</a>
   
-    <a href="/2022/08/04/interview02/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          面试问题记录
-        
+  
+    <span>></span>
+    
+  <a href="/categories/interview/daily/" class="category-chain-item">daily</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>牛客网收集面试题答案</div>
+      <div>http://example.com/2022/08/04/interview01/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年8月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/08/04/interview02/" title="面试问题记录">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">面试问题记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
       </div>
-    </a>
-  
-  
-</nav>
+    </div>
 
-  
-</article>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/">Electron</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Puppeteer/">Puppeteer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/interview/">interview</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/interview/daily/">daily</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%8E%9F%E7%90%86/">原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E6%90%9C%E9%9B%86/">搜集</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/node/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/note/">note</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/note/%E5%89%8D%E7%AB%AF%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%AC%94%E8%AE%B0/">前端系统课笔记</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/">react</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/react/Typescript/">Typescript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/mobx/">mobx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/">typescript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/daily/">daily</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/">前端八股文</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">单元测试</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/Enzyme/">Enzyme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/jest/">jest</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">常用构建工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/glup/">glup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/rollup/">rollup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/vite/">vite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/webpack/">webpack</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Ajax/">Ajax</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/axios/">axios</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/fetch/">fetch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/">websocket</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+
+
+  </aside>
+
+
     </div>
   </div>
+</div>
+
+
+
 
 
   
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
 
-  
     
-  
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
-    </div>
-  </div>
 
-
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/11/08/Puppeteer/">什么是Puppeteer</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/13/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/12/canvas%E7%AC%94%E8%AE%B0/">canvas笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/">mobx的使用3⃣️</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/">mobx的使用二</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2022 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+</div>
+
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
 
 
   
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
 
   
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
-<script src="/js/script.js"></script>
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
 
-
-  </div>
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>

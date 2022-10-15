@@ -1,115 +1,295 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
 
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>常用正则表达式 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="12345&#x2F;&#x2F; 创建正则   &#x2F;&#x2F; 1&gt; 匹配的规则pattern   &#x2F;&#x2F; 2&gt; 匹配的修饰符flags   const re1 &#x3D; new RegExp(&quot;abc&quot;, &quot;ig&quot;)   const re2 &#x3D; &#x2F;abc&#x2F;ig &#x2F;&#x2F; 我是注释  正则表达式的使用方法JavaScript中的正则表达式被用于 RegExp 的 exec 和 test">
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="12345&#x2F;&#x2F; 创建正则   &#x2F;&#x2F; 1&gt; 匹配的规则pattern   &#x2F;&#x2F; 2&gt; 匹配的修饰符flags   const re1 &#x3D; new RegExp(&quot;abc&quot;, &quot;ig&quot;)   const re2 &#x3D; &#x2F;abc&#x2F;ig &#x2F;&#x2F; 我是注释  正则表达式的使用方法JavaScript中的正则表达式被用于 RegExp 的 exec 和 test">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用正则表达式">
 <meta property="og:url" content="http://example.com/2022/09/08/%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="12345&#x2F;&#x2F; 创建正则   &#x2F;&#x2F; 1&gt; 匹配的规则pattern   &#x2F;&#x2F; 2&gt; 匹配的修饰符flags   const re1 &#x3D; new RegExp(&quot;abc&quot;, &quot;ig&quot;)   const re2 &#x3D; &#x2F;abc&#x2F;ig &#x2F;&#x2F; 我是注释  正则表达式的使用方法JavaScript中的正则表达式被用于 RegExp 的 exec 和 test">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-08T16:44:32.000Z">
-<meta property="article:modified_time" content="2022-10-13T15:05:20.875Z">
+<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
 <meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+<meta name="twitter:card" content="summary_large_image">
   
   
-    <link rel="icon" href="/favicon.png">
   
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <title>常用正则表达式 - Hexo</title>
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 5.4.2"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Piggy的记录版</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="常用正则表达式"></span>
+          
+        </div>
+
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-08 16:44" pubdate>
+          2022年9月8日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          5k 字
         
-      </nav>
-      <nav id="sub-nav">
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        
+          42 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
   </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-常用正则表达式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/09/08/%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="article-date">
-  <time datetime="2022-09-08T16:44:32.000Z" itemprop="datePublished">2022-09-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a>►<a class="article-category-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/">note</a>
-  </div>
+</div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      常用正则表达式
-    </h1>
-  
+</div>
 
-      </header>
+  </header>
+
+  <main>
     
-    <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建正则</span></span><br><span class="line">   <span class="comment">// 1&gt; 匹配的规则pattern</span></span><br><span class="line">   <span class="comment">// 2&gt; 匹配的修饰符flags</span></span><br><span class="line">   <span class="keyword">const</span> re1 = <span class="keyword">new</span> <span class="title class_">RegExp</span>(<span class="string">&quot;abc&quot;</span>, <span class="string">&quot;ig&quot;</span>)</span><br><span class="line">   <span class="keyword">const</span> re2 = <span class="regexp">/abc/ig</span> <span class="comment">// 我是注释</span></span><br></pre></td></tr></table></figure>
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">常用正则表达式</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 创建正则</span><br>   <span class="hljs-comment">// 1&gt; 匹配的规则pattern</span><br>   <span class="hljs-comment">// 2&gt; 匹配的修饰符flags</span><br>   <span class="hljs-keyword">const</span> re1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RegExp</span>(<span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-string">&quot;ig&quot;</span>)<br>   <span class="hljs-keyword">const</span> re2 = <span class="hljs-regexp">/abc/ig</span> <span class="hljs-comment">// 我是注释</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="正则表达式的使用方法"><a href="#正则表达式的使用方法" class="headerlink" title="正则表达式的使用方法"></a>正则表达式的使用方法</h4><p>JavaScript中的正则表达式被用于 RegExp 的 exec 和 test 方法</p>
 <p>也包括 String 的 match、matchAll、replace、search 和 split 方法</p>
 <p>exec : 一个在字符串中执行查找匹配的 RegExp 方法，它返回一个数组（未匹配到则返回 null）</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> message = <span class="string">&quot;fdabc123 faBC323 dfABC222 A2324aaBc&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> re1 = <span class="regexp">/abc/gi</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// console.log(re1.test(message));</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(re1.<span class="title function_">exec</span>(message));</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [</span></span><br><span class="line"><span class="comment">  &#x27;aBC&#x27;,</span></span><br><span class="line"><span class="comment">  index: 10,</span></span><br><span class="line"><span class="comment">  input: &#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;,</span></span><br><span class="line"><span class="comment">  groups: undefined</span></span><br><span class="line"><span class="comment">]</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message = <span class="hljs-string">&quot;fdabc123 faBC323 dfABC222 A2324aaBc&quot;</span>;<br><span class="hljs-keyword">const</span> re1 = <span class="hljs-regexp">/abc/gi</span>;<br><br><span class="hljs-comment">// console.log(re1.test(message));</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(re1.<span class="hljs-title function_">exec</span>(message));<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * [</span><br><span class="hljs-comment">  &#x27;aBC&#x27;,</span><br><span class="hljs-comment">  index: 10,</span><br><span class="hljs-comment">  input: &#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;,</span><br><span class="hljs-comment">  groups: undefined</span><br><span class="hljs-comment">]</span><br><span class="hljs-comment"> */</span><br></code></pre></td></tr></table></figure>
 
 <p>test:一个在字符串中测试是否匹配的 RegExp 方法，它返回 true 或 false</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> message = <span class="string">&quot;fdabc123 faBC323 dfABC222 A2324aaBc&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> re1 = <span class="regexp">/abc/gi</span>;</span><br><span class="line"></span><br><span class="line"> <span class="variable language_">console</span>.<span class="title function_">log</span>(re1.<span class="title function_">test</span>(message));</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message = <span class="hljs-string">&quot;fdabc123 faBC323 dfABC222 A2324aaBc&quot;</span>;<br><span class="hljs-keyword">const</span> re1 = <span class="hljs-regexp">/abc/gi</span>;<br><br> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(re1.<span class="hljs-title function_">test</span>(message));<br></code></pre></td></tr></table></figure>
 
 <p>match:一个在字符串中执行查找匹配的 String 方法，它返回一个数组，在未匹配到时会返回 null</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// match方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> res2 = message.<span class="title function_">match</span>(re1);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(res2);</span><br><span class="line"><span class="comment">//[ &#x27;abc&#x27;, &#x27;aBC&#x27;, &#x27;ABC&#x27;, &#x27;aBc&#x27; ]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// match方法</span><br><br><span class="hljs-keyword">const</span> res2 = message.<span class="hljs-title function_">match</span>(re1);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res2);<br><span class="hljs-comment">//[ &#x27;abc&#x27;, &#x27;aBC&#x27;, &#x27;ABC&#x27;, &#x27;aBc&#x27; ]</span><br></code></pre></td></tr></table></figure>
 
 <p>matchAll :一个在字符串中执行查找所有匹配的 String 方法，它返回一个迭代器（iterator）</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// matchAll</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> res = message.<span class="title function_">matchAll</span>(re1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> iterator <span class="keyword">of</span> res) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(iterator);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  <span class="string">&#x27;abc&#x27;</span>,</span><br><span class="line">  <span class="attr">index</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="attr">input</span>: <span class="string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,</span><br><span class="line">  <span class="attr">groups</span>: <span class="literal">undefined</span></span><br><span class="line">]</span><br><span class="line">[</span><br><span class="line">  <span class="string">&#x27;aBC&#x27;</span>,</span><br><span class="line">  <span class="attr">index</span>: <span class="number">10</span>,</span><br><span class="line">  <span class="attr">input</span>: <span class="string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,</span><br><span class="line">  <span class="attr">groups</span>: <span class="literal">undefined</span></span><br><span class="line">]</span><br><span class="line">[</span><br><span class="line">  <span class="string">&#x27;ABC&#x27;</span>,</span><br><span class="line">  <span class="attr">index</span>: <span class="number">19</span>,</span><br><span class="line">  <span class="attr">input</span>: <span class="string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,</span><br><span class="line">  <span class="attr">groups</span>: <span class="literal">undefined</span></span><br><span class="line">]</span><br><span class="line">[</span><br><span class="line">  <span class="string">&#x27;aBc&#x27;</span>,</span><br><span class="line">  <span class="attr">index</span>: <span class="number">32</span>,</span><br><span class="line">  <span class="attr">input</span>: <span class="string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,</span><br><span class="line">  <span class="attr">groups</span>: <span class="literal">undefined</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// matchAll</span><br><br><span class="hljs-keyword">const</span> res = message.<span class="hljs-title function_">matchAll</span>(re1);<br><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> iterator <span class="hljs-keyword">of</span> res) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(iterator);<br>&#125;<br><br>[<br>  <span class="hljs-string">&#x27;abc&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span><br>]<br>[<br>  <span class="hljs-string">&#x27;aBC&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">10</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span><br>]<br>[<br>  <span class="hljs-string">&#x27;ABC&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">19</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span><br>]<br>[<br>  <span class="hljs-string">&#x27;aBc&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">32</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span><br>]<br></code></pre></td></tr></table></figure>
 
 <p>search :一个在字符串中测试匹配的 String 方法，它返回匹配到的位置索引，或者在失败时返回-1。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const result5 = message.search(re1)</span><br><span class="line">console.log(result5)</span><br></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">const</span> result5 = message.<span class="hljs-keyword">search</span>(re1)<br>console.<span class="hljs-built_in">log</span>(result5)<br></code></pre></td></tr></table></figure>
 
 <p>replace:一个在字符串中执行查找匹配的 String 方法，并且使用替换字符串替换掉匹配到的子字符串</p>
 <p>split:一个使用正则表达式或者一个固定字符串分隔一个字符串，并将分隔后的子字符串存储到数组中 的 String 方法</p>
@@ -117,7 +297,7 @@
 <p>g:全局匹配</p>
 <p>i:不区分大小写</p>
 <p>m:多行匹配</p>
-<h4 id="规则-–-字符类"><a href="#规则-–-字符类" class="headerlink" title="规则 – 字符类"></a>规则 – 字符类</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\d  平匹配数字0-9</span><br><span class="line">\s  空格符号，包括空格，制表符\t , 换行符\n,和其他少数稀有字符，例如\v,\f,\r</span><br><span class="line">\w  表示单字字符  字母、数字、下划线</span><br></pre></td></tr></table></figure>
+<h4 id="规则-–-字符类"><a href="#规则-–-字符类" class="headerlink" title="规则 – 字符类"></a>规则 – 字符类</h4><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-string">\d</span>  平匹配数字<span class="hljs-number">0</span>-<span class="hljs-number">9</span><br><span class="hljs-string">\s</span>  空格符号，包括空格，制表符<span class="hljs-string">\t</span> , 换行符<span class="hljs-string">\n,和其他少数稀有字符，例如\v,\f,\r</span><br><span class="hljs-string">\w</span>  表示单字字符  字母、数字、下划线<br></code></pre></td></tr></table></figure>
 
 <p>反向类</p>
 <p>\D 表示非数字的其他字符包括数字</p>
@@ -129,13 +309,13 @@
 <p>词边界（Word boundary）</p>
 <p>​    词边界 \b 是一种检查，就像 ^ 和 $ 一样，它会检查字符串中的位置是否是词边界</p>
 <p>​    词边界测试 \b 检查位置的一侧是否匹配 \w，而另一侧则不匹配 “\w”</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> message = <span class="string">&quot;My name! is WHY.&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需求: name, name必须是一个单独的词</span></span><br><span class="line"><span class="comment">// 词边界</span></span><br><span class="line"><span class="keyword">if</span> (<span class="regexp">/\bname\b/i</span>.<span class="title function_">test</span>(message)) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;有name, name有边界&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 词边界的应用</span></span><br><span class="line"><span class="keyword">const</span> infos = <span class="string">&quot;now time is 11:56, 12:00 eat food, number is 123:456&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> timeRe = <span class="regexp">/\b\d\d:\d\d\b/gi</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(infos.<span class="title function_">match</span>(timeRe));</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 有name, name有边界</span></span><br><span class="line"><span class="comment">[ &#x27;11:56&#x27;, &#x27;12:00&#x27; ]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message = <span class="hljs-string">&quot;My name! is WHY.&quot;</span>;<br><br><span class="hljs-comment">// 需求: name, name必须是一个单独的词</span><br><span class="hljs-comment">// 词边界</span><br><span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\bname\b/i</span>.<span class="hljs-title function_">test</span>(message)) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;有name, name有边界&quot;</span>);<br>&#125;<br><br><span class="hljs-comment">// 词边界的应用</span><br><span class="hljs-keyword">const</span> infos = <span class="hljs-string">&quot;now time is 11:56, 12:00 eat food, number is 123:456&quot;</span>;<br><span class="hljs-keyword">const</span> timeRe = <span class="hljs-regexp">/\b\d\d:\d\d\b/gi</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(infos.<span class="hljs-title function_">match</span>(timeRe));<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 有name, name有边界</span><br><span class="hljs-comment">[ &#x27;11:56&#x27;, &#x27;12:00&#x27; ]</span><br><span class="hljs-comment"> */</span><br><br></code></pre></td></tr></table></figure>
 
 <h4 id="规则-–-转义字符串"><a href="#规则-–-转义字符串" class="headerlink" title="规则 – 转义字符串"></a>规则 – 转义字符串</h4><p>转义字符要做常规字符来使用，需要使用对其进行转义，只要在它前面加个反斜杠</p>
 <p>常见的需要转义的字符：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[] \  ^ $ . | ? * + ()</span><br></pre></td></tr></table></figure>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">[] \  ^ $ . <span class="hljs-string">| ? * + ()</span><br></code></pre></td></tr></table></figure>
 
-<h6 id="斜杠符号-‘-’-并不是一个特殊符号，但是在字面量正则表达式中也需要转义"><a href="#斜杠符号-‘-’-并不是一个特殊符号，但是在字面量正则表达式中也需要转义" class="headerlink" title="斜杠符号 ‘/’ 并不是一个特殊符号，但是在字面量正则表达式中也需要转义"></a>斜杠符号 ‘/’ 并不是一个特殊符号，但是在字面量正则表达式中也需要转义</h6><h4 id="集合（Sets）和范围（Ranges）"><a href="#集合（Sets）和范围（Ranges）" class="headerlink" title="集合（Sets）和范围（Ranges）"></a>集合（Sets）和范围（Ranges）</h4><h6 id="有时候我们只要选择多个匹配字符的其中之一就可以"><a href="#有时候我们只要选择多个匹配字符的其中之一就可以" class="headerlink" title="有时候我们只要选择多个匹配字符的其中之一就可以"></a>有时候我们只要选择多个匹配字符的其中之一就可以</h6><pre><code> 有时候我们只要选择多个匹配字符的其中之一就可以
+<h6 id="斜杠符号-‘-’-并不是一个特殊符号，但是在字面量正则表达式中也需要转义"><a href="#斜杠符号-‘-’-并不是一个特殊符号，但是在字面量正则表达式中也需要转义" class="headerlink" title="斜杠符号 ‘/’ 并不是一个特殊符号，但是在字面量正则表达式中也需要转义"></a>斜杠符号 ‘/’ 并不是一个特殊符号，但是在字面量正则表达式中也需要转义</h6><h4 id="集合（Sets）和范围（Ranges）"><a href="#集合（Sets）和范围（Ranges）" class="headerlink" title="集合（Sets）和范围（Ranges）"></a>集合（Sets）和范围（Ranges）</h4><h6 id="有时候我们只要选择多个匹配字符的其中之一就可以"><a href="#有时候我们只要选择多个匹配字符的其中之一就可以" class="headerlink" title="有时候我们只要选择多个匹配字符的其中之一就可以"></a>有时候我们只要选择多个匹配字符的其中之一就可以</h6><pre><code class="hljs"> 有时候我们只要选择多个匹配字符的其中之一就可以
 </code></pre>
 <p>集合  []  表示匹配中括号里面的任意一个字符</p>
 <p>范围  </p>
@@ -149,9 +329,9 @@
 <p>​    ？表示零个或者一个 ==={0，1}</p>
 <p>​    *  表示零个或者多个 ==={0，}</p>
 <h4 id="贪婪（-Greedy）和惰性（-lazy）模式"><a href="#贪婪（-Greedy）和惰性（-lazy）模式" class="headerlink" title="贪婪（ Greedy）和惰性（ lazy）模式"></a>贪婪（ Greedy）和惰性（ lazy）模式</h4><p>默认是贪婪模式，</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.贪婪模式/惰性模式</span></span><br><span class="line"><span class="keyword">const</span> message =</span><br><span class="line">  <span class="string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 默认.+采用贪婪模式</span></span><br><span class="line"><span class="keyword">const</span> nameRe = <span class="regexp">/《.+》/gi</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result1 = message.<span class="title function_">match</span>(nameRe);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result1);<span class="comment">//[ &#x27;《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27; ]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 1.贪婪模式/惰性模式</span><br><span class="hljs-keyword">const</span> message =<br>  <span class="hljs-string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;<br><br><span class="hljs-comment">// 默认.+采用贪婪模式</span><br><span class="hljs-keyword">const</span> nameRe = <span class="hljs-regexp">/《.+》/gi</span>;<br><br><span class="hljs-keyword">const</span> result1 = message.<span class="hljs-title function_">match</span>(nameRe);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result1);<span class="hljs-comment">//[ &#x27;《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27; ]</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> message =</span><br><span class="line">  <span class="string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// // 默认.+采用贪婪模式</span></span><br><span class="line"><span class="comment">// const nameRe = /《.+》/gi;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// const result1 = message.match(nameRe);</span></span><br><span class="line"><span class="comment">// console.log(result1);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用惰性模式</span></span><br><span class="line"><span class="keyword">const</span> nameRe = <span class="regexp">/《.+?》/gi</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result1 = message.<span class="title function_">match</span>(nameRe);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result1);</span><br><span class="line"><span class="comment">//[ &#x27;《黄金时代》&#x27;, &#x27;《沉默的大多数》&#x27;, &#x27;《一只特立独行的猪》&#x27; ]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message =<br>  <span class="hljs-string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;<br><br><span class="hljs-comment">// // 默认.+采用贪婪模式</span><br><span class="hljs-comment">// const nameRe = /《.+》/gi;</span><br><br><span class="hljs-comment">// const result1 = message.match(nameRe);</span><br><span class="hljs-comment">// console.log(result1);</span><br><br><span class="hljs-comment">// 使用惰性模式</span><br><span class="hljs-keyword">const</span> nameRe = <span class="hljs-regexp">/《.+?》/gi</span>;<br><br><span class="hljs-keyword">const</span> result1 = message.<span class="hljs-title function_">match</span>(nameRe);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result1);<br><span class="hljs-comment">//[ &#x27;《黄金时代》&#x27;, &#x27;《沉默的大多数》&#x27;, &#x27;《一只特立独行的猪》&#x27; ]</span><br></code></pre></td></tr></table></figure>
 
 <p>默认情况下的匹配规则是查找到匹配的内容后，会继续向后查找，一直找到最后一个匹配的内容 , 这种匹配的方式，我们称之为贪婪模式（Greedy）</p>
 <p>懒惰模式中的量词与贪婪模式中的是相反的。 </p>
@@ -168,145 +348,377 @@
 <p>​                  在索引 1 处：第一个括号的内容。 </p>
 <p>​                 在索引 2 处：第二个括号的内容。 </p>
 <p>​                     …等等</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.捕获组</span></span><br><span class="line"><span class="keyword">const</span> message =</span><br><span class="line">  <span class="string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用惰性模式</span></span><br><span class="line"><span class="comment">//这是通过在开始括号之后立即放置 ?&lt;name&gt; 来完成的</span></span><br><span class="line"><span class="keyword">const</span> nameRe = <span class="regexp">/(?:《)(?&lt;why&gt;.+?)(?:》)/gi</span>;<span class="comment">//可以给捕获组起名字</span></span><br><span class="line"><span class="keyword">const</span> iterator = message.<span class="title function_">matchAll</span>(nameRe);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> item <span class="keyword">of</span> iterator) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(item);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.将捕获组作为整体</span></span><br><span class="line"><span class="keyword">const</span> info = <span class="string">&quot;dfabcabcfabcdfdabcabcabcljll;jk;j&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> abcRe = <span class="regexp">/(abc)&#123;2,&#125;/gi</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(info.<span class="title function_">match</span>(abcRe));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  <span class="string">&#x27;《黄金时代》&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;黄金时代&#x27;</span>,</span><br><span class="line">  <span class="attr">index</span>: <span class="number">10</span>,</span><br><span class="line">  <span class="attr">input</span>: <span class="string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,</span><br><span class="line">  <span class="attr">groups</span>: [<span class="title class_">Object</span>: <span class="literal">null</span> prototype] &#123; <span class="attr">why</span>: <span class="string">&#x27;黄金时代&#x27;</span> &#125;</span><br><span class="line">]</span><br><span class="line">[</span><br><span class="line">  <span class="string">&#x27;《沉默的大多数》&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;沉默的大多数&#x27;</span>,</span><br><span class="line">  <span class="attr">index</span>: <span class="number">17</span>,</span><br><span class="line">  <span class="attr">input</span>: <span class="string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,</span><br><span class="line">  <span class="attr">groups</span>: [<span class="title class_">Object</span>: <span class="literal">null</span> prototype] &#123; <span class="attr">why</span>: <span class="string">&#x27;沉默的大多数&#x27;</span> &#125;</span><br><span class="line">]</span><br><span class="line">[</span><br><span class="line">  <span class="string">&#x27;《一只特立独行的猪》&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;一只特立独行的猪&#x27;</span>,</span><br><span class="line">  <span class="attr">index</span>: <span class="number">26</span>,</span><br><span class="line">  <span class="attr">input</span>: <span class="string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,</span><br><span class="line">  <span class="attr">groups</span>: [<span class="title class_">Object</span>: <span class="literal">null</span> prototype] &#123; <span class="attr">why</span>: <span class="string">&#x27;一只特立独行的猪&#x27;</span> &#125;</span><br><span class="line">]</span><br><span class="line">[ <span class="string">&#x27;abcabc&#x27;</span>, <span class="string">&#x27;abcabcabc&#x27;</span> ]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 1.捕获组</span><br><span class="hljs-keyword">const</span> message =<br>  <span class="hljs-string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;<br><br><span class="hljs-comment">// 使用惰性模式</span><br><span class="hljs-comment">//这是通过在开始括号之后立即放置 ?&lt;name&gt; 来完成的</span><br><span class="hljs-keyword">const</span> nameRe = <span class="hljs-regexp">/(?:《)(?&lt;why&gt;.+?)(?:》)/gi</span>;<span class="hljs-comment">//可以给捕获组起名字</span><br><span class="hljs-keyword">const</span> iterator = message.<span class="hljs-title function_">matchAll</span>(nameRe);<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> iterator) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(item);<br>&#125;<br><br><span class="hljs-comment">// 2.将捕获组作为整体</span><br><span class="hljs-keyword">const</span> info = <span class="hljs-string">&quot;dfabcabcfabcdfdabcabcabcljll;jk;j&quot;</span>;<br><span class="hljs-keyword">const</span> abcRe = <span class="hljs-regexp">/(abc)&#123;2,&#125;/gi</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(info.<span class="hljs-title function_">match</span>(abcRe));<br><br><br>[<br>  <span class="hljs-string">&#x27;《黄金时代》&#x27;</span>,<br>  <span class="hljs-string">&#x27;黄金时代&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">10</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: [<span class="hljs-title class_">Object</span>: <span class="hljs-literal">null</span> prototype] &#123; <span class="hljs-attr">why</span>: <span class="hljs-string">&#x27;黄金时代&#x27;</span> &#125;<br>]<br>[<br>  <span class="hljs-string">&#x27;《沉默的大多数》&#x27;</span>,<br>  <span class="hljs-string">&#x27;沉默的大多数&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">17</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: [<span class="hljs-title class_">Object</span>: <span class="hljs-literal">null</span> prototype] &#123; <span class="hljs-attr">why</span>: <span class="hljs-string">&#x27;沉默的大多数&#x27;</span> &#125;<br>]<br>[<br>  <span class="hljs-string">&#x27;《一只特立独行的猪》&#x27;</span>,<br>  <span class="hljs-string">&#x27;一只特立独行的猪&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">26</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: [<span class="hljs-title class_">Object</span>: <span class="hljs-literal">null</span> prototype] &#123; <span class="hljs-attr">why</span>: <span class="hljs-string">&#x27;一只特立独行的猪&#x27;</span> &#125;<br>]<br>[ <span class="hljs-string">&#x27;abcabc&#x27;</span>, <span class="hljs-string">&#x27;abcabcabc&#x27;</span> ]<br><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.将捕获组作为整体</span></span><br><span class="line"><span class="keyword">const</span> info = <span class="string">&quot;dfabcabcfabcdfdabcabcabcljcbacballnbanba;jk;j&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> abcRe = <span class="regexp">/(abc|cba|nba)&#123;2,&#125;/gi</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(info.<span class="title function_">match</span>(abcRe));</span><br><span class="line"><span class="comment">//[ &#x27;abcabc&#x27;, &#x27;abcabcabc&#x27;, &#x27;cbacba&#x27;, &#x27;nbanba&#x27; ]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 1.将捕获组作为整体</span><br><span class="hljs-keyword">const</span> info = <span class="hljs-string">&quot;dfabcabcfabcdfdabcabcabcljcbacballnbanba;jk;j&quot;</span>;<br><span class="hljs-keyword">const</span> abcRe = <span class="hljs-regexp">/(abc|cba|nba)&#123;2,&#125;/gi</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(info.<span class="hljs-title function_">match</span>(abcRe));<br><span class="hljs-comment">//[ &#x27;abcabc&#x27;, &#x27;abcabcabc&#x27;, &#x27;cbacba&#x27;, &#x27;nbanba&#x27; ]</span><br></code></pre></td></tr></table></figure>
 
 <p>非捕获组：</p>
 <p>  有时我们需要括号才能正确应用量词，但我们不希望它们的内容出现在结果中。</p>
 <p> 可以通过在开头添加 ?: 来排除组。</p>
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/09/08/%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="cl9770wnp002ek2oogp58g6g2" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
+
+<span class="category-chains">
+  
   
     
-<nav id="article-nav">
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="category-chain-item">正则表达式</a>
   
-    <a href="/2022/09/08/webpack5%E5%AD%A6%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          webpack5学习
-        
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/" class="category-chain-item">note</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>常用正则表达式</div>
+      <div>http://example.com/2022/09/08/常用正则表达式/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/09/08/webpack5%E5%AD%A6%E4%B9%A0/" title="webpack5学习">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">webpack5学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/08/%E5%B8%B8%E7%94%A8%E7%9A%84git%E6%93%8D%E4%BD%9C/" title="常用的git操作">
+                        <span class="hidden-mobile">常用的git操作</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
       </div>
-    </a>
-  
-  
-    <a href="/2022/09/08/%E5%B8%B8%E7%94%A8%E7%9A%84git%E6%93%8D%E4%BD%9C/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">常用的git操作</div>
-    </a>
-  
-</nav>
+    </div>
 
-  
-</article>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/">Electron</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Puppeteer/">Puppeteer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/interview/">interview</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/interview/daily/">daily</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%8E%9F%E7%90%86/">原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E6%90%9C%E9%9B%86/">搜集</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/node/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/note/">note</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/note/%E5%89%8D%E7%AB%AF%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%AC%94%E8%AE%B0/">前端系统课笔记</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/">react</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/react/Typescript/">Typescript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/mobx/">mobx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/">typescript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/daily/">daily</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/">前端八股文</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">单元测试</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/Enzyme/">Enzyme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/jest/">jest</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">常用构建工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/glup/">glup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/rollup/">rollup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/vite/">vite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/webpack/">webpack</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Ajax/">Ajax</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/axios/">axios</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/fetch/">fetch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/">websocket</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+
+
+  </aside>
+
+
     </div>
   </div>
+</div>
+
+
+
 
 
   
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
 
-  
     
-  
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
-    </div>
-  </div>
 
-
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/11/08/Puppeteer/">什么是Puppeteer</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/13/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/12/canvas%E7%AC%94%E8%AE%B0/">canvas笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/">mobx的使用3⃣️</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/">mobx的使用二</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2022 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+</div>
+
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
 
 
   
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
 
   
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
-<script src="/js/script.js"></script>
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
 
-
-  </div>
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>

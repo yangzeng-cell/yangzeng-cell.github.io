@@ -1,100 +1,280 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
 
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>什么是websocket | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="webSocket是一种网络传输协议，可以在单个TCP连接上进行全双工通信，位于OSI模型的应用层，webSocket协议在2011年由IETF标准化为RFC6455,由RFC7936补充规范，WEB IDL中的webSocket api由W3C标准化，websocket是一种和http不同的协议，但是都是属于OSI模型的应用层，可以通过HTTP的80端口和443端口进行通信，支持HTTP代理和中">
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="webSocket是一种网络传输协议，可以在单个TCP连接上进行全双工通信，位于OSI模型的应用层，webSocket协议在2011年由IETF标准化为RFC6455,由RFC7936补充规范，WEB IDL中的webSocket api由W3C标准化，websocket是一种和http不同的协议，但是都是属于OSI模型的应用层，可以通过HTTP的80端口和443端口进行通信，支持HTTP代理和中">
 <meta property="og:type" content="article">
 <meta property="og:title" content="什么是websocket">
 <meta property="og:url" content="http://example.com/2022/09/24/%E4%BB%80%E4%B9%88%E6%98%AFwebsocket/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="webSocket是一种网络传输协议，可以在单个TCP连接上进行全双工通信，位于OSI模型的应用层，webSocket协议在2011年由IETF标准化为RFC6455,由RFC7936补充规范，WEB IDL中的webSocket api由W3C标准化，websocket是一种和http不同的协议，但是都是属于OSI模型的应用层，可以通过HTTP的80端口和443端口进行通信，支持HTTP代理和中">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-24T01:03:18.000Z">
-<meta property="article:modified_time" content="2022-10-13T15:05:20.871Z">
+<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
 <meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+<meta name="twitter:card" content="summary_large_image">
   
   
-    <link rel="icon" href="/favicon.png">
   
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <title>什么是websocket - Hexo</title>
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 5.4.2"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Piggy的记录版</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="什么是websocket"></span>
+          
+        </div>
+
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-24 01:03" pubdate>
+          2022年9月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          5k 字
         
-      </nav>
-      <nav id="sub-nav">
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        
+          42 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
   </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-什么是websocket" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/09/24/%E4%BB%80%E4%B9%88%E6%98%AFwebsocket/" class="article-date">
-  <time datetime="2022-09-24T01:03:18.000Z" itemprop="datePublished">2022-09-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>►<a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/">websocket</a>
-  </div>
+</div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      什么是websocket
-    </h1>
-  
+</div>
 
-      </header>
+  </header>
+
+  <main>
     
-    <div class="article-entry" itemprop="articleBody">
       
-        <h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>webSocket是一种网络传输协议，可以在单个TCP连接上进行全双工通信，位于OSI模型的应用层，webSocket协议在2011年由IETF标准化为RFC6455,由RFC7936补充规范，WEB IDL中的webSocket api由W3C标准化，websocket是一种和http不同的协议，但是都是属于OSI模型的应用层，可以通过HTTP的80端口和443端口进行通信，支持HTTP代理和中介，和http协议兼容，为了实现兼容性，webSocket进行握手使用HTTP Upgrade头从http协议改成webSocket协议，websocket支持浏览器和服务器进行双向通信，可以进行实时通信，不需要客户端发起请求，目前大部分浏览器都支持websocket,和HTTP不同，websocket支持全双工通信，websocket还可以TCP之上实现消息流</p>
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">什么是websocket</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>webSocket是一种网络传输协议，可以在单个TCP连接上进行全双工通信，位于OSI模型的应用层，webSocket协议在2011年由IETF标准化为RFC6455,由RFC7936补充规范，WEB IDL中的webSocket api由W3C标准化，websocket是一种和http不同的协议，但是都是属于OSI模型的应用层，可以通过HTTP的80端口和443端口进行通信，支持HTTP代理和中介，和http协议兼容，为了实现兼容性，webSocket进行握手使用HTTP Upgrade头从http协议改成webSocket协议，websocket支持浏览器和服务器进行双向通信，可以进行实时通信，不需要客户端发起请求，目前大部分浏览器都支持websocket,和HTTP不同，websocket支持全双工通信，websocket还可以TCP之上实现消息流</p>
 <p>websocket协议有两种标识符分别是ws和wss，分别是明文传输和加密传输。websocket不支持#，除了这些，其他都和http相同</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ws://example.com/wsapi</span><br><span class="line">wss://secure.example.com/wsapi</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">ws:<span class="hljs-regexp">//</span>example.com/wsapi<br>wss:<span class="hljs-regexp">//</span>secure.example.com/wsapi<br></code></pre></td></tr></table></figure>
 
 <h4 id="websocket的优点"><a href="#websocket的优点" class="headerlink" title="websocket的优点"></a>websocket的优点</h4><ul>
 <li><p>比较少的控制开销，在服务器和客户端通信的时候，用于协议控制的数据包头部相对较小，在不包含扩展的情况下，对于服务器到客户端的内容，此头部大小只有2到10字节，对于客户端到服务器的内容，此头部还需要加额外的4字节的掩码，相对于http每次都要携带完整的头部，明显减少了开销</p>
@@ -110,10 +290,10 @@
 </ul>
 <p>webSocket是独立的，建立在TCP上的协议，websocket通过HTTP/1.1的101状态吗继续握手，为了建立Websocket连接，需要通过浏览器发出请求，之后服务器进行回应，这个过程通常称为“<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/%E6%8F%A1%E6%89%8B_(%E6%8A%80%E6%9C%AF)">握手</a>”（Handshaking）</p>
 <h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>客户端请求：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /chat HTTP/1.1</span><br><span class="line">Host: server.example.com</span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==</span><br><span class="line">Origin: http://example.com</span><br><span class="line">Sec-WebSocket-Protocol: chat, superchat</span><br><span class="line">Sec-WebSocket-Version: 13</span><br></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/chat</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>server.example.com<br><span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>websocket<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>Upgrade<br><span class="hljs-attribute">Sec-WebSocket-Key</span><span class="hljs-punctuation">: </span>dGhlIHNhbXBsZSBub25jZQ==<br><span class="hljs-attribute">Origin</span><span class="hljs-punctuation">: </span>http://example.com<br><span class="hljs-attribute">Sec-WebSocket-Protocol</span><span class="hljs-punctuation">: </span>chat, superchat<br><span class="hljs-attribute">Sec-WebSocket-Version</span><span class="hljs-punctuation">: </span>13<br></code></pre></td></tr></table></figure>
 
 <p>服务器的回应</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 101 Switching Protocols</span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=</span><br><span class="line">Sec-WebSocket-Protocol: chat</span><br></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">101</span> Switching Protocols<br><span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>websocket<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>Upgrade<br><span class="hljs-attribute">Sec-WebSocket-Accept</span><span class="hljs-punctuation">: </span>s3pPLMBiTxaQ9kYGzzhZRbK+xOo=<br><span class="hljs-attribute">Sec-WebSocket-Protocol</span><span class="hljs-punctuation">: </span>chat<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>Connection必须设置Upgrade，表示客户端希望连接升级。</li>
@@ -123,10 +303,10 @@
 <li>Origin字段是必须的。如果缺少origin字段，WebSocket服务器需要回复HTTP 403 状态码（禁止访问）。[<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/zh-hans/WebSocket#cite_note-16">16]</a></li>
 <li>其他一些定义在HTTP协议中的字段，如<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/Cookie">Cookie</a>等，也可以在Websocket中使用。</li>
 </ul>
-<h4 id="websocket的基本使用"><a href="#websocket的基本使用" class="headerlink" title="websocket的基本使用"></a>websocket的基本使用</h4><h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ws = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(<span class="string">&quot;wss://echo.websocket.org&quot;</span>);</span><br><span class="line"></span><br><span class="line">ws.<span class="property">onopen</span> = <span class="keyword">function</span>(<span class="params">evt</span>) &#123; </span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Connection open ...&quot;</span>); </span><br><span class="line">  ws.<span class="title function_">send</span>(<span class="string">&quot;Hello WebSockets!&quot;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ws.<span class="property">onmessage</span> = <span class="keyword">function</span>(<span class="params">evt</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>( <span class="string">&quot;Received Message: &quot;</span> + evt.<span class="property">data</span>);</span><br><span class="line">  ws.<span class="title function_">close</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ws.<span class="property">onclose</span> = <span class="keyword">function</span>(<span class="params">evt</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Connection closed.&quot;</span>);</span><br><span class="line">&#125;;      </span><br></pre></td></tr></table></figure>
+<h4 id="websocket的基本使用"><a href="#websocket的基本使用" class="headerlink" title="websocket的基本使用"></a>websocket的基本使用</h4><h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&quot;wss://echo.websocket.org&quot;</span>);<br><br>ws.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123; <br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Connection open ...&quot;</span>); <br>  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;Hello WebSockets!&quot;</span>);<br>&#125;;<br><br>ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( <span class="hljs-string">&quot;Received Message: &quot;</span> + evt.<span class="hljs-property">data</span>);<br>  ws.<span class="hljs-title function_">close</span>();<br>&#125;;<br><br>ws.<span class="hljs-property">onclose</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Connection closed.&quot;</span>);<br>&#125;;      <br></code></pre></td></tr></table></figure>
 
 <blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ws = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(<span class="string">&#x27;ws://localhost:8080&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&#x27;ws://localhost:8080&#x27;</span>);<br></code></pre></td></tr></table></figure>
 </blockquote>
 <p>wenSocket作为构造函数，用于新建WebSocket实例，执行完上面的例子之后，客户端就会和服务器进行连接</p>
 <h5 id="webSocket-readyState"><a href="#webSocket-readyState" class="headerlink" title="webSocket.readyState"></a>webSocket.readyState</h5><p>readyState属性是返回当前状态，共有四种状态</p>
@@ -136,38 +316,38 @@
 <li>CLOSING：值为2，表示连接正在关闭。</li>
 <li>CLOSED：值为3，表示连接已经关闭，或者打开连接失败。</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (ws.<span class="property">readyState</span>) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="title class_">WebSocket</span>.<span class="property">CONNECTING</span>:</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="title class_">WebSocket</span>.<span class="property">OPEN</span>:</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="title class_">WebSocket</span>.<span class="property">CLOSING</span>:</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="title class_">WebSocket</span>.<span class="property">CLOSED</span>:</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="attr">default</span>:</span><br><span class="line">    <span class="comment">// this never happens</span></span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">switch</span> (ws.<span class="hljs-property">readyState</span>) &#123;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">CONNECTING</span>:<br>    <span class="hljs-comment">// do something</span><br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">OPEN</span>:<br>    <span class="hljs-comment">// do something</span><br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">CLOSING</span>:<br>    <span class="hljs-comment">// do something</span><br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">CLOSED</span>:<br>    <span class="hljs-comment">// do something</span><br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-attr">default</span>:<br>    <span class="hljs-comment">// this never happens</span><br>    <span class="hljs-keyword">break</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h5 id="open属性监听连接之后的回调函数"><a href="#open属性监听连接之后的回调函数" class="headerlink" title="open属性监听连接之后的回调函数"></a>open属性监听连接之后的回调函数</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ws.<span class="property">onopen</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  ws.<span class="title function_">send</span>(<span class="string">&#x27;Hello Server!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//执行多个回调函数可以使用addEventListener</span></span><br><span class="line">ws.<span class="title function_">addEventListener</span>(<span class="string">&#x27;open&#x27;</span>, <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">  ws.<span class="title function_">send</span>(<span class="string">&#x27;Hello Server!&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h5 id="open属性监听连接之后的回调函数"><a href="#open属性监听连接之后的回调函数" class="headerlink" title="open属性监听连接之后的回调函数"></a>open属性监听连接之后的回调函数</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript">ws.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Hello Server!&#x27;</span>);<br>&#125;<br><span class="hljs-comment">//执行多个回调函数可以使用addEventListener</span><br>ws.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;open&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) &#123;<br>  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Hello Server!&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
 
-<h5 id="实例对象的onclose属性，用于指定连接关闭后的回调函数"><a href="#实例对象的onclose属性，用于指定连接关闭后的回调函数" class="headerlink" title="实例对象的onclose属性，用于指定连接关闭后的回调函数"></a>实例对象的<code>onclose</code>属性，用于指定连接关闭后的回调函数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ws.<span class="property">onclose</span> = <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> code = event.<span class="property">code</span>;</span><br><span class="line">  <span class="keyword">var</span> reason = event.<span class="property">reason</span>;</span><br><span class="line">  <span class="keyword">var</span> wasClean = event.<span class="property">wasClean</span>;</span><br><span class="line">  <span class="comment">// handle close event</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ws.<span class="title function_">addEventListener</span>(<span class="string">&quot;close&quot;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> code = event.<span class="property">code</span>;</span><br><span class="line">  <span class="keyword">var</span> reason = event.<span class="property">reason</span>;</span><br><span class="line">  <span class="keyword">var</span> wasClean = event.<span class="property">wasClean</span>;</span><br><span class="line">  <span class="comment">// handle close event</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h5 id="实例对象的onclose属性，用于指定连接关闭后的回调函数"><a href="#实例对象的onclose属性，用于指定连接关闭后的回调函数" class="headerlink" title="实例对象的onclose属性，用于指定连接关闭后的回调函数"></a>实例对象的<code>onclose</code>属性，用于指定连接关闭后的回调函数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js">ws.<span class="hljs-property">onclose</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-keyword">var</span> code = event.<span class="hljs-property">code</span>;<br>  <span class="hljs-keyword">var</span> reason = event.<span class="hljs-property">reason</span>;<br>  <span class="hljs-keyword">var</span> wasClean = event.<span class="hljs-property">wasClean</span>;<br>  <span class="hljs-comment">// handle close event</span><br>&#125;;<br><br>ws.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;close&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-keyword">var</span> code = event.<span class="hljs-property">code</span>;<br>  <span class="hljs-keyword">var</span> reason = event.<span class="hljs-property">reason</span>;<br>  <span class="hljs-keyword">var</span> wasClean = event.<span class="hljs-property">wasClean</span>;<br>  <span class="hljs-comment">// handle close event</span><br>&#125;);<br></code></pre></td></tr></table></figure>
 
 <p>实例对象的<code>onmessage</code>属性，用于指定收到服务器数据后的回调函数</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ws.<span class="property">onmessage</span> = <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> data = event.<span class="property">data</span>;</span><br><span class="line">  <span class="comment">// 处理数据</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ws.<span class="title function_">addEventListener</span>(<span class="string">&quot;message&quot;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> data = event.<span class="property">data</span>;</span><br><span class="line">  <span class="comment">// 处理数据</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript">ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-keyword">var</span> data = event.<span class="hljs-property">data</span>;<br>  <span class="hljs-comment">// 处理数据</span><br>&#125;;<br><br>ws.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-keyword">var</span> data = event.<span class="hljs-property">data</span>;<br>  <span class="hljs-comment">// 处理数据</span><br>&#125;);<br></code></pre></td></tr></table></figure>
 
 <p>注意，服务器数据可能是文本，也可能是二进制数据（<code>blob</code>对象或<code>Arraybuffer</code>对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ws.<span class="property">onmessage</span> = <span class="keyword">function</span>(<span class="params">event</span>)&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> event.<span class="property">data</span> === <span class="title class_">String</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Received data string&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(event.<span class="property">data</span> <span class="keyword">instanceof</span> <span class="title class_">ArrayBuffer</span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> buffer = event.<span class="property">data</span>;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Received arraybuffer&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript">ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>)&#123;<br>  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> event.<span class="hljs-property">data</span> === <span class="hljs-title class_">String</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Received data string&quot;</span>);<br>  &#125;<br><br>  <span class="hljs-keyword">if</span>(event.<span class="hljs-property">data</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">ArrayBuffer</span>)&#123;<br>    <span class="hljs-keyword">var</span> buffer = event.<span class="hljs-property">data</span>;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Received arraybuffer&quot;</span>);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>除了动态判断收到的数据类型，也可以使用<code>binaryType</code>属性，显式指定收到的二进制数据类型。</p>
 <blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 收到的是 blob 数据</span></span><br><span class="line">ws.<span class="property">binaryType</span> = <span class="string">&quot;blob&quot;</span>;</span><br><span class="line">ws.<span class="property">onmessage</span> = <span class="keyword">function</span>(<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">data</span>.<span class="property">size</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 收到的是 ArrayBuffer 数据</span></span><br><span class="line">ws.<span class="property">binaryType</span> = <span class="string">&quot;arraybuffer&quot;</span>;</span><br><span class="line">ws.<span class="property">onmessage</span> = <span class="keyword">function</span>(<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">data</span>.<span class="property">byteLength</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 收到的是 blob 数据</span><br>ws.<span class="hljs-property">binaryType</span> = <span class="hljs-string">&quot;blob&quot;</span>;<br>ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">data</span>.<span class="hljs-property">size</span>);<br>&#125;;<br><br><span class="hljs-comment">// 收到的是 ArrayBuffer 数据</span><br>ws.<span class="hljs-property">binaryType</span> = <span class="hljs-string">&quot;arraybuffer&quot;</span>;<br>ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">data</span>.<span class="hljs-property">byteLength</span>);<br>&#125;;<br></code></pre></td></tr></table></figure>
 </blockquote>
 <p>实例对象的<code>send()</code>方法用于向服务器发送数据。</p>
 <blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ws.<span class="title function_">send</span>(<span class="string">&#x27;your message&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;your message&#x27;</span>);<br></code></pre></td></tr></table></figure>
 </blockquote>
 <p>发送blob对象的例子</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> file = <span class="variable language_">document</span></span><br><span class="line">  .<span class="title function_">querySelector</span>(<span class="string">&#x27;input[type=&quot;file&quot;]&#x27;</span>)</span><br><span class="line">  .<span class="property">files</span>[<span class="number">0</span>];</span><br><span class="line">ws.<span class="title function_">send</span>(file);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> file = <span class="hljs-variable language_">document</span><br>  .<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;input[type=&quot;file&quot;]&#x27;</span>)<br>  .<span class="hljs-property">files</span>[<span class="hljs-number">0</span>];<br>ws.<span class="hljs-title function_">send</span>(file);<br></code></pre></td></tr></table></figure>
 
 <p>发送ArrayBuffer对象的例子</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Sending canvas ImageData as ArrayBuffer</span></span><br><span class="line"><span class="keyword">var</span> img = canvas_context.<span class="title function_">getImageData</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">400</span>, <span class="number">320</span>);</span><br><span class="line"><span class="keyword">var</span> binary = <span class="keyword">new</span> <span class="title class_">Uint8Array</span>(img.<span class="property">data</span>.<span class="property">length</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; img.<span class="property">data</span>.<span class="property">length</span>; i++) &#123;</span><br><span class="line">  binary[i] = img.<span class="property">data</span>[i];</span><br><span class="line">&#125;</span><br><span class="line">ws.<span class="title function_">send</span>(binary.<span class="property">buffer</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// Sending canvas ImageData as ArrayBuffer</span><br><span class="hljs-keyword">var</span> img = canvas_context.<span class="hljs-title function_">getImageData</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">400</span>, <span class="hljs-number">320</span>);<br><span class="hljs-keyword">var</span> binary = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Uint8Array</span>(img.<span class="hljs-property">data</span>.<span class="hljs-property">length</span>);<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; img.<span class="hljs-property">data</span>.<span class="hljs-property">length</span>; i++) &#123;<br>  binary[i] = img.<span class="hljs-property">data</span>[i];<br>&#125;<br>ws.<span class="hljs-title function_">send</span>(binary.<span class="hljs-property">buffer</span>);<br></code></pre></td></tr></table></figure>
 
 <p>实例对象的<code>bufferedAmount</code>属性，表示还有多少字节的二进制数据没有发送出去。它可以用来判断发送是否结束</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = <span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(<span class="number">10000000</span>);</span><br><span class="line">socket.<span class="title function_">send</span>(data);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (socket.<span class="property">bufferedAmount</span> === <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="comment">// 发送完毕</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 发送还没结束</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayBuffer</span>(<span class="hljs-number">10000000</span>);<br>socket.<span class="hljs-title function_">send</span>(data);<br><br><span class="hljs-keyword">if</span> (socket.<span class="hljs-property">bufferedAmount</span> === <span class="hljs-number">0</span>) &#123;<br>  <span class="hljs-comment">// 发送完毕</span><br>&#125; <span class="hljs-keyword">else</span> &#123;<br>  <span class="hljs-comment">// 发送还没结束</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>实例对象的<code>onerror</code>属性，用于指定报错时的回调函数。</p>
 <blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">socket.<span class="property">onerror</span> = <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="comment">// handle error event</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">socket.<span class="title function_">addEventListener</span>(<span class="string">&quot;error&quot;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="comment">// handle error event</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript">socket.<span class="hljs-property">onerror</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-comment">// handle error event</span><br>&#125;;<br><br>socket.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;error&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-comment">// handle error event</span><br>&#125;)<br></code></pre></td></tr></table></figure>
 </blockquote>
 <h4 id="服务端的实现"><a href="#服务端的实现" class="headerlink" title="服务端的实现"></a>服务端的实现</h4><p>如果用node实现websocket</p>
 <ul>
@@ -176,137 +356,369 @@
 <li><a target="_blank" rel="noopener" href="https://github.com/theturtle32/WebSocket-Node">WebSocket-Node</a></li>
 </ul>
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/09/24/%E4%BB%80%E4%B9%88%E6%98%AFwebsocket/" data-id="cl9770wn0001dk2oo60hwe3zu" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
+
+<span class="category-chains">
+  
   
     
-<nav id="article-nav">
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
   
-    <a href="/2022/09/24/secket-io%E7%AC%94%E8%BF%B9/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          secket.io笔迹
-        
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/" class="category-chain-item">websocket</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>什么是websocket</div>
+      <div>http://example.com/2022/09/24/什么是websocket/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/09/24/secket-io%E7%AC%94%E8%AE%B0/" title="secket.io笔迹">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">secket.io笔迹</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/20/mobx%E7%9A%84%E4%BD%BF%E7%94%A8/" title="mobx的使用">
+                        <span class="hidden-mobile">mobx的使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
       </div>
-    </a>
-  
-  
-    <a href="/2022/09/20/mobx%E7%9A%84%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">mobx的使用</div>
-    </a>
-  
-</nav>
+    </div>
 
-  
-</article>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/">Electron</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Puppeteer/">Puppeteer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/interview/">interview</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/interview/daily/">daily</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%8E%9F%E7%90%86/">原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E6%90%9C%E9%9B%86/">搜集</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/node/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/note/">note</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/note/%E5%89%8D%E7%AB%AF%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%AC%94%E8%AE%B0/">前端系统课笔记</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/">react</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/react/Typescript/">Typescript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/mobx/">mobx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/">typescript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/daily/">daily</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/">前端八股文</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">单元测试</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/Enzyme/">Enzyme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/jest/">jest</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">常用构建工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/glup/">glup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/rollup/">rollup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/vite/">vite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/webpack/">webpack</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Ajax/">Ajax</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/axios/">axios</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/fetch/">fetch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/">websocket</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+
+
+  </aside>
+
+
     </div>
   </div>
+</div>
+
+
+
 
 
   
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
 
-  
     
-  
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
-    </div>
-  </div>
 
-
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/11/08/Puppeteer/">什么是Puppeteer</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/13/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/12/canvas%E7%AC%94%E8%AE%B0/">canvas笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/">mobx的使用3⃣️</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/">mobx的使用二</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2022 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+</div>
+
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
 
 
   
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
 
   
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
-<script src="/js/script.js"></script>
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
 
-
-  </div>
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>

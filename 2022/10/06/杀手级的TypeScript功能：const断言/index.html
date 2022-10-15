@@ -1,99 +1,279 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
 
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>杀手级的TypeScript功能：const断言 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="const assertions是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明 const assertions1const x &#x3D; &amp;#123; text: &quot;hello&quot; &amp;#125; as const;  官方的解释是 const断言是ts3.4新增的一种构造函数，他的语法是用const代替type的类型断言，例如 123 as const），当我们使用">
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="const assertions是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明 const assertions1const x &#x3D; &amp;#123; text: &quot;hello&quot; &amp;#125; as const;  官方的解释是 const断言是ts3.4新增的一种构造函数，他的语法是用const代替type的类型断言，例如 123 as const），当我们使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="杀手级的TypeScript功能：const断言">
 <meta property="og:url" content="http://example.com/2022/10/06/%E6%9D%80%E6%89%8B%E7%BA%A7%E7%9A%84TypeScript%E5%8A%9F%E8%83%BD%EF%BC%9Aconst%E6%96%AD%E8%A8%80/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="const assertions是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明 const assertions1const x &#x3D; &amp;#123; text: &quot;hello&quot; &amp;#125; as const;  官方的解释是 const断言是ts3.4新增的一种构造函数，他的语法是用const代替type的类型断言，例如 123 as const），当我们使用">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-06T18:00:50.000Z">
-<meta property="article:modified_time" content="2022-10-13T15:05:20.875Z">
+<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
 <meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+<meta name="twitter:card" content="summary_large_image">
   
   
-    <link rel="icon" href="/favicon.png">
   
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <title>杀手级的TypeScript功能：const断言 - Hexo</title>
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 5.4.2"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Piggy的记录版</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="杀手级的TypeScript功能：const断言"></span>
+          
+        </div>
+
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-06 18:00" pubdate>
+          2022年10月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          3.3k 字
         
-      </nav>
-      <nav id="sub-nav">
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
   </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-杀手级的TypeScript功能：const断言" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/10/06/%E6%9D%80%E6%89%8B%E7%BA%A7%E7%9A%84TypeScript%E5%8A%9F%E8%83%BD%EF%BC%9Aconst%E6%96%AD%E8%A8%80/" class="article-date">
-  <time datetime="2022-10-06T18:00:50.000Z" itemprop="datePublished">2022-10-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/typescript/">typescript</a>►<a class="article-category-link" href="/categories/typescript/note/">note</a>
-  </div>
+</div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      杀手级的TypeScript功能：const断言
-    </h1>
-  
+</div>
 
-      </header>
+  </header>
+
+  <main>
     
-    <div class="article-entry" itemprop="articleBody">
       
-        <h3 id=""><a href="#" class="headerlink" title=""></a></h3><p><code>const assertions</code>是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明</p>
-<h3 id="const-assertions"><a href="#const-assertions" class="headerlink" title="const assertions"></a>const assertions</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> x = &#123; <span class="attr">text</span>: <span class="string">&quot;hello&quot;</span> &#125; <span class="keyword">as</span> <span class="keyword">const</span>;</span><br></pre></td></tr></table></figure>
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">杀手级的TypeScript功能：const断言</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id=""><a href="#" class="headerlink" title=""></a></h3><p><code>const assertions</code>是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明</p>
+<h3 id="const-assertions"><a href="#const-assertions" class="headerlink" title="const assertions"></a>const assertions</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> x = &#123; <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;hello&quot;</span> &#125; <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;<br></code></pre></td></tr></table></figure>
 
 <p>官方的解释是</p>
 <p>const断言是ts3.4新增的一种构造函数，他的语法是用const代替type的类型断言，例如 <code>123 as const</code>），当我们使用const进行断言literal expression的时候，会做以下处理</p>
@@ -104,176 +284,408 @@
 </ol>
 <p>官方的解释会比较困惑</p>
 <h3 id="No-type-widening-for-literal-types-文字类型没有类型扩展"><a href="#No-type-widening-for-literal-types-文字类型没有类型扩展" class="headerlink" title="No type widening for literal types [文字类型没有类型扩展]"></a>No type widening for literal types [文字类型没有类型扩展]</h3><p>通过const断言，文字类型不会被扩展为更加宽泛的类型，当我们使用const声明字面量变量的时候，类型就会等于右侧的字面量</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> x = <span class="string">&#x27;x&#x27;</span>; <span class="comment">// x has the type &#x27;x&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> x = <span class="hljs-string">&#x27;x&#x27;</span>; <span class="hljs-comment">// x has the type &#x27;x&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>const关键字可以确保不会重新分配变量类型并且会保证更加严格的类型定义，但是，如果我们使用let替代const的时候，let就会变成更加宽泛的类型</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> x = <span class="string">&#x27;x&#x27;</span>; <span class="comment">// has the type &#x27;x&#x27; </span></span><br><span class="line"><span class="keyword">let</span> y = <span class="string">&#x27;x&#x27;</span>;   <span class="comment">// has the type string</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> x = <span class="hljs-string">&#x27;x&#x27;</span>; <span class="hljs-comment">// has the type &#x27;x&#x27; </span><br><span class="hljs-keyword">let</span> y = <span class="hljs-string">&#x27;x&#x27;</span>;   <span class="hljs-comment">// has the type string</span><br></code></pre></td></tr></table></figure>
 
 <p>y会扩展为更加宽泛的值，允许分配其他值给y,而x只能是字面量的x,如果我们向让let也可以这么做，就可以使用const断言</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let y = &#x27;x&#x27; as const; // y has type &#x27;x&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">let</span> y = <span class="hljs-string">&#x27;x&#x27;</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>; <span class="hljs-comment">// y has type &#x27;x&#x27;</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="object-literals-get-readonly-properties-对象字面量获得只读属性"><a href="#object-literals-get-readonly-properties-对象字面量获得只读属性" class="headerlink" title="object literals get readonly properties [对象字面量获得只读属性]"></a>object literals get readonly properties [对象字面量获得只读属性]</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> action = &#123; <span class="attr">type</span>: <span class="string">&#x27;INCREMENT&#x27;</span>, &#125; <span class="comment">// has type &#123; type: string &#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="object-literals-get-readonly-properties-对象字面量获得只读属性"><a href="#object-literals-get-readonly-properties-对象字面量获得只读属性" class="headerlink" title="object literals get readonly properties [对象字面量获得只读属性]"></a>object literals get readonly properties [对象字面量获得只读属性]</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> action = &#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;INCREMENT&#x27;</span>, &#125; <span class="hljs-comment">// has type &#123; type: string &#125;</span><br></code></pre></td></tr></table></figure>
 
 <p>const声明对象时，却依然会出现属性的扩展</p>
 <p>如果你熟悉使用redux的时候，action用于执行修改变量，对外界来说，redux是全局不可修改的state store,state只能通过action在reducer中进行修改，reducer是纯函数，他会返回更新之后的state的版本，在action被dispatch之后、</p>
 <p>在redux中，通常情况下，是在actionCreator中创建action,actionCreators是纯函数，它会返回redux action的字面量的对象，以及提供参数给action</p>
 <p>用一个例子进行解释说明</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">setCount</span> = (<span class="params">n: number</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;SET_COUNT&#x27;</span>,</span><br><span class="line">    <span class="attr">payload</span>: n,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> action = <span class="title function_">setCount</span>(<span class="number">3</span>)</span><br><span class="line"><span class="comment">// action has type</span></span><br><span class="line"><span class="comment">// &#123; type: string, payload: number &#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">setCount</span> = (<span class="hljs-params">n: number</span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n,<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> action = <span class="hljs-title function_">setCount</span>(<span class="hljs-number">3</span>)<br><span class="hljs-comment">// action has type</span><br><span class="hljs-comment">// &#123; type: string, payload: number &#125;</span><br></code></pre></td></tr></table></figure>
 
 <p>type的类型应该是字面量的，但是会被自动转换成更加宽泛的类型，在TS3.4以前，我们需要显示的指定返回值类型才可以达到类似的效果，</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">SetCount</span> &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_COUNT&#x27;</span>;</span><br><span class="line">  <span class="attr">payload</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> setCount = (<span class="attr">n</span>: <span class="built_in">number</span>): <span class="function"><span class="params">SetCount</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;SET_COUNT&#x27;</span>,</span><br><span class="line">    <span class="attr">payload</span>: n,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> action = <span class="title function_">setCount</span>(<span class="number">3</span>)</span><br><span class="line"><span class="comment">// action has type SetCount</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SetCount</span> &#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>;<br>  <span class="hljs-attr">payload</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> setCount = (<span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">SetCount</span> =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n,<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> action = <span class="hljs-title function_">setCount</span>(<span class="hljs-number">3</span>)<br><span class="hljs-comment">// action has type SetCount</span><br></code></pre></td></tr></table></figure>
 
 <p>ts3.4以后使用const断言也可以实现同样的效果,而且是只读属性的</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">setCount</span> = (<span class="params">n: <span class="built_in">number</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> &lt;<span class="keyword">const</span>&gt;&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;SET_COUNT&#x27;</span>,</span><br><span class="line">    <span class="attr">payload</span>: n</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> action = <span class="title function_">setCount</span>(<span class="number">3</span>);</span><br><span class="line"><span class="comment">// action has type</span></span><br><span class="line"><span class="comment">//  &#123; readonly type: &quot;SET_COUNT&quot;; readonly payload: number &#125;;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">const</span> <span class="hljs-title function_">setCount</span> = (<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">const</span>&gt;&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> action = <span class="hljs-title function_">setCount</span>(<span class="hljs-number">3</span>);<br><span class="hljs-comment">// action has type</span><br><span class="hljs-comment">//  &#123; readonly type: &quot;SET_COUNT&quot;; readonly payload: number &#125;;</span><br></code></pre></td></tr></table></figure>
 
 <p>对于使用了联合类型的action,在没有使用const断言的时候会比较麻烦</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">SetCount</span> &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_COUNT&#x27;</span>;</span><br><span class="line">  <span class="attr">payload</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ResetCount</span> &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;RESET_COUNT&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> setCount = (<span class="attr">n</span>: <span class="built_in">number</span>): <span class="function"><span class="params">SetCount</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;SET_COUNT&#x27;</span>,</span><br><span class="line">    <span class="attr">payload</span>: n,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> resetCount = (): <span class="function"><span class="params">ResetCount</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;RESET_COUNT&#x27;</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">CountActions</span> = <span class="title class_">SetCount</span> | <span class="title class_">ResetCount</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SetCount</span> &#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>;<br>  <span class="hljs-attr">payload</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ResetCount</span> &#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;RESET_COUNT&#x27;</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> setCount = (<span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">SetCount</span> =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n,<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> resetCount = (): <span class="hljs-function"><span class="hljs-params">ResetCount</span> =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;RESET_COUNT&#x27;</span>,<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">CountActions</span> = <span class="hljs-title class_">SetCount</span> | <span class="hljs-title class_">ResetCount</span><br></code></pre></td></tr></table></figure>
 
 <p>通过使用const的用法</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">setCount</span> = (<span class="params">n: <span class="built_in">number</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> &lt;<span class="keyword">const</span>&gt;&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;SET_COUNT&#x27;</span>,</span><br><span class="line">    <span class="attr">payload</span>: n</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">resetCount</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> &lt;<span class="keyword">const</span>&gt;&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;RESET_COUNT&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">CountActions</span> = <span class="title class_">ReturnType</span>&lt;<span class="keyword">typeof</span> setCount&gt; | <span class="title class_">ReturnType</span>&lt;<span class="keyword">typeof</span> resetCount&gt;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">const</span> <span class="hljs-title function_">setCount</span> = (<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">const</span>&gt;&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">resetCount</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">const</span>&gt;&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;RESET_COUNT&#x27;</span><br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">CountActions</span> = <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> setCount&gt; | <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> resetCount&gt;;<br></code></pre></td></tr></table></figure>
 
-<h3 id="Array-literals-become-readonly-tuples"><a href="#Array-literals-become-readonly-tuples" class="headerlink" title="Array literals become readonly tuples"></a>Array literals become <code>readonly</code> tuples</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const action = &#123;</span><br><span class="line">  type: &#x27;SET_HOURS&#x27;,</span><br><span class="line">  payload: [8, 12, 5, 8],</span><br><span class="line">&#125;</span><br><span class="line">//  &#123; type: string; payload: number[]; &#125;</span><br><span class="line"></span><br><span class="line">action.payload.push(12) // no error</span><br></pre></td></tr></table></figure>
+<h3 id="Array-literals-become-readonly-tuples"><a href="#Array-literals-become-readonly-tuples" class="headerlink" title="Array literals become readonly tuples"></a>Array literals become <code>readonly</code> tuples</h3><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sqf">const <span class="hljs-built_in">action</span> = &#123;<br>  <span class="hljs-built_in">type</span>: <span class="hljs-string">&#x27;SET_HOURS&#x27;</span>,<br>  payload: [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>],<br>&#125;<br><span class="hljs-comment">//  &#123; type: string; payload: number[]; &#125;</span><br><br><span class="hljs-built_in">action</span>.payload.push(<span class="hljs-number">12</span>) <span class="hljs-comment">// no error</span><br></code></pre></td></tr></table></figure>
 
 <p>action。payload是可以修改的</p>
 <p>如果使用了const断言</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> action = &lt;<span class="keyword">const</span>&gt;&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;SET_HOURS&#x27;</span>,</span><br><span class="line">  <span class="attr">payload</span>: [<span class="number">8</span>, <span class="number">12</span>, <span class="number">5</span>, <span class="number">8</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//  readonly type: &quot;SET_HOURS&quot;;</span></span><br><span class="line"><span class="comment">//  readonly payload: readonly [8, 12, 5, 8];</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">action.<span class="property">payload</span>.<span class="title function_">push</span>(<span class="number">12</span>);  <span class="comment">// error - Property &#x27;push&#x27; does not exist on type &#x27;readonly [8, 12, 5, 8]&#x27;.</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> action = &lt;<span class="hljs-keyword">const</span>&gt;&#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_HOURS&#x27;</span>,<br>  <span class="hljs-attr">payload</span>: [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>]<br>&#125;<br><br><span class="hljs-comment">// &#123;</span><br><span class="hljs-comment">//  readonly type: &quot;SET_HOURS&quot;;</span><br><span class="hljs-comment">//  readonly payload: readonly [8, 12, 5, 8];</span><br><span class="hljs-comment">// &#125;</span><br><br>action.<span class="hljs-property">payload</span>.<span class="hljs-title function_">push</span>(<span class="hljs-number">12</span>);  <span class="hljs-comment">// error - Property &#x27;push&#x27; does not exist on type &#x27;readonly [8, 12, 5, 8]&#x27;.</span><br></code></pre></td></tr></table></figure>
 
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  <span class="attr">x</span>: <span class="number">10</span>,</span><br><span class="line">  <span class="attr">y</span>: [<span class="number">20</span>, <span class="number">30</span>],</span><br><span class="line">  <span class="attr">z</span>: &#123;</span><br><span class="line">    <span class="attr">a</span>:</span><br><span class="line">      &#123;  <span class="attr">b</span>: <span class="number">42</span> &#125;</span><br><span class="line">  &#125; </span><br><span class="line">&#125; <span class="keyword">as</span> <span class="keyword">const</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">let</span> obj = &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>,<br>  <span class="hljs-attr">y</span>: [<span class="hljs-number">20</span>, <span class="hljs-number">30</span>],<br>  <span class="hljs-attr">z</span>: &#123;<br>    <span class="hljs-attr">a</span>:<br>      &#123;  <span class="hljs-attr">b</span>: <span class="hljs-number">42</span> &#125;<br>  &#125; <br>&#125; <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;<br></code></pre></td></tr></table></figure>
 
 <p>转换成</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">obj</span>: &#123;</span><br><span class="line">  readonly <span class="attr">x</span>: <span class="number">10</span>;</span><br><span class="line">  readonly <span class="attr">y</span>: readonly [<span class="number">20</span>, <span class="number">30</span>];</span><br><span class="line">  readonly <span class="attr">z</span>: &#123;</span><br><span class="line">    readonly <span class="attr">a</span>: &#123;</span><br><span class="line">      readonly <span class="attr">b</span>: <span class="number">42</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">let</span> <span class="hljs-attr">obj</span>: &#123;<br>  readonly <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>;<br>  readonly <span class="hljs-attr">y</span>: readonly [<span class="hljs-number">20</span>, <span class="hljs-number">30</span>];<br>  readonly <span class="hljs-attr">z</span>: &#123;<br>    readonly <span class="hljs-attr">a</span>: &#123;<br>      readonly <span class="hljs-attr">b</span>: <span class="hljs-number">42</span>;<br>    &#125;;<br>  &#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/10/06/%E6%9D%80%E6%89%8B%E7%BA%A7%E7%9A%84TypeScript%E5%8A%9F%E8%83%BD%EF%BC%9Aconst%E6%96%AD%E8%A8%80/" data-id="cl9770wnv002pk2oo53uv0e7a" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
+
+<span class="category-chains">
+  
   
     
-<nav id="article-nav">
+      <span class="category-chain">
+        
+  <a href="/categories/typescript/" class="category-chain-item">typescript</a>
   
-    <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          mobx的使用二
-        
+  
+    <span>></span>
+    
+  <a href="/categories/typescript/note/" class="category-chain-item">note</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>杀手级的TypeScript功能：const断言</div>
+      <div>http://example.com/2022/10/06/杀手级的TypeScript功能：const断言/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/" title="mobx的使用二">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">mobx的使用二</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/05/React18-Typescript%E7%9A%84%E4%BD%BF%E7%94%A8/" title="React18+Typescript的使用">
+                        <span class="hidden-mobile">React18+Typescript的使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
       </div>
-    </a>
-  
-  
-    <a href="/2022/10/05/React18-Typescript%E7%9A%84%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">React18+Typescript的使用</div>
-    </a>
-  
-</nav>
+    </div>
 
-  
-</article>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/">Electron</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Electron/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Puppeteer/">Puppeteer</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/interview/">interview</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/interview/daily/">daily</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%8E%9F%E7%90%86/">原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/%E6%90%9C%E9%9B%86/">搜集</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/node/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/note/">note</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/note/%E5%89%8D%E7%AB%AF%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%AC%94%E8%AE%B0/">前端系统课笔记</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/">react</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/react/Typescript/">Typescript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/mobx/">mobx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/">typescript</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/typescript/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/vue/daily/">daily</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/">前端八股文</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">单元测试</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/Enzyme/">Enzyme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/jest/">jest</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">常用构建工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/glup/">glup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/rollup/">rollup</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/vite/">vite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/webpack/">webpack</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/note/">note</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/Ajax/">Ajax</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/">HTTP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/axios/">axios</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/fetch/">fetch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/websocket/">websocket</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+
+
+  </aside>
+
+
     </div>
   </div>
+</div>
+
+
+
 
 
   
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
 
-  
     
-  
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
-    </div>
-  </div>
 
-
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/11/08/Puppeteer/">什么是Puppeteer</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/13/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/12/canvas%E7%AC%94%E8%AE%B0/">canvas笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%89/">mobx的使用3⃣️</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/08/mobx%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8C/">mobx的使用二</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2022 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+</div>
+
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
 
 
   
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
 
   
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
-<script src="/js/script.js"></script>
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
 
-
-  </div>
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>
