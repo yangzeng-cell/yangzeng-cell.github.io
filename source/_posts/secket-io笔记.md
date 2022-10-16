@@ -1,5 +1,5 @@
 ---
-title: secket.io笔迹
+title: secket.io笔记
 date: 2022-09-24 15:31:44
 tags:
 - [socket.io]
@@ -1836,3 +1836,1106 @@ if (cluster.isMaster) {
 既然您有多个接受连接的Socket.IO 节点，如果您想向所有客户端（或某个[房间](https://socket.io/zh-CN/docs/v4/rooms/)中的客户端）广播事件，您将需要某种方式在进程或计算机之间传递消息。
 
 负责路由消息的接口就是我们所说的[Adapter](https://socket.io/zh-CN/docs/v4/adapter/)。
+
+# 处理 CORS
+
+从 Socket.IO v3 开始，您需要显式启用[跨域资源共享](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)(CORS)。
+
+```js
+import { createServer } from "http";
+import { Server } from "socket.io";
+
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  cors: {
+    origin: "https://example.com"
+  }
+});
+```
+
+所有选项都将转发到[cors](https://www.npmjs.com/package/cors)包。可以在[此处](https://github.com/expressjs/cors#configuration-options)找到完整的选项列表。
+
+带有 cookie ( [withCredentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials)) 和附加标头的示例：
+
+```js
+// server-side
+const io = new Server(httpServer, {
+  cors: {
+    origin: "https://example.com",
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
+  }
+});
+
+// client-side
+import { io } from "socket.io-client";
+const socket = io("https://api.example.com", {
+  withCredentials: true,
+  extraHeaders: {
+    "my-custom-header": "abcd"
+  }
+});
+```
+
+注意：如果您的 Web 应用程序和服务器不是从同一个端口提供服务，这也适用于 localhost
+
+```js
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:8080"
+  }
+});
+
+httpServer.listen(3000);
+```
+
+您可以使用以下选项禁止所有跨域请求[`allowRequest`](https://socket.io/zh-CN/docs/v4/server-options/#allowrequest) option:
+
+```js
+const io = new Server(httpServer, {
+  allowRequest: (req, callback) => {
+    const noOriginHeader = req.headers.origin === undefined;
+    callback(null, noOriginHeader);
+  }
+});
+```
+
+## 故障排除[](https://socket.io/zh-CN/docs/v4/handling-cors/#troubleshooting)
+
+### 缺少 CORS 标头“Access-Control-Allow-Origin”[](https://socket.io/zh-CN/docs/v4/handling-cors/#cors-header-access-control-allow-origin-missing)
+
+完整的错误信息：
+
+> *跨域请求被阻止：同源策略不允许读取位于 .../socket.io/?EIO=4&transport=polling&t=NMnp2WI 的远程资源。（原因：缺少 CORS 标头“Access-Control-Allow-Origin”）。*
+
+如果您已正确配置您的服务器（见[上文](https://socket.io/zh-CN/docs/v4/handling-cors/#configuration)），这可能意味着您的浏览器无法访问 Socket.IO 服务器。
+
+以下命令：
+
+```text
+curl "https://api.example.com/socket.io/?EIO=4&transport=polling"
+```
+
+应该返回类似：
+
+```text
+0{"sid":"Lbo5JLzTotvW3g2LAAAA","upgrades":["websocket"],"pingInterval":25000,"pingTimeout":20000}
+```
+
+如果不是这种情况，请检查您的服务器是否正在侦听并且实际上可以在给定端口上访问。
+
+### 如果 CORS 标头“Access-Control-Allow-Origin”为“*”，则不支持凭据[](https://socket.io/zh-CN/docs/v4/handling-cors/#credential-is-not-supported-if-the-cors-header-access-control-allow-origin-is-)
+
+完整的错误信息：
+
+> *跨域请求被阻止：同源策略不允许读取位于“.../socket.io/?EIO=4&transport=polling&t=NvQfU77”的远程资源。（原因：如果 CORS 标头“Access-Control-Allow-Origin”为“\*”，则不支持凭证）*
+
+您不能同时设置[`withCredentials`](https://socket.io/zh-CN/docs/v4/client-options/#withcredentials) 为 `true` 和 `origin: *`，您需要使用特定的来源：
+
+```js
+import { createServer } from "http";
+import { Server } from "socket.io";
+
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  cors: {
+    origin: "https://my-frontend.com",
+    // or with an array of origins
+    // origin: ["https://my-frontend.com", "https://my-other-frontend.com", "http://localhost:3000"],
+    credentials: true
+  }
+});
+```
+
+### CORS 标头“Access-Control-Allow-Credentials”中预期为“true”[](https://socket.io/zh-CN/docs/v4/handling-cors/#expected-true-in-cors-header-access-control-allow-credentials)
+
+完整的错误信息：
+
+> *跨域请求被阻止：同源策略不允许读取位于 .../socket.io/?EIO=4&transport=polling&t=NvQny19 的远程资源。（原因：CORS 标头“Access-Control-Allow-Credentials”中预期为“true”）*
+
+在这种情况下，在客户端上[`withCredentials`](https://socket.io/zh-CN/docs/v4/client-options/#withcredentials)设置为`true`，但服务器缺少选项`credentials`中的属性[`cors`](https://socket.io/zh-CN/docs/v4/server-options/#cors) 。请参见上面的示例。
+
+# 客户端初始化
+
+在下面的示例中，`io`对象来自：
+
+- 使用 `<script>` 引入
+
+```html
+<script src="/socket.io/socket.io.js"></script>
+```
+
+复制
+
+- 使用 ESM 引入
+
+```html
+<script type="module">
+  import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+</script>
+```
+
+复制
+
+- NPM
+
+```js
+import { io } from "socket.io-client";
+```
+
+## 来自同一域[](https://socket.io/zh-CN/docs/v4/client-initialization/#from-the-same-domain)
+
+如果您的前端与您的服务器在同一个域上提供服务，您可以简单地使用：
+
+```js
+const socket = io();
+```
+
+服务器 URL 将从 [window.location](https://developer.mozilla.org/en-US/docs/Web/API/Window/location)对象中推导出来
+
+## 来自不同的域[](https://socket.io/zh-CN/docs/v4/client-initialization/#from-a-different-domain)
+
+如果您的前端不是来自与服务器相同的域，则必须传递服务器的 URL。
+
+```js
+const socket = io("https://server-domain.com");
+```
+
+在这种情况下，请确保在服务器上启用 [跨域资源共享 (CORS)](https://socket.io/zh-CN/docs/v4/handling-cors/)。
+
+##### 信息
+
+您可以使用`https` 或 `wss` (分别为, `http` 或 `ws`).
+
+```js
+// the following forms are similar
+const socket = io("https://server-domain.com");
+const socket = io("wss://server-domain.com");
+const socket = io("server-domain.com"); // only in the browser when the page is served over https (will not work in Node.js)
+```
+
+## 自定义命名空间[](https://socket.io/zh-CN/docs/v4/client-initialization/#custom-namespace)
+
+在上面的示例中，客户端将连接到主命名空间。对于大多数用例来说，仅使用主命名空间就足够了，但您可以使用以下命令指定命名空间：
+
+```js
+// same origin version
+const socket = io("/admin");
+// cross origin version
+const socket = io("https://server-domain.com/admin");
+```
+
+您可以[在此处](https://socket.io/zh-CN/docs/v4/namespaces/)找到有关名称空间的更多详细信息。
+
+## 配置[](https://socket.io/zh-CN/docs/v4/client-initialization/#options)
+
+可在[此处](https://socket.io/zh-CN/docs/v4/client-options/)找到可用配置的完整列表
+
+# Socket 实例（客户端）
+
+`Socket`是与服务器交互的基础类。它继承了 Node.js[EventEmitter](https://nodejs.org/api/events.html#class-eventemitter)的大部分方法，例如 [emit](https://socket.io/zh-CN/docs/v4/client-api/#socketemiteventname-args), [on](https://socket.io/zh-CN/docs/v4/client-api/#socketoneventname-callback), [once](https://socket.io/zh-CN/docs/v4/client-api/#socketonceeventname-callback) 或 [off](https://socket.io/zh-CN/docs/v4/client-api/#socketoffeventname)。
+
+![Bidirectional communication between server and client](https://socket.io/zh-CN/images/bidirectional-communication-socket.png)
+
+
+
+除了[emitting](https://socket.io/zh-CN/docs/v4/emitting-events/) 和 [listening to](https://socket.io/zh-CN/docs/v4/listening-to-events/)事件之外，Socket 实例还有一些可能在您的应用程序中使用的属性：
+
+## Socket#id[](https://socket.io/zh-CN/docs/v4/client-socket-instance/#socketid)
+
+每个新连接都分配有一个随机的 20 个字符的标识符。
+
+此标识符与服务器端的值同步。
+
+```js
+// server-side
+io.on("connection", (socket) => {
+  console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+});
+
+// client-side
+socket.on("connect", () => {
+  console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+});
+
+socket.on("disconnect", () => {
+  console.log(socket.id); // undefined
+});
+```
+
+## Socket#connected[](https://socket.io/zh-CN/docs/v4/client-socket-instance/#socketconnected)
+
+该属性描述套接字当前是否连接到服务器。
+
+```js
+socket.on("connect", () => {
+  console.log(socket.connected); // true
+});
+
+socket.on("disconnect", () => {
+  console.log(socket.connected); // false
+});
+```
+
+## Socket#io[](https://socket.io/zh-CN/docs/v4/client-socket-instance/#socketio)
+
+对基础[Manager](https://socket.io/zh-CN/docs/v4/client-api/#manager)的引用。
+
+```js
+socket.on("connect", () => {
+  const engine = socket.io.engine;
+  console.log(engine.transport.name); // in most cases, prints "polling"
+
+  engine.once("upgrade", () => {
+    // called when the transport is upgraded (i.e. from HTTP long-polling to WebSocket)
+    console.log(engine.transport.name); // in most cases, prints "websocket"
+  });
+
+  engine.on("packet", ({ type, data }) => {
+    // called for each packet received
+  });
+
+  engine.on("packetCreate", ({ type, data }) => {
+    // called for each packet sent
+  });
+
+  engine.on("drain", () => {
+    // called when the write buffer is drained
+  });
+
+  engine.on("close", (reason) => {
+    // called when the underlying connection is closed
+  });
+});
+```
+
+## 生命周期[](https://socket.io/zh-CN/docs/v4/client-socket-instance/#lifecycle)
+
+![Lifecycle diagram](https://socket.io/images/client_socket_events.png)
+
+## 事件[](https://socket.io/zh-CN/docs/v4/client-socket-instance/#events)
+
+Socket 实例发出三个特殊事件：
+
+- [`connect`](https://socket.io/zh-CN/docs/v4/client-socket-instance/#connect)
+- [`connect_error`](https://socket.io/zh-CN/docs/v4/client-socket-instance/#connect-error)
+- [`disconnect`](https://socket.io/zh-CN/docs/v4/client-socket-instance/#disconnect)
+
+请注意，从 Socket.IO v3 开始，Socket 实例不再发出任何与重新连接逻辑相关的事件。您可以直接监听 Manager 实例上的事件：
+
+```js
+socket.io.on("reconnect_attempt", () => {
+  // ...
+});
+
+socket.io.on("reconnect", () => {
+  // ...
+});
+```
+
+更多信息可以在[迁移指南](https://socket.io/zh-CN/docs/v4/migrating-from-2-x-to-3-0/#the-socket-instance-will-no-longer-forward-the-events-emitted-by-its-manager)中找到
+
+### `connect`[](https://socket.io/zh-CN/docs/v4/client-socket-instance/#connect)
+
+此事件由 Socket 实例在连接**和**重新连接时触发。
+
+```js
+socket.on("connect", () => {
+  // ...
+});
+```
+
+请注意，您不应在`connect`处理程序本身中注册事件处理程序，因为每次 Socket 重新连接时都会注册一个新的处理程序：
+
+```js
+// BAD
+socket.on("connect", () => {
+  socket.on("data", () => { /* ... */ });
+});
+
+// GOOD
+socket.on("connect", () => {
+  // ...
+});
+
+socket.on("data", () => { /* ... */ });
+```
+
+### `connect_error`[](https://socket.io/zh-CN/docs/v4/client-socket-instance/#connect_error)
+
+在以下情况下触发此事件：
+
+- 低级连接无法建立
+- 服务器在[中间件功能](https://socket.io/zh-CN/docs/v4/middlewares/)中拒绝连接
+
+在第一种情况下，Socket 会在 [给定的延迟](https://socket.io/zh-CN/docs/v4/client-options/#reconnectiondelay)之后自动尝试重新连接。
+
+在后一种情况下，您需要手动重新连接。您可能需要更新凭据：
+
+```js
+// either by directly modifying the `auth` attribute
+socket.on("connect_error", () => {
+  socket.auth.token = "abcd";
+  socket.connect();
+});
+
+// or if the `auth` attribute is a function
+const socket = io({
+  auth: (cb) => {
+    cb(localStorage.getItem("token"));
+  }
+});
+
+socket.on("connect_error", () => {
+  setTimeout(() => {
+    socket.connect();
+  }, 1000);
+});
+```
+
+### `disconnect`[](https://socket.io/zh-CN/docs/v4/client-socket-instance/#disconnect)
+
+此事件在断开连接时触发。
+
+```js
+socket.on("disconnect", (reason) => {
+  // ...
+});
+```
+
+复制
+
+以下是可能的原因列表：
+
+| Reason                 | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| `io server disconnect` | 服务器已使用[socket.disconnect()](https://socket.io/zh-CN/docs/v4/server-api/#socketdisconnectclose)强制断开socket |
+| `io client disconnect` | 使用[socket.disconnect()](https://socket.io/zh-CN/docs/v4/client-api/#socketdisconnect)手动断开socket |
+| `ping timeout`         | 服务器未在该`pingInterval + pingTimeout`范围内发送 PING      |
+| `transport close`      | 连接已关闭（例如：用户失去连接，或网络从 WiFi 更改为 4G）    |
+| `transport error`      | 连接遇到错误（例如：服务器在 HTTP 长轮询周期中被杀死）       |
+
+前两种情况（显式断开），客户端不会尝试重新连接，需要手动调用`socket.connect()`.
+
+在所有其他情况下，客户端将等待一个小的[随机延迟](https://socket.io/zh-CN/docs/v4/client-options/#reconnectiondelay)，然后尝试重新连接：
+
+```js
+socket.on("disconnect", (reason) => {
+  if (reason === "io server disconnect") {
+    // the disconnection was initiated by the server, you need to reconnect manually
+    socket.connect();//服务器断开的，需要手动执行重连
+  }
+  // else the socket will automatically try to reconnect
+});
+```
+
+注意：这些事件以及`disconnecting`, `newListener` 和 `removeListener`是不应在您的应用程序中使用的特殊事件：
+
+```js
+// BAD, will throw an error
+socket.emit("disconnect");
+```
+
+# 离线行为
+
+## 缓冲事件[](https://socket.io/zh-CN/docs/v4/client-offline-behavior/#buffered-events)
+
+默认情况下，在 Socket 未连接时发出的任何事件都将被缓冲，直到重新连接。
+
+虽然在大多数情况下很有用（当重新连接延迟很短时），但它可能会在连接恢复时导致大量事件。
+
+有几种解决方案可以防止这种行为，具体取决于您的用例：
+
+- 使用Socket 实例的[connected 属性](https://socket.io/zh-CN/docs/v4/client-socket-instance/#socketconnected) attribute of the Socket instance
+
+```js
+if (socket.connected) {
+  socket.emit( /* ... */ );
+} else {
+  // ...
+}
+```
+
+- 使用 [volatile 事件](https://socket.io/zh-CN/docs/v4/emitting-events/#volatile-events)
+
+```js
+socket.volatile.emit( /* ... */ );
+```
+
+# 发送事件
+
+有几种方法可以在服务器和客户端之间发送事件。
+
+## 基本的 emit[](https://socket.io/zh-CN/docs/v4/emitting-events/#基本的-emit)
+
+Socket.IO API 的灵感来自 Node.js [EventEmitter](https://nodejs.org/docs/latest/api/events.html#events_events)，这意味着您可以在一侧发出事件并在另一侧注册侦听器：
+
+*服务器*
+
+```js
+io.on("connection", (socket) => {
+  socket.emit("hello", "world");
+});
+```
+
+*客户端*
+
+```js
+socket.on("hello", (arg) => {
+  console.log(arg); // world
+});
+```
+
+这也适用于另一个方向：
+
+*服务器*
+
+```js
+io.on("connection", (socket) => {
+  socket.on("hello", (arg) => {
+    console.log(arg); // world
+  });
+});
+```
+
+*客户端*
+
+```js
+socket.emit("hello", "world");
+```
+
+您可以发送任意数量的参数，并且支持所有可序列化的数据结构，包括像[Buffer](https://nodejs.org/docs/latest/api/buffer.html#buffer_buffer) 或 [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)这样的二进制对象。
+
+*服务器*
+
+```js
+io.on("connection", (socket) => {
+  socket.emit("hello", 1, "2", { 3: '4', 5: Buffer.from([6]) });
+});
+```
+
+*客户端*
+
+```js
+// client-side
+socket.on("hello", (arg1, arg2, arg3) => {
+  console.log(arg1); // 1
+  console.log(arg2); // "2"
+  console.log(arg3); // { 3: '4', 5: ArrayBuffer (1) [ 6 ] }
+});
+```
+
+无需`JSON.stringify()`，因为它会为您完成。
+
+```js
+// BAD
+socket.emit("hello", JSON.stringify({ name: "John" }));
+
+// GOOD
+socket.emit("hello", { name: "John" });
+```
+
+笔记：
+
+- [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)对象将被转换为（并作为）它们的字符串表示形式，例如`1970-01-01T00:00:00.000Z`
+- [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) 和 [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)必须手动序列化：
+
+```js
+const serializedMap = [...myMap.entries()];
+const serializedSet = [...mySet.keys()];
+```
+
+- 您可以使用该[`toJSON()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#tojson_behavior)方法自定义对象的序列化
+
+一个类的例子：
+
+```js
+class Hero {
+  #hp;
+
+  constructor() {
+    this.#hp = 42;
+  }
+
+  toJSON() {
+    return { hp: this.#hp };
+  }
+}
+
+socket.emit("here's a hero", new Hero());
+```
+
+## 回调[](https://socket.io/zh-CN/docs/v4/emitting-events/#回调)
+
+事件很棒，但在某些情况下，您可能需要更经典的请求-响应 API。在 Socket.IO 中，此功能称为确认。
+
+您可以添加一个回调作为`emit()`的最后一个参数，一旦对方确认事件，就会调用此回调：
+
+*服务器*
+
+```js
+io.on("connection", (socket) => {
+  socket.on("update item", (arg1, arg2, callback) => {
+    console.log(arg1); // 1
+    console.log(arg2); // { name: "updated" }
+    callback({
+      status: "ok"
+    });
+  });
+});
+```
+
+*客户端*
+
+```js
+socket.emit("update item", "1", { name: "updated" }, (response) => {
+  console.log(response.status); // ok
+});
+```
+
+## 超时[](https://socket.io/zh-CN/docs/v4/emitting-events/#超时)
+
+从 Socket.IO v4.4.0 开始，您现在可以为每个发射分配超时：
+
+```js
+socket.timeout(5000).emit("my-event", (err) => {
+  if (err) {
+    // the other side did not acknowledge the event in the given delay
+  }
+});
+```
+
+You can also use both a timeout and an [acknowledgement](https://socket.io/zh-CN/docs/v4/emitting-events/#acknowledgements):
+
+```js
+socket.timeout(5000).emit("my-event", (err, response) => {
+  if (err) {
+    // the other side did not acknowledge the event in the given delay
+  } else {
+    console.log(response);
+  }
+});
+```
+
+## 易失性事件[](https://socket.io/zh-CN/docs/v4/emitting-events/#易失性事件)
+
+易失性事件是在底层连接未准备好时不会发送的事件（有点像[UDP](https://fr.wikipedia.org/wiki/User_Datagram_Protocol)，在可靠性方面）。
+
+例如，如果您需要发送在线游戏中角色的位置（因为只有最新的值才有用），这可能会很有趣。
+
+```js
+socket.volatile.emit("hello", "might or might not be received");
+```
+
+另一个用例是在客户端未连接时丢弃事件（默认情况下，事件会被缓冲直到重新连接）。
+
+例子：
+
+*服务器*
+
+```js
+io.on("connection", (socket) => {
+  console.log("connect");
+
+  socket.on("ping", (count) => {
+    console.log(count);
+  });
+});
+```
+
+*客户端*
+
+```js
+let count = 0;
+setInterval(() => {
+  socket.volatile.emit("ping", ++count);
+}, 1000);
+```
+
+如果重新启动服务器，您将在控制台中看到：
+
+```text
+connect
+1
+2
+3
+4
+# the server is restarted, the client automatically reconnects
+connect
+9
+10
+11
+```
+
+
+
+如果没有`volatile`标志，您将看到：
+
+```text
+connect
+1
+2
+3
+4
+# the server is restarted, the client automatically reconnects and sends its buffered events
+connect
+5
+6
+7
+8
+9
+10
+11
+```
+
+# 监听事件
+
+有几种方法可以处理在服务器和客户端之间传输的事件。
+
+## EventEmitter 方法[](https://socket.io/zh-CN/docs/v4/listening-to-events/#eventemitter-methods)
+
+在服务器端，Socket 实例扩展了 Node.js [EventEmitter](https://nodejs.org/docs/latest/api/events.html#events_events)类。
+
+在客户端，Socket 实例使用[component-emitter](https://github.com/component/emitter)库提供的事件发射器，它公开了 EventEmitter 方法的子集。
+
+### socket.on(eventName, listener)[](https://socket.io/zh-CN/docs/v4/listening-to-events/#socketoneventname-listener)
+
+将*侦听器*函数添加到名为*eventName*的事件的侦听器数组的末尾。
+
+```js
+socket.on("details", (...args) => {
+  // ...
+});
+```
+
+
+
+### socket.once(eventName, listener)[](https://socket.io/zh-CN/docs/v4/listening-to-events/#socketonceeventname-listener)
+
+为名为*eventName*的事件添加**一次性**监听函数
+
+```js
+socket.once("details", (...args) => {
+  // ...
+});
+```
+
+
+
+### socket.off(eventName, listener)[](https://socket.io/zh-CN/docs/v4/listening-to-events/#socketoffeventname-listener)
+
+从名为*eventName*的事件的侦听器数组中移除指定的*侦听器*。
+
+```js
+const listener = (...args) => {
+  console.log(args);
+}
+
+socket.on("details", listener);
+
+// and then later...
+socket.off("details", listener);
+```
+
+
+
+### socket.removeAllListeners([eventName])[](https://socket.io/zh-CN/docs/v4/listening-to-events/#socketremovealllistenerseventname)
+
+删除所有侦听器，或指定*eventName*的侦听器。
+
+```js
+// for a specific event
+socket.removeAllListeners("details");
+// for all events
+socket.removeAllListeners();
+```
+
+
+
+## Catch-all 侦听器[](https://socket.io/zh-CN/docs/v4/listening-to-events/#catch-all-listeners)
+
+从 Socket.IO v3 开始，受[EventEmitter2](https://github.com/EventEmitter2/EventEmitter2)库启发的新 API 允许声明 Catch-all 侦听器。
+
+此功能在客户端和服务器上均可用。
+
+### socket.onAny(listener)[](https://socket.io/zh-CN/docs/v4/listening-to-events/#socketonanylistener)
+
+添加一个监听器，当任何事件发出时将被触发。
+
+```js
+socket.onAny((eventName, ...args) => {
+  // ...
+});
+```
+
+
+
+### socket.prependAny(listener)[](https://socket.io/zh-CN/docs/v4/listening-to-events/#socketprependanylistener)
+
+添加一个监听器，当任何事件发出时将被触发。侦听器被添加到侦听器数组的开头。
+
+```js
+socket.prependAny((eventName, ...args) => {
+  // ...
+});
+```
+
+
+
+### socket.offAny([listener])[](https://socket.io/zh-CN/docs/v4/listening-to-events/#socketoffanylistener)
+
+删除所有catch-all侦听器或给定的侦听器。
+
+```js
+const listener = (eventName, ...args) => {
+  console.log(eventName, args);
+}
+
+socket.onAny(listener);
+
+// and then later...
+socket.offAny(listener);
+
+// or all listeners
+socket.offAny();
+```
+
+
+
+## 验证[](https://socket.io/zh-CN/docs/v4/listening-to-events/#validation)
+
+事件参数的验证超出了 Socket.IO 库的范围。
+
+JS 生态系统中有许多包涵盖了这个用例，其中包括：
+
+- [joi](https://www.npmjs.com/package/joi)
+- [ajv](https://www.npmjs.com/package/ajv)
+- [validatorjs](https://www.npmjs.com/package/validatorjs)
+
+带有[joi](https://joi.dev/api/)和[acknowledgements](https://socket.io/zh-CN/docs/v4/emitting-events/#acknowledgements)的示例：
+
+```js
+const Joi = require("joi");
+
+const userSchema = Joi.object({
+  username: Joi.string().max(30).required(),
+  email: Joi.string().email().required()
+});
+
+io.on("connection", (socket) => {
+  socket.on("create user", (payload, callback) => {
+    if (typeof callback !== "function") {
+      // not an acknowledgement
+      return socket.disconnect();
+    }
+    const { error, value } = userSchema.validate(payload);
+    if (error) {
+      return callback({
+        status: "KO",
+        error
+      });
+    }
+    // do something with the value, and then
+    callback({
+      status: "OK"
+    });
+  });
+
+});
+```
+
+
+
+## 错误处理[](https://socket.io/zh-CN/docs/v4/listening-to-events/#error-handling)
+
+Socket.IO 库中目前没有内置的错误处理，这意味着您必须捕获任何可能在侦听器中引发的错误。
+
+```js
+io.on("connection", (socket) => {
+  socket.on("list items", async (callback) => {
+    try {
+      const items = await findItems();
+      callback({
+        status: "OK",
+        items
+      });
+    } catch (e) {
+      callback({
+        status: "NOK"
+      });
+    }
+  });
+});
+```
+
+
+
+在服务器端，使用`EventEmitter.captureRejections = true`（实验性，请参见[此处](https://nodejs.org/api/events.html#events_capture_rejections_of_promises)）也可能很有趣，具体取决于您的用例。
+
+```js
+require("events").captureRejections = true;
+
+io.on("connection", (socket) => {
+  socket.on("list products", async () => {
+    const products = await findProducts();
+    socket.emit("products", products);
+  });
+
+  socket[Symbol.for('nodejs.rejection')] = (err) => {
+    socket.emit("error", err);
+  };
+});
+```
+
+# 广播事件
+
+Socket.IO 使向所有连接的客户端发送事件变得容易。
+
+##### INFO
+
+请注意，广播是**仅服务器**功能。
+
+## 给所有连接的客户端[](https://socket.io/zh-CN/docs/v4/broadcasting-events/#to-all-connected-clients)
+
+![Broadcasting to all connected clients](https://socket.io/zh-CN/images/broadcasting.png)
+
+```js
+io.emit("hello", "world");
+```
+
+
+
+##### CAUTION
+
+当前断开连接（或正在重新连接）的客户端将不会收到该事件。将此事件存储在某处（例如在数据库中）取决于您的用例。
+
+## 除发送者外的所有连接的客户端[](https://socket.io/zh-CN/docs/v4/broadcasting-events/#to-all-connected-clients-except-the-sender)
+
+![Broadcasting to all connected clients excepting the sender](https://socket.io/zh-CN/images/broadcasting2.png)
+
+```js
+io.on("connection", (socket) => {
+  socket.broadcast.emit("hello", "world");
+});
+```
+
+##### NOTE
+
+在上面的示例中，使用`socket.emit("hello", "world")`（不带`broadcast`标志）会将事件发送到“客户端 A”。您可以在[备忘单](https://socket.io/zh-CN/docs/v4/emit-cheatsheet/)中找到发送事件的所有方式的列表。
+
+## 使用多个 Socket.IO 服务器[](https://socket.io/zh-CN/docs/v4/broadcasting-events/#with-multiple-socketio-servers)
+
+广播也适用于多个 Socket.IO 服务器。
+
+您只需将默认适配器替换为[Redis 适配器](https://socket.io/zh-CN/docs/v4/adapter/)或其他[兼容的适配器](https://socket.io/zh-CN/docs/v4/redis-adapter/)。
+
+![Broadcasting with Redis](https://socket.io/zh-CN/images/broadcasting-redis.png)
+
+在某些情况下，您可能只想向连接到当前服务器的客户端广播。您可以使用`local`标志实现此目的：
+
+```js
+io.local.emit("hello", "world");
+```
+
+复制
+
+![Broadcasting with Redis but local](https://socket.io/zh-CN/images/broadcasting-redis-local.png)
+
+为了在广播时针对特定客户，请参阅有关[Rooms](https://socket.io/zh-CN/docs/v4/rooms/)的文档。
+
+# 房间
+
+sockets可以`join` 和 `leave`*房间*。它可用于向一部分客户端广播事件：
+
+![Broadcasting to all clients in a room](https://socket.io/zh-CN/images/rooms.png)
+
+##### 信息
+
+请注意，房间是一个**仅限服务器**的概念（即客户端无权访问它已加入的房间列表）。
+
+## 加入和离开[](https://socket.io/zh-CN/docs/v4/rooms/#joining-and-leaving)
+
+您可以调用`join`以将socket订阅到给定的频道：
+
+```js
+io.on("connection", (socket) => {
+  socket.join("some room");
+});
+```
+
+
+
+然后在广播或发射时简单地使用`to` 或 `in`（它们是相同的）：
+
+```js
+io.to("some room").emit("some event");
+```
+
+
+
+您可以同时发射到多个房间：
+
+```js
+io.to("room1").to("room2").to("room3").emit("some event");
+```
+
+
+
+在这种情况下，将执行[联合](https://en.wikipedia.org/wiki/Union_(set_theory))：至少在其中一个房间中的每个socket都将获得**一次**事件（即使socket在两个或更多房间中）。
+
+您还可以从给定的socket广播到房间：
+
+```js
+io.on("connection", (socket) => {
+  socket.to("some room").emit("some event");
+});
+```
+
+
+
+在这种情况下，房间中**除**发送者之外的每个socket都会收到该事件。
+
+![Broadcasting to all clients in a room excepting the sender](https://socket.io/zh-CN/images/rooms2.png)
+
+要离开频道，您调用`leave`的方式与`join`相同。
+
+## 默认房间[](https://socket.io/zh-CN/docs/v4/rooms/#default-room)
+
+Socket.IO 中的每一个`socket`都由一个随机的、不可猜测的、唯一的标识符[Socket#id](https://socket.io/zh-CN/docs/v4/server-socket-instance/#socketid)。为了您的方便，每个socket都会自动加入一个由其自己的 id 标识的房间。
+
+这使得实现私人消息变得容易：
+
+```js
+io.on("connection", (socket) => {
+  socket.on("private message", (anotherSocketId, msg) => {
+    socket.to(anotherSocketId).emit("private message", socket.id, msg);
+  });
+});
+```
+
+
+
+## 示例用例[](https://socket.io/zh-CN/docs/v4/rooms/#sample-use-cases)
+
+- 向给定用户的每个设备/选项卡广播数据
+
+```js
+io.on("connection", async (socket) => {
+  const userId = await fetchUserId(socket);
+
+  socket.join(userId);
+
+  // and then later
+  io.to(userId).emit("hi");
+});
+```
+
+复制
+
+- 发送有关给定实体的通知
+
+```js
+io.on("connection", async (socket) => {
+  const projects = await fetchProjects(socket);
+
+  projects.forEach(project => socket.join("project:" + project.id));
+
+  // and then later
+  io.to("project:4321").emit("project updated");
+});
+```
+
+
+
+## 断开[](https://socket.io/zh-CN/docs/v4/rooms/#disconnection)
+
+断开连接后，`leave`会自动将它们所属的所有通道连接起来，您不需要进行特殊的拆卸。
+
+您可以通过监听`disconnecting`事件来获取 Socket 所在的房间：
+
+```js
+io.on("connection", socket => {
+  socket.on("disconnecting", () => {
+    console.log(socket.rooms); // the Set contains at least the socket ID
+  });
+
+  socket.on("disconnect", () => {
+    // socket.rooms.size === 0
+  });
+});
+```
+
+
+
+## 使用多个 Socket.IO 服务器[](https://socket.io/zh-CN/docs/v4/rooms/#with-multiple-socketio-servers)
+
+与[全局广播](https://socket.io/zh-CN/docs/v4/broadcasting-events/#with-multiple-socketio-servers)一样，向房间广播也适用于多个 Socket.IO 服务器。
+
+您只需要将默认的[Adapter](https://socket.io/zh-CN/docs/v4/glossary/#adapter)替换为 Redis Adapter。更多关于它的信息在[这里](https://socket.io/zh-CN/docs/v4/redis-adapter/)。
+
+![Broadcasting to all clients in a room with Redis](https://socket.io/zh-CN/images/rooms-redis.png)
+
+## 实施细节[](https://socket.io/zh-CN/docs/v4/rooms/#implementation-details)
+
+“房间”功能由我们称为适配器的东西实现。该适配器是一个服务器端组件，负责：
+
+- 存储 Socket 实例和房间之间的关系
+- 向所有（或部分）客户端广播事件
+
+您可以在[此处](https://github.com/socketio/socket.io-adapter)找到默认内存适配器的代码。
+
+基本上，它包含两个[ES6 Maps](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map):
+
+- `sids`: `Map<SocketId, Set<Room>>`
+- `rooms`: `Map<Room, Set<SocketId>>`
+
+调用`socket.join("the-room")`将导致：
+
+- 在`sids` Map中，将“the-room”添加到由Socket ID 标识的 Set
+- 在`rooms` Map 中，将Socket ID 添加到由字符串“the-room”标识的 Set 中
+
+然后在广播时使用这两个地图：
+
+- 对所有套接字的广播（`io.emit()`）循环通过`sids`Map，并将数据包发送到所有sockets
+- 对给定房间的广播 ( `io.to("room21").emit()`）循环通过`rooms`Map 中的 Set，并将数据包发送到所有匹配的sockets
+
+您可以通过以下方式访问这些对象：
+
+```js
+// main namespace
+const rooms = io.of("/").adapter.rooms;
+const sids = io.of("/").adapter.sids;
+
+// custom namespace
+const rooms = io.of("/my-namespace").adapter.rooms;
+const sids = io.of("/my-namespace").adapter.sids;
+```
+
+
+
+笔记：
+
+- 这些对象并不意味着直接修改，您应该始终使用[`socket.join(...)`](https://socket.io/zh-CN/docs/v4/server-api/#socketjoinroom) 和 [`socket.leave(...)`](https://socket.io/zh-CN/docs/v4/server-api/#socketleaveroom)来代替。
+- 在[多服务器](https://socket.io/zh-CN/docs/v4/using-multiple-nodes/)设置中，`rooms` 和 `sids`对象不会在 Socket.IO 服务器之间共享（房间可能只“存在”在一个服务器上而不是另一个服务器上）。
+
+## 房间事件[](https://socket.io/zh-CN/docs/v4/rooms/#room-events)
+
+从`socket.io@3.1.0`开始，底层适配器将发出以下事件：
+
+- `create-room` (argument: room)
+- `delete-room` (argument: room)
+- `join-room` (argument: room, id)
+- `leave-room` (argument: room, id)
+
+例子：
+
+```js
+io.of("/").adapter.on("create-room", (room) => {
+  console.log(`room ${room} was created`);
+});
+
+io.of("/").adapter.on("join-room", (room, id) => {
+  console.log(`socket ${id} has joined room ${room}`);
+});
+```
+
