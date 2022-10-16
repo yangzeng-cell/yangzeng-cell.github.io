@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="const assertions是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明 const assertions1const x &#x3D; &amp;#123; text: &quot;hello&quot; &amp;#125; as const;  官方的解释是 const断言是ts3.4新增的一种构造函数，他的语法是用const代替type的类型断言，例如 123 as const），当我们使用">
+    <meta name="description" content="const assertions是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明 const assertionsconst x &#x3D; &amp;#123; text: &quot;hello&quot; &amp;#125; as const;  官方的解释是 const断言是ts3.4新增的一种构造函数，他的语法是用const代替type的类型断言，例如 123 as const），当我们使用c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="杀手级的TypeScript功能：const断言">
 <meta property="og:url" content="http://example.com/2022/10/06/%E6%9D%80%E6%89%8B%E7%BA%A7%E7%9A%84TypeScript%E5%8A%9F%E8%83%BD%EF%BC%9Aconst%E6%96%AD%E8%A8%80/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="const assertions是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明 const assertions1const x &#x3D; &amp;#123; text: &quot;hello&quot; &amp;#125; as const;  官方的解释是 const断言是ts3.4新增的一种构造函数，他的语法是用const代替type的类型断言，例如 123 as const），当我们使用">
+<meta property="og:description" content="const assertions是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明 const assertionsconst x &#x3D; &amp;#123; text: &quot;hello&quot; &amp;#125; as const;  官方的解释是 const断言是ts3.4新增的一种构造函数，他的语法是用const代替type的类型断言，例如 123 as const），当我们使用c">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-06T18:00:50.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -218,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.3k 字
+          3.2k 字
         
       </span>
     
@@ -229,7 +229,7 @@
         
         
         
-          28 分钟
+          27 分钟
         
       </span>
     
@@ -273,7 +273,7 @@
               <div class="markdown-body">
                 
                 <h3 id=""><a href="#" class="headerlink" title=""></a></h3><p><code>const assertions</code>是ts3.4新增的功能，们可以用这个新功能省略很多繁琐的类型声明</p>
-<h3 id="const-assertions"><a href="#const-assertions" class="headerlink" title="const assertions"></a>const assertions</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> x = &#123; <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;hello&quot;</span> &#125; <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;<br></code></pre></td></tr></table></figure>
+<h3 id="const-assertions"><a href="#const-assertions" class="headerlink" title="const assertions"></a>const assertions</h3><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> x = &#123; <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;hello&quot;</span> &#125; <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;</code></pre></div>
 
 <p>官方的解释是</p>
 <p>const断言是ts3.4新增的一种构造函数，他的语法是用const代替type的类型断言，例如 <code>123 as const</code>），当我们使用const进行断言literal expression的时候，会做以下处理</p>
@@ -284,44 +284,142 @@
 </ol>
 <p>官方的解释会比较困惑</p>
 <h3 id="No-type-widening-for-literal-types-文字类型没有类型扩展"><a href="#No-type-widening-for-literal-types-文字类型没有类型扩展" class="headerlink" title="No type widening for literal types [文字类型没有类型扩展]"></a>No type widening for literal types [文字类型没有类型扩展]</h3><p>通过const断言，文字类型不会被扩展为更加宽泛的类型，当我们使用const声明字面量变量的时候，类型就会等于右侧的字面量</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> x = <span class="hljs-string">&#x27;x&#x27;</span>; <span class="hljs-comment">// x has the type &#x27;x&#x27;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> x = <span class="hljs-string">&#x27;x&#x27;</span>; <span class="hljs-comment">// x has the type &#x27;x&#x27;</span></code></pre></div>
 
 <p>const关键字可以确保不会重新分配变量类型并且会保证更加严格的类型定义，但是，如果我们使用let替代const的时候，let就会变成更加宽泛的类型</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> x = <span class="hljs-string">&#x27;x&#x27;</span>; <span class="hljs-comment">// has the type &#x27;x&#x27; </span><br><span class="hljs-keyword">let</span> y = <span class="hljs-string">&#x27;x&#x27;</span>;   <span class="hljs-comment">// has the type string</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> x = <span class="hljs-string">&#x27;x&#x27;</span>; <span class="hljs-comment">// has the type &#x27;x&#x27; </span>
+<span class="hljs-keyword">let</span> y = <span class="hljs-string">&#x27;x&#x27;</span>;   <span class="hljs-comment">// has the type string</span></code></pre></div>
 
 <p>y会扩展为更加宽泛的值，允许分配其他值给y,而x只能是字面量的x,如果我们向让let也可以这么做，就可以使用const断言</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">let</span> y = <span class="hljs-string">&#x27;x&#x27;</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>; <span class="hljs-comment">// y has type &#x27;x&#x27;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs csharp"><span class="hljs-keyword">let</span> y = <span class="hljs-string">&#x27;x&#x27;</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>; <span class="hljs-comment">// y has type &#x27;x&#x27;</span></code></pre></div>
 
-<h3 id="object-literals-get-readonly-properties-对象字面量获得只读属性"><a href="#object-literals-get-readonly-properties-对象字面量获得只读属性" class="headerlink" title="object literals get readonly properties [对象字面量获得只读属性]"></a>object literals get readonly properties [对象字面量获得只读属性]</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> action = &#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;INCREMENT&#x27;</span>, &#125; <span class="hljs-comment">// has type &#123; type: string &#125;</span><br></code></pre></td></tr></table></figure>
+<h3 id="object-literals-get-readonly-properties-对象字面量获得只读属性"><a href="#object-literals-get-readonly-properties-对象字面量获得只读属性" class="headerlink" title="object literals get readonly properties [对象字面量获得只读属性]"></a>object literals get readonly properties [对象字面量获得只读属性]</h3><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> action = &#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;INCREMENT&#x27;</span>, &#125; <span class="hljs-comment">// has type &#123; type: string &#125;</span></code></pre></div>
 
 <p>const声明对象时，却依然会出现属性的扩展</p>
 <p>如果你熟悉使用redux的时候，action用于执行修改变量，对外界来说，redux是全局不可修改的state store,state只能通过action在reducer中进行修改，reducer是纯函数，他会返回更新之后的state的版本，在action被dispatch之后、</p>
 <p>在redux中，通常情况下，是在actionCreator中创建action,actionCreators是纯函数，它会返回redux action的字面量的对象，以及提供参数给action</p>
 <p>用一个例子进行解释说明</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">setCount</span> = (<span class="hljs-params">n: number</span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n,<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> action = <span class="hljs-title function_">setCount</span>(<span class="hljs-number">3</span>)<br><span class="hljs-comment">// action has type</span><br><span class="hljs-comment">// &#123; type: string, payload: number &#125;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">setCount</span> = (<span class="hljs-params">n: number</span>) =&gt; &#123;
+  <span class="hljs-keyword">return</span> &#123;
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,
+    <span class="hljs-attr">payload</span>: n,
+  &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> action = <span class="hljs-title function_">setCount</span>(<span class="hljs-number">3</span>)
+<span class="hljs-comment">// action has type</span>
+<span class="hljs-comment">// &#123; type: string, payload: number &#125;</span></code></pre></div>
 
 <p>type的类型应该是字面量的，但是会被自动转换成更加宽泛的类型，在TS3.4以前，我们需要显示的指定返回值类型才可以达到类似的效果，</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SetCount</span> &#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>;<br>  <span class="hljs-attr">payload</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> setCount = (<span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">SetCount</span> =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n,<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> action = <span class="hljs-title function_">setCount</span>(<span class="hljs-number">3</span>)<br><span class="hljs-comment">// action has type SetCount</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SetCount</span> &#123;
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>;
+  <span class="hljs-attr">payload</span>: <span class="hljs-built_in">number</span>;
+&#125;
+
+<span class="hljs-keyword">const</span> setCount = (<span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">SetCount</span> =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> &#123;
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,
+    <span class="hljs-attr">payload</span>: n,
+  &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> action = <span class="hljs-title function_">setCount</span>(<span class="hljs-number">3</span>)
+<span class="hljs-comment">// action has type SetCount</span></code></pre></div>
 
 <p>ts3.4以后使用const断言也可以实现同样的效果,而且是只读属性的</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">const</span> <span class="hljs-title function_">setCount</span> = (<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">const</span>&gt;&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> action = <span class="hljs-title function_">setCount</span>(<span class="hljs-number">3</span>);<br><span class="hljs-comment">// action has type</span><br><span class="hljs-comment">//  &#123; readonly type: &quot;SET_COUNT&quot;; readonly payload: number &#125;;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs tsx"><span class="hljs-keyword">const</span> <span class="hljs-title function_">setCount</span> = (<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt; &#123;
+  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">const</span>&gt;&#123;
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,
+    <span class="hljs-attr">payload</span>: n
+  &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> action = <span class="hljs-title function_">setCount</span>(<span class="hljs-number">3</span>);
+<span class="hljs-comment">// action has type</span>
+<span class="hljs-comment">//  &#123; readonly type: &quot;SET_COUNT&quot;; readonly payload: number &#125;;</span></code></pre></div>
 
 <p>对于使用了联合类型的action,在没有使用const断言的时候会比较麻烦</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SetCount</span> &#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>;<br>  <span class="hljs-attr">payload</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ResetCount</span> &#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;RESET_COUNT&#x27;</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> setCount = (<span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">SetCount</span> =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n,<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> resetCount = (): <span class="hljs-function"><span class="hljs-params">ResetCount</span> =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;RESET_COUNT&#x27;</span>,<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">CountActions</span> = <span class="hljs-title class_">SetCount</span> | <span class="hljs-title class_">ResetCount</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SetCount</span> &#123;
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>;
+  <span class="hljs-attr">payload</span>: <span class="hljs-built_in">number</span>;
+&#125;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ResetCount</span> &#123;
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;RESET_COUNT&#x27;</span>;
+&#125;
+
+<span class="hljs-keyword">const</span> setCount = (<span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">SetCount</span> =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> &#123;
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,
+    <span class="hljs-attr">payload</span>: n,
+  &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> resetCount = (): <span class="hljs-function"><span class="hljs-params">ResetCount</span> =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> &#123;
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;RESET_COUNT&#x27;</span>,
+  &#125;
+&#125;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">CountActions</span> = <span class="hljs-title class_">SetCount</span> | <span class="hljs-title class_">ResetCount</span></code></pre></div>
 
 <p>通过使用const的用法</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">const</span> <span class="hljs-title function_">setCount</span> = (<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">const</span>&gt;&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,<br>    <span class="hljs-attr">payload</span>: n<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">resetCount</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">const</span>&gt;&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;RESET_COUNT&#x27;</span><br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">CountActions</span> = <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> setCount&gt; | <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> resetCount&gt;;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs tsx"><span class="hljs-keyword">const</span> <span class="hljs-title function_">setCount</span> = (<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt; &#123;
+  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">const</span>&gt;&#123;
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_COUNT&#x27;</span>,
+    <span class="hljs-attr">payload</span>: n
+  &#125;
+&#125;
 
-<h3 id="Array-literals-become-readonly-tuples"><a href="#Array-literals-become-readonly-tuples" class="headerlink" title="Array literals become readonly tuples"></a>Array literals become <code>readonly</code> tuples</h3><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sqf">const <span class="hljs-built_in">action</span> = &#123;<br>  <span class="hljs-built_in">type</span>: <span class="hljs-string">&#x27;SET_HOURS&#x27;</span>,<br>  payload: [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>],<br>&#125;<br><span class="hljs-comment">//  &#123; type: string; payload: number[]; &#125;</span><br><br><span class="hljs-built_in">action</span>.payload.push(<span class="hljs-number">12</span>) <span class="hljs-comment">// no error</span><br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">resetCount</span> = (<span class="hljs-params"></span>) =&gt; &#123;
+  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">const</span>&gt;&#123;
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;RESET_COUNT&#x27;</span>
+  &#125;
+&#125;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">CountActions</span> = <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> setCount&gt; | <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> resetCount&gt;;</code></pre></div>
+
+<h3 id="Array-literals-become-readonly-tuples"><a href="#Array-literals-become-readonly-tuples" class="headerlink" title="Array literals become readonly tuples"></a>Array literals become <code>readonly</code> tuples</h3><div class="code-wrapper"><pre><code class="hljs sqf">const <span class="hljs-built_in">action</span> = &#123;
+  <span class="hljs-built_in">type</span>: <span class="hljs-string">&#x27;SET_HOURS&#x27;</span>,
+  payload: [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>],
+&#125;
+<span class="hljs-comment">//  &#123; type: string; payload: number[]; &#125;</span>
+
+<span class="hljs-built_in">action</span>.payload.push(<span class="hljs-number">12</span>) <span class="hljs-comment">// no error</span></code></pre></div>
 
 <p>action。payload是可以修改的</p>
 <p>如果使用了const断言</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> action = &lt;<span class="hljs-keyword">const</span>&gt;&#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_HOURS&#x27;</span>,<br>  <span class="hljs-attr">payload</span>: [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>]<br>&#125;<br><br><span class="hljs-comment">// &#123;</span><br><span class="hljs-comment">//  readonly type: &quot;SET_HOURS&quot;;</span><br><span class="hljs-comment">//  readonly payload: readonly [8, 12, 5, 8];</span><br><span class="hljs-comment">// &#125;</span><br><br>action.<span class="hljs-property">payload</span>.<span class="hljs-title function_">push</span>(<span class="hljs-number">12</span>);  <span class="hljs-comment">// error - Property &#x27;push&#x27; does not exist on type &#x27;readonly [8, 12, 5, 8]&#x27;.</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> action = &lt;<span class="hljs-keyword">const</span>&gt;&#123;
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SET_HOURS&#x27;</span>,
+  <span class="hljs-attr">payload</span>: [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>]
+&#125;
 
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">let</span> obj = &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>,<br>  <span class="hljs-attr">y</span>: [<span class="hljs-number">20</span>, <span class="hljs-number">30</span>],<br>  <span class="hljs-attr">z</span>: &#123;<br>    <span class="hljs-attr">a</span>:<br>      &#123;  <span class="hljs-attr">b</span>: <span class="hljs-number">42</span> &#125;<br>  &#125; <br>&#125; <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;<br></code></pre></td></tr></table></figure>
+<span class="hljs-comment">// &#123;</span>
+<span class="hljs-comment">//  readonly type: &quot;SET_HOURS&quot;;</span>
+<span class="hljs-comment">//  readonly payload: readonly [8, 12, 5, 8];</span>
+<span class="hljs-comment">// &#125;</span>
+
+action.<span class="hljs-property">payload</span>.<span class="hljs-title function_">push</span>(<span class="hljs-number">12</span>);  <span class="hljs-comment">// error - Property &#x27;push&#x27; does not exist on type &#x27;readonly [8, 12, 5, 8]&#x27;.</span></code></pre></div>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">let</span> obj = &#123;
+  <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">y</span>: [<span class="hljs-number">20</span>, <span class="hljs-number">30</span>],
+  <span class="hljs-attr">z</span>: &#123;
+    <span class="hljs-attr">a</span>:
+      &#123;  <span class="hljs-attr">b</span>: <span class="hljs-number">42</span> &#125;
+  &#125; 
+&#125; <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;</code></pre></div>
 
 <p>转换成</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">let</span> <span class="hljs-attr">obj</span>: &#123;<br>  readonly <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>;<br>  readonly <span class="hljs-attr">y</span>: readonly [<span class="hljs-number">20</span>, <span class="hljs-number">30</span>];<br>  readonly <span class="hljs-attr">z</span>: &#123;<br>    readonly <span class="hljs-attr">a</span>: &#123;<br>      readonly <span class="hljs-attr">b</span>: <span class="hljs-number">42</span>;<br>    &#125;;<br>  &#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">let</span> <span class="hljs-attr">obj</span>: &#123;
+  readonly <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>;
+  readonly <span class="hljs-attr">y</span>: readonly [<span class="hljs-number">20</span>, <span class="hljs-number">30</span>];
+  readonly <span class="hljs-attr">z</span>: &#123;
+    readonly <span class="hljs-attr">a</span>: &#123;
+      readonly <span class="hljs-attr">b</span>: <span class="hljs-number">42</span>;
+    &#125;;
+  &#125;;
+&#125;;</code></pre></div>
 
                 
               </div>

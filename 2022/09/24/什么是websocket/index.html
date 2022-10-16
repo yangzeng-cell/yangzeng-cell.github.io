@@ -24,7 +24,7 @@
 <meta property="og:description" content="webSocket是一种网络传输协议，可以在单个TCP连接上进行全双工通信，位于OSI模型的应用层，webSocket协议在2011年由IETF标准化为RFC6455,由RFC7936补充规范，WEB IDL中的webSocket api由W3C标准化，websocket是一种和http不同的协议，但是都是属于OSI模型的应用层，可以通过HTTP的80端口和443端口进行通信，支持HTTP代理和中">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-24T01:03:18.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -218,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5k 字
+          4.8k 字
         
       </span>
     
@@ -229,7 +229,7 @@
         
         
         
-          42 分钟
+          41 分钟
         
       </span>
     
@@ -274,7 +274,8 @@
                 
                 <h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>webSocket是一种网络传输协议，可以在单个TCP连接上进行全双工通信，位于OSI模型的应用层，webSocket协议在2011年由IETF标准化为RFC6455,由RFC7936补充规范，WEB IDL中的webSocket api由W3C标准化，websocket是一种和http不同的协议，但是都是属于OSI模型的应用层，可以通过HTTP的80端口和443端口进行通信，支持HTTP代理和中介，和http协议兼容，为了实现兼容性，webSocket进行握手使用HTTP Upgrade头从http协议改成webSocket协议，websocket支持浏览器和服务器进行双向通信，可以进行实时通信，不需要客户端发起请求，目前大部分浏览器都支持websocket,和HTTP不同，websocket支持全双工通信，websocket还可以TCP之上实现消息流</p>
 <p>websocket协议有两种标识符分别是ws和wss，分别是明文传输和加密传输。websocket不支持#，除了这些，其他都和http相同</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">ws:<span class="hljs-regexp">//</span>example.com/wsapi<br>wss:<span class="hljs-regexp">//</span>secure.example.com/wsapi<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">ws:<span class="hljs-regexp">//</span>example.com/wsapi
+wss:<span class="hljs-regexp">//</span>secure.example.com/wsapi</code></pre></div>
 
 <h4 id="websocket的优点"><a href="#websocket的优点" class="headerlink" title="websocket的优点"></a>websocket的优点</h4><ul>
 <li><p>比较少的控制开销，在服务器和客户端通信的时候，用于协议控制的数据包头部相对较小，在不包含扩展的情况下，对于服务器到客户端的内容，此头部大小只有2到10字节，对于客户端到服务器的内容，此头部还需要加额外的4字节的掩码，相对于http每次都要携带完整的头部，明显减少了开销</p>
@@ -290,10 +291,21 @@
 </ul>
 <p>webSocket是独立的，建立在TCP上的协议，websocket通过HTTP/1.1的101状态吗继续握手，为了建立Websocket连接，需要通过浏览器发出请求，之后服务器进行回应，这个过程通常称为“<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/%E6%8F%A1%E6%89%8B_(%E6%8A%80%E6%9C%AF)">握手</a>”（Handshaking）</p>
 <h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>客户端请求：</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/chat</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>server.example.com<br><span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>websocket<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>Upgrade<br><span class="hljs-attribute">Sec-WebSocket-Key</span><span class="hljs-punctuation">: </span>dGhlIHNhbXBsZSBub25jZQ==<br><span class="hljs-attribute">Origin</span><span class="hljs-punctuation">: </span>http://example.com<br><span class="hljs-attribute">Sec-WebSocket-Protocol</span><span class="hljs-punctuation">: </span>chat, superchat<br><span class="hljs-attribute">Sec-WebSocket-Version</span><span class="hljs-punctuation">: </span>13<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/chat</span> <span class="hljs-meta">HTTP/1.1</span>
+<span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>server.example.com
+<span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>websocket
+<span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>Upgrade
+<span class="hljs-attribute">Sec-WebSocket-Key</span><span class="hljs-punctuation">: </span>dGhlIHNhbXBsZSBub25jZQ==
+<span class="hljs-attribute">Origin</span><span class="hljs-punctuation">: </span>http://example.com
+<span class="hljs-attribute">Sec-WebSocket-Protocol</span><span class="hljs-punctuation">: </span>chat, superchat
+<span class="hljs-attribute">Sec-WebSocket-Version</span><span class="hljs-punctuation">: </span>13</code></pre></div>
 
 <p>服务器的回应</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">101</span> Switching Protocols<br><span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>websocket<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>Upgrade<br><span class="hljs-attribute">Sec-WebSocket-Accept</span><span class="hljs-punctuation">: </span>s3pPLMBiTxaQ9kYGzzhZRbK+xOo=<br><span class="hljs-attribute">Sec-WebSocket-Protocol</span><span class="hljs-punctuation">: </span>chat<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">101</span> Switching Protocols
+<span class="hljs-attribute">Upgrade</span><span class="hljs-punctuation">: </span>websocket
+<span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>Upgrade
+<span class="hljs-attribute">Sec-WebSocket-Accept</span><span class="hljs-punctuation">: </span>s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+<span class="hljs-attribute">Sec-WebSocket-Protocol</span><span class="hljs-punctuation">: </span>chat</code></pre></div>
 
 <ul>
 <li>Connection必须设置Upgrade，表示客户端希望连接升级。</li>
@@ -303,10 +315,24 @@
 <li>Origin字段是必须的。如果缺少origin字段，WebSocket服务器需要回复HTTP 403 状态码（禁止访问）。[<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/zh-hans/WebSocket#cite_note-16">16]</a></li>
 <li>其他一些定义在HTTP协议中的字段，如<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/Cookie">Cookie</a>等，也可以在Websocket中使用。</li>
 </ul>
-<h4 id="websocket的基本使用"><a href="#websocket的基本使用" class="headerlink" title="websocket的基本使用"></a>websocket的基本使用</h4><h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&quot;wss://echo.websocket.org&quot;</span>);<br><br>ws.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123; <br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Connection open ...&quot;</span>); <br>  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;Hello WebSockets!&quot;</span>);<br>&#125;;<br><br>ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( <span class="hljs-string">&quot;Received Message: &quot;</span> + evt.<span class="hljs-property">data</span>);<br>  ws.<span class="hljs-title function_">close</span>();<br>&#125;;<br><br>ws.<span class="hljs-property">onclose</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Connection closed.&quot;</span>);<br>&#125;;      <br></code></pre></td></tr></table></figure>
+<h4 id="websocket的基本使用"><a href="#websocket的基本使用" class="headerlink" title="websocket的基本使用"></a>websocket的基本使用</h4><h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&quot;wss://echo.websocket.org&quot;</span>);
+
+ws.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123; 
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Connection open ...&quot;</span>); 
+  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;Hello WebSockets!&quot;</span>);
+&#125;;
+
+ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( <span class="hljs-string">&quot;Received Message: &quot;</span> + evt.<span class="hljs-property">data</span>);
+  ws.<span class="hljs-title function_">close</span>();
+&#125;;
+
+ws.<span class="hljs-property">onclose</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Connection closed.&quot;</span>);
+&#125;;</code></pre></div>
 
 <blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&#x27;ws://localhost:8080&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&#x27;ws://localhost:8080&#x27;</span>);</code></pre></div>
 </blockquote>
 <p>wenSocket作为构造函数，用于新建WebSocket实例，执行完上面的例子之后，客户端就会和服务器进行连接</p>
 <h5 id="webSocket-readyState"><a href="#webSocket-readyState" class="headerlink" title="webSocket.readyState"></a>webSocket.readyState</h5><p>readyState属性是返回当前状态，共有四种状态</p>
@@ -316,38 +342,121 @@
 <li>CLOSING：值为2，表示连接正在关闭。</li>
 <li>CLOSED：值为3，表示连接已经关闭，或者打开连接失败。</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">switch</span> (ws.<span class="hljs-property">readyState</span>) &#123;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">CONNECTING</span>:<br>    <span class="hljs-comment">// do something</span><br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">OPEN</span>:<br>    <span class="hljs-comment">// do something</span><br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">CLOSING</span>:<br>    <span class="hljs-comment">// do something</span><br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">CLOSED</span>:<br>    <span class="hljs-comment">// do something</span><br>    <span class="hljs-keyword">break</span>;<br>  <span class="hljs-attr">default</span>:<br>    <span class="hljs-comment">// this never happens</span><br>    <span class="hljs-keyword">break</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">switch</span> (ws.<span class="hljs-property">readyState</span>) &#123;
+  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">CONNECTING</span>:
+    <span class="hljs-comment">// do something</span>
+    <span class="hljs-keyword">break</span>;
+  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">OPEN</span>:
+    <span class="hljs-comment">// do something</span>
+    <span class="hljs-keyword">break</span>;
+  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">CLOSING</span>:
+    <span class="hljs-comment">// do something</span>
+    <span class="hljs-keyword">break</span>;
+  <span class="hljs-keyword">case</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">CLOSED</span>:
+    <span class="hljs-comment">// do something</span>
+    <span class="hljs-keyword">break</span>;
+  <span class="hljs-attr">default</span>:
+    <span class="hljs-comment">// this never happens</span>
+    <span class="hljs-keyword">break</span>;
+&#125;</code></pre></div>
 
-<h5 id="open属性监听连接之后的回调函数"><a href="#open属性监听连接之后的回调函数" class="headerlink" title="open属性监听连接之后的回调函数"></a>open属性监听连接之后的回调函数</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript">ws.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Hello Server!&#x27;</span>);<br>&#125;<br><span class="hljs-comment">//执行多个回调函数可以使用addEventListener</span><br>ws.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;open&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) &#123;<br>  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Hello Server!&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<h5 id="open属性监听连接之后的回调函数"><a href="#open属性监听连接之后的回调函数" class="headerlink" title="open属性监听连接之后的回调函数"></a>open属性监听连接之后的回调函数</h5><div class="code-wrapper"><pre><code class="hljs javascript">ws.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Hello Server!&#x27;</span>);
+&#125;
+<span class="hljs-comment">//执行多个回调函数可以使用addEventListener</span>
+ws.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;open&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) &#123;
+  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Hello Server!&#x27;</span>);
+&#125;);</code></pre></div>
 
-<h5 id="实例对象的onclose属性，用于指定连接关闭后的回调函数"><a href="#实例对象的onclose属性，用于指定连接关闭后的回调函数" class="headerlink" title="实例对象的onclose属性，用于指定连接关闭后的回调函数"></a>实例对象的<code>onclose</code>属性，用于指定连接关闭后的回调函数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js">ws.<span class="hljs-property">onclose</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-keyword">var</span> code = event.<span class="hljs-property">code</span>;<br>  <span class="hljs-keyword">var</span> reason = event.<span class="hljs-property">reason</span>;<br>  <span class="hljs-keyword">var</span> wasClean = event.<span class="hljs-property">wasClean</span>;<br>  <span class="hljs-comment">// handle close event</span><br>&#125;;<br><br>ws.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;close&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-keyword">var</span> code = event.<span class="hljs-property">code</span>;<br>  <span class="hljs-keyword">var</span> reason = event.<span class="hljs-property">reason</span>;<br>  <span class="hljs-keyword">var</span> wasClean = event.<span class="hljs-property">wasClean</span>;<br>  <span class="hljs-comment">// handle close event</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+<h5 id="实例对象的onclose属性，用于指定连接关闭后的回调函数"><a href="#实例对象的onclose属性，用于指定连接关闭后的回调函数" class="headerlink" title="实例对象的onclose属性，用于指定连接关闭后的回调函数"></a>实例对象的<code>onclose</code>属性，用于指定连接关闭后的回调函数</h5><div class="code-wrapper"><pre><code class="hljs js">ws.<span class="hljs-property">onclose</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;
+  <span class="hljs-keyword">var</span> code = event.<span class="hljs-property">code</span>;
+  <span class="hljs-keyword">var</span> reason = event.<span class="hljs-property">reason</span>;
+  <span class="hljs-keyword">var</span> wasClean = event.<span class="hljs-property">wasClean</span>;
+  <span class="hljs-comment">// handle close event</span>
+&#125;;
+
+ws.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;close&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;
+  <span class="hljs-keyword">var</span> code = event.<span class="hljs-property">code</span>;
+  <span class="hljs-keyword">var</span> reason = event.<span class="hljs-property">reason</span>;
+  <span class="hljs-keyword">var</span> wasClean = event.<span class="hljs-property">wasClean</span>;
+  <span class="hljs-comment">// handle close event</span>
+&#125;);</code></pre></div>
 
 <p>实例对象的<code>onmessage</code>属性，用于指定收到服务器数据后的回调函数</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript">ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-keyword">var</span> data = event.<span class="hljs-property">data</span>;<br>  <span class="hljs-comment">// 处理数据</span><br>&#125;;<br><br>ws.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-keyword">var</span> data = event.<span class="hljs-property">data</span>;<br>  <span class="hljs-comment">// 处理数据</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript">ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;
+  <span class="hljs-keyword">var</span> data = event.<span class="hljs-property">data</span>;
+  <span class="hljs-comment">// 处理数据</span>
+&#125;;
+
+ws.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;
+  <span class="hljs-keyword">var</span> data = event.<span class="hljs-property">data</span>;
+  <span class="hljs-comment">// 处理数据</span>
+&#125;);</code></pre></div>
 
 <p>注意，服务器数据可能是文本，也可能是二进制数据（<code>blob</code>对象或<code>Arraybuffer</code>对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript">ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>)&#123;<br>  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> event.<span class="hljs-property">data</span> === <span class="hljs-title class_">String</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Received data string&quot;</span>);<br>  &#125;<br><br>  <span class="hljs-keyword">if</span>(event.<span class="hljs-property">data</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">ArrayBuffer</span>)&#123;<br>    <span class="hljs-keyword">var</span> buffer = event.<span class="hljs-property">data</span>;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Received arraybuffer&quot;</span>);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript">ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>)&#123;
+  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> event.<span class="hljs-property">data</span> === <span class="hljs-title class_">String</span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Received data string&quot;</span>);
+  &#125;
+
+  <span class="hljs-keyword">if</span>(event.<span class="hljs-property">data</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">ArrayBuffer</span>)&#123;
+    <span class="hljs-keyword">var</span> buffer = event.<span class="hljs-property">data</span>;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Received arraybuffer&quot;</span>);
+  &#125;
+&#125;</code></pre></div>
 
 <p>除了动态判断收到的数据类型，也可以使用<code>binaryType</code>属性，显式指定收到的二进制数据类型。</p>
 <blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 收到的是 blob 数据</span><br>ws.<span class="hljs-property">binaryType</span> = <span class="hljs-string">&quot;blob&quot;</span>;<br>ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">data</span>.<span class="hljs-property">size</span>);<br>&#125;;<br><br><span class="hljs-comment">// 收到的是 ArrayBuffer 数据</span><br>ws.<span class="hljs-property">binaryType</span> = <span class="hljs-string">&quot;arraybuffer&quot;</span>;<br>ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">data</span>.<span class="hljs-property">byteLength</span>);<br>&#125;;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 收到的是 blob 数据</span>
+ws.<span class="hljs-property">binaryType</span> = <span class="hljs-string">&quot;blob&quot;</span>;
+ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">data</span>.<span class="hljs-property">size</span>);
+&#125;;
+
+<span class="hljs-comment">// 收到的是 ArrayBuffer 数据</span>
+ws.<span class="hljs-property">binaryType</span> = <span class="hljs-string">&quot;arraybuffer&quot;</span>;
+ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">data</span>.<span class="hljs-property">byteLength</span>);
+&#125;;</code></pre></div>
 </blockquote>
 <p>实例对象的<code>send()</code>方法用于向服务器发送数据。</p>
 <blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;your message&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript">ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;your message&#x27;</span>);</code></pre></div>
 </blockquote>
 <p>发送blob对象的例子</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> file = <span class="hljs-variable language_">document</span><br>  .<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;input[type=&quot;file&quot;]&#x27;</span>)<br>  .<span class="hljs-property">files</span>[<span class="hljs-number">0</span>];<br>ws.<span class="hljs-title function_">send</span>(file);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> file = <span class="hljs-variable language_">document</span>
+  .<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;input[type=&quot;file&quot;]&#x27;</span>)
+  .<span class="hljs-property">files</span>[<span class="hljs-number">0</span>];
+ws.<span class="hljs-title function_">send</span>(file);</code></pre></div>
 
 <p>发送ArrayBuffer对象的例子</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// Sending canvas ImageData as ArrayBuffer</span><br><span class="hljs-keyword">var</span> img = canvas_context.<span class="hljs-title function_">getImageData</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">400</span>, <span class="hljs-number">320</span>);<br><span class="hljs-keyword">var</span> binary = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Uint8Array</span>(img.<span class="hljs-property">data</span>.<span class="hljs-property">length</span>);<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; img.<span class="hljs-property">data</span>.<span class="hljs-property">length</span>; i++) &#123;<br>  binary[i] = img.<span class="hljs-property">data</span>[i];<br>&#125;<br>ws.<span class="hljs-title function_">send</span>(binary.<span class="hljs-property">buffer</span>);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// Sending canvas ImageData as ArrayBuffer</span>
+<span class="hljs-keyword">var</span> img = canvas_context.<span class="hljs-title function_">getImageData</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">400</span>, <span class="hljs-number">320</span>);
+<span class="hljs-keyword">var</span> binary = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Uint8Array</span>(img.<span class="hljs-property">data</span>.<span class="hljs-property">length</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; img.<span class="hljs-property">data</span>.<span class="hljs-property">length</span>; i++) &#123;
+  binary[i] = img.<span class="hljs-property">data</span>[i];
+&#125;
+ws.<span class="hljs-title function_">send</span>(binary.<span class="hljs-property">buffer</span>);</code></pre></div>
 
 <p>实例对象的<code>bufferedAmount</code>属性，表示还有多少字节的二进制数据没有发送出去。它可以用来判断发送是否结束</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayBuffer</span>(<span class="hljs-number">10000000</span>);<br>socket.<span class="hljs-title function_">send</span>(data);<br><br><span class="hljs-keyword">if</span> (socket.<span class="hljs-property">bufferedAmount</span> === <span class="hljs-number">0</span>) &#123;<br>  <span class="hljs-comment">// 发送完毕</span><br>&#125; <span class="hljs-keyword">else</span> &#123;<br>  <span class="hljs-comment">// 发送还没结束</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayBuffer</span>(<span class="hljs-number">10000000</span>);
+socket.<span class="hljs-title function_">send</span>(data);
+
+<span class="hljs-keyword">if</span> (socket.<span class="hljs-property">bufferedAmount</span> === <span class="hljs-number">0</span>) &#123;
+  <span class="hljs-comment">// 发送完毕</span>
+&#125; <span class="hljs-keyword">else</span> &#123;
+  <span class="hljs-comment">// 发送还没结束</span>
+&#125;</code></pre></div>
 
 <p>实例对象的<code>onerror</code>属性，用于指定报错时的回调函数。</p>
 <blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript">socket.<span class="hljs-property">onerror</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-comment">// handle error event</span><br>&#125;;<br><br>socket.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;error&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-comment">// handle error event</span><br>&#125;)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript">socket.<span class="hljs-property">onerror</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;
+  <span class="hljs-comment">// handle error event</span>
+&#125;;
+
+socket.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;error&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;
+  <span class="hljs-comment">// handle error event</span>
+&#125;)</code></pre></div>
 </blockquote>
 <h4 id="服务端的实现"><a href="#服务端的实现" class="headerlink" title="服务端的实现"></a>服务端的实现</h4><p>如果用node实现websocket</p>
 <ul>

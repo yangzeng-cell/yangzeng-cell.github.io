@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="##第四章栈使用数组来定义数据结构 12345678910111213141516171819202122232425262728293031323334class Stack &amp;#123;  constructor() &amp;#123;    this.items &#x3D; [];  &amp;#125;  &#x2F;&#x2F; 添加一个（或几个）新元素到栈顶,返回值是数组的长度  push(element) &amp;#123;">
+    <meta name="description" content="##第四章栈使用数组来定义数据结构 class Stack &amp;#123;   constructor() &amp;#123;     this.items &#x3D; [];   &amp;#125;   &#x2F;&#x2F; 添加一个（或几个）新元素到栈顶,返回值是数组的长度   push(element) &amp;#123;     return this.items.push(element);   &amp;#125;   &#x2F;&#x2F;移除栈顶的元">
 <meta property="og:type" content="article">
 <meta property="og:title" content="学习JavaScript数据结构与算法（第3版）读书笔记">
 <meta property="og:url" content="http://example.com/2022/09/14/%E5%AD%A6%E4%B9%A0JavaScript%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC3%E7%89%88%EF%BC%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="##第四章栈使用数组来定义数据结构 12345678910111213141516171819202122232425262728293031323334class Stack &amp;#123;  constructor() &amp;#123;    this.items &#x3D; [];  &amp;#125;  &#x2F;&#x2F; 添加一个（或几个）新元素到栈顶,返回值是数组的长度  push(element) &amp;#123;">
+<meta property="og:description" content="##第四章栈使用数组来定义数据结构 class Stack &amp;#123;   constructor() &amp;#123;     this.items &#x3D; [];   &amp;#125;   &#x2F;&#x2F; 添加一个（或几个）新元素到栈顶,返回值是数组的长度   push(element) &amp;#123;     return this.items.push(element);   &amp;#125;   &#x2F;&#x2F;移除栈顶的元">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-14T13:50:51.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -218,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.4k 字
+          3.2k 字
         
       </span>
     
@@ -229,7 +229,7 @@
         
         
         
-          29 分钟
+          27 分钟
         
       </span>
     
@@ -273,27 +273,181 @@
               <div class="markdown-body">
                 
                 <h4 id="第四章栈"><a href="#第四章栈" class="headerlink" title="##第四章栈"></a>##第四章栈</h4><p>使用数组来定义数据结构</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span> = [];<br>  &#125;<br>  <span class="hljs-comment">// 添加一个（或几个）新元素到栈顶,返回值是数组的长度</span><br>  <span class="hljs-title function_">push</span>(<span class="hljs-params">element</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-title function_">push</span>(element);<br>  &#125;<br>  <span class="hljs-comment">//移除栈顶的元素，同时返回被移除的元素</span><br>  <span class="hljs-title function_">pop</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-title function_">pop</span>();<br>  &#125;<br><br>  <span class="hljs-comment">//返回栈顶的元素，不对栈做任何修改（该方法不会移除栈顶的元素，仅仅返回它）</span><br>  <span class="hljs-title function_">peek</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>];<br>  &#125;<br><br>  <span class="hljs-comment">// 如果栈里没有任何元素就返回 true，否则返回 false</span><br>  <span class="hljs-title function_">isEmpty</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span> ? <span class="hljs-literal">false</span> : <span class="hljs-literal">true</span>;<br>  &#125;<br><br>  <span class="hljs-comment">// 移除栈里的所有元素</span><br>  <span class="hljs-title function_">clear</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span> = [];<br>  &#125;<br><br>  <span class="hljs-comment">//返回栈里的元素个数。该方法和数组的 length 属性很类似</span><br>  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-property">length</span>;<br>  &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span> = [];
+  &#125;
+  <span class="hljs-comment">// 添加一个（或几个）新元素到栈顶,返回值是数组的长度</span>
+  <span class="hljs-title function_">push</span>(<span class="hljs-params">element</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-title function_">push</span>(element);
+  &#125;
+  <span class="hljs-comment">//移除栈顶的元素，同时返回被移除的元素</span>
+  <span class="hljs-title function_">pop</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-title function_">pop</span>();
+  &#125;
+
+  <span class="hljs-comment">//返回栈顶的元素，不对栈做任何修改（该方法不会移除栈顶的元素，仅仅返回它）</span>
+  <span class="hljs-title function_">peek</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>];
+  &#125;
+
+  <span class="hljs-comment">// 如果栈里没有任何元素就返回 true，否则返回 false</span>
+  <span class="hljs-title function_">isEmpty</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span> ? <span class="hljs-literal">false</span> : <span class="hljs-literal">true</span>;
+  &#125;
+
+  <span class="hljs-comment">// 移除栈里的所有元素</span>
+  <span class="hljs-title function_">clear</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span> = [];
+  &#125;
+
+  <span class="hljs-comment">//返回栈里的元素个数。该方法和数组的 length 属性很类似</span>
+  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>.<span class="hljs-property">length</span>;
+  &#125;
+&#125;
+</code></pre></div>
 
 <p>使用对象来定义栈</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> = <span class="hljs-number">0</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span> = &#123;&#125;;<br>  &#125;<br>  <span class="hljs-title function_">push</span>(<span class="hljs-params">element</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>] = element;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>++;<br>  &#125;<br>  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>;<br>  &#125;<br>  <span class="hljs-title function_">isEmpty</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> === <span class="hljs-number">0</span>;<br>  &#125;<br>  <span class="hljs-title function_">pop</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;<br>    &#125;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>--;<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>];<br>    <span class="hljs-keyword">delete</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>];<br>    <span class="hljs-keyword">return</span> result;  &#125;<br>  <span class="hljs-title function_">clear</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> = <span class="hljs-number">0</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span> = &#123;&#125;;<br>    <span class="hljs-comment">// while(!this.isEmpty())&#123;</span><br>    <span class="hljs-comment">//   this.pop()</span><br>    <span class="hljs-comment">// &#125;</span><br>  &#125;<br>  <span class="hljs-title function_">peek</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> - <span class="hljs-number">1</span>];<br>  &#125;<br>  <span class="hljs-title function_">toString</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;<br>    &#125;<br>    <span class="hljs-keyword">let</span> str = <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-number">0</span>];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>; i++) &#123;<br>      str = str + <span class="hljs-string">`,<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.items[i]&#125;</span>`</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> str;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span> = &#123;&#125;;
+  &#125;
+  <span class="hljs-title function_">push</span>(<span class="hljs-params">element</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>] = element;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>++;
+  &#125;
+  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>;
+  &#125;
+  <span class="hljs-title function_">isEmpty</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> === <span class="hljs-number">0</span>;
+  &#125;
+  <span class="hljs-title function_">pop</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+    &#125;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>--;
+    <span class="hljs-keyword">const</span> result = <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>];
+    <span class="hljs-keyword">delete</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>];
+    <span class="hljs-keyword">return</span> result;  &#125;
+  <span class="hljs-title function_">clear</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span> = &#123;&#125;;
+    <span class="hljs-comment">// while(!this.isEmpty())&#123;</span>
+    <span class="hljs-comment">//   this.pop()</span>
+    <span class="hljs-comment">// &#125;</span>
+  &#125;
+  <span class="hljs-title function_">peek</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> - <span class="hljs-number">1</span>];
+  &#125;
+  <span class="hljs-title function_">toString</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">let</span> str = <span class="hljs-variable language_">this</span>.<span class="hljs-property">items</span>[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>; i++) &#123;
+      str = str + <span class="hljs-string">`,<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.items[i]&#125;</span>`</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> str;
+  &#125;
+&#125;</code></pre></div>
 
 <p>保护数据结构内部元素</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getOwnPropertyNames</span>(stack)); <span class="hljs-comment">// &#123;1&#125;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(stack)); <span class="hljs-comment">// &#123;2&#125;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(stack.<span class="hljs-property">items</span>);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getOwnPropertyNames</span>(stack)); <span class="hljs-comment">// &#123;1&#125;</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(stack)); <span class="hljs-comment">// &#123;2&#125;</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(stack.<span class="hljs-property">items</span>);</code></pre></div>
 
 <p>外部可以直接拿到内部的数据，因为js中没有私有属性</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span> &#123; <br> <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123; <br> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_count</span> = <span class="hljs-number">0</span>; <br> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_items</span> = &#123;&#125;; <br> &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span> &#123; 
+ <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123; 
+ <span class="hljs-variable language_">this</span>.<span class="hljs-property">_count</span> = <span class="hljs-number">0</span>; 
+ <span class="hljs-variable language_">this</span>.<span class="hljs-property">_items</span> = &#123;&#125;; 
+ &#125; 
+&#125;</code></pre></div>
 
 <p>一部分开发者胡使用下划线作为私有属性的规范，但是这样依然可以被访问，没有实质性的作用</p>
-<h5 id="用-ES2015-的限定作用域-Symbol-实现类"><a href="#用-ES2015-的限定作用域-Symbol-实现类" class="headerlink" title="用 ES2015 的限定作用域 Symbol 实现类"></a>用 ES2015 的限定作用域 Symbol 实现类</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> _items = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&quot;stackItem&quot;</span>);<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">//使用计算属性和symbol的形式</span><br>    <span class="hljs-variable language_">this</span>[_items] = &#123;&#125;;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="用-ES2015-的限定作用域-Symbol-实现类"><a href="#用-ES2015-的限定作用域-Symbol-实现类" class="headerlink" title="用 ES2015 的限定作用域 Symbol 实现类"></a>用 ES2015 的限定作用域 Symbol 实现类</h5><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> _items = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&quot;stackItem&quot;</span>);
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-comment">//使用计算属性和symbol的形式</span>
+    <span class="hljs-variable language_">this</span>[_items] = &#123;&#125;;
+  &#125;
+&#125;</code></pre></div>
 
 <p>虽然这种方式可以让上述方法没办法访问内部属性但是可以通过<code>Object.getOwnPropertySymbol(stack)</code>可以访问到以Symbol为key的属性</p>
-<h5 id="用-ES2015-的-WeakMap-实现类"><a href="#用-ES2015-的-WeakMap-实现类" class="headerlink" title="用 ES2015 的 WeakMap 实现类"></a>用 ES2015 的 WeakMap 实现类</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> items=<span class="hljs-keyword">new</span> <span class="hljs-title class_">WeakMap</span>()<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">WeakMapStack</span>&#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>)&#123;<br>    items.<span class="hljs-title function_">set</span>(<span class="hljs-variable language_">this</span>,[])<br>  &#125;<br><br>  <span class="hljs-title function_">push</span>(<span class="hljs-params">element</span>)&#123;<br>    items.<span class="hljs-title function_">get</span>(<span class="hljs-variable language_">this</span>).<span class="hljs-title function_">push</span>(element)<br>  &#125;<br><br>  <span class="hljs-title function_">pop</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-keyword">return</span> items.<span class="hljs-title function_">get</span>(<span class="hljs-variable language_">this</span>).<span class="hljs-title function_">pop</span>()<br>  &#125;<br><br>  <span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="用-ES2015-的-WeakMap-实现类"><a href="#用-ES2015-的-WeakMap-实现类" class="headerlink" title="用 ES2015 的 WeakMap 实现类"></a>用 ES2015 的 WeakMap 实现类</h5><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> items=<span class="hljs-keyword">new</span> <span class="hljs-title class_">WeakMap</span>()
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">WeakMapStack</span>&#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>)&#123;
+    items.<span class="hljs-title function_">set</span>(<span class="hljs-variable language_">this</span>,[])
+  &#125;
+
+  <span class="hljs-title function_">push</span>(<span class="hljs-params">element</span>)&#123;
+    items.<span class="hljs-title function_">get</span>(<span class="hljs-variable language_">this</span>).<span class="hljs-title function_">push</span>(element)
+  &#125;
+
+  <span class="hljs-title function_">pop</span>(<span class="hljs-params"></span>)&#123;
+    <span class="hljs-keyword">return</span> items.<span class="hljs-title function_">get</span>(<span class="hljs-variable language_">this</span>).<span class="hljs-title function_">pop</span>()
+  &#125;
+
+  <span class="hljs-comment">//...</span>
+&#125;</code></pre></div>
 
 <p>现在我们知道了，items 在 Stack 类里是真正的私有属性。采用这种方法，代码的可读性 不强，而且在扩展该类时无法继承私有属性。鱼和熊掌不可兼得！</p>
-<h5 id="使用栈的实例"><a href="#使用栈的实例" class="headerlink" title="使用栈的实例"></a>使用栈的实例</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 将十进制转成二进制</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Stack</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Stack.js&quot;</span>;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">decimalToBinary</span>(<span class="hljs-params">decNumber</span>) &#123;<br>  decNumber = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-title class_">Number</span>(decNumber));<br>  <span class="hljs-keyword">const</span> stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>();<br><br>  <span class="hljs-keyword">let</span> dec = decNumber;<br><br>  <span class="hljs-keyword">while</span> (dec &gt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(dec % <span class="hljs-number">2</span>));<br>    stack.<span class="hljs-title function_">push</span>(dec % <span class="hljs-number">2</span>);<br>    dec = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(dec / <span class="hljs-number">2</span>);<br>  &#125;<br>  <span class="hljs-keyword">let</span> binaryString = <span class="hljs-string">&quot;&quot;</span>;<br>  <span class="hljs-keyword">while</span> (!stack.<span class="hljs-title function_">isEmpty</span>()) &#123;<br>    binaryString += stack.<span class="hljs-title function_">pop</span>().<span class="hljs-title function_">toString</span>();<br>  &#125;<br>  <span class="hljs-keyword">return</span> binaryString;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<h5 id="使用栈的实例"><a href="#使用栈的实例" class="headerlink" title="使用栈的实例"></a>使用栈的实例</h5><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 将十进制转成二进制</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Stack</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Stack.js&quot;</span>;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">decimalToBinary</span>(<span class="hljs-params">decNumber</span>) &#123;
+  decNumber = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-title class_">Number</span>(decNumber));
+  <span class="hljs-keyword">const</span> stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>();
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 把十进制转换成基数为 2～36 的任意进制</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Stack</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Stack.js&quot;</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">baseConverter</span>(<span class="hljs-params">decNumber, base</span>) &#123;<br>  <span class="hljs-keyword">let</span> dec = decNumber;<br>  <span class="hljs-keyword">let</span> arr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>();<br>  <span class="hljs-keyword">const</span> digits = <span class="hljs-string">&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>;<br>  <span class="hljs-keyword">let</span> str = <span class="hljs-string">&quot;&quot;</span>;<br>  <span class="hljs-keyword">if</span> (!(base &gt;= <span class="hljs-number">2</span> &amp;&amp; base &lt;= <span class="hljs-number">36</span>)) &#123;<br>    <span class="hljs-keyword">return</span> str;<br>  &#125;<br>  <span class="hljs-keyword">while</span> (dec &gt; <span class="hljs-number">0</span>) &#123;<br>    arr.<span class="hljs-title function_">push</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(dec % base));<br>    dec = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(dec / base);<br>  &#125;<br><br>  <span class="hljs-keyword">while</span> (!arr.<span class="hljs-title function_">isEmpty</span>()) &#123;<br>    str += digits[arr.<span class="hljs-title function_">pop</span>()];<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> str;<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">baseConverter</span>(<span class="hljs-number">100345</span>, <span class="hljs-number">2</span>)); <span class="hljs-comment">// 11000011111111001</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">baseConverter</span>(<span class="hljs-number">100345</span>, <span class="hljs-number">8</span>)); <span class="hljs-comment">// 303771</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">baseConverter</span>(<span class="hljs-number">100345</span>, <span class="hljs-number">16</span>)); <span class="hljs-comment">// 187F9</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">baseConverter</span>(<span class="hljs-number">100345</span>, <span class="hljs-number">35</span>)); <span class="hljs-comment">// 2BW0</span><br></code></pre></td></tr></table></figure>
+  <span class="hljs-keyword">let</span> dec = decNumber;
+
+  <span class="hljs-keyword">while</span> (dec &gt; <span class="hljs-number">0</span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(dec % <span class="hljs-number">2</span>));
+    stack.<span class="hljs-title function_">push</span>(dec % <span class="hljs-number">2</span>);
+    dec = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(dec / <span class="hljs-number">2</span>);
+  &#125;
+  <span class="hljs-keyword">let</span> binaryString = <span class="hljs-string">&quot;&quot;</span>;
+  <span class="hljs-keyword">while</span> (!stack.<span class="hljs-title function_">isEmpty</span>()) &#123;
+    binaryString += stack.<span class="hljs-title function_">pop</span>().<span class="hljs-title function_">toString</span>();
+  &#125;
+  <span class="hljs-keyword">return</span> binaryString;
+&#125;
+</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 把十进制转换成基数为 2～36 的任意进制</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Stack</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Stack.js&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">baseConverter</span>(<span class="hljs-params">decNumber, base</span>) &#123;
+  <span class="hljs-keyword">let</span> dec = decNumber;
+  <span class="hljs-keyword">let</span> arr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>();
+  <span class="hljs-keyword">const</span> digits = <span class="hljs-string">&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>;
+  <span class="hljs-keyword">let</span> str = <span class="hljs-string">&quot;&quot;</span>;
+  <span class="hljs-keyword">if</span> (!(base &gt;= <span class="hljs-number">2</span> &amp;&amp; base &lt;= <span class="hljs-number">36</span>)) &#123;
+    <span class="hljs-keyword">return</span> str;
+  &#125;
+  <span class="hljs-keyword">while</span> (dec &gt; <span class="hljs-number">0</span>) &#123;
+    arr.<span class="hljs-title function_">push</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(dec % base));
+    dec = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(dec / base);
+  &#125;
+
+  <span class="hljs-keyword">while</span> (!arr.<span class="hljs-title function_">isEmpty</span>()) &#123;
+    str += digits[arr.<span class="hljs-title function_">pop</span>()];
+  &#125;
+
+  <span class="hljs-keyword">return</span> str;
+&#125;
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">baseConverter</span>(<span class="hljs-number">100345</span>, <span class="hljs-number">2</span>)); <span class="hljs-comment">// 11000011111111001</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">baseConverter</span>(<span class="hljs-number">100345</span>, <span class="hljs-number">8</span>)); <span class="hljs-comment">// 303771</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">baseConverter</span>(<span class="hljs-number">100345</span>, <span class="hljs-number">16</span>)); <span class="hljs-comment">// 187F9</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">baseConverter</span>(<span class="hljs-number">100345</span>, <span class="hljs-number">35</span>)); <span class="hljs-comment">// 2BW0</span></code></pre></div>
 
 
                 

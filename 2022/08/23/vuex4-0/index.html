@@ -16,16 +16,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Vuex 是什么Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式 + 库。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。  1npm install vuex@next --save  12345678910111213141516171819202122232425262728293031323334353637383940414243">
+    <meta name="description" content="Vuex 是什么Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式 + 库。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。  npm install vuex@next --save  &#x2F;&#x2F;store&#x2F;index.js import &amp;#123; createStore &amp;#125; from &amp;#x27;vuex&amp;#x27; import">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vuex4.0">
 <meta property="og:url" content="http://example.com/2022/08/23/vuex4-0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Vuex 是什么Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式 + 库。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。  1npm install vuex@next --save  12345678910111213141516171819202122232425262728293031323334353637383940414243">
+<meta property="og:description" content="Vuex 是什么Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式 + 库。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。  npm install vuex@next --save  &#x2F;&#x2F;store&#x2F;index.js import &amp;#123; createStore &amp;#125; from &amp;#x27;vuex&amp;#x27; import">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://vuex.vuejs.org/vuex.png">
 <meta property="article:published_time" content="2022-08-23T10:22:47.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://vuex.vuejs.org/vuex.png">
@@ -220,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          14k 字
+          13k 字
         
       </span>
     
@@ -231,7 +231,7 @@
         
         
         
-          118 分钟
+          112 分钟
         
       </span>
     
@@ -276,61 +276,355 @@
                 
                 <h4 id="Vuex-是什么"><a href="#Vuex-是什么" class="headerlink" title="Vuex 是什么"></a>Vuex 是什么</h4><p>Vuex 是一个专为 Vue.js 应用程序开发的<strong>状态管理模式 + 库</strong>。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。</p>
 <p><img src="https://vuex.vuejs.org/vuex.png" srcset="/img/loading.gif" lazyload></p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> install vuex@next --save<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> install vuex@next --save</code></pre></div>
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//store/index.js</span><br><span class="hljs-keyword">import</span> &#123; createStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-variable constant_">CHANGE_INFO</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./mutation_types&#x27;</span><br><br><span class="hljs-keyword">import</span> homeModule <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/home&#x27;</span><br><span class="hljs-keyword">import</span> counterModule <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/counter&#x27;</span><br><br><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(&#123;<br>  <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123;<br>    <span class="hljs-comment">// 模拟数据</span><br>    <span class="hljs-comment">// counter: 100,</span><br>    <span class="hljs-attr">rootCounter</span>: <span class="hljs-number">100</span>,<br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;coderwhy&quot;</span>,<br>    <span class="hljs-attr">level</span>: <span class="hljs-number">100</span>,<br>    <span class="hljs-attr">avatarURL</span>: <span class="hljs-string">&quot;http://xxxxxx&quot;</span>,<br>    <span class="hljs-attr">friends</span>: [<br>      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">111</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;why&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">20</span> &#125;,<br>      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">112</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;kobe&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span> &#125;,<br>      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">113</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;james&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">25</span> &#125;<br>    ],<br><br>    <span class="hljs-comment">// 服务器数据</span><br>    <span class="hljs-comment">// banners: [],</span><br>    <span class="hljs-comment">// recommends: []</span><br>  &#125;),<br>  <span class="hljs-attr">getters</span>: &#123;<br>    <span class="hljs-comment">// 1.基本使用</span><br>    <span class="hljs-title function_">doubleCounter</span>(<span class="hljs-params">state</span>) &#123;<br>      <span class="hljs-keyword">return</span> state.<span class="hljs-property">counter</span> * <span class="hljs-number">2</span><br>    &#125;,<br>    <span class="hljs-title function_">totalAge</span>(<span class="hljs-params">state</span>) &#123;<br>      <span class="hljs-keyword">return</span> state.<span class="hljs-property">friends</span>.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">preValue, item</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">return</span> preValue + item.<span class="hljs-property">age</span><br>      &#125;, <span class="hljs-number">0</span>)<br>    &#125;,<br>    <span class="hljs-comment">// 2.在该getters属性中, 获取其他的getters</span><br>    <span class="hljs-title function_">message</span>(<span class="hljs-params">state, getters</span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-string">`name:<span class="hljs-subst">$&#123;state.name&#125;</span> level:<span class="hljs-subst">$&#123;state.level&#125;</span> 						friendTotalAge:<span class="hljs-subst">$&#123;getters.totalAge&#125;</span>`</span><br>    &#125;,<br>    <span class="hljs-comment">// 3.getters是可以返回一个函数的, 调用这个函数可以传入参数(了解)</span><br>    <span class="hljs-title function_">getFriendById</span>(<span class="hljs-params">state</span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">id</span>) &#123;<br>        <span class="hljs-keyword">const</span> friend = state.<span class="hljs-property">friends</span>.<span class="hljs-title function_">find</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item.<span class="hljs-property">id</span> === id)<br>        <span class="hljs-keyword">return</span> friend<br>      &#125;<br>    &#125;<br>  &#125;,<br>  <span class="hljs-attr">mutations</span>: &#123;<br>    <span class="hljs-title function_">increment</span>(<span class="hljs-params">state</span>) &#123;<br>      state.<span class="hljs-property">counter</span>++<br>    &#125;,<br>    <span class="hljs-title function_">changeName</span>(<span class="hljs-params">state, payload</span>) &#123;<br>      state.<span class="hljs-property">name</span> = payload<br>    &#125;,<br>    <span class="hljs-title function_">incrementLevel</span>(<span class="hljs-params">state</span>) &#123;<br>      state.<span class="hljs-property">level</span>++<br>    &#125;,<br>     <span class="hljs-comment">//使用计算属性，将常量作为参数名</span><br>    [<span class="hljs-variable constant_">CHANGE_INFO</span>](state, newInfo) &#123;<br>      state.<span class="hljs-property">level</span> = newInfo.<span class="hljs-property">level</span><br>      state.<span class="hljs-property">name</span> = newInfo.<span class="hljs-property">name</span><br><br>      <span class="hljs-comment">// 重要的原则: 不要在mutation方法中执行异步操作</span><br>      <span class="hljs-comment">// fetch(&quot;xxxx&quot;).then(res =&gt; &#123;</span><br>      <span class="hljs-comment">//   res.json().then(res =&gt; &#123;</span><br>      <span class="hljs-comment">//     state.name = res.name</span><br>      <span class="hljs-comment">//   &#125;)</span><br>      <span class="hljs-comment">// &#125;)</span><br>    &#125;,<br>    <span class="hljs-comment">// changeBanners(state, banners) &#123;</span><br>    <span class="hljs-comment">//   state.banners = banners</span><br>    <span class="hljs-comment">// &#125;,</span><br>    <span class="hljs-comment">// changeRecommends(state, recommends) &#123;</span><br>    <span class="hljs-comment">//   state.recommends = recommends</span><br>    <span class="hljs-comment">// &#125;</span><br>  &#125;,<br>  <span class="hljs-attr">actions</span>: &#123;<br>    <span class="hljs-title function_">incrementAction</span>(<span class="hljs-params">context</span>) &#123;<br>      <span class="hljs-comment">// console.log(context.commit) // 用于提交mutation</span><br>      <span class="hljs-comment">// console.log(context.getters) // getters</span><br>      <span class="hljs-comment">// console.log(context.state) // state</span><br>      context.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;increment&quot;</span>)<br>    &#125;,<br>    <span class="hljs-title function_">changeNameAction</span>(<span class="hljs-params">context, payload</span>) &#123;<br>      context.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;changeName&quot;</span>, payload)<br>    &#125;,<br>    <span class="hljs-comment">// fetchHomeMultidataAction(context) &#123;</span><br>    <span class="hljs-comment">//   // 1.返回Promise, 给Promise设置then</span><br>    <span class="hljs-comment">//   // fetch(&quot;http://123.207.32.32:8000/home/multidata&quot;).then(res =&gt; &#123;</span><br>    <span class="hljs-comment">//   //   res.json().then(data =&gt; &#123;</span><br>    <span class="hljs-comment">//   //     console.log(data)</span><br>    <span class="hljs-comment">//   //   &#125;)</span><br>    <span class="hljs-comment">//   // &#125;)</span><br>      <br>    <span class="hljs-comment">//   // 2.Promise链式调用</span><br>    <span class="hljs-comment">//   // fetch(&quot;http://123.207.32.32:8000/home/multidata&quot;).then(res =&gt; &#123;</span><br>    <span class="hljs-comment">//   //   return res.json()</span><br>    <span class="hljs-comment">//   // &#125;).then(data =&gt; &#123;</span><br>    <span class="hljs-comment">//   //   console.log(data)</span><br>    <span class="hljs-comment">//   // &#125;)</span><br>    <span class="hljs-comment">//   return new Promise(async (resolve, reject) =&gt; &#123;</span><br>    <span class="hljs-comment">//     // 3.await/async</span><br>    <span class="hljs-comment">//     const res = await fetch(&quot;http://123.207.32.32:8000/home/multidata&quot;)</span><br>    <span class="hljs-comment">//     const data = await res.json()</span><br>        <br>    <span class="hljs-comment">//     // 修改state数据</span><br>    <span class="hljs-comment">//     context.commit(&quot;changeBanners&quot;, data.data.banner.list)</span><br>    <span class="hljs-comment">//     context.commit(&quot;changeRecommends&quot;, data.data.recommend.list)</span><br><br>    <span class="hljs-comment">//     resolve(&quot;aaaaa&quot;)</span><br>    <span class="hljs-comment">//   &#125;)</span><br>    <span class="hljs-comment">// &#125;</span><br>  &#125;,<br>  <span class="hljs-attr">modules</span>: &#123;<br>    <span class="hljs-attr">home</span>: homeModule,<br>    <span class="hljs-attr">counter</span>: counterModule<br>  &#125;<br>&#125;)<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//store/index.js</span>
+<span class="hljs-keyword">import</span> &#123; createStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span>
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-variable constant_">CHANGE_INFO</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./mutation_types&#x27;</span>
 
-<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs clean"><span class="hljs-comment">//main.js</span><br><span class="hljs-keyword">import</span> &#123; createApp &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.vue&#x27;</span><br><span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./store&#x27;</span><br><br>createApp(App).use(store).mount(<span class="hljs-string">&#x27;#app&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">import</span> homeModule <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/home&#x27;</span>
+<span class="hljs-keyword">import</span> counterModule <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/counter&#x27;</span>
+
+<span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(&#123;
+  <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123;
+    <span class="hljs-comment">// 模拟数据</span>
+    <span class="hljs-comment">// counter: 100,</span>
+    <span class="hljs-attr">rootCounter</span>: <span class="hljs-number">100</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;coderwhy&quot;</span>,
+    <span class="hljs-attr">level</span>: <span class="hljs-number">100</span>,
+    <span class="hljs-attr">avatarURL</span>: <span class="hljs-string">&quot;http://xxxxxx&quot;</span>,
+    <span class="hljs-attr">friends</span>: [
+      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">111</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;why&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">20</span> &#125;,
+      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">112</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;kobe&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span> &#125;,
+      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">113</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;james&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">25</span> &#125;
+    ],
+
+    <span class="hljs-comment">// 服务器数据</span>
+    <span class="hljs-comment">// banners: [],</span>
+    <span class="hljs-comment">// recommends: []</span>
+  &#125;),
+  <span class="hljs-attr">getters</span>: &#123;
+    <span class="hljs-comment">// 1.基本使用</span>
+    <span class="hljs-title function_">doubleCounter</span>(<span class="hljs-params">state</span>) &#123;
+      <span class="hljs-keyword">return</span> state.<span class="hljs-property">counter</span> * <span class="hljs-number">2</span>
+    &#125;,
+    <span class="hljs-title function_">totalAge</span>(<span class="hljs-params">state</span>) &#123;
+      <span class="hljs-keyword">return</span> state.<span class="hljs-property">friends</span>.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">preValue, item</span>) =&gt;</span> &#123;
+        <span class="hljs-keyword">return</span> preValue + item.<span class="hljs-property">age</span>
+      &#125;, <span class="hljs-number">0</span>)
+    &#125;,
+    <span class="hljs-comment">// 2.在该getters属性中, 获取其他的getters</span>
+    <span class="hljs-title function_">message</span>(<span class="hljs-params">state, getters</span>) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-string">`name:<span class="hljs-subst">$&#123;state.name&#125;</span> level:<span class="hljs-subst">$&#123;state.level&#125;</span> 						friendTotalAge:<span class="hljs-subst">$&#123;getters.totalAge&#125;</span>`</span>
+    &#125;,
+    <span class="hljs-comment">// 3.getters是可以返回一个函数的, 调用这个函数可以传入参数(了解)</span>
+    <span class="hljs-title function_">getFriendById</span>(<span class="hljs-params">state</span>) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">id</span>) &#123;
+        <span class="hljs-keyword">const</span> friend = state.<span class="hljs-property">friends</span>.<span class="hljs-title function_">find</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item.<span class="hljs-property">id</span> === id)
+        <span class="hljs-keyword">return</span> friend
+      &#125;
+    &#125;
+  &#125;,
+  <span class="hljs-attr">mutations</span>: &#123;
+    <span class="hljs-title function_">increment</span>(<span class="hljs-params">state</span>) &#123;
+      state.<span class="hljs-property">counter</span>++
+    &#125;,
+    <span class="hljs-title function_">changeName</span>(<span class="hljs-params">state, payload</span>) &#123;
+      state.<span class="hljs-property">name</span> = payload
+    &#125;,
+    <span class="hljs-title function_">incrementLevel</span>(<span class="hljs-params">state</span>) &#123;
+      state.<span class="hljs-property">level</span>++
+    &#125;,
+     <span class="hljs-comment">//使用计算属性，将常量作为参数名</span>
+    [<span class="hljs-variable constant_">CHANGE_INFO</span>](state, newInfo) &#123;
+      state.<span class="hljs-property">level</span> = newInfo.<span class="hljs-property">level</span>
+      state.<span class="hljs-property">name</span> = newInfo.<span class="hljs-property">name</span>
+
+      <span class="hljs-comment">// 重要的原则: 不要在mutation方法中执行异步操作</span>
+      <span class="hljs-comment">// fetch(&quot;xxxx&quot;).then(res =&gt; &#123;</span>
+      <span class="hljs-comment">//   res.json().then(res =&gt; &#123;</span>
+      <span class="hljs-comment">//     state.name = res.name</span>
+      <span class="hljs-comment">//   &#125;)</span>
+      <span class="hljs-comment">// &#125;)</span>
+    &#125;,
+    <span class="hljs-comment">// changeBanners(state, banners) &#123;</span>
+    <span class="hljs-comment">//   state.banners = banners</span>
+    <span class="hljs-comment">// &#125;,</span>
+    <span class="hljs-comment">// changeRecommends(state, recommends) &#123;</span>
+    <span class="hljs-comment">//   state.recommends = recommends</span>
+    <span class="hljs-comment">// &#125;</span>
+  &#125;,
+  <span class="hljs-attr">actions</span>: &#123;
+    <span class="hljs-title function_">incrementAction</span>(<span class="hljs-params">context</span>) &#123;
+      <span class="hljs-comment">// console.log(context.commit) // 用于提交mutation</span>
+      <span class="hljs-comment">// console.log(context.getters) // getters</span>
+      <span class="hljs-comment">// console.log(context.state) // state</span>
+      context.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;increment&quot;</span>)
+    &#125;,
+    <span class="hljs-title function_">changeNameAction</span>(<span class="hljs-params">context, payload</span>) &#123;
+      context.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;changeName&quot;</span>, payload)
+    &#125;,
+    <span class="hljs-comment">// fetchHomeMultidataAction(context) &#123;</span>
+    <span class="hljs-comment">//   // 1.返回Promise, 给Promise设置then</span>
+    <span class="hljs-comment">//   // fetch(&quot;http://123.207.32.32:8000/home/multidata&quot;).then(res =&gt; &#123;</span>
+    <span class="hljs-comment">//   //   res.json().then(data =&gt; &#123;</span>
+    <span class="hljs-comment">//   //     console.log(data)</span>
+    <span class="hljs-comment">//   //   &#125;)</span>
+    <span class="hljs-comment">//   // &#125;)</span>
+      
+    <span class="hljs-comment">//   // 2.Promise链式调用</span>
+    <span class="hljs-comment">//   // fetch(&quot;http://123.207.32.32:8000/home/multidata&quot;).then(res =&gt; &#123;</span>
+    <span class="hljs-comment">//   //   return res.json()</span>
+    <span class="hljs-comment">//   // &#125;).then(data =&gt; &#123;</span>
+    <span class="hljs-comment">//   //   console.log(data)</span>
+    <span class="hljs-comment">//   // &#125;)</span>
+    <span class="hljs-comment">//   return new Promise(async (resolve, reject) =&gt; &#123;</span>
+    <span class="hljs-comment">//     // 3.await/async</span>
+    <span class="hljs-comment">//     const res = await fetch(&quot;http://123.207.32.32:8000/home/multidata&quot;)</span>
+    <span class="hljs-comment">//     const data = await res.json()</span>
+        
+    <span class="hljs-comment">//     // 修改state数据</span>
+    <span class="hljs-comment">//     context.commit(&quot;changeBanners&quot;, data.data.banner.list)</span>
+    <span class="hljs-comment">//     context.commit(&quot;changeRecommends&quot;, data.data.recommend.list)</span>
+
+    <span class="hljs-comment">//     resolve(&quot;aaaaa&quot;)</span>
+    <span class="hljs-comment">//   &#125;)</span>
+    <span class="hljs-comment">// &#125;</span>
+  &#125;,
+  <span class="hljs-attr">modules</span>: &#123;
+    <span class="hljs-attr">home</span>: homeModule,
+    <span class="hljs-attr">counter</span>: counterModule
+  &#125;
+&#125;)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs clean"><span class="hljs-comment">//main.js</span>
+<span class="hljs-keyword">import</span> &#123; createApp &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.vue&#x27;</span>
+<span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./store&#x27;</span>
+
+createApp(App).use(store).mount(<span class="hljs-string">&#x27;#app&#x27;</span>)</code></pre></div>
 
 <h4 id="State"><a href="#State" class="headerlink" title="State"></a>State</h4><p>state中主要是管理全局的状态，所有状态都存储在state中</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs pf">//<span class="hljs-keyword">state</span>要放到computed中去使用<br>export <span class="hljs-keyword">default</span> &#123;<br>   computed: &#123;<br>     storeCounter() &#123;<br>       return this.<span class="hljs-variable">$store</span>.<span class="hljs-keyword">state</span>.counter<br>     &#125;<br>   &#125;<br> &#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pf">//<span class="hljs-keyword">state</span>要放到computed中去使用
+export <span class="hljs-keyword">default</span> &#123;
+   computed: &#123;
+     storeCounter() &#123;
+       return this.<span class="hljs-variable">$store</span>.<span class="hljs-keyword">state</span>.counter
+     &#125;
+   &#125;
+ &#125;</code></pre></div>
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//在setup中使用state 需要使用useStore</span><br>&lt;script setup&gt;<br>  <span class="hljs-keyword">import</span> &#123; toRefs &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br>  <span class="hljs-keyword">import</span> &#123; useStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span><br><br>  <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useStore</span>()<br>  <span class="hljs-comment">// 如果对store.state进行解构或者赋值给另外一个变量，会变成非响应式的，要使用toRefs</span><br>  <span class="hljs-keyword">const</span> &#123; counter &#125; = <span class="hljs-title function_">toRefs</span>(store.<span class="hljs-property">state</span>)<br>  <br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// store.state.counter++</span><br>    store.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;increment&quot;</span>)<br>  &#125;<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//在setup中使用state 需要使用useStore</span>
+&lt;script setup&gt;
+  <span class="hljs-keyword">import</span> &#123; toRefs &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>
+  <span class="hljs-keyword">import</span> &#123; useStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span>
+
+  <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useStore</span>()
+  <span class="hljs-comment">// 如果对store.state进行解构或者赋值给另外一个变量，会变成非响应式的，要使用toRefs</span>
+  <span class="hljs-keyword">const</span> &#123; counter &#125; = <span class="hljs-title function_">toRefs</span>(store.<span class="hljs-property">state</span>)
+  
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-comment">// store.state.counter++</span>
+    store.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;increment&quot;</span>)
+  &#125;
+&lt;/script&gt;</code></pre></div>
 
 <h5 id="mapState-辅助函数"><a href="#mapState-辅助函数" class="headerlink" title="mapState 辅助函数"></a><code>mapState</code> 辅助函数</h5><p><code>mapState</code> 辅助函数帮助我们生成计算属性</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs pf">/ 在单独构建的版本中辅助函数为 Vuex.mapState<br>import &#123; mapState &#125; <span class="hljs-keyword">from</span> &#x27;vuex&#x27;<br><br>export <span class="hljs-keyword">default</span> &#123;<br>  // ...<br>  computed: mapState(&#123;<br>    // 箭头函数可使代码更简练<br>    count: <span class="hljs-keyword">state</span> =&gt; <span class="hljs-keyword">state</span>.count,<br><br>    // 传字符串参数 &#x27;count&#x27; 等同于 `<span class="hljs-keyword">state</span> =&gt; <span class="hljs-keyword">state</span>.count`<br>    countAlias: &#x27;count&#x27;,<br><br>    // 为了能够使用 `this` 获取局部状态，必须使用常规函数<br>    countPlusLocalState (<span class="hljs-keyword">state</span>) &#123;<br>      return <span class="hljs-keyword">state</span>.count + this.localCount<br>    &#125;<br>  &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pf">/ 在单独构建的版本中辅助函数为 Vuex.mapState
+import &#123; mapState &#125; <span class="hljs-keyword">from</span> &#x27;vuex&#x27;
 
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">computed: mapState([<br>  <span class="hljs-regexp">//</span> 映射 this.count 为 store.state.count<br>  <span class="hljs-string">&#x27;count&#x27;</span><br>])<span class="hljs-regexp">//</span>还可以传递数组<br></code></pre></td></tr></table></figure>
+export <span class="hljs-keyword">default</span> &#123;
+  // ...
+  computed: mapState(&#123;
+    // 箭头函数可使代码更简练
+    count: <span class="hljs-keyword">state</span> =&gt; <span class="hljs-keyword">state</span>.count,
 
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">computed: &#123;<br>  localComputed () &#123; <span class="hljs-regexp">/* ... */</span> &#125;,<br>  <span class="hljs-regexp">//</span> 使用对象展开运算符将此对象混入到外部对象中<br>  ...mapState(&#123;<br>    <span class="hljs-regexp">//</span> ...<br>  &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+    // 传字符串参数 &#x27;count&#x27; 等同于 `<span class="hljs-keyword">state</span> =&gt; <span class="hljs-keyword">state</span>.count`
+    countAlias: &#x27;count&#x27;,
+
+    // 为了能够使用 `this` 获取局部状态，必须使用常规函数
+    countPlusLocalState (<span class="hljs-keyword">state</span>) &#123;
+      return <span class="hljs-keyword">state</span>.count + this.localCount
+    &#125;
+  &#125;)
+&#125;</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs awk">computed: mapState([
+  <span class="hljs-regexp">//</span> 映射 this.count 为 store.state.count
+  <span class="hljs-string">&#x27;count&#x27;</span>
+])<span class="hljs-regexp">//</span>还可以传递数组</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs awk">computed: &#123;
+  localComputed () &#123; <span class="hljs-regexp">/* ... */</span> &#125;,
+  <span class="hljs-regexp">//</span> 使用对象展开运算符将此对象混入到外部对象中
+  ...mapState(&#123;
+    <span class="hljs-regexp">//</span> ...
+  &#125;)
+&#125;</code></pre></div>
 
 <p>//使用展开运算符和其他computed合并</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-attr">computed</span>: &#123;<br>     <span class="hljs-title function_">fullname</span>(<span class="hljs-params"></span>) &#123;<br>       <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;xxx&quot;</span><br>     &#125;,<br>     <span class="hljs-comment">// name() &#123;</span><br>     <span class="hljs-comment">//   return this.$store.state.name</span><br>     <span class="hljs-comment">// &#125;,</span><br>     ...<span class="hljs-title function_">mapState</span>([<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;level&quot;</span>, <span class="hljs-string">&quot;avatarURL&quot;</span>]),<br>     ...<span class="hljs-title function_">mapState</span>(&#123;<br>       <span class="hljs-attr">sName</span>: <span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> state.<span class="hljs-property">name</span>,<br>       <span class="hljs-attr">sLevel</span>: <span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> state.<span class="hljs-property">level</span><br>     &#125;)<br>   &#125;<br> &#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-attr">computed</span>: &#123;
+     <span class="hljs-title function_">fullname</span>(<span class="hljs-params"></span>) &#123;
+       <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;xxx&quot;</span>
+     &#125;,
+     <span class="hljs-comment">// name() &#123;</span>
+     <span class="hljs-comment">//   return this.$store.state.name</span>
+     <span class="hljs-comment">// &#125;,</span>
+     ...<span class="hljs-title function_">mapState</span>([<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;level&quot;</span>, <span class="hljs-string">&quot;avatarURL&quot;</span>]),
+     ...<span class="hljs-title function_">mapState</span>(&#123;
+       <span class="hljs-attr">sName</span>: <span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> state.<span class="hljs-property">name</span>,
+       <span class="hljs-attr">sLevel</span>: <span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> state.<span class="hljs-property">level</span>
+     &#125;)
+   &#125;
+ &#125;</code></pre></div>
 
 <h5 id="Getter"><a href="#Getter" class="headerlink" title="Getter"></a>Getter</h5><p>getter类似于vue的computed</p>
 <p>Getter 接受 state 作为其第一个参数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(&#123;<br>  <span class="hljs-attr">state</span>: &#123;<br>    <span class="hljs-attr">todos</span>: [<br>      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;...&#x27;</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">true</span> &#125;,<br>      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;...&#x27;</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">false</span> &#125;<br>    ]<br>  &#125;,<br>  <span class="hljs-attr">getters</span>: &#123;<br>    doneTodos (state) &#123;<br>      <span class="hljs-keyword">return</span> state.<span class="hljs-property">todos</span>.<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> todo.<span class="hljs-property">done</span>)<br>    &#125;<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(&#123;
+  <span class="hljs-attr">state</span>: &#123;
+    <span class="hljs-attr">todos</span>: [
+      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;...&#x27;</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">true</span> &#125;,
+      &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;...&#x27;</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">false</span> &#125;
+    ]
+  &#125;,
+  <span class="hljs-attr">getters</span>: &#123;
+    doneTodos (state) &#123;
+      <span class="hljs-keyword">return</span> state.<span class="hljs-property">todos</span>.<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> todo.<span class="hljs-property">done</span>)
+    &#125;
+  &#125;
+&#125;)</code></pre></div>
 
 <h5 id="通过属性访问"><a href="#通过属性访问" class="headerlink" title="通过属性访问"></a>通过属性访问</h5><p>Getter 会暴露为 <code>store.getters</code> 对象，你可以以属性的形式访问这些值：</p>
-<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xl"><span class="hljs-function"><span class="hljs-title">store</span>.getters.doneTodos // -&gt;</span> [&#123; id: <span class="hljs-number">1</span>, <span class="hljs-keyword">text</span>: <span class="hljs-string">&#x27;...&#x27;</span>, done: <span class="hljs-literal">true</span> &#125;]<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs xl"><span class="hljs-function"><span class="hljs-title">store</span>.getters.doneTodos // -&gt;</span> [&#123; id: <span class="hljs-number">1</span>, <span class="hljs-keyword">text</span>: <span class="hljs-string">&#x27;...&#x27;</span>, done: <span class="hljs-literal">true</span> &#125;]</code></pre></div>
 
 <p>Getter 也可以接受其他 getter 作为第二个参数：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs stylus">getters: &#123;<br>  <span class="hljs-comment">// ...</span><br>  doneTodosCount (state, getters) &#123;<br>    return getters<span class="hljs-selector-class">.doneTodos</span><span class="hljs-selector-class">.length</span><br>  &#125;<br>&#125;<br>store<span class="hljs-selector-class">.getters</span><span class="hljs-selector-class">.doneTodosCount</span> <span class="hljs-comment">// -&gt; 1</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stylus">getters: &#123;
+  <span class="hljs-comment">// ...</span>
+  doneTodosCount (state, getters) &#123;
+    return getters<span class="hljs-selector-class">.doneTodos</span><span class="hljs-selector-class">.length</span>
+  &#125;
+&#125;
+store<span class="hljs-selector-class">.getters</span><span class="hljs-selector-class">.doneTodosCount</span> <span class="hljs-comment">// -&gt; 1</span></code></pre></div>
 
 <p>我们可以很容易地在任何组件中使用它：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">computed: &#123;<br>  doneTodosCount () &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$store.getters.doneTodosCount<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs kotlin">computed: &#123;
+  doneTodosCount () &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.$store.getters.doneTodosCount
+  &#125;
+&#125;</code></pre></div>
 
 <p>注意，getter 在通过属性访问时是作为 Vue 的响应式系统的一部分缓存其中的。</p>
 <h5 id="通过方法访问"><a href="#通过方法访问" class="headerlink" title="通过方法访问"></a>通过方法访问</h5><p>你也可以通过让 getter 返回一个函数，来实现给 getter 传参。在你对 store 里的数组进行查询时非常有用。</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pf">getters: &#123;<br>  // ...<br>  getTodoById: (<span class="hljs-keyword">state</span>) =&gt; (id) =&gt; &#123;<br>    return <span class="hljs-keyword">state</span>.todos.find(todo =&gt; todo.id === id)<br>  &#125;<br>&#125;<br>store.getters.getTodoById(<span class="hljs-number">2</span>) // -&gt; &#123; id: <span class="hljs-number">2</span>, text: &#x27;...&#x27;, done: false &#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pf">getters: &#123;
+  // ...
+  getTodoById: (<span class="hljs-keyword">state</span>) =&gt; (id) =&gt; &#123;
+    return <span class="hljs-keyword">state</span>.todos.find(todo =&gt; todo.id === id)
+  &#125;
+&#125;
+store.getters.getTodoById(<span class="hljs-number">2</span>) // -&gt; &#123; id: <span class="hljs-number">2</span>, text: &#x27;...&#x27;, done: false &#125;</code></pre></div>
 
 <p>注意，getter 在通过方法访问时，每次都会去进行调用，而不会缓存结果</p>
-<h5 id="mapGetters-辅助函数"><a href="#mapGetters-辅助函数" class="headerlink" title="mapGetters 辅助函数"></a><code>mapGetters</code> 辅助函数</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; mapGetters &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-attr">computed</span>: &#123;<br>  <span class="hljs-comment">// 使用对象展开运算符将 getter 混入 computed 对象中</span><br>    ...<span class="hljs-title function_">mapGetters</span>([<br>      <span class="hljs-string">&#x27;doneTodosCount&#x27;</span>,<br>      <span class="hljs-string">&#x27;anotherGetter&#x27;</span>,<br>      <span class="hljs-comment">// ...</span><br>    ])<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="mapGetters-辅助函数"><a href="#mapGetters-辅助函数" class="headerlink" title="mapGetters 辅助函数"></a><code>mapGetters</code> 辅助函数</h5><div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; mapGetters &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span>
 
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">...mapGetters(&#123;<br>  <span class="hljs-regexp">//</span> 把 `this.doneCount` 映射为 `this.<span class="hljs-variable">$store</span>.getters.doneTodosCount`<br>  doneCount: <span class="hljs-string">&#x27;doneTodosCount&#x27;</span><br>&#125;)<span class="hljs-regexp">//</span>还可以取别名<br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-attr">computed</span>: &#123;
+  <span class="hljs-comment">// 使用对象展开运算符将 getter 混入 computed 对象中</span>
+    ...<span class="hljs-title function_">mapGetters</span>([
+      <span class="hljs-string">&#x27;doneTodosCount&#x27;</span>,
+      <span class="hljs-string">&#x27;anotherGetter&#x27;</span>,
+      <span class="hljs-comment">// ...</span>
+    ])
+  &#125;
+&#125;</code></pre></div>
 
-<h5 id="在setup中使用"><a href="#在setup中使用" class="headerlink" title="在setup中使用"></a>在setup中使用</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;script setup&gt;<br><br>  <span class="hljs-keyword">import</span> &#123; computed, toRefs &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br>  <span class="hljs-keyword">import</span> &#123; mapGetters, useStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span><br><br>  <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useStore</span>()<br><br>  <span class="hljs-comment">// 1.使用mapGetters</span><br>  <span class="hljs-comment">// const &#123; message: messageFn &#125; = mapGetters([&quot;message&quot;])</span><br>  <span class="hljs-comment">// const message = computed(messageFn.bind(&#123; $store: store &#125;))</span><br><br>  <span class="hljs-comment">// 2.直接解构, 并且包裹成ref</span><br>  <span class="hljs-comment">// const &#123; message &#125; = toRefs(store.getters)</span><br><br>  <span class="hljs-comment">// 3.针对某一个getters属性使用computed</span><br>  <span class="hljs-keyword">const</span> message = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> store.<span class="hljs-property">getters</span>.<span class="hljs-property">message</span>)<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">changeAge</span>(<span class="hljs-params"></span>) &#123;<br>    store.<span class="hljs-property">state</span>.<span class="hljs-property">name</span> = <span class="hljs-string">&quot;kobe&quot;</span><br>  &#125;<br><br>&lt;/script&gt;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">...mapGetters(&#123;
+  <span class="hljs-regexp">//</span> 把 `this.doneCount` 映射为 `this.<span class="hljs-variable">$store</span>.getters.doneTodosCount`
+  doneCount: <span class="hljs-string">&#x27;doneTodosCount&#x27;</span>
+&#125;)<span class="hljs-regexp">//</span>还可以取别名</code></pre></div>
+
+<h5 id="在setup中使用"><a href="#在setup中使用" class="headerlink" title="在setup中使用"></a>在setup中使用</h5><div class="code-wrapper"><pre><code class="hljs js">&lt;script setup&gt;
+
+  <span class="hljs-keyword">import</span> &#123; computed, toRefs &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;
+  <span class="hljs-keyword">import</span> &#123; mapGetters, useStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span>
+
+  <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useStore</span>()
+
+  <span class="hljs-comment">// 1.使用mapGetters</span>
+  <span class="hljs-comment">// const &#123; message: messageFn &#125; = mapGetters([&quot;message&quot;])</span>
+  <span class="hljs-comment">// const message = computed(messageFn.bind(&#123; $store: store &#125;))</span>
+
+  <span class="hljs-comment">// 2.直接解构, 并且包裹成ref</span>
+  <span class="hljs-comment">// const &#123; message &#125; = toRefs(store.getters)</span>
+
+  <span class="hljs-comment">// 3.针对某一个getters属性使用computed</span>
+  <span class="hljs-keyword">const</span> message = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> store.<span class="hljs-property">getters</span>.<span class="hljs-property">message</span>)
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">changeAge</span>(<span class="hljs-params"></span>) &#123;
+    store.<span class="hljs-property">state</span>.<span class="hljs-property">name</span> = <span class="hljs-string">&quot;kobe&quot;</span>
+  &#125;
+
+&lt;/script&gt;
+</code></pre></div>
 
 <h4 id="Mutation"><a href="#Mutation" class="headerlink" title="Mutation"></a>Mutation</h4><p>更改 Vuex 的 store 中的状态的唯一方法是提交 mutation</p>
 <p>mutation的使用</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; <span class="hljs-variable constant_">CHANGE_INFO</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/store/mutation_types&quot;</span><br><br> <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>   <span class="hljs-attr">computed</span>: &#123;<br>   &#125;,<br>   <span class="hljs-attr">methods</span>: &#123;<br>     <span class="hljs-title function_">changeName</span>(<span class="hljs-params"></span>) &#123;<br>       <span class="hljs-comment">// this.$store.state.name = &quot;李银河&quot;</span><br>       <span class="hljs-comment">//传参方式</span><br>       <span class="hljs-variable language_">this</span>.<span class="hljs-property">$store</span>.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;changeName&quot;</span>, <span class="hljs-string">&quot;王小波&quot;</span>)<br>     &#125;,<br>     <span class="hljs-title function_">incrementLevel</span>(<span class="hljs-params"></span>) &#123;<br>       <span class="hljs-variable language_">this</span>.<span class="hljs-property">$store</span>.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;incrementLevel&quot;</span>)<br>     &#125;,<br>     <span class="hljs-title function_">changeInfo</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-comment">//这是定义常量的方式</span><br>       <span class="hljs-variable language_">this</span>.<span class="hljs-property">$store</span>.<span class="hljs-title function_">commit</span>(<span class="hljs-variable constant_">CHANGE_INFO</span>, &#123;<br>         <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;王二&quot;</span>,<br>         <span class="hljs-attr">level</span>: <span class="hljs-number">200</span><br>       &#125;)<br>     &#125;<br>   &#125;<br> &#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; <span class="hljs-variable constant_">CHANGE_INFO</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/store/mutation_types&quot;</span>
 
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs pf">//在mutation中commit<br><span class="hljs-keyword">const</span> store = createStore(&#123;<br>  <span class="hljs-keyword">state</span>: () =&gt; (&#123;<br>    name: <span class="hljs-string">&quot;张三&quot;</span>,<br>  &#125;),<br>  mutations: &#123;<br>    updateMut(<span class="hljs-keyword">state</span>, playload) &#123;<br>      <span class="hljs-keyword">state</span>.name = playload;<br>    &#125;,<br>    updateMut2(<span class="hljs-keyword">state</span>, playload) &#123;<br>      store.commit(<span class="hljs-string">&quot;updateMut&quot;</span>, playload);<br>    &#125;,<br>  &#125;,<br>&#125;);<br></code></pre></td></tr></table></figure>
+ <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
+   <span class="hljs-attr">computed</span>: &#123;
+   &#125;,
+   <span class="hljs-attr">methods</span>: &#123;
+     <span class="hljs-title function_">changeName</span>(<span class="hljs-params"></span>) &#123;
+       <span class="hljs-comment">// this.$store.state.name = &quot;李银河&quot;</span>
+       <span class="hljs-comment">//传参方式</span>
+       <span class="hljs-variable language_">this</span>.<span class="hljs-property">$store</span>.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;changeName&quot;</span>, <span class="hljs-string">&quot;王小波&quot;</span>)
+     &#125;,
+     <span class="hljs-title function_">incrementLevel</span>(<span class="hljs-params"></span>) &#123;
+       <span class="hljs-variable language_">this</span>.<span class="hljs-property">$store</span>.<span class="hljs-title function_">commit</span>(<span class="hljs-string">&quot;incrementLevel&quot;</span>)
+     &#125;,
+     <span class="hljs-title function_">changeInfo</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-comment">//这是定义常量的方式</span>
+       <span class="hljs-variable language_">this</span>.<span class="hljs-property">$store</span>.<span class="hljs-title function_">commit</span>(<span class="hljs-variable constant_">CHANGE_INFO</span>, &#123;
+         <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;王二&quot;</span>,
+         <span class="hljs-attr">level</span>: <span class="hljs-number">200</span>
+       &#125;)
+     &#125;
+   &#125;
+ &#125;</code></pre></div>
 
-<h5 id="Mutation-必须是同步函数"><a href="#Mutation-必须是同步函数" class="headerlink" title="Mutation 必须是同步函数"></a>Mutation 必须是同步函数</h5><figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pf">mutations: &#123;<br>  someMutation (<span class="hljs-keyword">state</span>) &#123;<br>    api.callAsyncMethod(() =&gt; &#123;<br>      <span class="hljs-keyword">state</span>.count++<br>    &#125;)<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pf">//在mutation中commit
+<span class="hljs-keyword">const</span> store = createStore(&#123;
+  <span class="hljs-keyword">state</span>: () =&gt; (&#123;
+    name: <span class="hljs-string">&quot;张三&quot;</span>,
+  &#125;),
+  mutations: &#123;
+    updateMut(<span class="hljs-keyword">state</span>, playload) &#123;
+      <span class="hljs-keyword">state</span>.name = playload;
+    &#125;,
+    updateMut2(<span class="hljs-keyword">state</span>, playload) &#123;
+      store.commit(<span class="hljs-string">&quot;updateMut&quot;</span>, playload);
+    &#125;,
+  &#125;,
+&#125;);</code></pre></div>
+
+<h5 id="Mutation-必须是同步函数"><a href="#Mutation-必须是同步函数" class="headerlink" title="Mutation 必须是同步函数"></a>Mutation 必须是同步函数</h5><div class="code-wrapper"><pre><code class="hljs pf">mutations: &#123;
+  someMutation (<span class="hljs-keyword">state</span>) &#123;
+    api.callAsyncMethod(() =&gt; &#123;
+      <span class="hljs-keyword">state</span>.count++
+    &#125;)
+  &#125;
+&#125;</code></pre></div>
 
 <p>我们正在 debug 一个 app 并且观察 devtool 中的 mutation 日志。每一条 mutation 被记录，devtools 都需要捕捉到前一状态和后一状态的快照。然而，在上面的例子中 mutation 中的异步函数中的回调让这不可能完成：因为当 mutation 触发的时候，回调函数还没有被调用，devtools 不知道什么时候回调函数实际上被调用——实质上任何在回调函数中进行的状态的改变都是不可追踪的。</p>
-<h5 id="mapMutations"><a href="#mapMutations" class="headerlink" title="mapMutations"></a>mapMutations</h5><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">methods: &#123;<br>      btnClick() &#123;<br>        console.log(<span class="hljs-string">&quot;btnClick&quot;</span>)<br>      &#125;,<br>      <span class="hljs-regexp">//</span> ...mapMutations([<span class="hljs-string">&quot;changeName&quot;</span>, <span class="hljs-string">&quot;incrementLevel&quot;</span>, CHANGE_INFO])  使用常量，在template中要使用正确的函数名<br>    &#125;<br></code></pre></td></tr></table></figure>
+<h5 id="mapMutations"><a href="#mapMutations" class="headerlink" title="mapMutations"></a>mapMutations</h5><div class="code-wrapper"><pre><code class="hljs awk">methods: &#123;
+      btnClick() &#123;
+        console.log(<span class="hljs-string">&quot;btnClick&quot;</span>)
+      &#125;,
+      <span class="hljs-regexp">//</span> ...mapMutations([<span class="hljs-string">&quot;changeName&quot;</span>, <span class="hljs-string">&quot;incrementLevel&quot;</span>, CHANGE_INFO])  使用常量，在template中要使用正确的函数名
+    &#125;</code></pre></div>
 
 <h4 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h4><p>Action 类似于 mutation，不同在于：</p>
 <ul>
@@ -338,34 +632,215 @@
 <li>Action 可以包含任意异步操作。</li>
 </ul>
 <p>Action 通过 <code>store.dispatch</code> 方法触发：</p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">store.<span class="hljs-built_in">dispatch</span>(<span class="hljs-string">&#x27;increment&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs livecodeserver">store.<span class="hljs-built_in">dispatch</span>(<span class="hljs-string">&#x27;increment&#x27;</span>)</code></pre></div>
 
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">//在action中也可以分发action</span><br>actions: &#123;<br>  <span class="hljs-function"><span class="hljs-keyword">async</span> <span class="hljs-title">actionA</span> (<span class="hljs-params">&#123; commit &#125;</span>)</span> &#123;<br>    commit(<span class="hljs-string">&#x27;gotData&#x27;</span>, <span class="hljs-keyword">await</span> getData())<br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-keyword">async</span> <span class="hljs-title">actionB</span> (<span class="hljs-params">&#123; dispatch, commit &#125;</span>)</span> &#123;<br>    <span class="hljs-keyword">await</span> dispatch(<span class="hljs-string">&#x27;actionA&#x27;</span>) <span class="hljs-comment">// 等待 actionA 完成</span><br>    commit(<span class="hljs-string">&#x27;gotOtherData&#x27;</span>, <span class="hljs-keyword">await</span> getOtherData())<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs csharp"><span class="hljs-comment">//在action中也可以分发action</span>
+actions: &#123;
+  <span class="hljs-function"><span class="hljs-keyword">async</span> <span class="hljs-title">actionA</span> (<span class="hljs-params">&#123; commit &#125;</span>)</span> &#123;
+    commit(<span class="hljs-string">&#x27;gotData&#x27;</span>, <span class="hljs-keyword">await</span> getData())
+  &#125;,
+  <span class="hljs-function"><span class="hljs-keyword">async</span> <span class="hljs-title">actionB</span> (<span class="hljs-params">&#123; dispatch, commit &#125;</span>)</span> &#123;
+    <span class="hljs-keyword">await</span> dispatch(<span class="hljs-string">&#x27;actionA&#x27;</span>) <span class="hljs-comment">// 等待 actionA 完成</span>
+    commit(<span class="hljs-string">&#x27;gotOtherData&#x27;</span>, <span class="hljs-keyword">await</span> getOtherData())
+  &#125;
+&#125;</code></pre></div>
 
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>在组件中使用<br>methods: &#123;<br>     <span class="hljs-regexp">//</span> counterBtnClick() &#123;<br>     <span class="hljs-regexp">//</span>   this.<span class="hljs-variable">$store</span>.dispatch(<span class="hljs-string">&quot;incrementAction&quot;</span>)<br>     <span class="hljs-regexp">//</span> &#125;,<br>     <span class="hljs-regexp">//</span> nameBtnClick() &#123;<br>     <span class="hljs-regexp">//</span>   this.<span class="hljs-variable">$store</span>.dispatch(<span class="hljs-string">&quot;changeNameAction&quot;</span>, <span class="hljs-string">&quot;aaa&quot;</span>)<br>     <span class="hljs-regexp">//</span> &#125;<br>     <span class="hljs-regexp">//</span> ...mapActions([<span class="hljs-string">&quot;incrementAction&quot;</span>, <span class="hljs-string">&quot;changeNameAction&quot;</span>])<br>   &#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>在组件中使用
+methods: &#123;
+     <span class="hljs-regexp">//</span> counterBtnClick() &#123;
+     <span class="hljs-regexp">//</span>   this.<span class="hljs-variable">$store</span>.dispatch(<span class="hljs-string">&quot;incrementAction&quot;</span>)
+     <span class="hljs-regexp">//</span> &#125;,
+     <span class="hljs-regexp">//</span> nameBtnClick() &#123;
+     <span class="hljs-regexp">//</span>   this.<span class="hljs-variable">$store</span>.dispatch(<span class="hljs-string">&quot;changeNameAction&quot;</span>, <span class="hljs-string">&quot;aaa&quot;</span>)
+     <span class="hljs-regexp">//</span> &#125;
+     <span class="hljs-regexp">//</span> ...mapActions([<span class="hljs-string">&quot;incrementAction&quot;</span>, <span class="hljs-string">&quot;changeNameAction&quot;</span>])
+   &#125;</code></pre></div>
 
 <h4 id="Modules的使用"><a href="#Modules的使用" class="headerlink" title="Modules的使用"></a>Modules的使用</h4><p>由于使用单一状态树，应用的所有状态会集中到一个比较大的对象。当应用变得非常复杂时，store 对象就有可能变得相当臃肿。</p>
 <p>为了解决以上问题，Vuex 允许我们将 store 分割成<strong>模块（module）</strong>。每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块——从上至下进行同样方式的分割</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> moduleA = &#123;<br>  <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;),<br>  <span class="hljs-attr">mutations</span>: &#123; ... &#125;,<br>  <span class="hljs-attr">actions</span>: &#123; ... &#125;,<br>  <span class="hljs-attr">getters</span>: &#123; ... &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> moduleB = &#123;<br>  <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;),<br>  <span class="hljs-attr">mutations</span>: &#123; ... &#125;,<br>  <span class="hljs-attr">actions</span>: &#123; ... &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(&#123;<br>  <span class="hljs-attr">modules</span>: &#123;<br>    <span class="hljs-attr">a</span>: moduleA,<br>    <span class="hljs-attr">b</span>: moduleB<br>  &#125;<br>&#125;)<br><br>store.<span class="hljs-property">state</span>.<span class="hljs-property">a</span> <span class="hljs-comment">// -&gt; moduleA 的状态</span><br>store.<span class="hljs-property">state</span>.<span class="hljs-property">b</span> <span class="hljs-comment">// -&gt; moduleB 的状态</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> moduleA = &#123;
+  <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;),
+  <span class="hljs-attr">mutations</span>: &#123; ... &#125;,
+  <span class="hljs-attr">actions</span>: &#123; ... &#125;,
+  <span class="hljs-attr">getters</span>: &#123; ... &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> moduleB = &#123;
+  <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;),
+  <span class="hljs-attr">mutations</span>: &#123; ... &#125;,
+  <span class="hljs-attr">actions</span>: &#123; ... &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(&#123;
+  <span class="hljs-attr">modules</span>: &#123;
+    <span class="hljs-attr">a</span>: moduleA,
+    <span class="hljs-attr">b</span>: moduleB
+  &#125;
+&#125;)
+
+store.<span class="hljs-property">state</span>.<span class="hljs-property">a</span> <span class="hljs-comment">// -&gt; moduleA 的状态</span>
+store.<span class="hljs-property">state</span>.<span class="hljs-property">b</span> <span class="hljs-comment">// -&gt; moduleB 的状态</span></code></pre></div>
 
 <p>当没有添加namaspaced默认情况下使用module的值</p>
-<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;home&quot;</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Home Page<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-comment">&lt;!-- 1.使用state时, 是需要state.moduleName.xxx --&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Counter模块的counter: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">$store.state.counter.count</span> &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-comment">&lt;!-- 2.使用getters时, 是直接getters.xxx --&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Counter模块的doubleCounter: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">$store.getters.doubleCount</span> &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;incrementCount&quot;</span>&gt;</span>count模块+1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">import</span> &#123; useStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span></span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 告诉Vuex发起网络请求</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useStore</span>()</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 派发事件时, 默认也是不需要跟模块名称</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 提交mutation时, 默认也是不需要跟模块名称</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">function</span> <span class="hljs-title function_">incrementCount</span>(<span class="hljs-params"></span>) &#123;</span></span><br><span class="language-javascript"><span class="language-xml">    store.<span class="hljs-title function_">dispatch</span>(<span class="hljs-string">&quot;incrementCountAction&quot;</span>)</span></span><br><span class="language-javascript"><span class="language-xml">  &#125;</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs handlebars"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span>
+<span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;home&quot;</span>&gt;</span></span>
+<span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Home Page<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">    <span class="hljs-comment">&lt;!-- 1.使用state时, 是需要state.moduleName.xxx --&gt;</span></span>
+<span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Counter模块的counter: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">$store.state.counter.count</span> &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">    <span class="hljs-comment">&lt;!-- 2.使用getters时, 是直接getters.xxx --&gt;</span></span>
+<span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Counter模块的doubleCounter: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">$store.getters.doubleCount</span> &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml"></span>
+<span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;incrementCount&quot;</span>&gt;</span>count模块+1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+<span class="language-xml"></span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span></span>
+<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+<span class="language-xml"></span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span></span>
+<span class="language-javascript"><span class="language-xml"></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">import</span> &#123; useStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span></span></span>
+<span class="language-javascript"><span class="language-xml"></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 告诉Vuex发起网络请求</span></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useStore</span>()</span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 派发事件时, 默认也是不需要跟模块名称</span></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 提交mutation时, 默认也是不需要跟模块名称</span></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">function</span> <span class="hljs-title function_">incrementCount</span>(<span class="hljs-params"></span>) &#123;</span></span>
+<span class="language-javascript"><span class="language-xml">    store.<span class="hljs-title function_">dispatch</span>(<span class="hljs-string">&quot;incrementCountAction&quot;</span>)</span></span>
+<span class="language-javascript"><span class="language-xml">  &#125;</span></span>
+<span class="language-javascript"><span class="language-xml"></span></span>
+<span class="language-javascript"><span class="language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></code></pre></div>
 
 <p>对于模块内部的 action，局部状态通过 <code>context.state</code> 暴露出来，根节点状态则为 <code>context.rootState</code>：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> moduleA = &#123;<br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-attr">actions</span>: &#123;<br>    incrementIfOddOnRootSum (&#123; state, commit, rootState &#125;) &#123;<br>      <span class="hljs-keyword">if</span> ((state.<span class="hljs-property">count</span> + rootState.<span class="hljs-property">count</span>) % <span class="hljs-number">2</span> === <span class="hljs-number">1</span>) &#123;<br>        <span class="hljs-title function_">commit</span>(<span class="hljs-string">&#x27;increment&#x27;</span>)<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> moduleA = &#123;
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-attr">actions</span>: &#123;
+    incrementIfOddOnRootSum (&#123; state, commit, rootState &#125;) &#123;
+      <span class="hljs-keyword">if</span> ((state.<span class="hljs-property">count</span> + rootState.<span class="hljs-property">count</span>) % <span class="hljs-number">2</span> === <span class="hljs-number">1</span>) &#123;
+        <span class="hljs-title function_">commit</span>(<span class="hljs-string">&#x27;increment&#x27;</span>)
+      &#125;
+    &#125;
+  &#125;
+&#125;</code></pre></div>
 
 <p>对于模块内部的 getter，根节点状态会作为第三个参数暴露出来：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> moduleA = &#123;<br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-attr">getters</span>: &#123;<br>    sumWithRootCount (state, getters, rootState) &#123;<br>      <span class="hljs-keyword">return</span> state.<span class="hljs-property">count</span> + rootState.<span class="hljs-property">count</span><br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> moduleA = &#123;
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-attr">getters</span>: &#123;
+    sumWithRootCount (state, getters, rootState) &#123;
+      <span class="hljs-keyword">return</span> state.<span class="hljs-property">count</span> + rootState.<span class="hljs-property">count</span>
+    &#125;
+  &#125;
+&#125;</code></pre></div>
 
 <h5 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h5><p>默认情况下，模块内部的 action 和 mutation 仍然是注册在<strong>全局命名空间</strong>的——这样使得多个模块能够对同一个 action 或 mutation 作出响应。Getter 同样也默认注册在全局命名空间，但是目前这并非出于功能上的目的（仅仅是维持现状来避免非兼容性变更）。必须注意，不要在不同的、无命名空间的模块中定义两个相同的 getter 从而导致错误。</p>
 <p>如果希望你的模块具有更高的封装度和复用性，你可以通过添加 <code>namespaced: true</code> 的方式使其成为带命名空间的模块。当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名。例如：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(&#123;<br>  <span class="hljs-attr">modules</span>: &#123;<br>    <span class="hljs-attr">account</span>: &#123;<br>      <span class="hljs-attr">namespaced</span>: <span class="hljs-literal">true</span>,<br><br>      <span class="hljs-comment">// 模块内容（module assets）</span><br>      <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;), <span class="hljs-comment">// 模块内的状态已经是嵌套的了，使用 `namespaced` 属性不会对其产生影响</span><br>      <span class="hljs-attr">getters</span>: &#123;<br>        isAdmin () &#123; ... &#125; <span class="hljs-comment">// -&gt; getters[&#x27;account/isAdmin&#x27;]</span><br>      &#125;,<br>      <span class="hljs-attr">actions</span>: &#123;<br>        login () &#123; ... &#125; <span class="hljs-comment">// -&gt; dispatch(&#x27;account/login&#x27;)</span><br>      &#125;,<br>      <span class="hljs-attr">mutations</span>: &#123;<br>        login () &#123; ... &#125; <span class="hljs-comment">// -&gt; commit(&#x27;account/login&#x27;)</span><br>      &#125;,<br><br>      <span class="hljs-comment">// 嵌套模块</span><br>      <span class="hljs-attr">modules</span>: &#123;<br>        <span class="hljs-comment">// 继承父模块的命名空间</span><br>        <span class="hljs-attr">myPage</span>: &#123;<br>          <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;),<br>          <span class="hljs-attr">getters</span>: &#123;<br>            profile () &#123; ... &#125; <span class="hljs-comment">// -&gt; getters[&#x27;account/profile&#x27;]</span><br>          &#125;<br>        &#125;,<br><br>        <span class="hljs-comment">// 进一步嵌套命名空间</span><br>        <span class="hljs-attr">posts</span>: &#123;<br>          <span class="hljs-attr">namespaced</span>: <span class="hljs-literal">true</span>,<br><br>          <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;),<br>          <span class="hljs-attr">getters</span>: &#123;<br>            popular () &#123; ... &#125; <span class="hljs-comment">// -&gt; getters[&#x27;account/posts/popular&#x27;]</span><br>          &#125;<br>        &#125;<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(&#123;
+  <span class="hljs-attr">modules</span>: &#123;
+    <span class="hljs-attr">account</span>: &#123;
+      <span class="hljs-attr">namespaced</span>: <span class="hljs-literal">true</span>,
 
-<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="language-xml">//在组件中的写法</span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;home&quot;</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Home Page<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-comment">&lt;!-- 1.使用state时, 是需要state.moduleName.xxx --&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Counter模块的counter: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">$store.state.counter.count</span> &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-comment">&lt;!-- 2.使用getters时, 是直接getters.xxx --&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Counter模块的doubleCounter: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">$store.getters</span>[&quot;counter/doubleCount&quot;] &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;incrementCount&quot;</span>&gt;</span>count模块+1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">import</span> &#123; useStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span></span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 告诉Vuex发起网络请求</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useStore</span>()</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 派发事件时, 默认也是不需要跟模块名称</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 提交mutation时, 默认也是不需要跟模块名称</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">function</span> <span class="hljs-title function_">incrementCount</span>(<span class="hljs-params"></span>) &#123;</span></span><br><span class="language-javascript"><span class="language-xml">    store.<span class="hljs-title function_">dispatch</span>(<span class="hljs-string">&quot;counter/incrementCountAction&quot;</span>)<span class="hljs-comment">//有命名空间的写法</span></span></span><br><span class="language-javascript"><span class="language-xml">  &#125;</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+      <span class="hljs-comment">// 模块内容（module assets）</span>
+      <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;), <span class="hljs-comment">// 模块内的状态已经是嵌套的了，使用 `namespaced` 属性不会对其产生影响</span>
+      <span class="hljs-attr">getters</span>: &#123;
+        isAdmin () &#123; ... &#125; <span class="hljs-comment">// -&gt; getters[&#x27;account/isAdmin&#x27;]</span>
+      &#125;,
+      <span class="hljs-attr">actions</span>: &#123;
+        login () &#123; ... &#125; <span class="hljs-comment">// -&gt; dispatch(&#x27;account/login&#x27;)</span>
+      &#125;,
+      <span class="hljs-attr">mutations</span>: &#123;
+        login () &#123; ... &#125; <span class="hljs-comment">// -&gt; commit(&#x27;account/login&#x27;)</span>
+      &#125;,
+
+      <span class="hljs-comment">// 嵌套模块</span>
+      <span class="hljs-attr">modules</span>: &#123;
+        <span class="hljs-comment">// 继承父模块的命名空间</span>
+        <span class="hljs-attr">myPage</span>: &#123;
+          <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;),
+          <span class="hljs-attr">getters</span>: &#123;
+            profile () &#123; ... &#125; <span class="hljs-comment">// -&gt; getters[&#x27;account/profile&#x27;]</span>
+          &#125;
+        &#125;,
+
+        <span class="hljs-comment">// 进一步嵌套命名空间</span>
+        <span class="hljs-attr">posts</span>: &#123;
+          <span class="hljs-attr">namespaced</span>: <span class="hljs-literal">true</span>,
+
+          <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123; ... &#125;),
+          <span class="hljs-attr">getters</span>: &#123;
+            popular () &#123; ... &#125; <span class="hljs-comment">// -&gt; getters[&#x27;account/posts/popular&#x27;]</span>
+          &#125;
+        &#125;
+      &#125;
+    &#125;
+  &#125;
+&#125;)</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs handlebars"><span class="language-xml">//在组件中的写法</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span>
+<span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;home&quot;</span>&gt;</span></span>
+<span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Home Page<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">    <span class="hljs-comment">&lt;!-- 1.使用state时, 是需要state.moduleName.xxx --&gt;</span></span>
+<span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Counter模块的counter: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">$store.state.counter.count</span> &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">    <span class="hljs-comment">&lt;!-- 2.使用getters时, 是直接getters.xxx --&gt;</span></span>
+<span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Counter模块的doubleCounter: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">$store.getters</span>[&quot;counter/doubleCount&quot;] &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml"></span>
+<span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;incrementCount&quot;</span>&gt;</span>count模块+1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+<span class="language-xml"></span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span></span>
+<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+<span class="language-xml"></span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript"></span></span>
+<span class="language-javascript"><span class="language-xml"></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">import</span> &#123; useStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuex&#x27;</span></span></span>
+<span class="language-javascript"><span class="language-xml"></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 告诉Vuex发起网络请求</span></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useStore</span>()</span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 派发事件时, 默认也是不需要跟模块名称</span></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 提交mutation时, 默认也是不需要跟模块名称</span></span></span>
+<span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">function</span> <span class="hljs-title function_">incrementCount</span>(<span class="hljs-params"></span>) &#123;</span></span>
+<span class="language-javascript"><span class="language-xml">    store.<span class="hljs-title function_">dispatch</span>(<span class="hljs-string">&quot;counter/incrementCountAction&quot;</span>)<span class="hljs-comment">//有命名空间的写法</span></span></span>
+<span class="language-javascript"><span class="language-xml">  &#125;</span></span>
+<span class="language-javascript"><span class="language-xml"></span></span>
+<span class="language-javascript"><span class="language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></code></pre></div>
 
 <p>启用了命名空间的 getter 和 action 会收到局部化的 <code>getter</code>，<code>dispatch</code> 和 <code>commit</code>。换言之，你在使用模块内容（module assets）时不需要在同一模块内额外添加空间名前缀。更改 <code>namespaced</code> 属性后不需要修改模块内的代码。</p>
 <h5 id="在带命名空间的模块内访问全局内容"><a href="#在带命名空间的模块内访问全局内容" class="headerlink" title="在带命名空间的模块内访问全局内容"></a>在带命名空间的模块内访问全局内容</h5><p>如果你希望使用全局 state 和 getter，<code>rootState</code> 和 <code>rootGetters</code> 会作为第三和第四参数传入 getter，也会通过 <code>context</code> 对象的属性传入 action。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-attr">modules</span>: &#123;<br>  <span class="hljs-attr">foo</span>: &#123;<br>    <span class="hljs-attr">namespaced</span>: <span class="hljs-literal">true</span>,<br><br>    <span class="hljs-attr">getters</span>: &#123;<br>      <span class="hljs-comment">// 在这个模块的 getter 中，`getters` 被局部化了</span><br>      <span class="hljs-comment">// 你可以使用 getter 的第四个参数来调用 `rootGetters`</span><br>      someGetter (state, getters, rootState, rootGetters) &#123;<br>        getters.<span class="hljs-property">someOtherGetter</span> <span class="hljs-comment">// -&gt; &#x27;foo/someOtherGetter&#x27;</span><br>        rootGetters.<span class="hljs-property">someOtherGetter</span> <span class="hljs-comment">// -&gt; &#x27;someOtherGetter&#x27;</span><br>        rootGetters[<span class="hljs-string">&#x27;bar/someOtherGetter&#x27;</span>] <span class="hljs-comment">// -&gt; &#x27;bar/someOtherGetter&#x27;</span><br>      &#125;,<br>      <span class="hljs-attr">someOtherGetter</span>: <span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> &#123; ... &#125;<br>    &#125;,<br><br>    <span class="hljs-attr">actions</span>: &#123;<br>      <span class="hljs-comment">// 在这个模块中， dispatch 和 commit 也被局部化了</span><br>      <span class="hljs-comment">// 他们可以接受 `root` 属性以访问根 dispatch 或 commit</span><br>      someAction (&#123; dispatch, commit, getters, rootGetters &#125;) &#123;<br>        getters.<span class="hljs-property">someGetter</span> <span class="hljs-comment">// -&gt; &#x27;foo/someGetter&#x27;</span><br>        rootGetters.<span class="hljs-property">someGetter</span> <span class="hljs-comment">// -&gt; &#x27;someGetter&#x27;</span><br>        rootGetters[<span class="hljs-string">&#x27;bar/someGetter&#x27;</span>] <span class="hljs-comment">// -&gt; &#x27;bar/someGetter&#x27;</span><br><br>        <span class="hljs-title function_">dispatch</span>(<span class="hljs-string">&#x27;someOtherAction&#x27;</span>) <span class="hljs-comment">// -&gt; &#x27;foo/someOtherAction&#x27;</span><br>        <span class="hljs-title function_">dispatch</span>(<span class="hljs-string">&#x27;someOtherAction&#x27;</span>, <span class="hljs-literal">null</span>, &#123; <span class="hljs-attr">root</span>: <span class="hljs-literal">true</span> &#125;) <span class="hljs-comment">// -&gt; &#x27;someOtherAction&#x27;</span><br><br>        <span class="hljs-title function_">commit</span>(<span class="hljs-string">&#x27;someMutation&#x27;</span>) <span class="hljs-comment">// -&gt; &#x27;foo/someMutation&#x27;</span><br>        <span class="hljs-title function_">commit</span>(<span class="hljs-string">&#x27;someMutation&#x27;</span>, <span class="hljs-literal">null</span>, &#123; <span class="hljs-attr">root</span>: <span class="hljs-literal">true</span> &#125;) <span class="hljs-comment">// -&gt; &#x27;someMutation&#x27;</span><br>      &#125;,<br>      someOtherAction (ctx, payload) &#123; ... &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-attr">modules</span>: &#123;
+  <span class="hljs-attr">foo</span>: &#123;
+    <span class="hljs-attr">namespaced</span>: <span class="hljs-literal">true</span>,
+
+    <span class="hljs-attr">getters</span>: &#123;
+      <span class="hljs-comment">// 在这个模块的 getter 中，`getters` 被局部化了</span>
+      <span class="hljs-comment">// 你可以使用 getter 的第四个参数来调用 `rootGetters`</span>
+      someGetter (state, getters, rootState, rootGetters) &#123;
+        getters.<span class="hljs-property">someOtherGetter</span> <span class="hljs-comment">// -&gt; &#x27;foo/someOtherGetter&#x27;</span>
+        rootGetters.<span class="hljs-property">someOtherGetter</span> <span class="hljs-comment">// -&gt; &#x27;someOtherGetter&#x27;</span>
+        rootGetters[<span class="hljs-string">&#x27;bar/someOtherGetter&#x27;</span>] <span class="hljs-comment">// -&gt; &#x27;bar/someOtherGetter&#x27;</span>
+      &#125;,
+      <span class="hljs-attr">someOtherGetter</span>: <span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> &#123; ... &#125;
+    &#125;,
+
+    <span class="hljs-attr">actions</span>: &#123;
+      <span class="hljs-comment">// 在这个模块中， dispatch 和 commit 也被局部化了</span>
+      <span class="hljs-comment">// 他们可以接受 `root` 属性以访问根 dispatch 或 commit</span>
+      someAction (&#123; dispatch, commit, getters, rootGetters &#125;) &#123;
+        getters.<span class="hljs-property">someGetter</span> <span class="hljs-comment">// -&gt; &#x27;foo/someGetter&#x27;</span>
+        rootGetters.<span class="hljs-property">someGetter</span> <span class="hljs-comment">// -&gt; &#x27;someGetter&#x27;</span>
+        rootGetters[<span class="hljs-string">&#x27;bar/someGetter&#x27;</span>] <span class="hljs-comment">// -&gt; &#x27;bar/someGetter&#x27;</span>
+
+        <span class="hljs-title function_">dispatch</span>(<span class="hljs-string">&#x27;someOtherAction&#x27;</span>) <span class="hljs-comment">// -&gt; &#x27;foo/someOtherAction&#x27;</span>
+        <span class="hljs-title function_">dispatch</span>(<span class="hljs-string">&#x27;someOtherAction&#x27;</span>, <span class="hljs-literal">null</span>, &#123; <span class="hljs-attr">root</span>: <span class="hljs-literal">true</span> &#125;) <span class="hljs-comment">// -&gt; &#x27;someOtherAction&#x27;</span>
+
+        <span class="hljs-title function_">commit</span>(<span class="hljs-string">&#x27;someMutation&#x27;</span>) <span class="hljs-comment">// -&gt; &#x27;foo/someMutation&#x27;</span>
+        <span class="hljs-title function_">commit</span>(<span class="hljs-string">&#x27;someMutation&#x27;</span>, <span class="hljs-literal">null</span>, &#123; <span class="hljs-attr">root</span>: <span class="hljs-literal">true</span> &#125;) <span class="hljs-comment">// -&gt; &#x27;someMutation&#x27;</span>
+      &#125;,
+      someOtherAction (ctx, payload) &#123; ... &#125;
+    &#125;
+  &#125;
+&#125;</code></pre></div>
 
                 
               </div>

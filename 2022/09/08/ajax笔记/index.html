@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="##ajax的封装12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061function ajax(&amp;#123;  url,  method &#x3D; &quot;get&quot;,  data &#x3D; &amp;#123;&amp;#125;,  h">
+    <meta name="description" content="##ajax的封装function ajax(&amp;#123;   url,   method &#x3D; &quot;get&quot;,   data &#x3D; &amp;#123;&amp;#125;,   headers &#x3D; &amp;#123;&amp;#125;,   success,   failure, &amp;#125; &#x3D; &amp;#123;&amp;#125;) &amp;#123;   &#x2F;&#x2F; 1.创建对象   const xhr &#x3D; new XMLH">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ajax笔记">
 <meta property="og:url" content="http://example.com/2022/09/08/ajax%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="##ajax的封装12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061function ajax(&amp;#123;  url,  method &#x3D; &quot;get&quot;,  data &#x3D; &amp;#123;&amp;#125;,  h">
+<meta property="og:description" content="##ajax的封装function ajax(&amp;#123;   url,   method &#x3D; &quot;get&quot;,   data &#x3D; &amp;#123;&amp;#125;,   headers &#x3D; &amp;#123;&amp;#125;,   success,   failure, &amp;#125; &#x3D; &amp;#123;&amp;#125;) &amp;#123;   &#x2F;&#x2F; 1.创建对象   const xhr &#x3D; new XMLH">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-08T13:59:00.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -218,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.1k 字
+          2.9k 字
         
       </span>
     
@@ -229,7 +229,7 @@
         
         
         
-          26 分钟
+          25 分钟
         
       </span>
     
@@ -272,9 +272,126 @@
             
               <div class="markdown-body">
                 
-                <h3 id="ajax的封装"><a href="#ajax的封装" class="headerlink" title="##ajax的封装"></a>##ajax的封装</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">ajax</span>(<span class="hljs-params">&#123;</span><br><span class="hljs-params">  url,</span><br><span class="hljs-params">  method = <span class="hljs-string">&quot;get&quot;</span>,</span><br><span class="hljs-params">  data = &#123;&#125;,</span><br><span class="hljs-params">  headers = &#123;&#125;,</span><br><span class="hljs-params">  success,</span><br><span class="hljs-params">  failure,</span><br><span class="hljs-params">&#125; = &#123;&#125;</span>) &#123;<br>  <span class="hljs-comment">// 1.创建对象</span><br>  <span class="hljs-keyword">const</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();<br><br>  <span class="hljs-comment">// 2.监听数据</span><br><br>  xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">if</span> (xhr.<span class="hljs-property">status</span> &gt;= <span class="hljs-number">200</span> &amp;&amp; xhr.<span class="hljs-property">status</span> &lt; <span class="hljs-number">300</span> || xhr.<span class="hljs-property">status</span> === <span class="hljs-number">304</span>) &#123;<br>      <span class="hljs-comment">// xhr.responseXML/xhr.responseText</span><br>      success &amp;&amp; <span class="hljs-title function_">success</span>(xhr.<span class="hljs-property">response</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      failure &amp;&amp; <span class="hljs-title function_">failure</span>(&#123; <span class="hljs-attr">status</span>: xhr.<span class="hljs-property">status</span>, <span class="hljs-attr">message</span>: xhr.<span class="hljs-property">statusText</span> &#125;);<br>    &#125;<br>  &#125;;<br>  <span class="hljs-comment">// 现在返回的数据类型一般都是json,如果设置为空字符串则会使用text作为默认值</span><br>  <span class="hljs-comment">// 3.设置类型</span><br>  xhr.<span class="hljs-property">responseType</span> = <span class="hljs-string">&quot;json&quot;</span>;<br>  <span class="hljs-comment">// xhr.responseType=&quot;xml&quot;/blob/text/arraybuffer等</span><br><br>  <span class="hljs-comment">// 4.设置过期超时事件</span><br>  xhr.<span class="hljs-property">timeout</span> = timeout;<br>  <span class="hljs-comment">// 5.open方法</span><br>  <span class="hljs-keyword">if</span> (method.<span class="hljs-title function_">toUpperCase</span>() === <span class="hljs-string">&quot;GET&quot;</span>) &#123;<br>    <span class="hljs-keyword">const</span> queryString = [];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> data) &#123;<br>      <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-property">hasOwnProperty</span>.<span class="hljs-title function_">call</span>(data, key)) &#123;<br>        <span class="hljs-keyword">const</span> item = data[key];<br>        queryString.<span class="hljs-title function_">push</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;key&#125;</span>=<span class="hljs-subst">$&#123;item&#125;</span>`</span>);<br>      &#125;<br>    &#125;<br>    url = url + <span class="hljs-string">&quot;?&quot;</span> + queryString.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;&amp;&quot;</span>);<br>    xhr.<span class="hljs-title function_">open</span>(method, url);<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// post</span><br>    xhr.<span class="hljs-title function_">open</span>(method, url);<br>    xhr.<span class="hljs-title function_">setRequestHeader</span>(<span class="hljs-string">&quot;Content-type&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>);<br>  &#125;<br><br>  <span class="hljs-comment">// 6设置headers</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(headers).<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(headers).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> &#123;<br>      xhr.<span class="hljs-title function_">setRequestHeader</span>(key, headers[key]);<br>    &#125;);<br>  &#125;<br><br>  <span class="hljs-keyword">if</span> (method.<span class="hljs-property">toUpperCase</span> === <span class="hljs-string">&quot;POST&quot;</span>) &#123;<br>    xhr.<span class="hljs-title function_">send</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(data));<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (method.<span class="hljs-property">toUpperCase</span> === <span class="hljs-string">&quot;GET&quot;</span>) &#123;<br>    xhr.<span class="hljs-title function_">send</span>();<br>  &#125;<br>  <span class="hljs-comment">// return xhr可以用于调用abort()方法进行终止请求</span><br>  <span class="hljs-keyword">return</span> xhr;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+                <h3 id="ajax的封装"><a href="#ajax的封装" class="headerlink" title="##ajax的封装"></a>##ajax的封装</h3><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">ajax</span>(<span class="hljs-params">&#123;</span>
+<span class="hljs-params">  url,</span>
+<span class="hljs-params">  method = <span class="hljs-string">&quot;get&quot;</span>,</span>
+<span class="hljs-params">  data = &#123;&#125;,</span>
+<span class="hljs-params">  headers = &#123;&#125;,</span>
+<span class="hljs-params">  success,</span>
+<span class="hljs-params">  failure,</span>
+<span class="hljs-params">&#125; = &#123;&#125;</span>) &#123;
+  <span class="hljs-comment">// 1.创建对象</span>
+  <span class="hljs-keyword">const</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
 
-<h4 id="ajax的promise的封装"><a href="#ajax的promise的封装" class="headerlink" title="ajax的promise的封装"></a>ajax的promise的封装</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">ajax</span>(<span class="hljs-params">&#123; url, method = <span class="hljs-string">&quot;get&quot;</span>, data = &#123;&#125;, headers = &#123;&#125; &#125; = &#123;&#125;</span>) &#123;<br>  <span class="hljs-comment">// 1.创建对象</span><br>  <span class="hljs-keyword">const</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();<br>  <span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 2.监听数据</span><br><br>    xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">if</span> (xhr.<span class="hljs-property">status</span> &gt;= <span class="hljs-number">200</span> &amp;&amp; xhr.<span class="hljs-property">status</span> &lt; <span class="hljs-number">300</span> || xhr.<span class="hljs-property">status</span> === <span class="hljs-number">304</span>) &#123;<br>        <span class="hljs-comment">// xhr.responseXML/xhr.responseText</span><br>        <span class="hljs-title function_">resolve</span>(xhr.<span class="hljs-property">response</span>);<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-title function_">reject</span>(&#123; <span class="hljs-attr">status</span>: xhr.<span class="hljs-property">status</span>, <span class="hljs-attr">message</span>: xhr.<span class="hljs-property">statusText</span> &#125;);<br>      &#125;<br>    &#125;;<br>    <span class="hljs-comment">// 现在返回的数据类型一般都是json,如果设置为空字符串则会使用text作为默认值</span><br>    <span class="hljs-comment">// 3.设置类型</span><br>    xhr.<span class="hljs-property">responseType</span> = <span class="hljs-string">&quot;json&quot;</span>;<br>    <span class="hljs-comment">// xhr.responseType=&quot;xml&quot;/blob/text/arraybuffer等</span><br><br>    <span class="hljs-comment">// 4.设置过期超时事件</span><br>    xhr.<span class="hljs-property">timeout</span> = timeout;<br>    <span class="hljs-comment">// 5.open方法</span><br>    <span class="hljs-keyword">if</span> (method.<span class="hljs-title function_">toUpperCase</span>() === <span class="hljs-string">&quot;GET&quot;</span>) &#123;<br>      <span class="hljs-keyword">const</span> queryString = [];<br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> data) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-property">hasOwnProperty</span>.<span class="hljs-title function_">call</span>(data, key)) &#123;<br>          <span class="hljs-keyword">const</span> item = data[key];<br>          queryString.<span class="hljs-title function_">push</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;key&#125;</span>=<span class="hljs-subst">$&#123;item&#125;</span>`</span>);<br>        &#125;<br>      &#125;<br>      url = url + <span class="hljs-string">&quot;?&quot;</span> + queryString.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;&amp;&quot;</span>);<br>      xhr.<span class="hljs-title function_">open</span>(method, url);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-comment">// post</span><br>      xhr.<span class="hljs-title function_">open</span>(method, url);<br>      xhr.<span class="hljs-title function_">setRequestHeader</span>(<span class="hljs-string">&quot;Content-type&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 6设置headers</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(headers).<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(headers).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> &#123;<br>        xhr.<span class="hljs-title function_">setRequestHeader</span>(key, headers[key]);<br>      &#125;);<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (method.<span class="hljs-property">toUpperCase</span> === <span class="hljs-string">&quot;POST&quot;</span>) &#123;<br>      xhr.<span class="hljs-title function_">send</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(data));<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (method.<span class="hljs-property">toUpperCase</span> === <span class="hljs-string">&quot;GET&quot;</span>) &#123;<br>      xhr.<span class="hljs-title function_">send</span>();<br>    &#125;<br>  &#125;);<br><br>  <span class="hljs-comment">// return xhr可以用于调用abort()方法进行终止请求</span><br><br>  promise.<span class="hljs-property">xhr</span> = xhr;<br>  <span class="hljs-keyword">return</span> promise;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+  <span class="hljs-comment">// 2.监听数据</span>
+
+  xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (xhr.<span class="hljs-property">status</span> &gt;= <span class="hljs-number">200</span> &amp;&amp; xhr.<span class="hljs-property">status</span> &lt; <span class="hljs-number">300</span> || xhr.<span class="hljs-property">status</span> === <span class="hljs-number">304</span>) &#123;
+      <span class="hljs-comment">// xhr.responseXML/xhr.responseText</span>
+      success &amp;&amp; <span class="hljs-title function_">success</span>(xhr.<span class="hljs-property">response</span>);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      failure &amp;&amp; <span class="hljs-title function_">failure</span>(&#123; <span class="hljs-attr">status</span>: xhr.<span class="hljs-property">status</span>, <span class="hljs-attr">message</span>: xhr.<span class="hljs-property">statusText</span> &#125;);
+    &#125;
+  &#125;;
+  <span class="hljs-comment">// 现在返回的数据类型一般都是json,如果设置为空字符串则会使用text作为默认值</span>
+  <span class="hljs-comment">// 3.设置类型</span>
+  xhr.<span class="hljs-property">responseType</span> = <span class="hljs-string">&quot;json&quot;</span>;
+  <span class="hljs-comment">// xhr.responseType=&quot;xml&quot;/blob/text/arraybuffer等</span>
+
+  <span class="hljs-comment">// 4.设置过期超时事件</span>
+  xhr.<span class="hljs-property">timeout</span> = timeout;
+  <span class="hljs-comment">// 5.open方法</span>
+  <span class="hljs-keyword">if</span> (method.<span class="hljs-title function_">toUpperCase</span>() === <span class="hljs-string">&quot;GET&quot;</span>) &#123;
+    <span class="hljs-keyword">const</span> queryString = [];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> data) &#123;
+      <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-property">hasOwnProperty</span>.<span class="hljs-title function_">call</span>(data, key)) &#123;
+        <span class="hljs-keyword">const</span> item = data[key];
+        queryString.<span class="hljs-title function_">push</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;key&#125;</span>=<span class="hljs-subst">$&#123;item&#125;</span>`</span>);
+      &#125;
+    &#125;
+    url = url + <span class="hljs-string">&quot;?&quot;</span> + queryString.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;&amp;&quot;</span>);
+    xhr.<span class="hljs-title function_">open</span>(method, url);
+  &#125; <span class="hljs-keyword">else</span> &#123;
+    <span class="hljs-comment">// post</span>
+    xhr.<span class="hljs-title function_">open</span>(method, url);
+    xhr.<span class="hljs-title function_">setRequestHeader</span>(<span class="hljs-string">&quot;Content-type&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>);
+  &#125;
+
+  <span class="hljs-comment">// 6设置headers</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(headers).<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) &#123;
+    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(headers).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> &#123;
+      xhr.<span class="hljs-title function_">setRequestHeader</span>(key, headers[key]);
+    &#125;);
+  &#125;
+
+  <span class="hljs-keyword">if</span> (method.<span class="hljs-property">toUpperCase</span> === <span class="hljs-string">&quot;POST&quot;</span>) &#123;
+    xhr.<span class="hljs-title function_">send</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(data));
+  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (method.<span class="hljs-property">toUpperCase</span> === <span class="hljs-string">&quot;GET&quot;</span>) &#123;
+    xhr.<span class="hljs-title function_">send</span>();
+  &#125;
+  <span class="hljs-comment">// return xhr可以用于调用abort()方法进行终止请求</span>
+  <span class="hljs-keyword">return</span> xhr;
+&#125;
+</code></pre></div>
+
+<h4 id="ajax的promise的封装"><a href="#ajax的promise的封装" class="headerlink" title="ajax的promise的封装"></a>ajax的promise的封装</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">ajax</span>(<span class="hljs-params">&#123; url, method = <span class="hljs-string">&quot;get&quot;</span>, data = &#123;&#125;, headers = &#123;&#125; &#125; = &#123;&#125;</span>) &#123;
+  <span class="hljs-comment">// 1.创建对象</span>
+  <span class="hljs-keyword">const</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();
+  <span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;
+    <span class="hljs-comment">// 2.监听数据</span>
+
+    xhr.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+      <span class="hljs-keyword">if</span> (xhr.<span class="hljs-property">status</span> &gt;= <span class="hljs-number">200</span> &amp;&amp; xhr.<span class="hljs-property">status</span> &lt; <span class="hljs-number">300</span> || xhr.<span class="hljs-property">status</span> === <span class="hljs-number">304</span>) &#123;
+        <span class="hljs-comment">// xhr.responseXML/xhr.responseText</span>
+        <span class="hljs-title function_">resolve</span>(xhr.<span class="hljs-property">response</span>);
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-title function_">reject</span>(&#123; <span class="hljs-attr">status</span>: xhr.<span class="hljs-property">status</span>, <span class="hljs-attr">message</span>: xhr.<span class="hljs-property">statusText</span> &#125;);
+      &#125;
+    &#125;;
+    <span class="hljs-comment">// 现在返回的数据类型一般都是json,如果设置为空字符串则会使用text作为默认值</span>
+    <span class="hljs-comment">// 3.设置类型</span>
+    xhr.<span class="hljs-property">responseType</span> = <span class="hljs-string">&quot;json&quot;</span>;
+    <span class="hljs-comment">// xhr.responseType=&quot;xml&quot;/blob/text/arraybuffer等</span>
+
+    <span class="hljs-comment">// 4.设置过期超时事件</span>
+    xhr.<span class="hljs-property">timeout</span> = timeout;
+    <span class="hljs-comment">// 5.open方法</span>
+    <span class="hljs-keyword">if</span> (method.<span class="hljs-title function_">toUpperCase</span>() === <span class="hljs-string">&quot;GET&quot;</span>) &#123;
+      <span class="hljs-keyword">const</span> queryString = [];
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> data) &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-property">hasOwnProperty</span>.<span class="hljs-title function_">call</span>(data, key)) &#123;
+          <span class="hljs-keyword">const</span> item = data[key];
+          queryString.<span class="hljs-title function_">push</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;key&#125;</span>=<span class="hljs-subst">$&#123;item&#125;</span>`</span>);
+        &#125;
+      &#125;
+      url = url + <span class="hljs-string">&quot;?&quot;</span> + queryString.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;&amp;&quot;</span>);
+      xhr.<span class="hljs-title function_">open</span>(method, url);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-comment">// post</span>
+      xhr.<span class="hljs-title function_">open</span>(method, url);
+      xhr.<span class="hljs-title function_">setRequestHeader</span>(<span class="hljs-string">&quot;Content-type&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>);
+    &#125;
+
+    <span class="hljs-comment">// 6设置headers</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(headers).<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) &#123;
+      <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(headers).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> &#123;
+        xhr.<span class="hljs-title function_">setRequestHeader</span>(key, headers[key]);
+      &#125;);
+    &#125;
+
+    <span class="hljs-keyword">if</span> (method.<span class="hljs-property">toUpperCase</span> === <span class="hljs-string">&quot;POST&quot;</span>) &#123;
+      xhr.<span class="hljs-title function_">send</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(data));
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (method.<span class="hljs-property">toUpperCase</span> === <span class="hljs-string">&quot;GET&quot;</span>) &#123;
+      xhr.<span class="hljs-title function_">send</span>();
+    &#125;
+  &#125;);
+
+  <span class="hljs-comment">// return xhr可以用于调用abort()方法进行终止请求</span>
+
+  promise.<span class="hljs-property">xhr</span> = xhr;
+  <span class="hljs-keyword">return</span> promise;
+&#125;
+</code></pre></div>
 
 
                 

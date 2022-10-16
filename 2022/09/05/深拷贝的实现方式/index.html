@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051&#x2F;&#x2F; 判断是否是对象function isObject(value) &amp;#123;  const valueType &#x3D; typeof value;  return value !&#x3D; null &amp;&amp;">
+    <meta name="description" content="&#x2F;&#x2F; 判断是否是对象  function isObject(value) &amp;#123;   const valueType &#x3D; typeof value;    return value !&#x3D; null &amp;&amp; (valueType &#x3D;&#x3D;&#x3D; &quot;object&quot; || valueType &#x3D;&#x3D;&#x3D; &quot;function&quot;); &amp;#125;  funct">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深拷贝的实现方式">
 <meta property="og:url" content="http://example.com/2022/09/05/%E6%B7%B1%E6%8B%B7%E8%B4%9D%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051&#x2F;&#x2F; 判断是否是对象function isObject(value) &amp;#123;  const valueType &#x3D; typeof value;  return value !&#x3D; null &amp;&amp;">
+<meta property="og:description" content="&#x2F;&#x2F; 判断是否是对象  function isObject(value) &amp;#123;   const valueType &#x3D; typeof value;    return value !&#x3D; null &amp;&amp; (valueType &#x3D;&#x3D;&#x3D; &quot;object&quot; || valueType &#x3D;&#x3D;&#x3D; &quot;function&quot;); &amp;#125;  funct">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-05T09:40:19.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.138Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.119Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -218,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.6k 字
+          3.3k 字
         
       </span>
     
@@ -229,7 +229,7 @@
         
         
         
-          30 分钟
+          28 分钟
         
       </span>
     
@@ -272,9 +272,168 @@
             
               <div class="markdown-body">
                 
-                <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 判断是否是对象</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">isObject</span>(<span class="hljs-params">value</span>) &#123;<br>  <span class="hljs-keyword">const</span> valueType = <span class="hljs-keyword">typeof</span> value;<br><br>  <span class="hljs-keyword">return</span> value != <span class="hljs-literal">null</span> &amp;&amp; (valueType === <span class="hljs-string">&quot;object&quot;</span> || valueType === <span class="hljs-string">&quot;function&quot;</span>);<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">deepClone</span>(<span class="hljs-params">originValue</span>) &#123;<br>   <span class="hljs-comment">// 数据类型是symbol</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> originValue === <span class="hljs-string">&quot;symbol&quot;</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Symbol</span>(originValue.<span class="hljs-property">description</span>);<br>  &#125;<br>  <span class="hljs-comment">// 原始数据类型直接返回</span><br>  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">isObject</span>(originValue)) &#123;<br>    <span class="hljs-keyword">return</span> originValue;<br>  &#125;<br>  <span class="hljs-comment">// 判断是否是function</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> originValue === <span class="hljs-string">&quot;function&quot;</span>) &#123;<br>    <span class="hljs-keyword">return</span> originValue;<br>  &#125;<br>  <span class="hljs-comment">// 判断是否是set类型</span><br>  <span class="hljs-keyword">if</span> (originValue <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Set</span>) &#123;<br>    <span class="hljs-keyword">const</span> newSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> originValue) &#123;<br>      newSet.<span class="hljs-title function_">add</span>(<span class="hljs-title function_">deepClone</span>(item));<br>    &#125;<br>    <span class="hljs-keyword">return</span> newSet;<br>  &#125;<br>  <span class="hljs-comment">// 判断是否是Map类型</span><br>  <span class="hljs-keyword">if</span> (originValue <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Map</span>) &#123;<br>    <span class="hljs-keyword">const</span> newMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> originValue) &#123;<br>      newMap.<span class="hljs-title function_">set</span>(key, <span class="hljs-title function_">deepClone</span>(value));<br>    &#125;<br>  &#125;<br>  <span class="hljs-comment">// 判断是否是Array</span><br>  <span class="hljs-keyword">const</span> newOBj = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(originValue) ? [] : &#123;&#125;;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> originValue) &#123;<br>    newOBj[key] = <span class="hljs-title function_">deepClone</span>(originValue[key]);<br>  &#125;<br><br>  <span class="hljs-comment">// 单独遍历Symbol</span><br>  <span class="hljs-keyword">const</span> symbolKeys = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getOwnPropertySymbols</span>(originValue);<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> symbolKey <span class="hljs-keyword">of</span> symbolKeys) &#123;<br>    newOBj[<span class="hljs-title class_">Symbol</span>(symbolKey.<span class="hljs-property">description</span>)] = <span class="hljs-title function_">deepClone</span>(originValue[symbolKey]);<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> newOBj;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+                <div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 判断是否是对象</span>
 
-<h4 id="当拷贝的对象中出现循环引用时"><a href="#当拷贝的对象中出现循环引用时" class="headerlink" title="当拷贝的对象中出现循环引用时"></a>当拷贝的对象中出现循环引用时</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 判断是否是对象</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">isObject</span>(<span class="hljs-params">value</span>) &#123;<br>  <span class="hljs-keyword">const</span> valueType = <span class="hljs-keyword">typeof</span> value;<br><br>  <span class="hljs-keyword">return</span> value != <span class="hljs-literal">null</span> &amp;&amp; (valueType === <span class="hljs-string">&quot;object&quot;</span> || valueType === <span class="hljs-string">&quot;function&quot;</span>);<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">deepClone</span>(<span class="hljs-params">originValue, map = <span class="hljs-keyword">new</span> <span class="hljs-built_in">WeakMap</span>()</span>) &#123;<br>  <span class="hljs-comment">// 数据类型是symbol</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> originValue === <span class="hljs-string">&quot;symbol&quot;</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Symbol</span>(originValue.<span class="hljs-property">description</span>);<br>  &#125;<br>  <span class="hljs-comment">// 原始数据类型直接返回</span><br>  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">isObject</span>(originValue)) &#123;<br>    <span class="hljs-keyword">return</span> originValue;<br>  &#125;<br>  <span class="hljs-comment">// 判断是否是function</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> originValue === <span class="hljs-string">&quot;function&quot;</span>) &#123;<br>    <span class="hljs-keyword">return</span> originValue;<br>  &#125;<br>  <span class="hljs-comment">// 判断是否是set类型</span><br>  <span class="hljs-keyword">if</span> (originValue <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Set</span>) &#123;<br>    <span class="hljs-keyword">const</span> newSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> originValue) &#123;<br>      newSet.<span class="hljs-title function_">add</span>(<span class="hljs-title function_">deepClone</span>(item));<br>    &#125;<br>    <span class="hljs-keyword">return</span> newSet;<br>  &#125;<br>  <span class="hljs-comment">// 判断是否是Map类型</span><br>  <span class="hljs-keyword">if</span> (originValue <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Map</span>) &#123;<br>    <span class="hljs-keyword">const</span> newMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> originValue) &#123;<br>      newMap.<span class="hljs-title function_">set</span>(key, <span class="hljs-title function_">deepClone</span>(value));<br>    &#125;<br>  &#125;<br>  <span class="hljs-comment">// 如果有循环引用的对象，return</span><br>  <span class="hljs-keyword">if</span> (map.<span class="hljs-title function_">get</span>(originValue)) &#123;<br>    <span class="hljs-keyword">return</span> map.<span class="hljs-title function_">get</span>(originValue);<br>  &#125;<br>  <span class="hljs-comment">// 判断是否是Array</span><br>  <span class="hljs-keyword">const</span> newOBj = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(originValue) ? [] : &#123;&#125;;<br>  map.<span class="hljs-title function_">set</span>(originValue, newOBj);<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> originValue) &#123;<br>    newOBj[key] = <span class="hljs-title function_">deepClone</span>(originValue[key], map);<br>  &#125;<br><br>  <span class="hljs-comment">// 以symbol作为key</span><br>  <span class="hljs-keyword">const</span> symbolKeys = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getOwnPropertySymbols</span>(originValue);<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> symbolKey <span class="hljs-keyword">of</span> symbolKeys) &#123;<br>    newOBj[<span class="hljs-title class_">Symbol</span>(symbolKey.<span class="hljs-property">description</span>)] = <span class="hljs-title function_">deepClone</span>(<br>      originValue[symbolKey],<br>      map<br>    );<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> newOBj;<br>&#125;<br><br><span class="hljs-comment">// const info = &#123;</span><br><span class="hljs-comment">//   name: &quot;why&quot;,</span><br><span class="hljs-comment">//   age: 18,</span><br><span class="hljs-comment">//   friend: &#123;</span><br><span class="hljs-comment">//     name: &quot;kobe&quot;,</span><br><span class="hljs-comment">//     address: &#123;</span><br><span class="hljs-comment">//       name: &quot;洛杉矶&quot;,</span><br><span class="hljs-comment">//       detail: &quot;斯坦普斯中心&quot;,</span><br><span class="hljs-comment">//     &#125;,</span><br><span class="hljs-comment">//   &#125;,</span><br><span class="hljs-comment">//   // self: info</span><br><span class="hljs-comment">// &#125;;</span><br><span class="hljs-comment">// info.self = info;</span><br><br><span class="hljs-comment">// let newObj = deepClone(info);</span><br><span class="hljs-comment">// console.log(newObj);</span><br><span class="hljs-comment">// console.log(newObj.self === newObj);</span><br><br><span class="hljs-keyword">const</span> set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>([<span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-string">&quot;cba&quot;</span>, <span class="hljs-string">&quot;nba&quot;</span>]);<br><span class="hljs-keyword">const</span> s1 = <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&quot;s1&quot;</span>);<br><span class="hljs-keyword">const</span> s2 = <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&quot;s2&quot;</span>);<br><span class="hljs-keyword">const</span> info1 = &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;why&quot;</span>,<br>  <span class="hljs-attr">age</span>: <span class="hljs-number">18</span>,<br>  <span class="hljs-attr">friend</span>: &#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;kobe&quot;</span>,<br>    <span class="hljs-attr">address</span>: &#123;<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;洛杉矶&quot;</span>,<br>      <span class="hljs-attr">detail</span>: <span class="hljs-string">&quot;斯坦普斯中心&quot;</span>,<br>    &#125;,<br>  &#125;,<br><br>  <span class="hljs-comment">// 1.特殊类型: Set</span><br>  <span class="hljs-attr">set</span>: set,<br><br>  <span class="hljs-comment">// 2.特性类型: function</span><br>  <span class="hljs-attr">running</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;running~&quot;</span>);<br>  &#125;,<br><br>  <span class="hljs-comment">// 3.值的特殊类型: Symbol</span><br>  <span class="hljs-attr">symbolKey</span>: <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&quot;abc&quot;</span>),<br><br>  <span class="hljs-comment">// 4.key是symbol时</span><br>  [s1]: <span class="hljs-string">&quot;aaaa&quot;</span>,<br>  [s2]: <span class="hljs-string">&quot;bbbb&quot;</span>,<br>&#125;;<br>info1.<span class="hljs-property">self</span> = info1;<br><span class="hljs-keyword">const</span> newObj1 = <span class="hljs-title function_">deepClone</span>(info1);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(newObj1);<br><br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isObject</span>(<span class="hljs-params">value</span>) &#123;
+  <span class="hljs-keyword">const</span> valueType = <span class="hljs-keyword">typeof</span> value;
+
+  <span class="hljs-keyword">return</span> value != <span class="hljs-literal">null</span> &amp;&amp; (valueType === <span class="hljs-string">&quot;object&quot;</span> || valueType === <span class="hljs-string">&quot;function&quot;</span>);
+&#125;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">deepClone</span>(<span class="hljs-params">originValue</span>) &#123;
+   <span class="hljs-comment">// 数据类型是symbol</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> originValue === <span class="hljs-string">&quot;symbol&quot;</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Symbol</span>(originValue.<span class="hljs-property">description</span>);
+  &#125;
+  <span class="hljs-comment">// 原始数据类型直接返回</span>
+  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">isObject</span>(originValue)) &#123;
+    <span class="hljs-keyword">return</span> originValue;
+  &#125;
+  <span class="hljs-comment">// 判断是否是function</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> originValue === <span class="hljs-string">&quot;function&quot;</span>) &#123;
+    <span class="hljs-keyword">return</span> originValue;
+  &#125;
+  <span class="hljs-comment">// 判断是否是set类型</span>
+  <span class="hljs-keyword">if</span> (originValue <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Set</span>) &#123;
+    <span class="hljs-keyword">const</span> newSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> originValue) &#123;
+      newSet.<span class="hljs-title function_">add</span>(<span class="hljs-title function_">deepClone</span>(item));
+    &#125;
+    <span class="hljs-keyword">return</span> newSet;
+  &#125;
+  <span class="hljs-comment">// 判断是否是Map类型</span>
+  <span class="hljs-keyword">if</span> (originValue <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Map</span>) &#123;
+    <span class="hljs-keyword">const</span> newMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> originValue) &#123;
+      newMap.<span class="hljs-title function_">set</span>(key, <span class="hljs-title function_">deepClone</span>(value));
+    &#125;
+  &#125;
+  <span class="hljs-comment">// 判断是否是Array</span>
+  <span class="hljs-keyword">const</span> newOBj = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(originValue) ? [] : &#123;&#125;;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> originValue) &#123;
+    newOBj[key] = <span class="hljs-title function_">deepClone</span>(originValue[key]);
+  &#125;
+
+  <span class="hljs-comment">// 单独遍历Symbol</span>
+  <span class="hljs-keyword">const</span> symbolKeys = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getOwnPropertySymbols</span>(originValue);
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> symbolKey <span class="hljs-keyword">of</span> symbolKeys) &#123;
+    newOBj[<span class="hljs-title class_">Symbol</span>(symbolKey.<span class="hljs-property">description</span>)] = <span class="hljs-title function_">deepClone</span>(originValue[symbolKey]);
+  &#125;
+
+  <span class="hljs-keyword">return</span> newOBj;
+&#125;
+</code></pre></div>
+
+<h4 id="当拷贝的对象中出现循环引用时"><a href="#当拷贝的对象中出现循环引用时" class="headerlink" title="当拷贝的对象中出现循环引用时"></a>当拷贝的对象中出现循环引用时</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 判断是否是对象</span>
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isObject</span>(<span class="hljs-params">value</span>) &#123;
+  <span class="hljs-keyword">const</span> valueType = <span class="hljs-keyword">typeof</span> value;
+
+  <span class="hljs-keyword">return</span> value != <span class="hljs-literal">null</span> &amp;&amp; (valueType === <span class="hljs-string">&quot;object&quot;</span> || valueType === <span class="hljs-string">&quot;function&quot;</span>);
+&#125;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">deepClone</span>(<span class="hljs-params">originValue, map = <span class="hljs-keyword">new</span> <span class="hljs-built_in">WeakMap</span>()</span>) &#123;
+  <span class="hljs-comment">// 数据类型是symbol</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> originValue === <span class="hljs-string">&quot;symbol&quot;</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Symbol</span>(originValue.<span class="hljs-property">description</span>);
+  &#125;
+  <span class="hljs-comment">// 原始数据类型直接返回</span>
+  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">isObject</span>(originValue)) &#123;
+    <span class="hljs-keyword">return</span> originValue;
+  &#125;
+  <span class="hljs-comment">// 判断是否是function</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> originValue === <span class="hljs-string">&quot;function&quot;</span>) &#123;
+    <span class="hljs-keyword">return</span> originValue;
+  &#125;
+  <span class="hljs-comment">// 判断是否是set类型</span>
+  <span class="hljs-keyword">if</span> (originValue <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Set</span>) &#123;
+    <span class="hljs-keyword">const</span> newSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> originValue) &#123;
+      newSet.<span class="hljs-title function_">add</span>(<span class="hljs-title function_">deepClone</span>(item));
+    &#125;
+    <span class="hljs-keyword">return</span> newSet;
+  &#125;
+  <span class="hljs-comment">// 判断是否是Map类型</span>
+  <span class="hljs-keyword">if</span> (originValue <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Map</span>) &#123;
+    <span class="hljs-keyword">const</span> newMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> originValue) &#123;
+      newMap.<span class="hljs-title function_">set</span>(key, <span class="hljs-title function_">deepClone</span>(value));
+    &#125;
+  &#125;
+  <span class="hljs-comment">// 如果有循环引用的对象，return</span>
+  <span class="hljs-keyword">if</span> (map.<span class="hljs-title function_">get</span>(originValue)) &#123;
+    <span class="hljs-keyword">return</span> map.<span class="hljs-title function_">get</span>(originValue);
+  &#125;
+  <span class="hljs-comment">// 判断是否是Array</span>
+  <span class="hljs-keyword">const</span> newOBj = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(originValue) ? [] : &#123;&#125;;
+  map.<span class="hljs-title function_">set</span>(originValue, newOBj);
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> originValue) &#123;
+    newOBj[key] = <span class="hljs-title function_">deepClone</span>(originValue[key], map);
+  &#125;
+
+  <span class="hljs-comment">// 以symbol作为key</span>
+  <span class="hljs-keyword">const</span> symbolKeys = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getOwnPropertySymbols</span>(originValue);
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> symbolKey <span class="hljs-keyword">of</span> symbolKeys) &#123;
+    newOBj[<span class="hljs-title class_">Symbol</span>(symbolKey.<span class="hljs-property">description</span>)] = <span class="hljs-title function_">deepClone</span>(
+      originValue[symbolKey],
+      map
+    );
+  &#125;
+
+  <span class="hljs-keyword">return</span> newOBj;
+&#125;
+
+<span class="hljs-comment">// const info = &#123;</span>
+<span class="hljs-comment">//   name: &quot;why&quot;,</span>
+<span class="hljs-comment">//   age: 18,</span>
+<span class="hljs-comment">//   friend: &#123;</span>
+<span class="hljs-comment">//     name: &quot;kobe&quot;,</span>
+<span class="hljs-comment">//     address: &#123;</span>
+<span class="hljs-comment">//       name: &quot;洛杉矶&quot;,</span>
+<span class="hljs-comment">//       detail: &quot;斯坦普斯中心&quot;,</span>
+<span class="hljs-comment">//     &#125;,</span>
+<span class="hljs-comment">//   &#125;,</span>
+<span class="hljs-comment">//   // self: info</span>
+<span class="hljs-comment">// &#125;;</span>
+<span class="hljs-comment">// info.self = info;</span>
+
+<span class="hljs-comment">// let newObj = deepClone(info);</span>
+<span class="hljs-comment">// console.log(newObj);</span>
+<span class="hljs-comment">// console.log(newObj.self === newObj);</span>
+
+<span class="hljs-keyword">const</span> set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>([<span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-string">&quot;cba&quot;</span>, <span class="hljs-string">&quot;nba&quot;</span>]);
+<span class="hljs-keyword">const</span> s1 = <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&quot;s1&quot;</span>);
+<span class="hljs-keyword">const</span> s2 = <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&quot;s2&quot;</span>);
+<span class="hljs-keyword">const</span> info1 = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;why&quot;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-number">18</span>,
+  <span class="hljs-attr">friend</span>: &#123;
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;kobe&quot;</span>,
+    <span class="hljs-attr">address</span>: &#123;
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;洛杉矶&quot;</span>,
+      <span class="hljs-attr">detail</span>: <span class="hljs-string">&quot;斯坦普斯中心&quot;</span>,
+    &#125;,
+  &#125;,
+
+  <span class="hljs-comment">// 1.特殊类型: Set</span>
+  <span class="hljs-attr">set</span>: set,
+
+  <span class="hljs-comment">// 2.特性类型: function</span>
+  <span class="hljs-attr">running</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;running~&quot;</span>);
+  &#125;,
+
+  <span class="hljs-comment">// 3.值的特殊类型: Symbol</span>
+  <span class="hljs-attr">symbolKey</span>: <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&quot;abc&quot;</span>),
+
+  <span class="hljs-comment">// 4.key是symbol时</span>
+  [s1]: <span class="hljs-string">&quot;aaaa&quot;</span>,
+  [s2]: <span class="hljs-string">&quot;bbbb&quot;</span>,
+&#125;;
+info1.<span class="hljs-property">self</span> = info1;
+<span class="hljs-keyword">const</span> newObj1 = <span class="hljs-title function_">deepClone</span>(info1);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(newObj1);
+</code></pre></div>
 
 
                 

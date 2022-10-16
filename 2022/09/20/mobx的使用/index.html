@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://zh.mobx.js.org/assets/computed-example.png">
 <meta property="og:image" content="https://zh.mobx.js.org/assets/autorun.png">
 <meta property="article:published_time" content="2022-09-20T22:40:53.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://zh.mobx.js.org/assets/zh.flow.png">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          20k 字
+          19k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          168 分钟
+          160 分钟
         
       </span>
     
@@ -285,7 +285,41 @@
 <h5 id="轻松实现最优渲染"><a href="#轻松实现最优渲染" class="headerlink" title="轻松实现最优渲染"></a>轻松实现最优渲染</h5><p>所有对数据的变更和使用都会在运行时被追踪到，并构成一个截取所有状态和输出之间关系的依赖树。这样保证了那些依赖于状态的计算只有在真正需要时才会运行，就像 React 组件一样。无需使用记忆化或选择器之类容易出错的次优技巧来对组件进行手动优化。</p>
 <p>🤹🏻‍♂️</p>
 <h5 id="架构自由"><a href="#架构自由" class="headerlink" title="架构自由"></a>架构自由</h5><p>MobX 不会用它自己的规则来限制你，它可以让你在任意 UI 框架之外管理你的应用状态。这样会使你的代码低耦合、可移植和最重要的——容易测试。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactDOM</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span><br><span class="hljs-keyword">import</span> &#123; makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><span class="hljs-keyword">import</span> &#123; observer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react&quot;</span><br><br><span class="hljs-comment">// 对应用状态进行建模。</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Timer</span> &#123;<br>    secondsPassed = <span class="hljs-number">0</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br><br>    <span class="hljs-title function_">increase</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span> += <span class="hljs-number">1</span><br>    &#125;<br><br>    <span class="hljs-title function_">reset</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span> = <span class="hljs-number">0</span><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> myTimer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Timer</span>()<br><br><span class="hljs-comment">// 构建一个使用 observable 状态的“用户界面”。</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">(<span class="hljs-params">&#123; timer &#125;</span>) =&gt;</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> timer.reset()&#125;&gt;已过秒数：&#123;timer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br>))<br><br><span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> <span class="hljs-attr">timer</span>=<span class="hljs-string">&#123;myTimer&#125;</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)<br><br><span class="hljs-comment">// 每秒更新一次‘已过秒数：X’中的文本。</span><br><span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    myTimer.<span class="hljs-title function_">increase</span>()<br>&#125;, <span class="hljs-number">1000</span>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactDOM</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span>
+<span class="hljs-keyword">import</span> &#123; makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+<span class="hljs-keyword">import</span> &#123; observer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx-react&quot;</span>
+
+<span class="hljs-comment">// 对应用状态进行建模。</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Timer</span> &#123;
+    secondsPassed = <span class="hljs-number">0</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)
+    &#125;
+
+    <span class="hljs-title function_">increase</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span> += <span class="hljs-number">1</span>
+    &#125;
+
+    <span class="hljs-title function_">reset</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">secondsPassed</span> = <span class="hljs-number">0</span>
+    &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> myTimer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Timer</span>()
+
+<span class="hljs-comment">// 构建一个使用 observable 状态的“用户界面”。</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">TimerView</span> = <span class="hljs-title function_">observer</span>(<span class="hljs-function">(<span class="hljs-params">&#123; timer &#125;</span>) =&gt;</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> timer.reset()&#125;&gt;已过秒数：&#123;timer.secondsPassed&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+))
+
+<span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TimerView</span> <span class="hljs-attr">timer</span>=<span class="hljs-string">&#123;myTimer&#125;</span> /&gt;</span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>)
+
+<span class="hljs-comment">// 每秒更新一次‘已过秒数：X’中的文本。</span>
+<span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;
+    myTimer.<span class="hljs-title function_">increase</span>()
+&#125;, <span class="hljs-number">1000</span>)</code></pre></div>
 
 <p>围绕 React 组件 <code>TimerView</code> 的 <code>observer</code> 包装会自动侦测到依赖于 observable <code>timer.secondsPassed</code> 的渲染——即使这种依赖关系没有被明确定义出来。 响应性系统会负责在未来<em>恰好那个</em>字段被更新的时候将组件重新渲染。</p>
 <p>每个事件（<code>onClick</code> 或 <code>setInterval</code>）都会调用一个用来更新 <em>observable 状态</em> <code>myTimer.secondsPassed</code> 的 <em>action</em>（<code>myTimer.increase</code> 或 <code>myTimer.reset</code>）。Observable 状态的变更会被精确地传送到 <code>TimerView</code> 中所有依赖于它们的<em>计算</em>和<em>副作用</em>里。</p>
@@ -297,7 +331,26 @@
 <li>Derivations</li>
 </ul>
 <h3 id="state"><a href="#state" class="headerlink" title="state"></a>state</h3><p><em>State(状态)</em> 是驱动你的应用程序的数据。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, action &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Todo</span> &#123;<br>    id = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>()<br>    title = <span class="hljs-string">&quot;&quot;</span><br>    finished = <span class="hljs-literal">false</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">title</span>) &#123;<br>        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;<br>            <span class="hljs-attr">title</span>: observable,<br>            <span class="hljs-attr">finished</span>: observable,<br>            <span class="hljs-attr">toggle</span>: action<br>        &#125;)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">title</span> = title<br>    &#125;<br><br>    <span class="hljs-title function_">toggle</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">finished</span> = !<span class="hljs-variable language_">this</span>.<span class="hljs-property">finished</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, action &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Todo</span> &#123;
+    id = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>()
+    title = <span class="hljs-string">&quot;&quot;</span>
+    finished = <span class="hljs-literal">false</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">title</span>) &#123;
+        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;
+            <span class="hljs-attr">title</span>: observable,
+            <span class="hljs-attr">finished</span>: observable,
+            <span class="hljs-attr">toggle</span>: action
+        &#125;)
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">title</span> = title
+    &#125;
+
+    <span class="hljs-title function_">toggle</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">finished</span> = !<span class="hljs-variable language_">this</span>.<span class="hljs-property">finished</span>
+    &#125;
+&#125;</code></pre></div>
 
 <p>将 State 存储在任何您喜欢的数据结构中：普通对象、数组、类、循环数据结构或引用。这与MobX的工作方式无关。</p>
 <p>只要确保所有响应式的属性都被标记为<code>observable</code></p>
@@ -317,7 +370,21 @@
 <p>当最开始使用MobX时，人们容易过度使用 <em>Reaction</em>。</p>
 <p>黄金法则是，如果要基于当前 State 创建值，请始终使用 <em>computed</em></p>
 <h4 id="通过-computed-对派生值进行建模"><a href="#通过-computed-对派生值进行建模" class="headerlink" title="通过 computed 对派生值进行建模"></a>通过 computed 对派生值进行建模</h4><p>你可以通过定义 getter 方法并使用 <code>makeObservable</code> 将其标记为 <code>computed</code> 的方式创建一个 <em>computed</em> 值。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TodoList</span> &#123;<br>    todos = []<br>    <span class="hljs-keyword">get</span> <span class="hljs-title function_">unfinishedTodoCount</span>() &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">todos</span>.<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> !todo.<span class="hljs-property">finished</span>).<span class="hljs-property">length</span><br>    &#125;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">todos</span>) &#123;<br>        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;<br>            <span class="hljs-attr">todos</span>: observable,<br>            <span class="hljs-attr">unfinishedTodoCount</span>: computed<br>        &#125;)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">todos</span> = todos<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TodoList</span> &#123;
+    todos = []
+    <span class="hljs-keyword">get</span> <span class="hljs-title function_">unfinishedTodoCount</span>() &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">todos</span>.<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> !todo.<span class="hljs-property">finished</span>).<span class="hljs-property">length</span>
+    &#125;
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">todos</span>) &#123;
+        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;
+            <span class="hljs-attr">todos</span>: observable,
+            <span class="hljs-attr">unfinishedTodoCount</span>: computed
+        &#125;)
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">todos</span> = todos
+    &#125;
+&#125;</code></pre></div>
 
 <p>Mobx 会确保 <code>unfinishedTodoCount</code> 会在todos数组发生变化中或者 todos中的一个对象中的 <code>finished</code>属性被修改时自动更新</p>
 <h4 id="Reaction会产生副作用"><a href="#Reaction会产生副作用" class="headerlink" title="Reaction会产生副作用"></a>Reaction会产生副作用</h4><p>作为用户，要想在屏幕上看到状态或计算值的变化，就需要一个重新绘制部分GUI的 <em>reactions</em> 。</p>
@@ -344,7 +411,36 @@
 <li><code>makeObservable(target, annotations?, options?)</code></li>
 </ul>
 <p>这个函数会将已存在的对象属性转换成可观察地对象，任何target对象包括class都可以作为target传递。一般情况下，<code>makeObservable</code> 是在类的构造函数中调用的，并且它的第一个参数是 <code>this</code> 。 <code>annotations</code> 参数将会为每一个成员映射 <a target="_blank" rel="noopener" href="https://zh.mobx.js.org/observable-state.html#%E5%8F%AF%E7%94%A8%E7%9A%84%E6%B3%A8%E8%A7%A3">注解</a>。需要注意的是，当使用 <a target="_blank" rel="noopener" href="https://zh.mobx.js.org/enabling-decorators.html">装饰器</a> 时，<code>annotations</code> 参数将会被忽略。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, computed, action, flow &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;<br>    value<br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;<br>        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;<br>            <span class="hljs-attr">value</span>: observable,<br>            <span class="hljs-attr">double</span>: computed,<br>            <span class="hljs-attr">increment</span>: action,<br>            <span class="hljs-attr">fetch</span>: flow<br>        &#125;)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> = value<br>    &#125;<br><br>    <span class="hljs-keyword">get</span> <span class="hljs-title function_">double</span>() &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> * <span class="hljs-number">2</span><br>    &#125;<br><br>    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++<br>    &#125;<br><br>    *<span class="hljs-title function_">fetch</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">yield</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/value&quot;</span>)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> = response.<span class="hljs-title function_">json</span>()<br>    &#125;<br>&#125;<br>所有带注解 的字段都是 不可配置的。<br>所有的不可观察（无状态）的字段（action, flow）都是 不可写的。<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, computed, action, flow &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;
+    value
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;
+        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;
+            <span class="hljs-attr">value</span>: observable,
+            <span class="hljs-attr">double</span>: computed,
+            <span class="hljs-attr">increment</span>: action,
+            <span class="hljs-attr">fetch</span>: flow
+        &#125;)
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> = value
+    &#125;
+
+    <span class="hljs-keyword">get</span> <span class="hljs-title function_">double</span>() &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> * <span class="hljs-number">2</span>
+    &#125;
+
+    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++
+    &#125;
+
+    *<span class="hljs-title function_">fetch</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">yield</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/value&quot;</span>)
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> = response.<span class="hljs-title function_">json</span>()
+    &#125;
+&#125;
+所有带注解 的字段都是 不可配置的。
+所有的不可观察（无状态）的字段（action, flow）都是 不可写的。</code></pre></div>
 
 <h4 id="makeAutoObservable"><a href="#makeAutoObservable" class="headerlink" title="makeAutoObservable"></a><code>makeAutoObservable</code></h4><p>使用：</p>
 <ul>
@@ -368,7 +464,32 @@
 <p><code>observable</code> 注解可以作为一个函数进行调用，从而一次性将整个对象变成可观察的。 <code>source</code> 对象将会被克隆并且所有的成员都将会成为可观察的，类似于 <code>makeAutoObservable</code> 做的那样。 同样，你可以传入一个 <code>overrides</code> 对象来为特定的成员提供特定的注解。 </p>
 <p>由 <code>observable</code> 返回的对象将会使用 Proxy 包装，这意味着之后被添加到这个对象中的属性也将被侦测并使其转化为可观察对象（除非禁用 <a target="_blank" rel="noopener" href="https://zh.mobx.js.org/configuration.html#proxy-%E9%80%89%E9%A1%B9">proxy</a>）。</p>
 <p><code>observable</code> 方法也可以被像 <a target="_blank" rel="noopener" href="https://zh.mobx.js.org/api.html#observablearray">arrays</a>，<a target="_blank" rel="noopener" href="https://zh.mobx.js.org/api.html#observablemap">Maps</a> 和 <a target="_blank" rel="noopener" href="https://zh.mobx.js.org/api.html#observableset">Sets</a> 这样的集合调用。这些集合也将被克隆并转化为可观察对象。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; observable, autorun &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">const</span> todos = <span class="hljs-title function_">observable</span>([<br>    &#123; <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;Spoil tea&quot;</span>, <span class="hljs-attr">completed</span>: <span class="hljs-literal">true</span> &#125;,<br>    &#123; <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;Make coffee&quot;</span>, <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span> &#125;<br>])<br><br><span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<br>        <span class="hljs-string">&quot;Remaining:&quot;</span>,<br>        todos<br>            .<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> !todo.<span class="hljs-property">completed</span>)<br>            .<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> todo.<span class="hljs-property">title</span>)<br>            .<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;, &quot;</span>)<br>    )<br>&#125;)<br><span class="hljs-comment">// 打印: &#x27;Remaining: Make coffee&#x27;</span><br><br>todos[<span class="hljs-number">0</span>].<span class="hljs-property">completed</span> = <span class="hljs-literal">false</span><br><span class="hljs-comment">// 打印: &#x27;Remaining: Spoil tea, Make coffee&#x27;</span><br><br>todos[<span class="hljs-number">2</span>] = &#123; <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;Take a nap&quot;</span>, <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span> &#125;<br><span class="hljs-comment">// 打印: &#x27;Remaining: Spoil tea, Make coffee, Take a nap&#x27;</span><br><br>todos.<span class="hljs-title function_">shift</span>()<br><span class="hljs-comment">// 打印: &#x27;Remaining: Make coffee, Take a nap&#x27;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; observable, autorun &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">const</span> todos = <span class="hljs-title function_">observable</span>([
+    &#123; <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;Spoil tea&quot;</span>, <span class="hljs-attr">completed</span>: <span class="hljs-literal">true</span> &#125;,
+    &#123; <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;Make coffee&quot;</span>, <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span> &#125;
+])
+
+<span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+        <span class="hljs-string">&quot;Remaining:&quot;</span>,
+        todos
+            .<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> !todo.<span class="hljs-property">completed</span>)
+            .<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">todo</span> =&gt;</span> todo.<span class="hljs-property">title</span>)
+            .<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;, &quot;</span>)
+    )
+&#125;)
+<span class="hljs-comment">// 打印: &#x27;Remaining: Make coffee&#x27;</span>
+
+todos[<span class="hljs-number">0</span>].<span class="hljs-property">completed</span> = <span class="hljs-literal">false</span>
+<span class="hljs-comment">// 打印: &#x27;Remaining: Spoil tea, Make coffee&#x27;</span>
+
+todos[<span class="hljs-number">2</span>] = &#123; <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;Take a nap&quot;</span>, <span class="hljs-attr">completed</span>: <span class="hljs-literal">false</span> &#125;
+<span class="hljs-comment">// 打印: &#x27;Remaining: Spoil tea, Make coffee, Take a nap&#x27;</span>
+
+todos.<span class="hljs-title function_">shift</span>()
+<span class="hljs-comment">// 打印: &#x27;Remaining: Make coffee, Take a nap&#x27;</span></code></pre></div>
 
 <p>使用autorun可以在响应式的数据发生改变的时候，自动执行对应的回调函数</p>
 <p>可观察的数组还有一些特别好用的实用函数：</p>
@@ -395,24 +516,101 @@
 </ol>
 <p><code>action</code> 注解应该仅用于会<em>修改</em> state 的函数。派生其他信息（执行查询或者过滤数据）的函数<em>不应该</em>被标记为 actions，以便 MobX 可以对它们的调用进行跟踪。 带有 <code>action</code> 注解的成员是不可枚举的。</p>
 <p>makeObservable</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, action &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;<br>    value = <span class="hljs-number">0</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;<br>        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;<br>            <span class="hljs-attr">value</span>: observable,<br>            <span class="hljs-attr">increment</span>: action<br>        &#125;)<br>    &#125;<br><br>    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-comment">// 观察者不会看到中间状态.</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, action &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;
+    value = <span class="hljs-number">0</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;
+        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;
+            <span class="hljs-attr">value</span>: observable,
+            <span class="hljs-attr">increment</span>: action
+        &#125;)
+    &#125;
+
+    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-comment">// 观察者不会看到中间状态.</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++
+    &#125;
+&#125;</code></pre></div>
 
 <p>makeAutoObservable</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;<br>    value = <span class="hljs-number">0</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br><br>    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;
+    value = <span class="hljs-number">0</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)
+    &#125;
+
+    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++
+    &#125;
+&#125;</code></pre></div>
 
 <p>action.bound</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, action &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;<br>    value = <span class="hljs-number">0</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;<br>        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;<br>            <span class="hljs-attr">value</span>: observable,<br>            <span class="hljs-attr">increment</span>: action.<span class="hljs-property">bound</span><br>        &#125;)<br>    &#125;<br><br>    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> doubler = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Doubler</span>()<br><br><span class="hljs-comment">// 这样调用 increment 是安全的, 因为它已经被绑定了。</span><br><span class="hljs-built_in">setInterval</span>(doubler.<span class="hljs-property">increment</span>, <span class="hljs-number">1000</span>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, action &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;
+    value = <span class="hljs-number">0</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;
+        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;
+            <span class="hljs-attr">value</span>: observable,
+            <span class="hljs-attr">increment</span>: action.<span class="hljs-property">bound</span>
+        &#125;)
+    &#125;
+
+    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++
+    &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> doubler = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Doubler</span>()
+
+<span class="hljs-comment">// 这样调用 increment 是安全的, 因为它已经被绑定了。</span>
+<span class="hljs-built_in">setInterval</span>(doubler.<span class="hljs-property">increment</span>, <span class="hljs-number">1000</span>)</code></pre></div>
 
 <p>Action(fn)</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; observable, action &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">const</span> state = <span class="hljs-title function_">observable</span>(&#123; <span class="hljs-attr">value</span>: <span class="hljs-number">0</span> &#125;)<br><br><span class="hljs-keyword">const</span> increment = <span class="hljs-title function_">action</span>(<span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> &#123;<br>    state.<span class="hljs-property">value</span>++<br>    state.<span class="hljs-property">value</span>++<br>&#125;)<br><br><span class="hljs-title function_">increment</span>(state)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; observable, action &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">const</span> state = <span class="hljs-title function_">observable</span>(&#123; <span class="hljs-attr">value</span>: <span class="hljs-number">0</span> &#125;)
+
+<span class="hljs-keyword">const</span> increment = <span class="hljs-title function_">action</span>(<span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> &#123;
+    state.<span class="hljs-property">value</span>++
+    state.<span class="hljs-property">value</span>++
+&#125;)
+
+<span class="hljs-title function_">increment</span>(state)</code></pre></div>
 
 <p>runInAction</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; observable, runInAction &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">const</span> state = <span class="hljs-title function_">observable</span>(&#123; <span class="hljs-attr">value</span>: <span class="hljs-number">0</span> &#125;)<br><br><span class="hljs-title function_">runInAction</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    state.<span class="hljs-property">value</span>++<br>    state.<span class="hljs-property">value</span>++<br>&#125;)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; observable, runInAction &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">const</span> state = <span class="hljs-title function_">observable</span>(&#123; <span class="hljs-attr">value</span>: <span class="hljs-number">0</span> &#125;)
+
+<span class="hljs-title function_">runInAction</span>(<span class="hljs-function">() =&gt;</span> &#123;
+    state.<span class="hljs-property">value</span>++
+    state.<span class="hljs-property">value</span>++
+&#125;)</code></pre></div>
 
 <h3 id="使用-action-包装函数"><a href="#使用-action-包装函数" class="headerlink" title="使用 action 包装函数"></a>使用 <code>action</code> 包装函数</h3><p>为了尽可能地利用 MobX 的事务性，actions 应该尽可能被传到外围。如果一个类方法会修改 state，可以将其标记为 action。把事件处理函数标记为 actions 就更好了，因为最外层的事务起着决定性作用。一个未被标记的、会接着调用两个 actions 的事件处理函数仍然将会生成两个事务。</p>
 <p>为了帮助创建基于 action 的事件处理函数，<code>action</code> 不仅仅是一个注解，更是一个高阶函数。可以使用函数将它作为一个参数来调用，在这种情况下它将会返回一个有着相同签名的使用 <code>action</code> 包装过的函数。</p>
 <p>例如在 React 中，可以按照下面的方式包装 <code>onClick</code> 事件处理函数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">ResetButton</span> = (<span class="hljs-params">&#123; formState &#125;</span>) =&gt; (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span></span></span><br><span class="hljs-tag"><span class="language-xml">        <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;action(e</span> =&gt;</span> &#123;</span><br><span class="language-xml">            formState.resetPendingUploads()</span><br><span class="language-xml">            formState.resetValues()</span><br><span class="language-xml">            e.stopPropagation()</span><br><span class="language-xml">        &#125;)&#125;</span><br><span class="language-xml">    &gt;</span><br><span class="language-xml">        Reset form</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">ResetButton</span> = (<span class="hljs-params">&#123; formState &#125;</span>) =&gt; (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span></span></span>
+<span class="hljs-tag"><span class="language-xml">        <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;action(e</span> =&gt;</span> &#123;</span>
+<span class="language-xml">            formState.resetPendingUploads()</span>
+<span class="language-xml">            formState.resetValues()</span>
+<span class="language-xml">            e.stopPropagation()</span>
+<span class="language-xml">        &#125;)&#125;</span>
+<span class="language-xml">    &gt;</span>
+<span class="language-xml">        Reset form</span>
+<span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+)</code></pre></div>
 
 <p>为了更好的调试体验，我们推荐为被包装的函数命名，或者将名称作为 <code>action</code> 的第一个参数进行传递    </p>
 <p><strong>注意：actions不会被跟踪</strong>，就是不能触发autorun</p>
@@ -424,7 +622,25 @@
 </ul>
 <p><code>action.bound</code> 注解可用于将方法自动绑定到正确的实例，这样 <code>this</code> 会始终被正确绑定在函数内部</p>
 <p>使用makeAutoObservable(o,{},{autoBind:true}) 自动绑定所有的actions和flow</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;<br>    value = <span class="hljs-number">0</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>, &#123;&#125;, &#123; <span class="hljs-attr">autoBind</span>: <span class="hljs-literal">true</span> &#125;)<br>    &#125;<br><br>    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++<br>    &#125;<br>    <br>    *<span class="hljs-title function_">flow</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">yield</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;http://example.com/value&quot;</span>)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> = <span class="hljs-keyword">yield</span> response.<span class="hljs-title function_">json</span>()<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Doubler</span> &#123;
+    value = <span class="hljs-number">0</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">value</span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>, &#123;&#125;, &#123; <span class="hljs-attr">autoBind</span>: <span class="hljs-literal">true</span> &#125;)
+    &#125;
+
+    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span>++
+    &#125;
+    
+    *<span class="hljs-title function_">flow</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">yield</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;http://example.com/value&quot;</span>)
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> = <span class="hljs-keyword">yield</span> response.<span class="hljs-title function_">json</span>()
+    &#125;
+&#125;</code></pre></div>
 
 <h3 id="runInAction"><a href="#runInAction" class="headerlink" title="runInAction"></a><code>runInAction</code></h3><p>用法：</p>
 <ul>
@@ -432,23 +648,161 @@
 </ul>
 <p>使用这个工具函数来创建一个会被立即调用的临时 action。在异步进程中非常有用。 </p>
 <h3 id="Actions-和继承"><a href="#Actions-和继承" class="headerlink" title="Actions 和继承"></a>Actions 和继承</h3><p>只有定义在<strong>原型</strong>上的函数可以被子类<strong>覆盖</strong>：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Parent</span> &#123;<br>    <span class="hljs-comment">// on instance class filed</span><br>    arrowAction = <span class="hljs-function">() =&gt;</span> &#123;&#125;<br><br>    <span class="hljs-comment">// on prototype</span><br>    <span class="hljs-title function_">action</span>(<span class="hljs-params"></span>) &#123;&#125;<br>    <span class="hljs-title function_">boundAction</span>(<span class="hljs-params"></span>) &#123;&#125;<br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;<br>            <span class="hljs-attr">arrowAction</span>: action<br>            <span class="hljs-attr">action</span>: action,<br>            <span class="hljs-attr">boundAction</span>: action.<span class="hljs-property">bound</span>,<br>        &#125;)<br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Parent</span> &#123;<br>    <span class="hljs-comment">// THROWS: TypeError: Cannot redefine property: arrowAction</span><br>    arrowAction = <span class="hljs-function">() =&gt;</span> &#123;&#125;<br><br>    <span class="hljs-comment">// OK</span><br>    <span class="hljs-title function_">action</span>(<span class="hljs-params"></span>) &#123;&#125;<br>    <span class="hljs-title function_">boundAction</span>(<span class="hljs-params"></span>) &#123;&#125;<br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">super</span>()<br>        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;<br>            <span class="hljs-attr">arrowAction</span>: override,<br>            <span class="hljs-attr">action</span>: override,<br>            <span class="hljs-attr">boundAction</span>: override,<br>        &#125;)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Parent</span> &#123;
+    <span class="hljs-comment">// on instance class filed</span>
+    arrowAction = <span class="hljs-function">() =&gt;</span> &#123;&#125;
+
+    <span class="hljs-comment">// on prototype</span>
+    <span class="hljs-title function_">action</span>(<span class="hljs-params"></span>) &#123;&#125;
+    <span class="hljs-title function_">boundAction</span>(<span class="hljs-params"></span>) &#123;&#125;
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;
+            <span class="hljs-attr">arrowAction</span>: action
+            <span class="hljs-attr">action</span>: action,
+            <span class="hljs-attr">boundAction</span>: action.<span class="hljs-property">bound</span>,
+        &#125;)
+    &#125;
+&#125;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Parent</span> &#123;
+    <span class="hljs-comment">// THROWS: TypeError: Cannot redefine property: arrowAction</span>
+    arrowAction = <span class="hljs-function">() =&gt;</span> &#123;&#125;
+
+    <span class="hljs-comment">// OK</span>
+    <span class="hljs-title function_">action</span>(<span class="hljs-params"></span>) &#123;&#125;
+    <span class="hljs-title function_">boundAction</span>(<span class="hljs-params"></span>) &#123;&#125;
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">super</span>()
+        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;
+            <span class="hljs-attr">arrowAction</span>: override,
+            <span class="hljs-attr">action</span>: override,
+            <span class="hljs-attr">boundAction</span>: override,
+        &#125;)
+    &#125;
+&#125;</code></pre></div>
 
 <p>想要将单个的 <em>action</em> <strong>绑定</strong> 到 <code>this</code>，可以使用 <code>action.bound</code> 代替箭头函数</p>
 <h3 id="异步-actions"><a href="#异步-actions" class="headerlink" title="异步 actions"></a>异步 actions</h3><p>从本质上讲，异步进程在 MobX 中不需要任何特殊处理，因为不论是何时引发的所有 reactions 都将会自动更新。 而且因为可观察对象是可变的，因此在 action 执行过程中保持对它们的引用一般是安全的。 然而，在异步进程中更新可观察对象的每个步骤（tick）都应该被标识为 <code>action</code>。 我们可以通过利用上述的 API 以多种方式实现这一点，如下所示。</p>
 <p>例如，在处理 Promise 时，更新 state 的处理程序应该被 <code>action</code> 包装起来，或者被标记为 actions，如下所示。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title class_">Promise</span> 的决议处理程序是我们以内联的方式处理的，但是会在一开始的 action 执行完成之后运行，因此需要使用 action 对它们进行包装：<br><br><span class="hljs-keyword">import</span> &#123; action, makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Store</span> &#123;<br>    githubProjects = []<br>    state = <span class="hljs-string">&quot;pending&quot;</span> <span class="hljs-comment">// &quot;pending&quot;, &quot;done&quot; or &quot;error&quot;</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br><br>    <span class="hljs-title function_">fetchProjects</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = []<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;pending&quot;</span><br>        <span class="hljs-title function_">fetchGithubProjectsSomehow</span>().<span class="hljs-title function_">then</span>(<br>            <span class="hljs-title function_">action</span>(<span class="hljs-string">&quot;fetchSuccess&quot;</span>, <span class="hljs-function"><span class="hljs-params">projects</span> =&gt;</span> &#123;<br>                <span class="hljs-keyword">const</span> filteredProjects = <span class="hljs-title function_">somePreprocessing</span>(projects)<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = filteredProjects<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;done&quot;</span><br>            &#125;),<br>            <span class="hljs-title function_">action</span>(<span class="hljs-string">&quot;fetchError&quot;</span>, <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;error&quot;</span><br>            &#125;)<br>        )<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-title class_">Promise</span> 的决议处理程序是我们以内联的方式处理的，但是会在一开始的 action 执行完成之后运行，因此需要使用 action 对它们进行包装：
+
+<span class="hljs-keyword">import</span> &#123; action, makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Store</span> &#123;
+    githubProjects = []
+    state = <span class="hljs-string">&quot;pending&quot;</span> <span class="hljs-comment">// &quot;pending&quot;, &quot;done&quot; or &quot;error&quot;</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)
+    &#125;
+
+    <span class="hljs-title function_">fetchProjects</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = []
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;pending&quot;</span>
+        <span class="hljs-title function_">fetchGithubProjectsSomehow</span>().<span class="hljs-title function_">then</span>(
+            <span class="hljs-title function_">action</span>(<span class="hljs-string">&quot;fetchSuccess&quot;</span>, <span class="hljs-function"><span class="hljs-params">projects</span> =&gt;</span> &#123;
+                <span class="hljs-keyword">const</span> filteredProjects = <span class="hljs-title function_">somePreprocessing</span>(projects)
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = filteredProjects
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;done&quot;</span>
+            &#125;),
+            <span class="hljs-title function_">action</span>(<span class="hljs-string">&quot;fetchError&quot;</span>, <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;error&quot;</span>
+            &#125;)
+        )
+    &#125;
+&#125;</code></pre></div>
 
 
 
 <p>如果 Promise 的处理函数是类的字段，它们将由 <code>makeAutoObservable</code> 自动包装为 <code>action</code>：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Store</span> &#123;<br>    githubProjects = []<br>    state = <span class="hljs-string">&quot;pending&quot;</span> <span class="hljs-comment">// &quot;pending&quot;, &quot;done&quot; or &quot;error&quot;</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br><br>    <span class="hljs-title function_">fetchProjects</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = []<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;pending&quot;</span><br>        <span class="hljs-title function_">fetchGithubProjectsSomehow</span>().<span class="hljs-title function_">then</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">projectsFetchSuccess</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">projectsFetchFailure</span>)<br>    &#125;<br><br>    projectsFetchSuccess = <span class="hljs-function"><span class="hljs-params">projects</span> =&gt;</span> &#123;<br>        <span class="hljs-keyword">const</span> filteredProjects = <span class="hljs-title function_">somePreprocessing</span>(projects)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = filteredProjects<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;done&quot;</span><br>    &#125;<br><br>    projectsFetchFailure = <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;error&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Store</span> &#123;
+    githubProjects = []
+    state = <span class="hljs-string">&quot;pending&quot;</span> <span class="hljs-comment">// &quot;pending&quot;, &quot;done&quot; or &quot;error&quot;</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)
+    &#125;
+
+    <span class="hljs-title function_">fetchProjects</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = []
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;pending&quot;</span>
+        <span class="hljs-title function_">fetchGithubProjectsSomehow</span>().<span class="hljs-title function_">then</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">projectsFetchSuccess</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">projectsFetchFailure</span>)
+    &#125;
+
+    projectsFetchSuccess = <span class="hljs-function"><span class="hljs-params">projects</span> =&gt;</span> &#123;
+        <span class="hljs-keyword">const</span> filteredProjects = <span class="hljs-title function_">somePreprocessing</span>(projects)
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = filteredProjects
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;done&quot;</span>
+    &#125;
+
+    projectsFetchFailure = <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;error&quot;</span>
+    &#125;
+&#125;</code></pre></div>
 
 <p><code>await</code> 之后的任何操作都不与其同在一个 tick 中，因此它们需要使用 action 包装。 在这里，我们可以利用 <code>runInAction</code>：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; runInAction, makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Store</span> &#123;<br>    githubProjects = []<br>    state = <span class="hljs-string">&quot;pending&quot;</span> <span class="hljs-comment">// &quot;pending&quot;, &quot;done&quot; or &quot;error&quot;</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-title function_">fetchProjects</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = []<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;pending&quot;</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">const</span> projects = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchGithubProjectsSomehow</span>()<br>            <span class="hljs-keyword">const</span> filteredProjects = <span class="hljs-title function_">somePreprocessing</span>(projects)<br>            <span class="hljs-title function_">runInAction</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = filteredProjects<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;done&quot;</span><br>            &#125;)<br>        &#125; <span class="hljs-keyword">catch</span> (e) &#123;<br>            <span class="hljs-title function_">runInAction</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;error&quot;</span><br>            &#125;)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; runInAction, makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Store</span> &#123;
+    githubProjects = []
+    state = <span class="hljs-string">&quot;pending&quot;</span> <span class="hljs-comment">// &quot;pending&quot;, &quot;done&quot; or &quot;error&quot;</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)
+    &#125;
+
+    <span class="hljs-keyword">async</span> <span class="hljs-title function_">fetchProjects</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = []
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;pending&quot;</span>
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-keyword">const</span> projects = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchGithubProjectsSomehow</span>()
+            <span class="hljs-keyword">const</span> filteredProjects = <span class="hljs-title function_">somePreprocessing</span>(projects)
+            <span class="hljs-title function_">runInAction</span>(<span class="hljs-function">() =&gt;</span> &#123;
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = filteredProjects
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;done&quot;</span>
+            &#125;)
+        &#125; <span class="hljs-keyword">catch</span> (e) &#123;
+            <span class="hljs-title function_">runInAction</span>(<span class="hljs-function">() =&gt;</span> &#123;
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;error&quot;</span>
+            &#125;)
+        &#125;
+    &#125;
+&#125;</code></pre></div>
 
 <p>使用flow+generator</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; flow, makeAutoObservable, flowResult &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Store</span> &#123;<br>    githubProjects = []<br>    state = <span class="hljs-string">&quot;pending&quot;</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>, &#123;<br>            <span class="hljs-attr">fetchProjects</span>: flow<br>        &#125;)<br>    &#125;<br><br>    <span class="hljs-comment">// 注意星号, 这是一个 generator 函数!</span><br>    *<span class="hljs-title function_">fetchProjects</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = []<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;pending&quot;</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// Yield 代替 await.</span><br>            <span class="hljs-keyword">const</span> projects = <span class="hljs-keyword">yield</span> <span class="hljs-title function_">fetchGithubProjectsSomehow</span>()<br>            <span class="hljs-keyword">const</span> filteredProjects = <span class="hljs-title function_">somePreprocessing</span>(projects)<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;done&quot;</span><br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = filteredProjects<br>        &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;error&quot;</span><br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> store = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Store</span>()<br><span class="hljs-keyword">const</span> projects = <span class="hljs-keyword">await</span> <span class="hljs-title function_">flowResult</span>(store.<span class="hljs-title function_">fetchProjects</span>())<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; flow, makeAutoObservable, flowResult &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Store</span> &#123;
+    githubProjects = []
+    state = <span class="hljs-string">&quot;pending&quot;</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>, &#123;
+            <span class="hljs-attr">fetchProjects</span>: flow
+        &#125;)
+    &#125;
+
+    <span class="hljs-comment">// 注意星号, 这是一个 generator 函数!</span>
+    *<span class="hljs-title function_">fetchProjects</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = []
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;pending&quot;</span>
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-comment">// Yield 代替 await.</span>
+            <span class="hljs-keyword">const</span> projects = <span class="hljs-keyword">yield</span> <span class="hljs-title function_">fetchGithubProjectsSomehow</span>()
+            <span class="hljs-keyword">const</span> filteredProjects = <span class="hljs-title function_">somePreprocessing</span>(projects)
+            <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;done&quot;</span>
+            <span class="hljs-variable language_">this</span>.<span class="hljs-property">githubProjects</span> = filteredProjects
+        &#125; <span class="hljs-keyword">catch</span> (error) &#123;
+            <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&quot;error&quot;</span>
+        &#125;
+    &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> store = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Store</span>()
+<span class="hljs-keyword">const</span> projects = <span class="hljs-keyword">await</span> <span class="hljs-title function_">flowResult</span>(store.<span class="hljs-title function_">fetchProjects</span>())</code></pre></div>
 
 <h2 id="Computers"><a href="#Computers" class="headerlink" title="Computers"></a>Computers</h2><p>使用：</p>
 <ul>
@@ -458,7 +812,51 @@
 </ul>
 <p>计算值可以用来从其他可观察对象中派生信息。 计算值采用惰性求值，会缓存其输出，并且只有当其依赖的可观察对象被改变时才会重新计算。 它们在不被任何值观察时会被暂时停用。</p>
 <p>计算值可以通过在 JavaScript <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get">getters</a> 上添加 <code>computed</code> 注解来创建。 使用 <code>makeObservable</code> 将 getter 声明为 computed。或者如果你希望所有的 getters 被自动声明为 <code>computed</code>，可以使用 <code>makeAutoObservable</code>，<code>observable</code> 或者 <code>extendObservable</code></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, computed, autorun &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderLine</span> &#123;<br>    price = <span class="hljs-number">0</span><br>    amount = <span class="hljs-number">1</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">price</span>) &#123;<br>        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;<br>            <span class="hljs-attr">price</span>: observable,<br>            <span class="hljs-attr">amount</span>: observable,<br>            <span class="hljs-attr">total</span>: computed<br>        &#125;)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">price</span> = price<br>    &#125;<br><br>    <span class="hljs-keyword">get</span> <span class="hljs-title function_">total</span>() &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Computing...&quot;</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">price</span> * <span class="hljs-variable language_">this</span>.<span class="hljs-property">amount</span><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> order = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OrderLine</span>(<span class="hljs-number">0</span>)<br><br><span class="hljs-keyword">const</span> stop = <span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Total: &quot;</span> + order.<span class="hljs-property">total</span>)<br>&#125;)<br><span class="hljs-comment">// Computing...</span><br><span class="hljs-comment">// Total: 0</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(order.<span class="hljs-property">total</span>)<br><span class="hljs-comment">// (不会重新计算!)</span><br><span class="hljs-comment">// 0</span><br><br>order.<span class="hljs-property">amount</span> = <span class="hljs-number">5</span><br><span class="hljs-comment">// Computing...</span><br><span class="hljs-comment">// (无需 autorun)</span><br><br>order.<span class="hljs-property">price</span> = <span class="hljs-number">2</span><br><span class="hljs-comment">// Computing...</span><br><span class="hljs-comment">// Total: 10</span><br><br><span class="hljs-title function_">stop</span>()<br><br>order.<span class="hljs-property">price</span> = <span class="hljs-number">3</span><br><span class="hljs-comment">// 计算值和 autorun 都不会被重新计算.</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeObservable, observable, computed, autorun &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderLine</span> &#123;
+    price = <span class="hljs-number">0</span>
+    amount = <span class="hljs-number">1</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">price</span>) &#123;
+        <span class="hljs-title function_">makeObservable</span>(<span class="hljs-variable language_">this</span>, &#123;
+            <span class="hljs-attr">price</span>: observable,
+            <span class="hljs-attr">amount</span>: observable,
+            <span class="hljs-attr">total</span>: computed
+        &#125;)
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">price</span> = price
+    &#125;
+
+    <span class="hljs-keyword">get</span> <span class="hljs-title function_">total</span>() &#123;
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Computing...&quot;</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">price</span> * <span class="hljs-variable language_">this</span>.<span class="hljs-property">amount</span>
+    &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> order = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OrderLine</span>(<span class="hljs-number">0</span>)
+
+<span class="hljs-keyword">const</span> stop = <span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Total: &quot;</span> + order.<span class="hljs-property">total</span>)
+&#125;)
+<span class="hljs-comment">// Computing...</span>
+<span class="hljs-comment">// Total: 0</span>
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(order.<span class="hljs-property">total</span>)
+<span class="hljs-comment">// (不会重新计算!)</span>
+<span class="hljs-comment">// 0</span>
+
+order.<span class="hljs-property">amount</span> = <span class="hljs-number">5</span>
+<span class="hljs-comment">// Computing...</span>
+<span class="hljs-comment">// (无需 autorun)</span>
+
+order.<span class="hljs-property">price</span> = <span class="hljs-number">2</span>
+<span class="hljs-comment">// Computing...</span>
+<span class="hljs-comment">// Total: 10</span>
+
+<span class="hljs-title function_">stop</span>()
+
+order.<span class="hljs-property">price</span> = <span class="hljs-number">3</span>
+<span class="hljs-comment">// 计算值和 autorun 都不会被重新计算.</span></code></pre></div>
 
 <p>相比之下，如果 <code>total</code> 没有被注解，那么 <code>autorun</code> 会把副作用运行 3 次， 因为它将直接依赖于 <code>total</code> 和 <code>amount</code></p>
 <p><img src="https://zh.mobx.js.org/assets/computed-example.png" srcset="/img/loading.gif" lazyload alt="computed graph"></p>
@@ -478,10 +876,61 @@
 <h3 id="tracking-如何工作"><a href="#tracking-如何工作" class="headerlink" title="tracking 如何工作"></a>tracking 如何工作</h3><p>Autorun 通过在<em>响应式上下文</em>运行 <code>effect</code> 来工作。在给定的函数执行期间，MobX 会持续跟踪被 effect 直接或间接<em>读取</em>过的所有可观察对象和计算值。 一旦函数执行完毕，MobX 将收集并订阅所有被读取过的可观察对象，并等待其中任意一个再次发生改变。 一旦有改变发生，<code>autorun</code> 将会再次触发，重复整个过程。</p>
 <p><img src="https://zh.mobx.js.org/assets/autorun.png" srcset="/img/loading.gif" lazyload alt="autorun"></p>
 <p>这就是下面的示例的工作方式。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeAutoObservable, autorun &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;<br>    name<br>    energyLevel<br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name</span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> = <span class="hljs-number">100</span><br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br><br>    <span class="hljs-title function_">reduceEnergy</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> -= <span class="hljs-number">10</span><br>    &#125;<br><br>    <span class="hljs-keyword">get</span> <span class="hljs-title function_">isHungry</span>() &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> &lt; <span class="hljs-number">50</span><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> giraffe = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Animal</span>(<span class="hljs-string">&quot;Gary&quot;</span>)<br><br><span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Energy level:&quot;</span>, giraffe.<span class="hljs-property">energyLevel</span>)<br>&#125;)<br><br><span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (giraffe.<span class="hljs-property">isHungry</span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Now I&#x27;m hungry!&quot;</span>)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;I&#x27;m not hungry!&quot;</span>)<br>    &#125;<br>&#125;)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Now let&#x27;s change state!&quot;</span>)<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>    giraffe.<span class="hljs-title function_">reduceEnergy</span>()<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; makeAutoObservable, autorun &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;
+    name
+    energyLevel
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name</span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> = <span class="hljs-number">100</span>
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)
+    &#125;
+
+    <span class="hljs-title function_">reduceEnergy</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> -= <span class="hljs-number">10</span>
+    &#125;
+
+    <span class="hljs-keyword">get</span> <span class="hljs-title function_">isHungry</span>() &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> &lt; <span class="hljs-number">50</span>
+    &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> giraffe = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Animal</span>(<span class="hljs-string">&quot;Gary&quot;</span>)
+
+<span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Energy level:&quot;</span>, giraffe.<span class="hljs-property">energyLevel</span>)
+&#125;)
+
+<span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-keyword">if</span> (giraffe.<span class="hljs-property">isHungry</span>) &#123;
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Now I&#x27;m hungry!&quot;</span>)
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;I&#x27;m not hungry!&quot;</span>)
+    &#125;
+&#125;)
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Now let&#x27;s change state!&quot;</span>)
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;
+    giraffe.<span class="hljs-title function_">reduceEnergy</span>()
+&#125;</code></pre></div>
 
 <p>运行上面的代码，你将会看到下面的输出：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">100</span><br><span class="hljs-attribute">I</span>&#x27;m not hungry!<br><span class="hljs-attribute">Now</span> let&#x27;s change state!<br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">90</span><br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">80</span><br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">70</span><br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">60</span><br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">50</span><br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">40</span><br><span class="hljs-attribute">Now</span> I&#x27;m hungry!<br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">30</span><br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">20</span><br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">10</span><br><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">Energy</span> level: <span class="hljs-number">100</span>
+<span class="hljs-attribute">I</span>&#x27;m not hungry!
+<span class="hljs-attribute">Now</span> let&#x27;s change state!
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">90</span>
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">80</span>
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">70</span>
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">60</span>
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">50</span>
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">40</span>
+<span class="hljs-attribute">Now</span> I&#x27;m hungry!
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">30</span>
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">20</span>
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">10</span>
+<span class="hljs-attribute">Energy</span> level: <span class="hljs-number">0</span></code></pre></div>
 
 <p>autorun会比较前后值是否发生了改变，如果没有发生改变，就不会执行，当值发生变化的时候，才会重新执行</p>
 <h3 id="Reaction"><a href="#Reaction" class="headerlink" title="Reaction"></a>Reaction</h3><p>用法：</p>
@@ -492,10 +941,50 @@
 <p>和autorun比较，autorun是针对所有的state，reaction是针对特定的state，而且reaction在初始化，不会执行，只有在state</p>
 <p>发生变化时才会执行</p>
 <p>在下面的例子中，reaction 只会在 <code>isHungry</code> 发生改变时被触发一次。 在 <em>effect</em> 函数中使用的 <code>giraffe.energyLevel</code> 的更改，并不会触发 <em>effect</em> 函数。如果你想要 <code>reaction</code> 也对这个值的变化做出反应， 你需要在 <em>data</em> 函数中访问并返回它。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; makeAutoObservable, reaction &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;<br>    name<br>    energyLevel<br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name</span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> = <span class="hljs-number">100</span><br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br><br>    <span class="hljs-title function_">reduceEnergy</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> -= <span class="hljs-number">10</span><br>    &#125;<br><br>    <span class="hljs-keyword">get</span> <span class="hljs-title function_">isHungry</span>() &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> &lt; <span class="hljs-number">50</span><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> giraffe = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Animal</span>(<span class="hljs-string">&quot;Gary&quot;</span>)<br><br><span class="hljs-title function_">reaction</span>(<br>    <span class="hljs-function">() =&gt;</span> giraffe.<span class="hljs-property">isHungry</span>,<br>    <span class="hljs-function"><span class="hljs-params">isHungry</span> =&gt;</span> &#123;<br>        <span class="hljs-keyword">if</span> (isHungry) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Now I&#x27;m hungry!&quot;</span>)<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;I&#x27;m not hungry!&quot;</span>)<br>        &#125;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Energy level:&quot;</span>, giraffe.<span class="hljs-property">energyLevel</span>)<br>    &#125;<br>)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Now let&#x27;s change state!&quot;</span>)<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>    giraffe.<span class="hljs-title function_">reduceEnergy</span>()<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; makeAutoObservable, reaction &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;
+    name
+    energyLevel
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name</span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> = <span class="hljs-number">100</span>
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)
+    &#125;
+
+    <span class="hljs-title function_">reduceEnergy</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> -= <span class="hljs-number">10</span>
+    &#125;
+
+    <span class="hljs-keyword">get</span> <span class="hljs-title function_">isHungry</span>() &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">energyLevel</span> &lt; <span class="hljs-number">50</span>
+    &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> giraffe = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Animal</span>(<span class="hljs-string">&quot;Gary&quot;</span>)
+
+<span class="hljs-title function_">reaction</span>(
+    <span class="hljs-function">() =&gt;</span> giraffe.<span class="hljs-property">isHungry</span>,
+    <span class="hljs-function"><span class="hljs-params">isHungry</span> =&gt;</span> &#123;
+        <span class="hljs-keyword">if</span> (isHungry) &#123;
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Now I&#x27;m hungry!&quot;</span>)
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;I&#x27;m not hungry!&quot;</span>)
+        &#125;
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Energy level:&quot;</span>, giraffe.<span class="hljs-property">energyLevel</span>)
+    &#125;
+)
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Now let&#x27;s change state!&quot;</span>)
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;
+    giraffe.<span class="hljs-title function_">reduceEnergy</span>()
+&#125;</code></pre></div>
 
 <p>输出：</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pf">Now let&#x27;s change <span class="hljs-keyword">state</span>!<br>Now I&#x27;m hungry!<br>Energy level: <span class="hljs-number">40</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pf">Now let&#x27;s change <span class="hljs-keyword">state</span>!
+Now I&#x27;m hungry!
+Energy level: <span class="hljs-number">40</span></code></pre></div>
 
 <h3 id="When"><a href="#When" class="headerlink" title="When"></a>When</h3><p>使用：</p>
 <ul>
@@ -505,11 +994,34 @@
 <p><code>when</code> 会观察并运行给定的 <em>predicate</em> 函数，直到其返回 <code>true</code>。 一旦 predicate 返回了 true，给定的 <em>effect</em> 函数就会执行并且自动执行器函数将会被清理掉。</p>
 <p>如果你没有传入 <code>effect</code> 函数，<code>when</code> 函数返回一个 <code>Promise</code> 类型的 disposer，并允许你手动取消</p>
 <p><code>when</code> 对于以响应式的方式将值清理或取消掉十分有用。 例如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; when, makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyResource</span> &#123;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>, &#123; <span class="hljs-attr">dispose</span>: <span class="hljs-literal">false</span> &#125;)<br>        <span class="hljs-title function_">when</span>(<br>            <span class="hljs-comment">// Once...</span><br>            <span class="hljs-function">() =&gt;</span> !<span class="hljs-variable language_">this</span>.<span class="hljs-property">isVisible</span>,<br>            <span class="hljs-comment">// ... then.</span><br>            <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">dispose</span>()<br>        )<br>    &#125;<br><br>    <span class="hljs-keyword">get</span> <span class="hljs-title function_">isVisible</span>() &#123;<br>        <span class="hljs-comment">// 表示此项目是否可见.</span><br>    &#125;<br><br>    <span class="hljs-title function_">dispose</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-comment">// 清理一些资源.</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; when, makeAutoObservable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;mobx&quot;</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyResource</span> &#123;
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>, &#123; <span class="hljs-attr">dispose</span>: <span class="hljs-literal">false</span> &#125;)
+        <span class="hljs-title function_">when</span>(
+            <span class="hljs-comment">// Once...</span>
+            <span class="hljs-function">() =&gt;</span> !<span class="hljs-variable language_">this</span>.<span class="hljs-property">isVisible</span>,
+            <span class="hljs-comment">// ... then.</span>
+            <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">dispose</span>()
+        )
+    &#125;
+
+    <span class="hljs-keyword">get</span> <span class="hljs-title function_">isVisible</span>() &#123;
+        <span class="hljs-comment">// 表示此项目是否可见.</span>
+    &#125;
+
+    <span class="hljs-title function_">dispose</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-comment">// 清理一些资源.</span>
+    &#125;
+&#125;</code></pre></div>
 
 <p>一旦 <code>isVisible</code> 变成 <code>false</code>，<code>dispose</code> 方法将会被调用， 并对 <code>MyResource</code> 做一些清理操作</p>
 <h3 id="await-when"><a href="#await-when" class="headerlink" title="await when(...)"></a><code>await when(...)</code></h3><p>如果你没有提供 <code>effect</code> 函数，<code>when</code> 将会返回一个 <code>Promise</code>。这样会跟 <code>async / await</code> 很好地结合在一起，让你可以等待可观察对象中的变化。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">when</span>(<span class="hljs-function">() =&gt;</span> that.<span class="hljs-property">isVisible</span>)<br>    <span class="hljs-comment">// etc...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">when</span>(<span class="hljs-function">() =&gt;</span> that.<span class="hljs-property">isVisible</span>)
+    <span class="hljs-comment">// etc...</span>
+&#125;</code></pre></div>
 
 <p>如果要提前取消 <code>when</code>，可以对它返回的 Promise 调用 <code>.cancel()</code> 函数。</p>
 <h4 id="规则-1"><a href="#规则-1" class="headerlink" title="规则"></a>规则</h4><p>这里是一些 reactive context 需要遵守的规则：</p>
@@ -519,11 +1031,62 @@
 <li>autorun 不会跟踪被其调用的 action 所读取的可观察对象，因为 action 始终<em>不会被追踪</em>。</li>
 </ol>
 <h3 id="Always-dispose-of-reactions"><a href="#Always-dispose-of-reactions" class="headerlink" title="Always dispose of reactions"></a>Always dispose of reactions</h3><p>传递给 <code>autorun</code>，<code>reaction</code> 和 <code>when</code> 的函数只有在它们观察的所有对象都被 GC 之后才会被 GC。原则上，它们一直等待可观察对象发生新的变化。 为了阻止 reactions 永远地等待下去，它们总是会返回一个 disposer 函数，该函数可以用来停止执行并且取消订阅所使用的任何可观察对象</p>
-<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs arcade">const counter = observable(&#123; <span class="hljs-attr">count</span>: <span class="hljs-number">0</span> &#125;)<br><br><span class="hljs-comment">// 初始化一个 autorun 并且打印 0.</span><br>const disposer = autorun(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.<span class="hljs-built_in">log</span>(counter.<span class="hljs-built_in">count</span>)<br>&#125;)<br><br><span class="hljs-comment">// 打印: 1</span><br>counter.<span class="hljs-built_in">count</span>++<br><br><span class="hljs-comment">// 停止 autorun.</span><br>disposer()<br><br><span class="hljs-comment">// 不会打印消息.</span><br>counter.<span class="hljs-built_in">count</span>++<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs arcade">const counter = observable(&#123; <span class="hljs-attr">count</span>: <span class="hljs-number">0</span> &#125;)
+
+<span class="hljs-comment">// 初始化一个 autorun 并且打印 0.</span>
+const disposer = autorun(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;
+    <span class="hljs-built_in">console</span>.<span class="hljs-built_in">log</span>(counter.<span class="hljs-built_in">count</span>)
+&#125;)
+
+<span class="hljs-comment">// 打印: 1</span>
+counter.<span class="hljs-built_in">count</span>++
+
+<span class="hljs-comment">// 停止 autorun.</span>
+disposer()
+
+<span class="hljs-comment">// 不会打印消息.</span>
+counter.<span class="hljs-built_in">count</span>++</code></pre></div>
 
 <p>我们强烈建议你，一旦不再需要这些方法中的副作用时，请务必调用它们所返回的 disposer 函数。 否则可能导致内存泄漏。</p>
 <p><code>reaction</code> 和 <code>autorun</code> 中 effect 函数的第二个参数 <code>reaction</code> 也可以被用来提前把 reaction 清理掉（通过调用 <code>reaction.dispose()</code>）。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Vat</span> &#123;<br>    value = <span class="hljs-number">1.2</span><br><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> vat = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vat</span>()<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderLine</span> &#123;<br>    price = <span class="hljs-number">10</span><br>    amount = <span class="hljs-number">1</span><br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)<br><br>        <span class="hljs-comment">// 这个 autorun 将会和本 OrderLine 实例一起进行 GC,</span><br>        <span class="hljs-comment">// 因为它只使用了来自 `this` 的可观察对象.</span><br>        <span class="hljs-comment">// 所以不一定非要在删除 OrderLine 实例后立刻把它清理掉。</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">disposer1</span> = <span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-title function_">doSomethingWith</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">price</span> * <span class="hljs-variable language_">this</span>.<span class="hljs-property">amount</span>)<br>        &#125;)<br><br>        <span class="hljs-comment">// 这个 autorun 将不会和本 OrderLine 实例一起进行 GC,</span><br>        <span class="hljs-comment">// 因为 vat 保存了对这个 autorun 的引用用于通知改变,</span><br>        <span class="hljs-comment">// 这样反过来又会把 &#x27;this&#x27; 保存在作用域中。</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">disposer2</span> = <span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-title function_">doSomethingWith</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">price</span> * <span class="hljs-variable language_">this</span>.<span class="hljs-property">amount</span> * vat.<span class="hljs-property">value</span>)<br>        &#125;)<br>    &#125;<br><br>    <span class="hljs-title function_">dispose</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-comment">// 所以, 为了避免内存问题, 当不再需要 reactions 之后</span><br>        <span class="hljs-comment">// 务必要调用 disposers.</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">disposer1</span>()<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">disposer2</span>()<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Vat</span> &#123;
+    value = <span class="hljs-number">1.2</span>
+
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)
+    &#125;
+&#125;
+
+<span class="hljs-keyword">const</span> vat = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vat</span>()
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderLine</span> &#123;
+    price = <span class="hljs-number">10</span>
+    amount = <span class="hljs-number">1</span>
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">makeAutoObservable</span>(<span class="hljs-variable language_">this</span>)
+
+        <span class="hljs-comment">// 这个 autorun 将会和本 OrderLine 实例一起进行 GC,</span>
+        <span class="hljs-comment">// 因为它只使用了来自 `this` 的可观察对象.</span>
+        <span class="hljs-comment">// 所以不一定非要在删除 OrderLine 实例后立刻把它清理掉。</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">disposer1</span> = <span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;
+            <span class="hljs-title function_">doSomethingWith</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">price</span> * <span class="hljs-variable language_">this</span>.<span class="hljs-property">amount</span>)
+        &#125;)
+
+        <span class="hljs-comment">// 这个 autorun 将不会和本 OrderLine 实例一起进行 GC,</span>
+        <span class="hljs-comment">// 因为 vat 保存了对这个 autorun 的引用用于通知改变,</span>
+        <span class="hljs-comment">// 这样反过来又会把 &#x27;this&#x27; 保存在作用域中。</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">disposer2</span> = <span class="hljs-title function_">autorun</span>(<span class="hljs-function">() =&gt;</span> &#123;
+            <span class="hljs-title function_">doSomethingWith</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">price</span> * <span class="hljs-variable language_">this</span>.<span class="hljs-property">amount</span> * vat.<span class="hljs-property">value</span>)
+        &#125;)
+    &#125;
+
+    <span class="hljs-title function_">dispose</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-comment">// 所以, 为了避免内存问题, 当不再需要 reactions 之后</span>
+        <span class="hljs-comment">// 务必要调用 disposers.</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">disposer1</span>()
+        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">disposer2</span>()
+    &#125;
+&#125;</code></pre></div>
 
 <h2 id="谨慎地使用-reactions！"><a href="#谨慎地使用-reactions！" class="headerlink" title="谨慎地使用 reactions！"></a>谨慎地使用 reactions！</h2><p>就像上面已经说过的那样，你不会经常创建 reactions。 很有可能你的应用程序不会直接使用这些 API 中的任何一个，而只会通过比如使用 mobx-react 绑定中的 <code>observer</code> 这样间接的方式创建出 reaction。</p>
 <p>在你创建 reaction 之前，最好检查一下它是否符合下面几条原则：</p>

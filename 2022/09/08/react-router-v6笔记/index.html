@@ -16,12 +16,12 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="12345678910111213141516171819201.前端路由的原理	当url发生变化的时候，引起页面不刷新来修改页面的内容的两个方法		1.通过修改url中的hash的变化来修改页面的内容			window.onhashchange&#x3D;function()&amp;#123;				switch(location.hash)&amp;#123;					case &quot;#&#x2F;a&quot;:">
+    <meta name="description" content="1.前端路由的原理 	当url发生变化的时候，引起页面不刷新来修改页面的内容的两个方法 		1.通过修改url中的hash的变化来修改页面的内容 			window.onhashchange&#x3D;function()&amp;#123; 				switch(location.hash)&amp;#123; 					case &quot;#&#x2F;a&quot;: 					div.innerHTML&#x3D;&quot;&amp;qu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="react-router-v6笔记">
 <meta property="og:url" content="http://example.com/2022/09/08/react-router-v6%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="12345678910111213141516171819201.前端路由的原理	当url发生变化的时候，引起页面不刷新来修改页面的内容的两个方法		1.通过修改url中的hash的变化来修改页面的内容			window.onhashchange&#x3D;function()&amp;#123;				switch(location.hash)&amp;#123;					case &quot;#&#x2F;a&quot;:">
+<meta property="og:description" content="1.前端路由的原理 	当url发生变化的时候，引起页面不刷新来修改页面的内容的两个方法 		1.通过修改url中的hash的变化来修改页面的内容 			window.onhashchange&#x3D;function()&amp;#123; 				switch(location.hash)&amp;#123; 					case &quot;#&#x2F;a&quot;: 					div.innerHTML&#x3D;&quot;&amp;qu">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/13/WPC9CvI7.png">
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/13/TzYXcXQV.png">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/13/TdiJP94D.png">
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/13/LD2qs0Cd.png">
 <meta property="article:published_time" content="2022-09-08T13:58:20.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://img1.imgtp.com/2022/09/13/WPC9CvI7.png">
@@ -227,7 +227,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.9k 字
+          4.6k 字
         
       </span>
     
@@ -238,7 +238,7 @@
         
         
         
-          41 分钟
+          39 分钟
         
       </span>
     
@@ -281,41 +281,199 @@
             
               <div class="markdown-body">
                 
-                <figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs qml"><span class="hljs-number">1.</span>前端路由的原理<br>	当<span class="hljs-built_in">url</span>发生变化的时候，引起页面不刷新来修改页面的内容的两个方法<br>		<span class="hljs-number">1.</span>通过修改<span class="hljs-built_in">url</span>中的hash的变化来修改页面的内容<br>			<span class="hljs-built_in">window</span>.onhashchange=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>				<span class="hljs-keyword">switch</span>(location.hash)&#123;<br>					<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;#/a&quot;</span>:<br>					div.innerHTML=<span class="hljs-string">&quot;&quot;</span><br>					<span class="hljs-keyword">break</span>;<br>				&#125;<br>			&#125;<br>		<span class="hljs-comment">//url的hash也就是锚点。本质上就是修改了window.location的href</span><br>		<span class="hljs-comment">//可以通过直接赋值location.hash来改变href.但是页面不会刷新，</span><br>		<span class="hljs-comment">//但是hash会带有#</span><br>		<span class="hljs-number">2.</span>可以使用HTML5的history模式来修改<span class="hljs-built_in">url</span>,他有六种模式来改变URL的变化而不刷新页面<br>			history.replactState():替换原来的路径<br>			history.pushState():使用新的路径<br>			history.popState():路径的回退<br>			history.go():向前或者向后改变路径<br>			history.back():向后改变路径<br>			<br></code></pre></td></tr></table></figure>
+                <div class="code-wrapper"><pre><code class="hljs qml"><span class="hljs-number">1.</span>前端路由的原理
+	当<span class="hljs-built_in">url</span>发生变化的时候，引起页面不刷新来修改页面的内容的两个方法
+		<span class="hljs-number">1.</span>通过修改<span class="hljs-built_in">url</span>中的hash的变化来修改页面的内容
+			<span class="hljs-built_in">window</span>.onhashchange=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+				<span class="hljs-keyword">switch</span>(location.hash)&#123;
+					<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;#/a&quot;</span>:
+					div.innerHTML=<span class="hljs-string">&quot;&quot;</span>
+					<span class="hljs-keyword">break</span>;
+				&#125;
+			&#125;
+		<span class="hljs-comment">//url的hash也就是锚点。本质上就是修改了window.location的href</span>
+		<span class="hljs-comment">//可以通过直接赋值location.hash来改变href.但是页面不会刷新，</span>
+		<span class="hljs-comment">//但是hash会带有#</span>
+		<span class="hljs-number">2.</span>可以使用HTML5的history模式来修改<span class="hljs-built_in">url</span>,他有六种模式来改变URL的变化而不刷新页面
+			history.replactState():替换原来的路径
+			history.pushState():使用新的路径
+			history.popState():路径的回退
+			history.go():向前或者向后改变路径
+			history.back():向后改变路径</code></pre></div>
 
 <p><img src="https://img1.imgtp.com/2022/09/13/WPC9CvI7.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220607102052.png"></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-number">2.</span>react-router有两部分组成<br>	<span class="hljs-number">1.</span>react-router<span class="hljs-comment">//这是核心代码</span><br>	<span class="hljs-number">2.</span>react-router-dom<span class="hljs-comment">//这是用于浏览器的</span><br>	<span class="hljs-number">3.</span>react-router-native<span class="hljs-comment">//这个适用于原生应用</span><br>	使用react-router需要使用npm install react-router-dom 他会自动安装react-router<br>	<br><span class="hljs-number">3.</span>react-router的组件使用<br>	&lt;<span class="hljs-title class_">BrowserRouter</span>&gt;是使用history模式<br>	<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br>    <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReactDOM</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span>;<br>    <span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">BrowserRouter</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-router-dom&quot;</span>;<br>    <span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">BrowserRouter</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">App</span>/&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">BrowserRouter</span>&gt;</span></span>,<br>      root<br>    );<span class="hljs-comment">//这就是目前比较普遍的用法，也是官方比较推荐的用法，将他包裹在App组件</span><br>   <span class="hljs-number">3.1</span>&lt;<span class="hljs-title class_">HashRouter</span>&gt;是使用hash模式，官方不推荐使用<br>   <span class="hljs-number">3.2</span>&lt;link&gt;组件是跳转的组件，它最终会被渲染成a元素<br>   <span class="hljs-number">3.3</span>&lt;<span class="hljs-title class_">NavLink</span>&gt;是在<span class="hljs-title class_">Link</span>的基础上增加了一些样式<br>   		<span class="hljs-number">3.3</span><span class="hljs-number">.1</span> to属性是<span class="hljs-title class_">Link</span>和<span class="hljs-title class_">NavLink</span>组件中最重要的属性，用于设置跳转的路径<br>   <span class="hljs-number">3.4</span>.<span class="hljs-property">Route</span>组件<br>   		<span class="hljs-number">3.4</span><span class="hljs-number">.1</span> <span class="hljs-title class_">Route</span>组件主要适用于路由路径的匹配<br>   		<span class="hljs-number">3.4</span><span class="hljs-number">.2</span> path属性:用于设置匹配到的路径<br>   		<span class="hljs-number">3.4</span><span class="hljs-number">.3</span> component属性：设置匹配到的路径后渲染的组件，<br>   		<span class="hljs-number">3.4</span><span class="hljs-number">.4</span>.<span class="hljs-property">exact</span>:精准匹配<br>   		上述的属性属于v5的版本<br>   		在v6版本中所有&lt;<span class="hljs-title class_">Route</span>&gt;组件将放在&lt;<span class="hljs-title class_">Routes</span>&gt;中，component改成element,   <br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-number">2.</span>react-router有两部分组成
+	<span class="hljs-number">1.</span>react-router<span class="hljs-comment">//这是核心代码</span>
+	<span class="hljs-number">2.</span>react-router-dom<span class="hljs-comment">//这是用于浏览器的</span>
+	<span class="hljs-number">3.</span>react-router-native<span class="hljs-comment">//这个适用于原生应用</span>
+	使用react-router需要使用npm install react-router-dom 他会自动安装react-router
+	
+<span class="hljs-number">3.</span>react-router的组件使用
+	&lt;<span class="hljs-title class_">BrowserRouter</span>&gt;是使用history模式
+	<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+    <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReactDOM</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span>;
+    <span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">BrowserRouter</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-router-dom&quot;</span>;
+    <span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">BrowserRouter</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">App</span>/&gt;</span></span>
+<span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">BrowserRouter</span>&gt;</span></span>,
+      root
+    );<span class="hljs-comment">//这就是目前比较普遍的用法，也是官方比较推荐的用法，将他包裹在App组件</span>
+   <span class="hljs-number">3.1</span>&lt;<span class="hljs-title class_">HashRouter</span>&gt;是使用hash模式，官方不推荐使用
+   <span class="hljs-number">3.2</span>&lt;link&gt;组件是跳转的组件，它最终会被渲染成a元素
+   <span class="hljs-number">3.3</span>&lt;<span class="hljs-title class_">NavLink</span>&gt;是在<span class="hljs-title class_">Link</span>的基础上增加了一些样式
+   		<span class="hljs-number">3.3</span><span class="hljs-number">.1</span> to属性是<span class="hljs-title class_">Link</span>和<span class="hljs-title class_">NavLink</span>组件中最重要的属性，用于设置跳转的路径
+   <span class="hljs-number">3.4</span>.<span class="hljs-property">Route</span>组件
+   		<span class="hljs-number">3.4</span><span class="hljs-number">.1</span> <span class="hljs-title class_">Route</span>组件主要适用于路由路径的匹配
+   		<span class="hljs-number">3.4</span><span class="hljs-number">.2</span> path属性:用于设置匹配到的路径
+   		<span class="hljs-number">3.4</span><span class="hljs-number">.3</span> component属性：设置匹配到的路径后渲染的组件，
+   		<span class="hljs-number">3.4</span><span class="hljs-number">.4</span>.<span class="hljs-property">exact</span>:精准匹配
+   		上述的属性属于v5的版本
+   		在v6版本中所有&lt;<span class="hljs-title class_">Route</span>&gt;组件将放在&lt;<span class="hljs-title class_">Routes</span>&gt;中，component改成element,</code></pre></div>
 
 <p><img src="https://img1.imgtp.com/2022/09/13/TzYXcXQV.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220607144416.png"></p>
 <p><img src="https://img1.imgtp.com/2022/09/13/XwuhkKsl.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220607215036.png"></p>
 <p><img src="https://img1.imgtp.com/2022/09/13/djJ6Fots.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220607144950.png"></p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">&lt;NavLink&gt;的用法<br>用于可以处于当前访问连接时修改连接的样式，处于active状态<br>v5的写法<br>可以添加如下属性<br>activeStyle:活跃时的样式<br>activeClassName：活跃时添加<span class="hljs-keyword">class</span><br><span class="hljs-symbol">exact</span>精确匹配<br>也可以使用自定义<span class="hljs-symbol">class</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs angelscript">&lt;NavLink&gt;的用法
+用于可以处于当前访问连接时修改连接的样式，处于active状态
+v5的写法
+可以添加如下属性
+activeStyle:活跃时的样式
+activeClassName：活跃时添加<span class="hljs-keyword">class</span>
+<span class="hljs-symbol">exact</span>精确匹配
+也可以使用自定义<span class="hljs-symbol">class</span></code></pre></div>
 
 <p><img src="https://img1.imgtp.com/2022/09/13/Ml03VBOs.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220607151506.png"></p>
 <p>v6的写法，不需要activeStyle和activeClassName，可以在普通的style和className中传入一个函数，更加灵活方便</p>
 <p><img src="https://img1.imgtp.com/2022/09/13/EfvZ4TfB.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220607151735.png"></p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">Switch</span>的作用 <span class="hljs-built_in">V5</span> 在<span class="hljs-built_in">V6</span>没有该组件<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs armasm"><span class="hljs-symbol">Switch</span>的作用 <span class="hljs-built_in">V5</span> 在<span class="hljs-built_in">V6</span>没有该组件</code></pre></div>
 
 <p>组件中获取路由参数，params中存在对饮的路由参数</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">const</span> <span class="hljs-keyword">params</span> = useParams()<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs csharp"><span class="hljs-keyword">const</span> <span class="hljs-keyword">params</span> = useParams()</code></pre></div>
 
 <h4 id="Navigate导航"><a href="#Navigate导航" class="headerlink" title="Navigate导航"></a>Navigate导航</h4><p>Navigate用于路由的重定向</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;Route <span class="hljs-attribute">path</span>=<span class="hljs-string">&#x27;/home&#x27;</span> element=&#123;&lt;Navigate <span class="hljs-attribute">to</span>=<span class="hljs-string">&quot;/home/recommend&quot;</span>/&gt;&#125;/&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs routeros">&lt;Route <span class="hljs-attribute">path</span>=<span class="hljs-string">&#x27;/home&#x27;</span> element=&#123;&lt;Navigate <span class="hljs-attribute">to</span>=<span class="hljs-string">&quot;/home/recommend&quot;</span>/&gt;&#125;/&gt;</code></pre></div>
 
-<h4 id="Not-Found页面配置"><a href="#Not-Found页面配置" class="headerlink" title="Not Found页面配置"></a>Not Found页面配置</h4><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">&lt;Route path=<span class="hljs-string">&#x27;*&#x27;</span> element=&#123;&lt;NotFound<span class="hljs-regexp">/&gt;&#125;/</span>&gt;<br></code></pre></td></tr></table></figure>
+<h4 id="Not-Found页面配置"><a href="#Not-Found页面配置" class="headerlink" title="Not Found页面配置"></a>Not Found页面配置</h4><div class="code-wrapper"><pre><code class="hljs awk">&lt;Route path=<span class="hljs-string">&#x27;*&#x27;</span> element=&#123;&lt;NotFound<span class="hljs-regexp">/&gt;&#125;/</span>&gt;</code></pre></div>
 
 <h3 id="Search-Params"><a href="#Search-Params" class="headerlink" title="Search Params"></a>Search Params</h3><p><img src="https://img1.imgtp.com/2022/09/13/TdiJP94D.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220607203231.png"></p>
-<h3 id="useNavigate"><a href="#useNavigate" class="headerlink" title="useNavigate"></a>useNavigate</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">import &#123; useNavigate &#125; from <span class="hljs-string">&quot;react-router-dom&quot;</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-constructor">SignupForm()</span> &#123;<br>  <span class="hljs-keyword">let</span> navigate = use<span class="hljs-constructor">Navigate()</span>;<br><br>  async <span class="hljs-keyword">function</span> handle<span class="hljs-constructor">Submit(<span class="hljs-params">event</span>)</span> &#123;<br>    event.prevent<span class="hljs-constructor">Default()</span>;<br>    await submit<span class="hljs-constructor">Form(<span class="hljs-params">event</span>.<span class="hljs-params">target</span>)</span>;<br>    navigate(<span class="hljs-string">&quot;../success&quot;</span>, &#123; replace: <span class="hljs-literal">true</span> &#125;);<br>  &#125;<br><br>  return &lt;form onSubmit=&#123;handleSubmit&#125;&gt;&#123;<span class="hljs-comment">/* ... */</span>&#125;&lt;/form&gt;;<br>&#125;<br>使用useNavigate可以实现手动进行路由跳转，<span class="hljs-keyword">let</span> navigate = use<span class="hljs-constructor">Navigate()</span>;他会返回一个函数，参数有两个，一个是<span class="hljs-keyword">to</span>, 另一个optional second &#123; replace, state &#125; arg，或者使用历史调用栈类似于go<span class="hljs-number">(-1)</span>调用navigate<span class="hljs-number">(-1)</span><br></code></pre></td></tr></table></figure>
+<h3 id="useNavigate"><a href="#useNavigate" class="headerlink" title="useNavigate"></a>useNavigate</h3><div class="code-wrapper"><pre><code class="hljs reasonml">import &#123; useNavigate &#125; from <span class="hljs-string">&quot;react-router-dom&quot;</span>;
 
-<h3 id="useLocation"><a href="#useLocation" class="headerlink" title="useLocation"></a>useLocation</h3><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">let <span class="hljs-keyword">location</span> <span class="hljs-title">= useLocation</span>();//获取location<br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">function</span> <span class="hljs-constructor">SignupForm()</span> &#123;
+  <span class="hljs-keyword">let</span> navigate = use<span class="hljs-constructor">Navigate()</span>;
+
+  async <span class="hljs-keyword">function</span> handle<span class="hljs-constructor">Submit(<span class="hljs-params">event</span>)</span> &#123;
+    event.prevent<span class="hljs-constructor">Default()</span>;
+    await submit<span class="hljs-constructor">Form(<span class="hljs-params">event</span>.<span class="hljs-params">target</span>)</span>;
+    navigate(<span class="hljs-string">&quot;../success&quot;</span>, &#123; replace: <span class="hljs-literal">true</span> &#125;);
+  &#125;
+
+  return &lt;form onSubmit=&#123;handleSubmit&#125;&gt;&#123;<span class="hljs-comment">/* ... */</span>&#125;&lt;/form&gt;;
+&#125;
+使用useNavigate可以实现手动进行路由跳转，<span class="hljs-keyword">let</span> navigate = use<span class="hljs-constructor">Navigate()</span>;他会返回一个函数，参数有两个，一个是<span class="hljs-keyword">to</span>, 另一个optional second &#123; replace, state &#125; arg，或者使用历史调用栈类似于go<span class="hljs-number">(-1)</span>调用navigate<span class="hljs-number">(-1)</span></code></pre></div>
+
+<h3 id="useLocation"><a href="#useLocation" class="headerlink" title="useLocation"></a>useLocation</h3><div class="code-wrapper"><pre><code class="hljs crmsh">let <span class="hljs-keyword">location</span> <span class="hljs-title">= useLocation</span>();//获取location</code></pre></div>
 
 <p><img src="https://img1.imgtp.com/2022/09/13/LD2qs0Cd.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220607212846.png"></p>
-<h3 id="withRouter-component"><a href="#withRouter-component" class="headerlink" title="withRouter(component)"></a>withRouter(component)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;<br>  useLocation,<br>  useNavigate,<br>  useParams,<br>  useSearchParams<br>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-router-dom&quot;</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">withRouter</span>(<span class="hljs-params">Component</span>) &#123;<br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">ComponentWithRouterProp</span>(<span class="hljs-params">props</span>) &#123;<br>    <span class="hljs-keyword">const</span> location = <span class="hljs-title function_">useLocation</span>();<br>    <span class="hljs-keyword">const</span> navigate = <span class="hljs-title function_">useNavigate</span>();<br>    <span class="hljs-keyword">const</span> params = <span class="hljs-title function_">useParams</span>();<br>    <span class="hljs-keyword">const</span> [searchParams] = <span class="hljs-title function_">useSearchParams</span>()<br>    <span class="hljs-keyword">const</span> query = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">fromEntries</span>(searchParams)<br>    <span class="hljs-keyword">return</span> (<br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span></span></span><br><span class="hljs-tag"><span class="language-xml">        &#123;<span class="hljs-attr">...props</span>&#125;</span></span><br><span class="hljs-tag"><span class="language-xml">        <span class="hljs-attr">router</span>=<span class="hljs-string">&#123;&#123;</span> <span class="hljs-attr">location</span>, <span class="hljs-attr">navigate</span>, <span class="hljs-attr">params</span>,<span class="hljs-attr">query</span> &#125;&#125;</span></span><br><span class="hljs-tag"><span class="language-xml">      /&gt;</span></span><br>    );<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-title class_">ComponentWithRouterProp</span>;<br>&#125;<span class="hljs-comment">//在v6中没有这个高阶组件，因为v6都是使用到的是函数式组件，所以不需要，如果想用可以这样封装，在v5中的主要目的是为了手动调用路由可以获取到history,组件可以通过this.props.history,push()来手动进行路由跳转，v6可以使用到useNavigate()</span><br></code></pre></td></tr></table></figure>
+<h3 id="withRouter-component"><a href="#withRouter-component" class="headerlink" title="withRouter(component)"></a>withRouter(component)</h3><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams
+&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-router-dom&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">withRouter</span>(<span class="hljs-params">Component</span>) &#123;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">ComponentWithRouterProp</span>(<span class="hljs-params">props</span>) &#123;
+    <span class="hljs-keyword">const</span> location = <span class="hljs-title function_">useLocation</span>();
+    <span class="hljs-keyword">const</span> navigate = <span class="hljs-title function_">useNavigate</span>();
+    <span class="hljs-keyword">const</span> params = <span class="hljs-title function_">useParams</span>();
+    <span class="hljs-keyword">const</span> [searchParams] = <span class="hljs-title function_">useSearchParams</span>()
+    <span class="hljs-keyword">const</span> query = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">fromEntries</span>(searchParams)
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Component</span></span></span>
+<span class="hljs-tag"><span class="language-xml">        &#123;<span class="hljs-attr">...props</span>&#125;</span></span>
+<span class="hljs-tag"><span class="language-xml">        <span class="hljs-attr">router</span>=<span class="hljs-string">&#123;&#123;</span> <span class="hljs-attr">location</span>, <span class="hljs-attr">navigate</span>, <span class="hljs-attr">params</span>,<span class="hljs-attr">query</span> &#125;&#125;</span></span>
+<span class="hljs-tag"><span class="language-xml">      /&gt;</span></span>
+    );
+  &#125;
+
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">ComponentWithRouterProp</span>;
+&#125;<span class="hljs-comment">//在v6中没有这个高阶组件，因为v6都是使用到的是函数式组件，所以不需要，如果想用可以这样封装，在v5中的主要目的是为了手动调用路由可以获取到history,组件可以通过this.props.history,push()来手动进行路由跳转，v6可以使用到useNavigate()</span></code></pre></div>
 
 <h4 id="路由的配置文件"><a href="#路由的配置文件" class="headerlink" title="路由的配置文件"></a>路由的配置文件</h4><p>通过像vue-router来将路由定义在单独的文件中</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//router.js</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Home</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/Home&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">HomeRecommend</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../pages/HomeRecommend&quot;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">HomeRanking</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../pages/HomeRanking&quot;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">HomeSongMenu</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/HomeSongMenu&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Category</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../pages/Category&quot;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Order</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../pages/Order&quot;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">NotFound</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/NotFound&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Detail</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/Detail&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">User</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/User&#x27;</span><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Navigate</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-router-dom&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">About</span> = <span class="hljs-title class_">React</span>.<span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">import</span>(<span class="hljs-string">&quot;../pages/About&quot;</span>))<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">Login</span> = <span class="hljs-title class_">React</span>.<span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">import</span>(<span class="hljs-string">&quot;../pages/Login&quot;</span>))<br><span class="hljs-keyword">const</span> routes = [<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/&quot;</span>,<br>    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Navigate</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/home&quot;</span>/&gt;</span></span><br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home&quot;</span>,<br>    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Home</span>/&gt;</span></span>,<br>    <span class="hljs-attr">children</span>: [<br>      &#123;<br>        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home&quot;</span>,<br>        <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Navigate</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/home/recommend&quot;</span>/&gt;</span></span><br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home/recommend&quot;</span>,<br>        <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">HomeRecommend</span>/&gt;</span></span><br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home/ranking&quot;</span>,<br>        <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">HomeRanking</span>/&gt;</span></span><br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home/songmenu&quot;</span>,<br>        <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">HomeSongMenu</span>/&gt;</span></span><br>      &#125;<br>    ]<br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/about&quot;</span>,<br>    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">About</span>/&gt;</span></span><br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/login&quot;</span>,<br>    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Login</span>/&gt;</span></span><br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/category&quot;</span>,<br>    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Category</span>/&gt;</span></span><br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/order&quot;</span>,<br>    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Order</span>/&gt;</span></span><br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/detail/:id&quot;</span>,<br>    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Detail</span>/&gt;</span></span><br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/user&quot;</span>,<br>    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">User</span>/&gt;</span></span><br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;*&quot;</span>,<br>    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">NotFound</span>/&gt;</span></span><br>  &#125;<br>]<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> routes<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//router.js</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Home</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/Home&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">HomeRecommend</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../pages/HomeRecommend&quot;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">HomeRanking</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../pages/HomeRanking&quot;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">HomeSongMenu</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/HomeSongMenu&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Category</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../pages/Category&quot;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Order</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../pages/Order&quot;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">NotFound</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/NotFound&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Detail</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/Detail&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">User</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../pages/User&#x27;</span>
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Navigate</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-router-dom&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">About</span> = <span class="hljs-title class_">React</span>.<span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">import</span>(<span class="hljs-string">&quot;../pages/About&quot;</span>))
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">Login</span> = <span class="hljs-title class_">React</span>.<span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">import</span>(<span class="hljs-string">&quot;../pages/Login&quot;</span>))
+<span class="hljs-keyword">const</span> routes = [
+  &#123;
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/&quot;</span>,
+    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Navigate</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/home&quot;</span>/&gt;</span></span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home&quot;</span>,
+    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Home</span>/&gt;</span></span>,
+    <span class="hljs-attr">children</span>: [
+      &#123;
+        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home&quot;</span>,
+        <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Navigate</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/home/recommend&quot;</span>/&gt;</span></span>
+      &#125;,
+      &#123;
+        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home/recommend&quot;</span>,
+        <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">HomeRecommend</span>/&gt;</span></span>
+      &#125;,
+      &#123;
+        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home/ranking&quot;</span>,
+        <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">HomeRanking</span>/&gt;</span></span>
+      &#125;,
+      &#123;
+        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/home/songmenu&quot;</span>,
+        <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">HomeSongMenu</span>/&gt;</span></span>
+      &#125;
+    ]
+  &#125;,
+  &#123;
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/about&quot;</span>,
+    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">About</span>/&gt;</span></span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/login&quot;</span>,
+    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Login</span>/&gt;</span></span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/category&quot;</span>,
+    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Category</span>/&gt;</span></span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/order&quot;</span>,
+    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Order</span>/&gt;</span></span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/detail/:id&quot;</span>,
+    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Detail</span>/&gt;</span></span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/user&quot;</span>,
+    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">User</span>/&gt;</span></span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;*&quot;</span>,
+    <span class="hljs-attr">element</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">NotFound</span>/&gt;</span></span>
+  &#125;
+]
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> routes</code></pre></div>
 
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">&#123;use<span class="hljs-constructor">Routes(<span class="hljs-params">routes</span>)</span>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs reasonml">&#123;use<span class="hljs-constructor">Routes(<span class="hljs-params">routes</span>)</span>&#125;</code></pre></div>
 
 
                 

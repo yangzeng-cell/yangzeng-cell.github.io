@@ -339,7 +339,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/09/04/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87-html-css/" target="_self">
         <div>
-          01-HTML-CSS-常⻅⾯试题1.HTML 标签有哪些⾏内元素123456789101112131415aimgpicturespaninputtextareaselectlabe  2.说说你对元素语义化的理解元素语义化就是⽤正确的元素做正确的事情。虽然在理论上，所以的html元素都可以通过css样式实现 相同的事情，但是这么做会使事情复杂化，所以我们需要元素语义化来降低复杂度。 元素语义化
+          01-HTML-CSS-常⻅⾯试题1.HTML 标签有哪些⾏内元素a  img  picture  span  input  textarea  select  labe  2.说说你对元素语义化的理解元素语义化就是⽤正确的元素做正确的事情。虽然在理论上，所以的html元素都可以通过css样式实现 相同的事情，但是这么做会使事情复杂化，所以我们需要元素语义化来降低复杂度。 元素语义化在我们实际的开
         </div>
       </a>
 
@@ -515,7 +515,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/23/vuex4-0/" target="_self">
         <div>
-          Vuex 是什么Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式 + 库。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。  1npm install vuex@next --save  12345678910111213141516171819202122232425262728293031323334353637383940414243
+          Vuex 是什么Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式 + 库。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。  npm install vuex@next --save  //store/index.js import &#123; createStore &#125; from &#x27;vuex&#x27; import
         </div>
       </a>
 
@@ -576,7 +576,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/20/vue-router%E7%AC%94%E8%AE%B0/" target="_self">
         <div>
-          路由器维护一张映射表，映射表会决定数据的流向，一个ip地址对应的一台服务器的mac地址，一台服务器只有一个mac地址url的hashurl的hash也就是锚点(#),本质上就是改变window.location的href的属性 我们可以通过赋值location.hash来改变href,但是不刷新页面 hash的优势就是兼容性好，在IE中可以运行，但是就是有个缺陷，#，显得不像是一个真实的路径 12
+          路由器维护一张映射表，映射表会决定数据的流向，一个ip地址对应的一台服务器的mac地址，一台服务器只有一个mac地址url的hashurl的hash也就是锚点(#),本质上就是改变window.location的href的属性 我们可以通过赋值location.hash来改变href,但是不刷新页面 hash的优势就是兼容性好，在IE中可以运行，但是就是有个缺陷，#，显得不像是一个真实的路径 &l
         </div>
       </a>
 
@@ -637,7 +637,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/18/Vue3%E7%AC%94%E8%AE%B0-%E4%BA%8C/" target="_self">
         <div>
-          64.异步组件vue2中的异步组件是使用import().then()来实现的 vue3中提供了函数defineAsyncComponent来实现异步组件，这这样可以对组件进行分包处理，不会打包到一个文件中，而是单独打到一个包中 12//方法一 因为这种方式也会返回一个promiseconst AsyncCategory = defineAsyncComponent(() =&gt; import
+          64.异步组件vue2中的异步组件是使用import().then()来实现的 vue3中提供了函数defineAsyncComponent来实现异步组件，这这样可以对组件进行分包处理，不会打包到一个文件中，而是单独打到一个包中 //方法一 因为这种方式也会返回一个promise const AsyncCategory = defineAsyncComponent(() =&gt; import(
         </div>
       </a>
 
@@ -698,7 +698,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/16/Vue3%E7%AC%94%E8%AE%B0(%E4%B8%80)/" target="_self">
         <div>
-          1.vue手脚架代价脚本  两种方式1234vue create  项目名  构建工具是webpacknpm init vue@latest  	1.安装一个本地工具：create-vue  	2.使用create-vue创建一个vue项目  构建工具是vite  2.$attrs3.emitsvue3中增加了$emit事件的声明 4.reactive只能传入一个对象，定义复杂类型的数据，事实上编
+          1.vue手脚架代价脚本  两种方式vue create  项目名  构建工具是webpack npm init vue@latest   	1.安装一个本地工具：create-vue   	2.使用create-vue创建一个vue项目  构建工具是vite  2.$attrs3.emitsvue3中增加了$emit事件的声明 4.reactive只能传入一个对象，定义复杂类型的数据，事实上编写
         </div>
       </a>
 
@@ -759,7 +759,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/15/%E5%AE%9E%E7%8E%B0%E5%8F%AF%E8%BF%87%E6%9C%9F%E7%9A%84localstorage%E6%95%B0%E6%8D%AE/" target="_self">
         <div>
-          localstorage相对于cookie中的问题是不能设置过期时间 所以我们要自己对localStorage进行二次封装，使得localstorage在适当的时间失效 解法一12345localStorage.setItem(&quot;key&quot;, &quot;value&quot;);const timeout = 1000 * 60 * 60;setTimeout(() =&gt;
+          localstorage相对于cookie中的问题是不能设置过期时间 所以我们要自己对localStorage进行二次封装，使得localstorage在适当的时间失效 解法一localStorage.setItem(&quot;key&quot;, &quot;value&quot;); const timeout = 1000 * 60 * 60; setTimeout(() =&gt; &#
         </div>
       </a>
 

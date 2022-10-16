@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="12345&#x2F;&#x2F; 创建正则   &#x2F;&#x2F; 1&gt; 匹配的规则pattern   &#x2F;&#x2F; 2&gt; 匹配的修饰符flags   const re1 &#x3D; new RegExp(&quot;abc&quot;, &quot;ig&quot;)   const re2 &#x3D; &#x2F;abc&#x2F;ig &#x2F;&#x2F; 我是注释  正则表达式的使用方法JavaScript中的正则表达式被用于 RegExp 的 exec 和 test">
+    <meta name="description" content="&#x2F;&#x2F; 创建正则    &#x2F;&#x2F; 1&gt; 匹配的规则pattern    &#x2F;&#x2F; 2&gt; 匹配的修饰符flags    const re1 &#x3D; new RegExp(&quot;abc&quot;, &quot;ig&quot;)    const re2 &#x3D; &#x2F;abc&#x2F;ig &#x2F;&#x2F; 我是注释  正则表达式的使用方法JavaScript中的正则表达式被用于 RegExp 的 exec 和 test">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用正则表达式">
 <meta property="og:url" content="http://example.com/2022/09/08/%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="12345&#x2F;&#x2F; 创建正则   &#x2F;&#x2F; 1&gt; 匹配的规则pattern   &#x2F;&#x2F; 2&gt; 匹配的修饰符flags   const re1 &#x3D; new RegExp(&quot;abc&quot;, &quot;ig&quot;)   const re2 &#x3D; &#x2F;abc&#x2F;ig &#x2F;&#x2F; 我是注释  正则表达式的使用方法JavaScript中的正则表达式被用于 RegExp 的 exec 和 test">
+<meta property="og:description" content="&#x2F;&#x2F; 创建正则    &#x2F;&#x2F; 1&gt; 匹配的规则pattern    &#x2F;&#x2F; 2&gt; 匹配的修饰符flags    const re1 &#x3D; new RegExp(&quot;abc&quot;, &quot;ig&quot;)    const re2 &#x3D; &#x2F;abc&#x2F;ig &#x2F;&#x2F; 我是注释  正则表达式的使用方法JavaScript中的正则表达式被用于 RegExp 的 exec 和 test">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-08T16:44:32.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -218,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5k 字
+          4.8k 字
         
       </span>
     
@@ -229,7 +229,7 @@
         
         
         
-          42 分钟
+          40 分钟
         
       </span>
     
@@ -272,24 +272,80 @@
             
               <div class="markdown-body">
                 
-                <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 创建正则</span><br>   <span class="hljs-comment">// 1&gt; 匹配的规则pattern</span><br>   <span class="hljs-comment">// 2&gt; 匹配的修饰符flags</span><br>   <span class="hljs-keyword">const</span> re1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RegExp</span>(<span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-string">&quot;ig&quot;</span>)<br>   <span class="hljs-keyword">const</span> re2 = <span class="hljs-regexp">/abc/ig</span> <span class="hljs-comment">// 我是注释</span><br></code></pre></td></tr></table></figure>
+                <div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 创建正则</span>
+   <span class="hljs-comment">// 1&gt; 匹配的规则pattern</span>
+   <span class="hljs-comment">// 2&gt; 匹配的修饰符flags</span>
+   <span class="hljs-keyword">const</span> re1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RegExp</span>(<span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-string">&quot;ig&quot;</span>)
+   <span class="hljs-keyword">const</span> re2 = <span class="hljs-regexp">/abc/ig</span> <span class="hljs-comment">// 我是注释</span></code></pre></div>
 
 <h4 id="正则表达式的使用方法"><a href="#正则表达式的使用方法" class="headerlink" title="正则表达式的使用方法"></a>正则表达式的使用方法</h4><p>JavaScript中的正则表达式被用于 RegExp 的 exec 和 test 方法</p>
 <p>也包括 String 的 match、matchAll、replace、search 和 split 方法</p>
 <p>exec : 一个在字符串中执行查找匹配的 RegExp 方法，它返回一个数组（未匹配到则返回 null）</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message = <span class="hljs-string">&quot;fdabc123 faBC323 dfABC222 A2324aaBc&quot;</span>;<br><span class="hljs-keyword">const</span> re1 = <span class="hljs-regexp">/abc/gi</span>;<br><br><span class="hljs-comment">// console.log(re1.test(message));</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(re1.<span class="hljs-title function_">exec</span>(message));<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * [</span><br><span class="hljs-comment">  &#x27;aBC&#x27;,</span><br><span class="hljs-comment">  index: 10,</span><br><span class="hljs-comment">  input: &#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;,</span><br><span class="hljs-comment">  groups: undefined</span><br><span class="hljs-comment">]</span><br><span class="hljs-comment"> */</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message = <span class="hljs-string">&quot;fdabc123 faBC323 dfABC222 A2324aaBc&quot;</span>;
+<span class="hljs-keyword">const</span> re1 = <span class="hljs-regexp">/abc/gi</span>;
+
+<span class="hljs-comment">// console.log(re1.test(message));</span>
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(re1.<span class="hljs-title function_">exec</span>(message));
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * [</span>
+<span class="hljs-comment">  &#x27;aBC&#x27;,</span>
+<span class="hljs-comment">  index: 10,</span>
+<span class="hljs-comment">  input: &#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;,</span>
+<span class="hljs-comment">  groups: undefined</span>
+<span class="hljs-comment">]</span>
+<span class="hljs-comment"> */</span></code></pre></div>
 
 <p>test:一个在字符串中测试是否匹配的 RegExp 方法，它返回 true 或 false</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message = <span class="hljs-string">&quot;fdabc123 faBC323 dfABC222 A2324aaBc&quot;</span>;<br><span class="hljs-keyword">const</span> re1 = <span class="hljs-regexp">/abc/gi</span>;<br><br> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(re1.<span class="hljs-title function_">test</span>(message));<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message = <span class="hljs-string">&quot;fdabc123 faBC323 dfABC222 A2324aaBc&quot;</span>;
+<span class="hljs-keyword">const</span> re1 = <span class="hljs-regexp">/abc/gi</span>;
+
+ <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(re1.<span class="hljs-title function_">test</span>(message));</code></pre></div>
 
 <p>match:一个在字符串中执行查找匹配的 String 方法，它返回一个数组，在未匹配到时会返回 null</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// match方法</span><br><br><span class="hljs-keyword">const</span> res2 = message.<span class="hljs-title function_">match</span>(re1);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res2);<br><span class="hljs-comment">//[ &#x27;abc&#x27;, &#x27;aBC&#x27;, &#x27;ABC&#x27;, &#x27;aBc&#x27; ]</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// match方法</span>
+
+<span class="hljs-keyword">const</span> res2 = message.<span class="hljs-title function_">match</span>(re1);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res2);
+<span class="hljs-comment">//[ &#x27;abc&#x27;, &#x27;aBC&#x27;, &#x27;ABC&#x27;, &#x27;aBc&#x27; ]</span></code></pre></div>
 
 <p>matchAll :一个在字符串中执行查找所有匹配的 String 方法，它返回一个迭代器（iterator）</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// matchAll</span><br><br><span class="hljs-keyword">const</span> res = message.<span class="hljs-title function_">matchAll</span>(re1);<br><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> iterator <span class="hljs-keyword">of</span> res) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(iterator);<br>&#125;<br><br>[<br>  <span class="hljs-string">&#x27;abc&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span><br>]<br>[<br>  <span class="hljs-string">&#x27;aBC&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">10</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span><br>]<br>[<br>  <span class="hljs-string">&#x27;ABC&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">19</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span><br>]<br>[<br>  <span class="hljs-string">&#x27;aBc&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">32</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span><br>]<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// matchAll</span>
+
+<span class="hljs-keyword">const</span> res = message.<span class="hljs-title function_">matchAll</span>(re1);
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> iterator <span class="hljs-keyword">of</span> res) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(iterator);
+&#125;
+
+[
+  <span class="hljs-string">&#x27;abc&#x27;</span>,
+  <span class="hljs-attr">index</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,
+  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span>
+]
+[
+  <span class="hljs-string">&#x27;aBC&#x27;</span>,
+  <span class="hljs-attr">index</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,
+  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span>
+]
+[
+  <span class="hljs-string">&#x27;ABC&#x27;</span>,
+  <span class="hljs-attr">index</span>: <span class="hljs-number">19</span>,
+  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,
+  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span>
+]
+[
+  <span class="hljs-string">&#x27;aBc&#x27;</span>,
+  <span class="hljs-attr">index</span>: <span class="hljs-number">32</span>,
+  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;fdabc123 faBC323 dfABC222 A2324aaBc&#x27;</span>,
+  <span class="hljs-attr">groups</span>: <span class="hljs-literal">undefined</span>
+]</code></pre></div>
 
 <p>search :一个在字符串中测试匹配的 String 方法，它返回匹配到的位置索引，或者在失败时返回-1。</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">const</span> result5 = message.<span class="hljs-keyword">search</span>(re1)<br>console.<span class="hljs-built_in">log</span>(result5)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stata"><span class="hljs-keyword">const</span> result5 = message.<span class="hljs-keyword">search</span>(re1)
+console.<span class="hljs-built_in">log</span>(result5)</code></pre></div>
 
 <p>replace:一个在字符串中执行查找匹配的 String 方法，并且使用替换字符串替换掉匹配到的子字符串</p>
 <p>split:一个使用正则表达式或者一个固定字符串分隔一个字符串，并将分隔后的子字符串存储到数组中 的 String 方法</p>
@@ -297,7 +353,9 @@
 <p>g:全局匹配</p>
 <p>i:不区分大小写</p>
 <p>m:多行匹配</p>
-<h4 id="规则-–-字符类"><a href="#规则-–-字符类" class="headerlink" title="规则 – 字符类"></a>规则 – 字符类</h4><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-string">\d</span>  平匹配数字<span class="hljs-number">0</span>-<span class="hljs-number">9</span><br><span class="hljs-string">\s</span>  空格符号，包括空格，制表符<span class="hljs-string">\t</span> , 换行符<span class="hljs-string">\n,和其他少数稀有字符，例如\v,\f,\r</span><br><span class="hljs-string">\w</span>  表示单字字符  字母、数字、下划线<br></code></pre></td></tr></table></figure>
+<h4 id="规则-–-字符类"><a href="#规则-–-字符类" class="headerlink" title="规则 – 字符类"></a>规则 – 字符类</h4><div class="code-wrapper"><pre><code class="hljs livescript"><span class="hljs-string">\d</span>  平匹配数字<span class="hljs-number">0</span>-<span class="hljs-number">9</span>
+<span class="hljs-string">\s</span>  空格符号，包括空格，制表符<span class="hljs-string">\t</span> , 换行符<span class="hljs-string">\n,和其他少数稀有字符，例如\v,\f,\r</span>
+<span class="hljs-string">\w</span>  表示单字字符  字母、数字、下划线</code></pre></div>
 
 <p>反向类</p>
 <p>\D 表示非数字的其他字符包括数字</p>
@@ -309,14 +367,30 @@
 <p>词边界（Word boundary）</p>
 <p>​    词边界 \b 是一种检查，就像 ^ 和 $ 一样，它会检查字符串中的位置是否是词边界</p>
 <p>​    词边界测试 \b 检查位置的一侧是否匹配 \w，而另一侧则不匹配 “\w”</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message = <span class="hljs-string">&quot;My name! is WHY.&quot;</span>;<br><br><span class="hljs-comment">// 需求: name, name必须是一个单独的词</span><br><span class="hljs-comment">// 词边界</span><br><span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\bname\b/i</span>.<span class="hljs-title function_">test</span>(message)) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;有name, name有边界&quot;</span>);<br>&#125;<br><br><span class="hljs-comment">// 词边界的应用</span><br><span class="hljs-keyword">const</span> infos = <span class="hljs-string">&quot;now time is 11:56, 12:00 eat food, number is 123:456&quot;</span>;<br><span class="hljs-keyword">const</span> timeRe = <span class="hljs-regexp">/\b\d\d:\d\d\b/gi</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(infos.<span class="hljs-title function_">match</span>(timeRe));<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 有name, name有边界</span><br><span class="hljs-comment">[ &#x27;11:56&#x27;, &#x27;12:00&#x27; ]</span><br><span class="hljs-comment"> */</span><br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message = <span class="hljs-string">&quot;My name! is WHY.&quot;</span>;
+
+<span class="hljs-comment">// 需求: name, name必须是一个单独的词</span>
+<span class="hljs-comment">// 词边界</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\bname\b/i</span>.<span class="hljs-title function_">test</span>(message)) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;有name, name有边界&quot;</span>);
+&#125;
+
+<span class="hljs-comment">// 词边界的应用</span>
+<span class="hljs-keyword">const</span> infos = <span class="hljs-string">&quot;now time is 11:56, 12:00 eat food, number is 123:456&quot;</span>;
+<span class="hljs-keyword">const</span> timeRe = <span class="hljs-regexp">/\b\d\d:\d\d\b/gi</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(infos.<span class="hljs-title function_">match</span>(timeRe));
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 有name, name有边界</span>
+<span class="hljs-comment">[ &#x27;11:56&#x27;, &#x27;12:00&#x27; ]</span>
+<span class="hljs-comment"> */</span>
+</code></pre></div>
 
 <h4 id="规则-–-转义字符串"><a href="#规则-–-转义字符串" class="headerlink" title="规则 – 转义字符串"></a>规则 – 转义字符串</h4><p>转义字符要做常规字符来使用，需要使用对其进行转义，只要在它前面加个反斜杠</p>
 <p>常见的需要转义的字符：</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">[] \  ^ $ . <span class="hljs-string">| ? * + ()</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs 1c">[] \  ^ $ . <span class="hljs-string">| ? * + ()</span></code></pre></div>
 
-<h6 id="斜杠符号-‘-’-并不是一个特殊符号，但是在字面量正则表达式中也需要转义"><a href="#斜杠符号-‘-’-并不是一个特殊符号，但是在字面量正则表达式中也需要转义" class="headerlink" title="斜杠符号 ‘/’ 并不是一个特殊符号，但是在字面量正则表达式中也需要转义"></a>斜杠符号 ‘/’ 并不是一个特殊符号，但是在字面量正则表达式中也需要转义</h6><h4 id="集合（Sets）和范围（Ranges）"><a href="#集合（Sets）和范围（Ranges）" class="headerlink" title="集合（Sets）和范围（Ranges）"></a>集合（Sets）和范围（Ranges）</h4><h6 id="有时候我们只要选择多个匹配字符的其中之一就可以"><a href="#有时候我们只要选择多个匹配字符的其中之一就可以" class="headerlink" title="有时候我们只要选择多个匹配字符的其中之一就可以"></a>有时候我们只要选择多个匹配字符的其中之一就可以</h6><pre><code class="hljs"> 有时候我们只要选择多个匹配字符的其中之一就可以
-</code></pre>
+<h6 id="斜杠符号-‘-’-并不是一个特殊符号，但是在字面量正则表达式中也需要转义"><a href="#斜杠符号-‘-’-并不是一个特殊符号，但是在字面量正则表达式中也需要转义" class="headerlink" title="斜杠符号 ‘/’ 并不是一个特殊符号，但是在字面量正则表达式中也需要转义"></a>斜杠符号 ‘/’ 并不是一个特殊符号，但是在字面量正则表达式中也需要转义</h6><h4 id="集合（Sets）和范围（Ranges）"><a href="#集合（Sets）和范围（Ranges）" class="headerlink" title="集合（Sets）和范围（Ranges）"></a>集合（Sets）和范围（Ranges）</h4><h6 id="有时候我们只要选择多个匹配字符的其中之一就可以"><a href="#有时候我们只要选择多个匹配字符的其中之一就可以" class="headerlink" title="有时候我们只要选择多个匹配字符的其中之一就可以"></a>有时候我们只要选择多个匹配字符的其中之一就可以</h6><div class="code-wrapper"><pre><code class="hljs"> 有时候我们只要选择多个匹配字符的其中之一就可以
+</code></pre></div>
 <p>集合  []  表示匹配中括号里面的任意一个字符</p>
 <p>范围  </p>
 <p>​    [0-9] 方括号也可以包含字符范围，例如匹配从a到z范围的字母[a-z],[0-5],</p>
@@ -329,9 +403,31 @@
 <p>​    ？表示零个或者一个 ==={0，1}</p>
 <p>​    *  表示零个或者多个 ==={0，}</p>
 <h4 id="贪婪（-Greedy）和惰性（-lazy）模式"><a href="#贪婪（-Greedy）和惰性（-lazy）模式" class="headerlink" title="贪婪（ Greedy）和惰性（ lazy）模式"></a>贪婪（ Greedy）和惰性（ lazy）模式</h4><p>默认是贪婪模式，</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 1.贪婪模式/惰性模式</span><br><span class="hljs-keyword">const</span> message =<br>  <span class="hljs-string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;<br><br><span class="hljs-comment">// 默认.+采用贪婪模式</span><br><span class="hljs-keyword">const</span> nameRe = <span class="hljs-regexp">/《.+》/gi</span>;<br><br><span class="hljs-keyword">const</span> result1 = message.<span class="hljs-title function_">match</span>(nameRe);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result1);<span class="hljs-comment">//[ &#x27;《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27; ]</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 1.贪婪模式/惰性模式</span>
+<span class="hljs-keyword">const</span> message =
+  <span class="hljs-string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message =<br>  <span class="hljs-string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;<br><br><span class="hljs-comment">// // 默认.+采用贪婪模式</span><br><span class="hljs-comment">// const nameRe = /《.+》/gi;</span><br><br><span class="hljs-comment">// const result1 = message.match(nameRe);</span><br><span class="hljs-comment">// console.log(result1);</span><br><br><span class="hljs-comment">// 使用惰性模式</span><br><span class="hljs-keyword">const</span> nameRe = <span class="hljs-regexp">/《.+?》/gi</span>;<br><br><span class="hljs-keyword">const</span> result1 = message.<span class="hljs-title function_">match</span>(nameRe);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result1);<br><span class="hljs-comment">//[ &#x27;《黄金时代》&#x27;, &#x27;《沉默的大多数》&#x27;, &#x27;《一只特立独行的猪》&#x27; ]</span><br></code></pre></td></tr></table></figure>
+<span class="hljs-comment">// 默认.+采用贪婪模式</span>
+<span class="hljs-keyword">const</span> nameRe = <span class="hljs-regexp">/《.+》/gi</span>;
+
+<span class="hljs-keyword">const</span> result1 = message.<span class="hljs-title function_">match</span>(nameRe);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result1);<span class="hljs-comment">//[ &#x27;《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27; ]</span></code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> message =
+  <span class="hljs-string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;
+
+<span class="hljs-comment">// // 默认.+采用贪婪模式</span>
+<span class="hljs-comment">// const nameRe = /《.+》/gi;</span>
+
+<span class="hljs-comment">// const result1 = message.match(nameRe);</span>
+<span class="hljs-comment">// console.log(result1);</span>
+
+<span class="hljs-comment">// 使用惰性模式</span>
+<span class="hljs-keyword">const</span> nameRe = <span class="hljs-regexp">/《.+?》/gi</span>;
+
+<span class="hljs-keyword">const</span> result1 = message.<span class="hljs-title function_">match</span>(nameRe);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result1);
+<span class="hljs-comment">//[ &#x27;《黄金时代》&#x27;, &#x27;《沉默的大多数》&#x27;, &#x27;《一只特立独行的猪》&#x27; ]</span></code></pre></div>
 
 <p>默认情况下的匹配规则是查找到匹配的内容后，会继续向后查找，一直找到最后一个匹配的内容 , 这种匹配的方式，我们称之为贪婪模式（Greedy）</p>
 <p>懒惰模式中的量词与贪婪模式中的是相反的。 </p>
@@ -348,9 +444,53 @@
 <p>​                  在索引 1 处：第一个括号的内容。 </p>
 <p>​                 在索引 2 处：第二个括号的内容。 </p>
 <p>​                     …等等</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 1.捕获组</span><br><span class="hljs-keyword">const</span> message =<br>  <span class="hljs-string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;<br><br><span class="hljs-comment">// 使用惰性模式</span><br><span class="hljs-comment">//这是通过在开始括号之后立即放置 ?&lt;name&gt; 来完成的</span><br><span class="hljs-keyword">const</span> nameRe = <span class="hljs-regexp">/(?:《)(?&lt;why&gt;.+?)(?:》)/gi</span>;<span class="hljs-comment">//可以给捕获组起名字</span><br><span class="hljs-keyword">const</span> iterator = message.<span class="hljs-title function_">matchAll</span>(nameRe);<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> iterator) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(item);<br>&#125;<br><br><span class="hljs-comment">// 2.将捕获组作为整体</span><br><span class="hljs-keyword">const</span> info = <span class="hljs-string">&quot;dfabcabcfabcdfdabcabcabcljll;jk;j&quot;</span>;<br><span class="hljs-keyword">const</span> abcRe = <span class="hljs-regexp">/(abc)&#123;2,&#125;/gi</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(info.<span class="hljs-title function_">match</span>(abcRe));<br><br><br>[<br>  <span class="hljs-string">&#x27;《黄金时代》&#x27;</span>,<br>  <span class="hljs-string">&#x27;黄金时代&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">10</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: [<span class="hljs-title class_">Object</span>: <span class="hljs-literal">null</span> prototype] &#123; <span class="hljs-attr">why</span>: <span class="hljs-string">&#x27;黄金时代&#x27;</span> &#125;<br>]<br>[<br>  <span class="hljs-string">&#x27;《沉默的大多数》&#x27;</span>,<br>  <span class="hljs-string">&#x27;沉默的大多数&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">17</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: [<span class="hljs-title class_">Object</span>: <span class="hljs-literal">null</span> prototype] &#123; <span class="hljs-attr">why</span>: <span class="hljs-string">&#x27;沉默的大多数&#x27;</span> &#125;<br>]<br>[<br>  <span class="hljs-string">&#x27;《一只特立独行的猪》&#x27;</span>,<br>  <span class="hljs-string">&#x27;一只特立独行的猪&#x27;</span>,<br>  <span class="hljs-attr">index</span>: <span class="hljs-number">26</span>,<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,<br>  <span class="hljs-attr">groups</span>: [<span class="hljs-title class_">Object</span>: <span class="hljs-literal">null</span> prototype] &#123; <span class="hljs-attr">why</span>: <span class="hljs-string">&#x27;一只特立独行的猪&#x27;</span> &#125;<br>]<br>[ <span class="hljs-string">&#x27;abcabc&#x27;</span>, <span class="hljs-string">&#x27;abcabcabc&#x27;</span> ]<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 1.捕获组</span>
+<span class="hljs-keyword">const</span> message =
+  <span class="hljs-string">&quot;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&quot;</span>;
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 1.将捕获组作为整体</span><br><span class="hljs-keyword">const</span> info = <span class="hljs-string">&quot;dfabcabcfabcdfdabcabcabcljcbacballnbanba;jk;j&quot;</span>;<br><span class="hljs-keyword">const</span> abcRe = <span class="hljs-regexp">/(abc|cba|nba)&#123;2,&#125;/gi</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(info.<span class="hljs-title function_">match</span>(abcRe));<br><span class="hljs-comment">//[ &#x27;abcabc&#x27;, &#x27;abcabcabc&#x27;, &#x27;cbacba&#x27;, &#x27;nbanba&#x27; ]</span><br></code></pre></td></tr></table></figure>
+<span class="hljs-comment">// 使用惰性模式</span>
+<span class="hljs-comment">//这是通过在开始括号之后立即放置 ?&lt;name&gt; 来完成的</span>
+<span class="hljs-keyword">const</span> nameRe = <span class="hljs-regexp">/(?:《)(?&lt;why&gt;.+?)(?:》)/gi</span>;<span class="hljs-comment">//可以给捕获组起名字</span>
+<span class="hljs-keyword">const</span> iterator = message.<span class="hljs-title function_">matchAll</span>(nameRe);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> iterator) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(item);
+&#125;
+
+<span class="hljs-comment">// 2.将捕获组作为整体</span>
+<span class="hljs-keyword">const</span> info = <span class="hljs-string">&quot;dfabcabcfabcdfdabcabcabcljll;jk;j&quot;</span>;
+<span class="hljs-keyword">const</span> abcRe = <span class="hljs-regexp">/(abc)&#123;2,&#125;/gi</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(info.<span class="hljs-title function_">match</span>(abcRe));
+
+
+[
+  <span class="hljs-string">&#x27;《黄金时代》&#x27;</span>,
+  <span class="hljs-string">&#x27;黄金时代&#x27;</span>,
+  <span class="hljs-attr">index</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,
+  <span class="hljs-attr">groups</span>: [<span class="hljs-title class_">Object</span>: <span class="hljs-literal">null</span> prototype] &#123; <span class="hljs-attr">why</span>: <span class="hljs-string">&#x27;黄金时代&#x27;</span> &#125;
+]
+[
+  <span class="hljs-string">&#x27;《沉默的大多数》&#x27;</span>,
+  <span class="hljs-string">&#x27;沉默的大多数&#x27;</span>,
+  <span class="hljs-attr">index</span>: <span class="hljs-number">17</span>,
+  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,
+  <span class="hljs-attr">groups</span>: [<span class="hljs-title class_">Object</span>: <span class="hljs-literal">null</span> prototype] &#123; <span class="hljs-attr">why</span>: <span class="hljs-string">&#x27;沉默的大多数&#x27;</span> &#125;
+]
+[
+  <span class="hljs-string">&#x27;《一只特立独行的猪》&#x27;</span>,
+  <span class="hljs-string">&#x27;一只特立独行的猪&#x27;</span>,
+  <span class="hljs-attr">index</span>: <span class="hljs-number">26</span>,
+  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》&#x27;</span>,
+  <span class="hljs-attr">groups</span>: [<span class="hljs-title class_">Object</span>: <span class="hljs-literal">null</span> prototype] &#123; <span class="hljs-attr">why</span>: <span class="hljs-string">&#x27;一只特立独行的猪&#x27;</span> &#125;
+]
+[ <span class="hljs-string">&#x27;abcabc&#x27;</span>, <span class="hljs-string">&#x27;abcabcabc&#x27;</span> ]
+</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 1.将捕获组作为整体</span>
+<span class="hljs-keyword">const</span> info = <span class="hljs-string">&quot;dfabcabcfabcdfdabcabcabcljcbacballnbanba;jk;j&quot;</span>;
+<span class="hljs-keyword">const</span> abcRe = <span class="hljs-regexp">/(abc|cba|nba)&#123;2,&#125;/gi</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(info.<span class="hljs-title function_">match</span>(abcRe));
+<span class="hljs-comment">//[ &#x27;abcabc&#x27;, &#x27;abcabcabc&#x27;, &#x27;cbacba&#x27;, &#x27;nbanba&#x27; ]</span></code></pre></div>
 
 <p>非捕获组：</p>
 <p>  有时我们需要括号才能正确应用量词，但我们不希望它们的内容出现在结果中。</p>

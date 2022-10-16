@@ -16,12 +16,12 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+    <meta name="description" content="1.node的输出 	console.log() 	console.clear() 	console.trace() 2.常见的全局对象 	特殊的全局对象，是各个模块都有的，但不是属于全局的 	__dirname&#x2F;&#x2F;获取当前文件所在的路径，不包括后面的文件名 	__filename&#x2F;&#x2F;获取当前文件所在的路径名称包括文件名 	exports 	module 	require 	 	常见的全局对象">
 <meta property="og:type" content="article">
 <meta property="og:title" content="node学习笔记">
 <meta property="og:url" content="http://example.com/2022/09/09/node%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+<meta property="og:description" content="1.node的输出 	console.log() 	console.clear() 	console.trace() 2.常见的全局对象 	特殊的全局对象，是各个模块都有的，但不是属于全局的 	__dirname&#x2F;&#x2F;获取当前文件所在的路径，不包括后面的文件名 	__filename&#x2F;&#x2F;获取当前文件所在的路径名称包括文件名 	exports 	module 	require 	 	常见的全局对象">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/11/T30nJvRF.png">
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/11/TXLJdkIn.png">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/11/14Ca9DGs.png">
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/11/14Ca9DGs.png">
 <meta property="article:published_time" content="2022-09-09T07:58:19.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://img1.imgtp.com/2022/09/11/T30nJvRF.png">
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.1k 字
+          5.9k 字
         
       </span>
     
@@ -241,7 +241,7 @@
         
         
         
-          51 分钟
+          49 分钟
         
       </span>
     
@@ -284,7 +284,121 @@
             
               <div class="markdown-body">
                 
-                <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-number">1.</span>node的输出<br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>()<br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">clear</span>()<br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">trace</span>()<br><span class="hljs-number">2.</span>常见的全局对象<br>	特殊的全局对象，是各个模块都有的，但不是属于全局的<br>	__dirname<span class="hljs-comment">//获取当前文件所在的路径，不包括后面的文件名</span><br>	__filename<span class="hljs-comment">//获取当前文件所在的路径名称包括文件名</span><br>	<span class="hljs-built_in">exports</span><br>	<span class="hljs-variable language_">module</span><br>	<span class="hljs-built_in">require</span><br>	<br>	常见的全局对象<br>		process对象<br>		<span class="hljs-variable language_">console</span>对象<br>		定时器对象<br><span class="hljs-number">3.</span><span class="hljs-variable language_">global</span>和<span class="hljs-variable language_">window</span>的区别<br>	node中每一个文件都是一个独立的模块<br><span class="hljs-number">4.</span>模块化<br>	立即调用函数(<span class="hljs-variable constant_">IIFE</span>)是解决模块化的一种方式<br>	<span class="hljs-title class_">CommonJS</span>(<span class="hljs-variable constant_">CJS</span>)<br>	<span class="hljs-title class_">ESmodule</span><br>	每个模块都有<span class="hljs-built_in">exports</span>,他会默认指向空对象,<span class="hljs-built_in">exports</span>指向的一个对象并在另外一个模块中被引用时，他们是指向同一个对象<br>	<span class="hljs-built_in">require</span>是对<span class="hljs-built_in">exports</span>的浅拷贝<br>	浅拷贝的本质就是引用赋值<br>	<span class="hljs-built_in">exports</span>中修改变量会使<span class="hljs-built_in">require</span>发生变化<br>	<span class="hljs-built_in">require</span>中的修改不会对<span class="hljs-built_in">exports</span>造成影响，因为<span class="hljs-built_in">require</span>是对<span class="hljs-built_in">exports</span>的拷贝<br><span class="hljs-number">5.</span><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span><br>	每一个模块都有一个<span class="hljs-variable language_">module</span>实例<br>	commomjs中没有<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>的概念，node中使用的是<span class="hljs-title class_">Moudle</span>类，每一个模块都是<span class="hljs-title class_">Modlue</span>的实例，也是<span class="hljs-variable language_">module</span><br>	所以在<span class="hljs-title class_">Node</span>中真正导出的其实不是<span class="hljs-keyword">export</span>,而是<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span><br>	为什么<span class="hljs-built_in">exports</span>也可以导出<br>		因为<span class="hljs-variable language_">module</span>对象的<span class="hljs-built_in">exports</span>属性是<span class="hljs-keyword">export</span>对象的一个引用，也就是<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>=<span class="hljs-built_in">exports</span><br>		<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>导出的值才是<span class="hljs-built_in">require</span>的值，默认<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>==<span class="hljs-keyword">export</span>,如果<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>指向另外一个值，则<span class="hljs-built_in">require</span>会引用这个值，而不是<span class="hljs-keyword">export</span>的值<br>	<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>的赋值是在顶层的<br>	<br>	<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>=<span class="hljs-built_in">exports</span><br>	<br>	<span class="hljs-built_in">exports</span>=<span class="hljs-number">123</span><span class="hljs-comment">//module.exports在顶层引用的，如果后面再次修改exports的指向，则会无效</span><br><span class="hljs-number">6.</span><span class="hljs-built_in">require</span>()的查找规则<br>	<span class="hljs-number">1.</span>如果x是核心模块，直接会返回核心模块，<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;x&quot;</span>)<span class="hljs-comment">//会直接返回，停止查找</span><br>	<span class="hljs-number">2.</span>x是以./或者../或者/开头的<br>		会先将x当作一个文件先查找，如果有后缀名，则按后缀名格式查找，如果没有后缀名则<br>			<span class="hljs-number">1.</span>直接查找文件x<br>			<span class="hljs-number">2.</span>查找x.<span class="hljs-property">js</span><br>			<span class="hljs-number">3.</span>查找x.<span class="hljs-property">json</span><br>			<span class="hljs-number">4.</span>查找x.<span class="hljs-property">node</span><br>		如果没有找到对应的文件，则会把他当成一个目录，查找里面的index文件<br>			<span class="hljs-number">1.</span>x/index.<span class="hljs-property">js</span><br>			<span class="hljs-number">2.</span>x/index.<span class="hljs-property">json</span><br>			<span class="hljs-number">3.</span>x/index.<span class="hljs-property">node</span><br>		否则报错 not found<br>	<span class="hljs-number">3.</span>如果直接是一个<span class="hljs-title function_">X</span>(没有路径) 并且X不是一个核心模块<br>	则从最里面的node_module-&gt;最外面的node_module中去寻找<br><span class="hljs-number">7.</span><span class="hljs-built_in">require</span>的加载过程是同步的 <br><span class="hljs-number">8.</span><span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>=&#123;&#125; <span class="hljs-built_in">exports</span>=<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>===<span class="hljs-keyword">export</span>=&#123;&#125; <span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>=<span class="hljs-built_in">exports</span><br><span class="hljs-number">9.</span>在源码中<span class="hljs-built_in">exports</span>=<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span><br><span class="hljs-number">10.</span>模块的加载过程<br>	模块在被第一次引入时，模块中的js代码会被运行一次<br>	模块被对此引入时，会被缓存，最终只会被加载一次<br>	如果有循环引入，他会按深度优先搜索遍历的方式进行加载<br><span class="hljs-number">11.</span><span class="hljs-variable constant_">ES</span> modules中<br>	<span class="hljs-keyword">export</span> &#123;&#125;<span class="hljs-comment">//不是一个对象，里面放置要到处的变量的列表</span><br>	<span class="hljs-keyword">import</span>默认必须放到顶部，<span class="hljs-keyword">import</span>是异步加载，<span class="hljs-keyword">import</span>加载模块不可以放到逻辑代码中<br>	<span class="hljs-title function_">import</span>().<span class="hljs-title function_">then</span>()<span class="hljs-comment">//进行动态加载</span><br><span class="hljs-number">12.</span>commonJS加载过程<br>	commonjs加载js文件的过程是运行时加载，并且是同步的，就是js引擎在执行代码的过程中加载模块<br>	同步意味着一个文件在没有加载结束之前，后面的代码都不加在<br>	commonjs通过<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>的导出一个对象，导出的是一个对象意味者可以将这个对象的引用在其他模块中赋值给其他变量，但是最终他们会指向同一个变量，那么一个变量修改了对象的属性，所有地方都会修改<br>	注意：<span class="hljs-built_in">require</span>进行解构的时候不会修改，因为解构会固定下当前的值<br><span class="hljs-number">13.</span><span class="hljs-variable constant_">ES</span> <span class="hljs-variable language_">module</span>的加载过程<br>   <span class="hljs-variable constant_">ES</span> <span class="hljs-variable constant_">MODULE</span>加载js是编译的时候加载的，并且是异步的<br>   编译时加载意味着<span class="hljs-keyword">import</span>不能和运行相关的内容放在一起使用<br>   比如<span class="hljs-keyword">from</span>后面的路径要动态获取<br>   比如不能将<span class="hljs-keyword">import</span>放到<span class="hljs-keyword">if</span>语句的代码块里面，所以es <span class="hljs-variable language_">module</span>时静态解析<br>   异步意味着js引擎遇到<span class="hljs-keyword">import</span>时会获取到这个js文件，但是这个获取的过程是异步的，并不会阻塞进程的执行<br>   <span class="hljs-keyword">type</span>-=<span class="hljs-variable language_">module</span>相当于script上的<span class="hljs-keyword">async</span>属性，如果后面还有js代码，他不会阻塞js代码的执行<br>   <span class="hljs-variable constant_">ES</span> <span class="hljs-title class_">Module</span>通过<span class="hljs-keyword">export</span>导出的是变量本身的引用：<br>	 <span class="hljs-keyword">export</span>在导出一个变量时，js引擎会解析这个语法，并且创建模块环境记录（<span class="hljs-variable language_">module</span> environment <br>record）；<br> 模块环境记录会和变量进行 绑定（binding），并且这个绑定是实时的；<br> 而在导入的地方，我们是可以实时的获取到绑定的最新值的；<br>  所以，如果在导出的模块中修改了变化，那么导入的地方可以实时获取最新的变量；<br>  注意：在导入的地方不可以修改变量，因为它只是被绑定到了这个变量上（其实是一个常量）<br>  <br> <span class="hljs-number">14.</span>在node中要使用es <span class="hljs-variable language_">module</span><br> 	方式一：package.<span class="hljs-property">json</span>中配置<span class="hljs-attr">type</span>:<span class="hljs-variable language_">module</span><br> 	方式二:使用以.<span class="hljs-property">mjs</span>结尾的文件<br> <span class="hljs-number">15.</span>内置模块path<br> 		从路径获取信息<br> 			<span class="hljs-title function_">dirname</span>()<span class="hljs-comment">//获取文件的父文件夹</span><br> 			<span class="hljs-title function_">basename</span>()<span class="hljs-comment">//获取文件名</span><br> 			<span class="hljs-title function_">extname</span>()<span class="hljs-comment">//获取文件扩展名</span><br> 		路径的拼接<br> 			如果我们希望将多个路径进行拼接，但是不同的操作系统可能是使用不同的分隔符<br> 			这个时候我们可以使用path.<span class="hljs-property">join</span>函数<br> 		将文件和某个文件夹拼接<br> 			如果我们希望将某个文件和文件夹拼接，可以使用path.<span class="hljs-property">resolve</span><br> 			resolve函数会判断我们拼接的路径前面是否有/或者../或者./<br> 			如果有表示是一个绝对路径，会返回对应的拼接路径<br> 			如果没有，那么会和当前执行文件所在的文件夹进行路径的拼接<br> 			path.<span class="hljs-title function_">resolve</span>() 方法将路径或路径片段的序列解析为绝对路径。<br> 			如果没有传入 path 片段，则 path.<span class="hljs-title function_">resolve</span>() 将返回当前工作目录的绝对路径。<br> 			<br> 			path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;/foo/bar&#x27;</span>, <span class="hljs-string">&#x27;./baz&#x27;</span>);<br>            <span class="hljs-comment">// 返回: &#x27;/foo/bar/baz&#x27;</span><br><br>            path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;/foo/bar&#x27;</span>, <span class="hljs-string">&#x27;/tmp/file/&#x27;</span>);<br>            <span class="hljs-comment">// 返回: &#x27;/tmp/file&#x27;</span><br><br>            path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;wwwroot&#x27;</span>, <span class="hljs-string">&#x27;static_files/png/&#x27;</span>, <span class="hljs-string">&#x27;../gif/image.gif&#x27;</span>);<br>            <span class="hljs-comment">// 如果当前工作目录是 /home/myself/node，</span><br>            <span class="hljs-comment">// 则返回 &#x27;/home/myself/node/wwwroot/static_files/gif/image.gif&#x27;</span><br> <span class="hljs-number">16.</span>fs模块<br> 	fs操作文件的三种方式<br></code></pre></td></tr></table></figure>
+                <div class="code-wrapper"><pre><code class="hljs typescript"><span class="hljs-number">1.</span>node的输出
+	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>()
+	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">clear</span>()
+	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">trace</span>()
+<span class="hljs-number">2.</span>常见的全局对象
+	特殊的全局对象，是各个模块都有的，但不是属于全局的
+	__dirname<span class="hljs-comment">//获取当前文件所在的路径，不包括后面的文件名</span>
+	__filename<span class="hljs-comment">//获取当前文件所在的路径名称包括文件名</span>
+	<span class="hljs-built_in">exports</span>
+	<span class="hljs-variable language_">module</span>
+	<span class="hljs-built_in">require</span>
+	
+	常见的全局对象
+		process对象
+		<span class="hljs-variable language_">console</span>对象
+		定时器对象
+<span class="hljs-number">3.</span><span class="hljs-variable language_">global</span>和<span class="hljs-variable language_">window</span>的区别
+	node中每一个文件都是一个独立的模块
+<span class="hljs-number">4.</span>模块化
+	立即调用函数(<span class="hljs-variable constant_">IIFE</span>)是解决模块化的一种方式
+	<span class="hljs-title class_">CommonJS</span>(<span class="hljs-variable constant_">CJS</span>)
+	<span class="hljs-title class_">ESmodule</span>
+	每个模块都有<span class="hljs-built_in">exports</span>,他会默认指向空对象,<span class="hljs-built_in">exports</span>指向的一个对象并在另外一个模块中被引用时，他们是指向同一个对象
+	<span class="hljs-built_in">require</span>是对<span class="hljs-built_in">exports</span>的浅拷贝
+	浅拷贝的本质就是引用赋值
+	<span class="hljs-built_in">exports</span>中修改变量会使<span class="hljs-built_in">require</span>发生变化
+	<span class="hljs-built_in">require</span>中的修改不会对<span class="hljs-built_in">exports</span>造成影响，因为<span class="hljs-built_in">require</span>是对<span class="hljs-built_in">exports</span>的拷贝
+<span class="hljs-number">5.</span><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>
+	每一个模块都有一个<span class="hljs-variable language_">module</span>实例
+	commomjs中没有<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>的概念，node中使用的是<span class="hljs-title class_">Moudle</span>类，每一个模块都是<span class="hljs-title class_">Modlue</span>的实例，也是<span class="hljs-variable language_">module</span>
+	所以在<span class="hljs-title class_">Node</span>中真正导出的其实不是<span class="hljs-keyword">export</span>,而是<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>
+	为什么<span class="hljs-built_in">exports</span>也可以导出
+		因为<span class="hljs-variable language_">module</span>对象的<span class="hljs-built_in">exports</span>属性是<span class="hljs-keyword">export</span>对象的一个引用，也就是<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>=<span class="hljs-built_in">exports</span>
+		<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>导出的值才是<span class="hljs-built_in">require</span>的值，默认<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>==<span class="hljs-keyword">export</span>,如果<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>指向另外一个值，则<span class="hljs-built_in">require</span>会引用这个值，而不是<span class="hljs-keyword">export</span>的值
+	<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>的赋值是在顶层的
+	
+	<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>=<span class="hljs-built_in">exports</span>
+	
+	<span class="hljs-built_in">exports</span>=<span class="hljs-number">123</span><span class="hljs-comment">//module.exports在顶层引用的，如果后面再次修改exports的指向，则会无效</span>
+<span class="hljs-number">6.</span><span class="hljs-built_in">require</span>()的查找规则
+	<span class="hljs-number">1.</span>如果x是核心模块，直接会返回核心模块，<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;x&quot;</span>)<span class="hljs-comment">//会直接返回，停止查找</span>
+	<span class="hljs-number">2.</span>x是以./或者../或者/开头的
+		会先将x当作一个文件先查找，如果有后缀名，则按后缀名格式查找，如果没有后缀名则
+			<span class="hljs-number">1.</span>直接查找文件x
+			<span class="hljs-number">2.</span>查找x.<span class="hljs-property">js</span>
+			<span class="hljs-number">3.</span>查找x.<span class="hljs-property">json</span>
+			<span class="hljs-number">4.</span>查找x.<span class="hljs-property">node</span>
+		如果没有找到对应的文件，则会把他当成一个目录，查找里面的index文件
+			<span class="hljs-number">1.</span>x/index.<span class="hljs-property">js</span>
+			<span class="hljs-number">2.</span>x/index.<span class="hljs-property">json</span>
+			<span class="hljs-number">3.</span>x/index.<span class="hljs-property">node</span>
+		否则报错 not found
+	<span class="hljs-number">3.</span>如果直接是一个<span class="hljs-title function_">X</span>(没有路径) 并且X不是一个核心模块
+	则从最里面的node_module-&gt;最外面的node_module中去寻找
+<span class="hljs-number">7.</span><span class="hljs-built_in">require</span>的加载过程是同步的 
+<span class="hljs-number">8.</span><span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>=&#123;&#125; <span class="hljs-built_in">exports</span>=<span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>===<span class="hljs-keyword">export</span>=&#123;&#125; <span class="hljs-variable language_">module</span>.<span class="hljs-property">export</span>=<span class="hljs-built_in">exports</span>
+<span class="hljs-number">9.</span>在源码中<span class="hljs-built_in">exports</span>=<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>
+<span class="hljs-number">10.</span>模块的加载过程
+	模块在被第一次引入时，模块中的js代码会被运行一次
+	模块被对此引入时，会被缓存，最终只会被加载一次
+	如果有循环引入，他会按深度优先搜索遍历的方式进行加载
+<span class="hljs-number">11.</span><span class="hljs-variable constant_">ES</span> modules中
+	<span class="hljs-keyword">export</span> &#123;&#125;<span class="hljs-comment">//不是一个对象，里面放置要到处的变量的列表</span>
+	<span class="hljs-keyword">import</span>默认必须放到顶部，<span class="hljs-keyword">import</span>是异步加载，<span class="hljs-keyword">import</span>加载模块不可以放到逻辑代码中
+	<span class="hljs-title function_">import</span>().<span class="hljs-title function_">then</span>()<span class="hljs-comment">//进行动态加载</span>
+<span class="hljs-number">12.</span>commonJS加载过程
+	commonjs加载js文件的过程是运行时加载，并且是同步的，就是js引擎在执行代码的过程中加载模块
+	同步意味着一个文件在没有加载结束之前，后面的代码都不加在
+	commonjs通过<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>的导出一个对象，导出的是一个对象意味者可以将这个对象的引用在其他模块中赋值给其他变量，但是最终他们会指向同一个变量，那么一个变量修改了对象的属性，所有地方都会修改
+	注意：<span class="hljs-built_in">require</span>进行解构的时候不会修改，因为解构会固定下当前的值
+<span class="hljs-number">13.</span><span class="hljs-variable constant_">ES</span> <span class="hljs-variable language_">module</span>的加载过程
+   <span class="hljs-variable constant_">ES</span> <span class="hljs-variable constant_">MODULE</span>加载js是编译的时候加载的，并且是异步的
+   编译时加载意味着<span class="hljs-keyword">import</span>不能和运行相关的内容放在一起使用
+   比如<span class="hljs-keyword">from</span>后面的路径要动态获取
+   比如不能将<span class="hljs-keyword">import</span>放到<span class="hljs-keyword">if</span>语句的代码块里面，所以es <span class="hljs-variable language_">module</span>时静态解析
+   异步意味着js引擎遇到<span class="hljs-keyword">import</span>时会获取到这个js文件，但是这个获取的过程是异步的，并不会阻塞进程的执行
+   <span class="hljs-keyword">type</span>-=<span class="hljs-variable language_">module</span>相当于script上的<span class="hljs-keyword">async</span>属性，如果后面还有js代码，他不会阻塞js代码的执行
+   <span class="hljs-variable constant_">ES</span> <span class="hljs-title class_">Module</span>通过<span class="hljs-keyword">export</span>导出的是变量本身的引用：
+	 <span class="hljs-keyword">export</span>在导出一个变量时，js引擎会解析这个语法，并且创建模块环境记录（<span class="hljs-variable language_">module</span> environment 
+record）；
+ 模块环境记录会和变量进行 绑定（binding），并且这个绑定是实时的；
+ 而在导入的地方，我们是可以实时的获取到绑定的最新值的；
+  所以，如果在导出的模块中修改了变化，那么导入的地方可以实时获取最新的变量；
+  注意：在导入的地方不可以修改变量，因为它只是被绑定到了这个变量上（其实是一个常量）
+  
+ <span class="hljs-number">14.</span>在node中要使用es <span class="hljs-variable language_">module</span>
+ 	方式一：package.<span class="hljs-property">json</span>中配置<span class="hljs-attr">type</span>:<span class="hljs-variable language_">module</span>
+ 	方式二:使用以.<span class="hljs-property">mjs</span>结尾的文件
+ <span class="hljs-number">15.</span>内置模块path
+ 		从路径获取信息
+ 			<span class="hljs-title function_">dirname</span>()<span class="hljs-comment">//获取文件的父文件夹</span>
+ 			<span class="hljs-title function_">basename</span>()<span class="hljs-comment">//获取文件名</span>
+ 			<span class="hljs-title function_">extname</span>()<span class="hljs-comment">//获取文件扩展名</span>
+ 		路径的拼接
+ 			如果我们希望将多个路径进行拼接，但是不同的操作系统可能是使用不同的分隔符
+ 			这个时候我们可以使用path.<span class="hljs-property">join</span>函数
+ 		将文件和某个文件夹拼接
+ 			如果我们希望将某个文件和文件夹拼接，可以使用path.<span class="hljs-property">resolve</span>
+ 			resolve函数会判断我们拼接的路径前面是否有/或者../或者./
+ 			如果有表示是一个绝对路径，会返回对应的拼接路径
+ 			如果没有，那么会和当前执行文件所在的文件夹进行路径的拼接
+ 			path.<span class="hljs-title function_">resolve</span>() 方法将路径或路径片段的序列解析为绝对路径。
+ 			如果没有传入 path 片段，则 path.<span class="hljs-title function_">resolve</span>() 将返回当前工作目录的绝对路径。
+ 			
+ 			path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;/foo/bar&#x27;</span>, <span class="hljs-string">&#x27;./baz&#x27;</span>);
+            <span class="hljs-comment">// 返回: &#x27;/foo/bar/baz&#x27;</span>
+
+            path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;/foo/bar&#x27;</span>, <span class="hljs-string">&#x27;/tmp/file/&#x27;</span>);
+            <span class="hljs-comment">// 返回: &#x27;/tmp/file&#x27;</span>
+
+            path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;wwwroot&#x27;</span>, <span class="hljs-string">&#x27;static_files/png/&#x27;</span>, <span class="hljs-string">&#x27;../gif/image.gif&#x27;</span>);
+            <span class="hljs-comment">// 如果当前工作目录是 /home/myself/node，</span>
+            <span class="hljs-comment">// 则返回 &#x27;/home/myself/node/wwwroot/static_files/gif/image.gif&#x27;</span>
+ <span class="hljs-number">16.</span>fs模块
+ 	fs操作文件的三种方式</code></pre></div>
 
 <p><img src="https://img1.imgtp.com/2022/09/11/T30nJvRF.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220618120700.png"></p>
 <p>17.文件描述符</p>
@@ -296,20 +410,37 @@
 <p><img src="https://img1.imgtp.com/2022/09/11/TXLJdkIn.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220619093740.png"></p>
 <p>18.文件的读写</p>
 <p>​    </p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">fs.read<span class="hljs-constructor">File(<span class="hljs-params">path</span>,<span class="hljs-params">options</span>?,<span class="hljs-params">callback</span>)</span>   <span class="hljs-comment">//读取文件的内容</span><br>fs.write<span class="hljs-constructor">File(<span class="hljs-params">file</span>,<span class="hljs-params">data</span>,<span class="hljs-params">options</span>?,<span class="hljs-params">callback</span>)</span> <span class="hljs-comment">//写入文件</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs reasonml">fs.read<span class="hljs-constructor">File(<span class="hljs-params">path</span>,<span class="hljs-params">options</span>?,<span class="hljs-params">callback</span>)</span>   <span class="hljs-comment">//读取文件的内容</span>
+fs.write<span class="hljs-constructor">File(<span class="hljs-params">file</span>,<span class="hljs-params">data</span>,<span class="hljs-params">options</span>?,<span class="hljs-params">callback</span>)</span> <span class="hljs-comment">//写入文件</span></code></pre></div>
 
 <p><img src="https://img1.imgtp.com/2022/09/11/gbD9UytN.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220619094754.png"></p>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs dts">options中的属性<br><span class="hljs-symbol">flag:</span>写入的方式<br><span class="hljs-symbol">	w:</span>打开文件写入，默认值<br>	w+:打开文件进行读写，如果不存在则会创建文件<br>	r+:打开文件进行读写，如果不存在就会抛出异常<br><span class="hljs-symbol">	r:</span>打开文件读取，读取时的默认值<br><span class="hljs-symbol">	a:</span>打开要写入的文件，将流放在文件的末尾，如果不存在则会创建文件<br>	a+:打开文件进行读写，将流放到文件末尾，如果不存在则创建<br><span class="hljs-symbol">encoding:</span>字符的编码<br>	现在基本上使用utf<span class="hljs-number">-8</span><br>	如果不填encoding则会返回buffer<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs dts">options中的属性
+<span class="hljs-symbol">flag:</span>写入的方式
+<span class="hljs-symbol">	w:</span>打开文件写入，默认值
+	w+:打开文件进行读写，如果不存在则会创建文件
+	r+:打开文件进行读写，如果不存在就会抛出异常
+<span class="hljs-symbol">	r:</span>打开文件读取，读取时的默认值
+<span class="hljs-symbol">	a:</span>打开要写入的文件，将流放在文件的末尾，如果不存在则会创建文件
+	a+:打开文件进行读写，将流放到文件末尾，如果不存在则创建
+<span class="hljs-symbol">encoding:</span>字符的编码
+	现在基本上使用utf<span class="hljs-number">-8</span>
+	如果不填encoding则会返回buffer</code></pre></div>
 
 <p>19.文件夹的操作</p>
 <p><img src="https://img1.imgtp.com/2022/09/11/ladw1Jt6.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220619093820.png"><br>20.events模块</p>
 <p>​     Node中的核心API都是基于异步事件驱动的：</p>
 <p>​     发出事件和监听事件都是通过EventEmitter类来完成，他们都是属于events对象</p>
 <p>​      </p>
-<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mel">const <span class="hljs-keyword">emitter</span>=new EventEmitter()<br><span class="hljs-keyword">emitter</span>.on(eventName.listener)<span class="hljs-comment">//监听事件，也可以使用addListener</span><br><span class="hljs-keyword">emitter</span>.off(eventName.listener)<span class="hljs-comment">//移出事件监听，也可以使用removeLitener</span><br><span class="hljs-keyword">emitter</span>.<span class="hljs-keyword">emit</span>(eventName,...args?)<span class="hljs-comment">//发出事件，可以携带参数</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs mel">const <span class="hljs-keyword">emitter</span>=new EventEmitter()
+<span class="hljs-keyword">emitter</span>.on(eventName.listener)<span class="hljs-comment">//监听事件，也可以使用addListener</span>
+<span class="hljs-keyword">emitter</span>.off(eventName.listener)<span class="hljs-comment">//移出事件监听，也可以使用removeLitener</span>
+<span class="hljs-keyword">emitter</span>.<span class="hljs-keyword">emit</span>(eventName,...args?)<span class="hljs-comment">//发出事件，可以携带参数</span></code></pre></div>
 
 <p><img src="https://img1.imgtp.com/2022/09/11/gbfKncoB.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220619135051.png"><br><img src="https://img1.imgtp.com/2022/09/11/z58jVfjS.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220619135226.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shij">emitter.once(eventName,listener)事件只监听一次<br>emitter.prependListener()将监听事件添加到最前面<br>emitter.prependOnceListener()将监听事件添加到最前面但只监听一次<br>emitter.removeAllListeners(eventName?)移除所有事件<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs shij">emitter.once(eventName,listener)事件只监听一次
+emitter.prependListener()将监听事件添加到最前面
+emitter.prependOnceListener()将监听事件添加到最前面但只监听一次
+emitter.removeAllListeners(eventName?)移除所有事件</code></pre></div>
 
 <p>21、npm包管理工具</p>
 <p>​            npm run start=&gt;npm start</p>
@@ -373,7 +504,9 @@
 <p>​        3.npm install</p>
 <p>​        4.DEBUG=express:* npm start</p>
 <p>​        第二种安装方式</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> init<br><span class="hljs-built_in">npm</span> install express<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> init
+<span class="hljs-built_in">npm</span> install express
+</code></pre></div>
 
 <p>40.中间件</p>
 <p>41.文件上传</p>

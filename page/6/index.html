@@ -292,7 +292,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/09/05/%E6%B7%B1%E6%8B%B7%E8%B4%9D%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" target="_self">
         <div>
-          123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051// 判断是否是对象function isObject(value) &#123;  const valueType = typeof value;  return value != null &amp;&amp;
+          // 判断是否是对象  function isObject(value) &#123;   const valueType = typeof value;    return value != null &amp;&amp; (valueType === &quot;object&quot; || valueType === &quot;function&quot;); &#125;  funct
         </div>
       </a>
 
@@ -353,7 +353,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/09/05/Promise%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_self">
         <div>
-          结构设计1234567891011121314151617181920212223242526272829303132333435363738394041// 定义promise的三种状态const PROMISE_STATUS_PENDING = &quot;pending&quot;;const PROMISE_STATUS_FULFILLED = &quot;fulfilled&quot;;
+          结构设计// 定义promise的三种状态 const PROMISE_STATUS_PENDING = &quot;pending&quot;; const PROMISE_STATUS_FULFILLED = &quot;fulfilled&quot;; const PROMISE_STATUS_REJECTED = &quot;rejected&quot;;  class myPromise
         </div>
       </a>
 
@@ -414,7 +414,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/09/05/%E5%AE%9E%E7%8E%B0bind/" target="_self">
         <div>
-          12345678910111213141516171819202122232425262728293031323334353637383940414243Function.prototype.mybind = function (thisArg, ...args) &#123;  // 获得this的指向，就是实际的调用者  let fn = this;  // 获取thisArg,如果是基本数据
+          Function.prototype.mybind = function (thisArg, ...args) &#123;   // 获得this的指向，就是实际的调用者   let fn = this;   // 获取thisArg,如果是基本数据类型除了null,undefined都转成包装类型，否则指向全局   thisArg = thisArg != null ? Object(this
         </div>
       </a>
 

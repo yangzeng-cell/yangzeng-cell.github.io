@@ -24,7 +24,7 @@
 <meta property="og:description" content="vue2的源码使用Flow进行类型检测的，vue3使用Typescript进行重构，比vue2更好的对typescript进行支持。 vue3中使用Proxy来实现对数据劫持，vue2中使用Object.defineProperty来劫持数据的getter和setter方法的，这这种方式存在缺点就是在给对象添加和删除属性的时候，是无法劫持和监听的。所以必须使用$set和$delete方法。 vu">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-12T11:35:32.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.111Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -218,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.8k 字
+          4.7k 字
         
       </span>
     
@@ -229,7 +229,7 @@
         
         
         
-          41 分钟
+          40 分钟
         
       </span>
     
@@ -330,12 +330,34 @@
 <td>删除</td>
 </tr>
 </tbody></table>
-<h3 id="13-全局-API-Treeshaking"><a href="#13-全局-API-Treeshaking" class="headerlink" title="13.全局 API Treeshaking"></a>13.全局 API Treeshaking</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs vue">import Vue from &#x27;vue&#x27;<br><br>Vue.nextTick(() =&gt; &#123;<br>  // something DOM-related<br>&#125;)<br></code></pre></td></tr></table></figure>
+<h3 id="13-全局-API-Treeshaking"><a href="#13-全局-API-Treeshaking" class="headerlink" title="13.全局 API Treeshaking"></a>13.全局 API Treeshaking</h3><div class="code-wrapper"><pre><code class="hljs vue">import Vue from &#x27;vue&#x27;
+
+Vue.nextTick(() =&gt; &#123;
+  // something DOM-related
+&#125;)</code></pre></div>
 
 <p>在Vue2.X中Vue.nextTick()是一个暴露在单个Vue对象中的全局的api，事实上，实例方法$nextTick()只是一个包装器，为了方便Vue.nextTick()，回调函数的this会自动绑定到当前实例中，但是在vite和webpack中，Vue.nextTick不可以进行treeshaking,所以在Vue3中做了优化，让nextTick可以进行treeShaking,全局的模块只能作为ES模块构建的命名导出来进行访问，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs vue">import &#123; nextTick &#125; from &#x27;vue&#x27;<br><br>nextTick(() =&gt; &#123;<br>  // something DOM-related<br>&#125;)<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">import &#123; nextTick &#125; from &#x27;vue&#x27;
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs vue">import &#123; shallowMount &#125; from &#x27;@vue/test-utils&#x27;<br>import &#123; MyComponent &#125; from &#x27;./MyComponent.vue&#x27;<br>import &#123; nextTick &#125; from &#x27;vue&#x27;<br><br>test(&#x27;an async feature&#x27;, async () =&gt; &#123;<br>  const wrapper = shallowMount(MyComponent)<br><br>  // execute some DOM-related tasks<br><br>  await nextTick()<br><br>  // run your assertions<br>&#125;)<br><br></code></pre></td></tr></table></figure>
+nextTick(() =&gt; &#123;
+  // something DOM-related
+&#125;)
+</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs vue">import &#123; shallowMount &#125; from &#x27;@vue/test-utils&#x27;
+import &#123; MyComponent &#125; from &#x27;./MyComponent.vue&#x27;
+import &#123; nextTick &#125; from &#x27;vue&#x27;
+
+test(&#x27;an async feature&#x27;, async () =&gt; &#123;
+  const wrapper = shallowMount(MyComponent)
+
+  // execute some DOM-related tasks
+
+  await nextTick()
+
+  // run your assertions
+&#125;)
+</code></pre></div>
 
 <p>如果在Vue3中使用Vue.nextTick()会导致臭名昭著的<code>undefined is not a function</code>错误</p>
 <p>通过此更改，如果模块捆绑器支持 tree-shaking，则未在 Vue 应用程序中使用的全局 API 将从最终捆绑包中删除，从而获得最佳文件大小</p>
@@ -348,56 +370,138 @@
 <li><code>Vue.delete</code>（仅在兼容版本中）//不要使用</li>
 </ul>
 <p>除了如上全局API之外，许多内部组件将不再作为默认导入的一部分，需要使用到时再导入，有利于treeShaking,</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;transition&gt;<br>  &lt;div v-show=&quot;ok&quot;&gt;hello&lt;/div&gt;<br>&lt;/transition&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;transition&gt;
+  &lt;div v-show=&quot;ok&quot;&gt;hello&lt;/div&gt;
+&lt;/transition&gt;</code></pre></div>
 
 <p>会被编译成</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs vue">import &#123; h, Transition, withDirectives, vShow &#125; from &#x27;vue&#x27;<br><br>export function render() &#123;<br>  return h(Transition, [withDirectives(h(&#x27;div&#x27;, &#x27;hello&#x27;), [[vShow, this.ok]])])<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">import &#123; h, Transition, withDirectives, vShow &#125; from &#x27;vue&#x27;
+
+export function render() &#123;
+  return h(Transition, [withDirectives(h(&#x27;div&#x27;, &#x27;hello&#x27;), [[vShow, this.ok]])])
+&#125;
+</code></pre></div>
 
 <p>可以减少包的大小</p>
 <p><strong>notice</strong></p>
 <p><strong>上述内容仅适用于与支持 tree-shaking 的捆绑器一起使用的<a target="_blank" rel="noopener" href="https://github.com/vuejs/core/tree/master/packages/vue#which-dist-file-to-use">ES 模块构建</a>- UMD 构建仍然包含所有功能并在 Vue 全局变量上公开所有内容（并且编译器将生成适当的输出以使用全局 API 而不是导入）。</strong></p>
 <p>再插件中使用时</p>
 <p>Vue2.x中使用全局api</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> plugin = &#123;<br>  <span class="hljs-attr">install</span>: <span class="hljs-function"><span class="hljs-params">Vue</span> =&gt;</span> &#123;<br>    <span class="hljs-title class_">Vue</span>.<span class="hljs-title function_">nextTick</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-comment">// ...</span><br>    &#125;)<br>  &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> plugin = &#123;
+  <span class="hljs-attr">install</span>: <span class="hljs-function"><span class="hljs-params">Vue</span> =&gt;</span> &#123;
+    <span class="hljs-title class_">Vue</span>.<span class="hljs-title function_">nextTick</span>(<span class="hljs-function">() =&gt;</span> &#123;
+      <span class="hljs-comment">// ...</span>
+    &#125;)
+  &#125;
+&#125;
+</code></pre></div>
 
 <p>Vue3.x使用全局API</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; nextTick &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br><span class="hljs-keyword">const</span> plugin = &#123;<br>  <span class="hljs-attr">install</span>: <span class="hljs-function"><span class="hljs-params">app</span> =&gt;</span> &#123;<br>    <span class="hljs-title function_">nextTick</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-comment">// ...</span><br>    &#125;)<br>  &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; nextTick &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>
+
+<span class="hljs-keyword">const</span> plugin = &#123;
+  <span class="hljs-attr">install</span>: <span class="hljs-function"><span class="hljs-params">app</span> =&gt;</span> &#123;
+    <span class="hljs-title function_">nextTick</span>(<span class="hljs-function">() =&gt;</span> &#123;
+      <span class="hljs-comment">// ...</span>
+    &#125;)
+  &#125;
+&#125;
+</code></pre></div>
 
 <p>在webpack中如果把上诉代码打包成一个buddle,他会把vue源码也会打包进去，如果要避免这样的发生可以使用externals排除</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// webpack.config.js</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-comment">/*...*/</span><br>  <span class="hljs-attr">externals</span>: &#123;<br>    <span class="hljs-attr">vue</span>: <span class="hljs-string">&#x27;Vue&#x27;</span><br>  &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// webpack.config.js</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;
+  <span class="hljs-comment">/*...*/</span>
+  <span class="hljs-attr">externals</span>: &#123;
+    <span class="hljs-attr">vue</span>: <span class="hljs-string">&#x27;Vue&#x27;</span>
+  &#125;
+&#125;
+</code></pre></div>
 
 <p>rollUp中的写法</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// rollup.config.js</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-comment">/*...*/</span><br>  <span class="hljs-attr">external</span>: [<span class="hljs-string">&#x27;vue&#x27;</span>]<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// rollup.config.js</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
+  <span class="hljs-comment">/*...*/</span>
+  <span class="hljs-attr">external</span>: [<span class="hljs-string">&#x27;vue&#x27;</span>]
+&#125;</code></pre></div>
 
 <h3 id="14-v-model"><a href="#14-v-model" class="headerlink" title="14.v-model"></a>14.v-model</h3><p>在组建中使用v-model</p>
 <p>在vue2.x,<code>v-model</code>在组件上使用 a 相当于传递一个<code>value</code>prop 并发出一个<code>input</code>事件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;ChildComponent v-model=&quot;pageTitle&quot; /&gt;<br><br>&lt;!-- would be shorthand for: --&gt;<br><br>&lt;ChildComponent :value=&quot;pageTitle&quot; @input=&quot;pageTitle = $event&quot; /&gt;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;ChildComponent v-model=&quot;pageTitle&quot; /&gt;
+
+&lt;!-- would be shorthand for: --&gt;
+
+&lt;ChildComponent :value=&quot;pageTitle&quot; @input=&quot;pageTitle = $event&quot; /&gt;
+</code></pre></div>
 
 <p>如果想更改属性名和事件的时候，需要使用在组件中添加model选项，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- ParentComponent.vue --&gt;<br><br>&lt;ChildComponent v-model=&quot;pageTitle&quot; /&gt;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;!-- ParentComponent.vue --&gt;
 
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-comment">// ChildComponent.vue</span><br><br>export default <span class="hljs-punctuation">&#123;</span><br>  model<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    prop<span class="hljs-punctuation">:</span> &#x27;title&#x27;<span class="hljs-punctuation">,</span><br>    event<span class="hljs-punctuation">:</span> &#x27;change&#x27;<br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  props<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">// this allows using the `value` prop for a different purpose</span><br>    value<span class="hljs-punctuation">:</span> String<span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// use `title` as the prop which take the place of `value`</span><br>    title<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      type<span class="hljs-punctuation">:</span> String<span class="hljs-punctuation">,</span><br>      default<span class="hljs-punctuation">:</span> &#x27;Default title&#x27;<br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br><br></code></pre></td></tr></table></figure>
+&lt;ChildComponent v-model=&quot;pageTitle&quot; /&gt;
+</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// ChildComponent.vue</span>
+
+export default <span class="hljs-punctuation">&#123;</span>
+  model<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span>
+    prop<span class="hljs-punctuation">:</span> &#x27;title&#x27;<span class="hljs-punctuation">,</span>
+    event<span class="hljs-punctuation">:</span> &#x27;change&#x27;
+  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span>
+  props<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span>
+    <span class="hljs-comment">// this allows using the `value` prop for a different purpose</span>
+    value<span class="hljs-punctuation">:</span> String<span class="hljs-punctuation">,</span>
+    <span class="hljs-comment">// use `title` as the prop which take the place of `value`</span>
+    title<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span>
+      type<span class="hljs-punctuation">:</span> String<span class="hljs-punctuation">,</span>
+      default<span class="hljs-punctuation">:</span> &#x27;Default title&#x27;
+    <span class="hljs-punctuation">&#125;</span>
+  <span class="hljs-punctuation">&#125;</span>
+<span class="hljs-punctuation">&#125;</span>
+</code></pre></div>
 
 <p>所以v-model实际上时这样的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;ChildComponent :title=&quot;pageTitle&quot; @change=&quot;pageTitle = $event&quot; /&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;ChildComponent :title=&quot;pageTitle&quot; @change=&quot;pageTitle = $event&quot; /&gt;</code></pre></div>
 
 <h3 id="使用v-bind-sync"><a href="#使用v-bind-sync" class="headerlink" title="使用v-bind.sync#"></a>使用<code>v-bind.sync</code><a target="_blank" rel="noopener" href="https://v3-migration.vuejs.org/breaking-changes/v-model.html#using-v-bind-sync">#</a></h3><p>在某些情况下，我们可能需要一个道具的“双向绑定”（有时除了现有<code>v-model</code>的不同道具之外）。为此，我们建议以<code>update:myPropName</code>. 例如，对于<code>ChildComponent</code>上一个带有<code>title</code>prop 的示例，我们可以通过以下方式传达分配新值的意图：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vue">this.$emit(&#x27;update:title&#x27;, newValue)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">this.$emit(&#x27;update:title&#x27;, newValue)</code></pre></div>
 
 <p>然后，如果需要，父级可以侦听该事件并更新本地数据属性。例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;ChildComponent :title=&quot;pageTitle&quot; @update:title=&quot;pageTitle = $event&quot; /&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;ChildComponent :title=&quot;pageTitle&quot; @update:title=&quot;pageTitle = $event&quot; /&gt;</code></pre></div>
 
 <p><code>.sync</code>为方便起见，我们使用修饰符对这种模式进行了简写：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;ChildComponent :title.sync=&quot;pageTitle&quot; /&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;ChildComponent :title.sync=&quot;pageTitle&quot; /&gt;</code></pre></div>
 
 <p>在Vue3.x中 自定义组件的双向数据绑定时使用modelValue，@update:modelValue来替代</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;ChildComponent v-model=&quot;pageTitle&quot; /&gt;<br><br>&lt;!-- would be shorthand for: --&gt;<br><br>&lt;ChildComponent<br>  :modelValue=&quot;pageTitle&quot;<br>  @update:modelValue=&quot;pageTitle = $event&quot;<br>/&gt;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;ChildComponent v-model=&quot;pageTitle&quot; /&gt;
+
+&lt;!-- would be shorthand for: --&gt;
+
+&lt;ChildComponent
+  :modelValue=&quot;pageTitle&quot;
+  @update:modelValue=&quot;pageTitle = $event&quot;
+/&gt;
+</code></pre></div>
 
 <p>如果需要修改model的名称则直接修改</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;ChildComponent v-model:title=&quot;pageTitle&quot; /&gt;<br><br>&lt;!-- would be shorthand for: --&gt;<br><br>&lt;ChildComponent :title=&quot;pageTitle&quot; @update:title=&quot;pageTitle = $event&quot; /&gt;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;ChildComponent v-model:title=&quot;pageTitle&quot; /&gt;
+
+&lt;!-- would be shorthand for: --&gt;
+
+&lt;ChildComponent :title=&quot;pageTitle&quot; @update:title=&quot;pageTitle = $event&quot; /&gt;
+</code></pre></div>
 
 <p>也可以作为.sync的替代，可以在组件中双向数据绑定多个值</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;<span class="hljs-title class_">ChildComponent</span> v-<span class="hljs-attr">model</span>:title=<span class="hljs-string">&quot;pageTitle&quot;</span> v-<span class="hljs-attr">model</span>:content=<span class="hljs-string">&quot;pageContent&quot;</span> /&gt;<br><br>&lt;!-- would be shorthand <span class="hljs-attr">for</span>: --&gt;<br><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ChildComponent</span></span></span><br><span class="hljs-tag"><span class="language-xml">  <span class="hljs-attr">:title</span>=<span class="hljs-string">&quot;pageTitle&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">  @<span class="hljs-attr">update:title</span>=<span class="hljs-string">&quot;pageTitle = $event&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">  <span class="hljs-attr">:content</span>=<span class="hljs-string">&quot;pageContent&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">  @<span class="hljs-attr">update:content</span>=<span class="hljs-string">&quot;pageContent = $event&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">/&gt;</span></span><br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js">&lt;<span class="hljs-title class_">ChildComponent</span> v-<span class="hljs-attr">model</span>:title=<span class="hljs-string">&quot;pageTitle&quot;</span> v-<span class="hljs-attr">model</span>:content=<span class="hljs-string">&quot;pageContent&quot;</span> /&gt;
+
+&lt;!-- would be shorthand <span class="hljs-attr">for</span>: --&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ChildComponent</span></span></span>
+<span class="hljs-tag"><span class="language-xml">  <span class="hljs-attr">:title</span>=<span class="hljs-string">&quot;pageTitle&quot;</span></span></span>
+<span class="hljs-tag"><span class="language-xml">  @<span class="hljs-attr">update:title</span>=<span class="hljs-string">&quot;pageTitle = $event&quot;</span></span></span>
+<span class="hljs-tag"><span class="language-xml">  <span class="hljs-attr">:content</span>=<span class="hljs-string">&quot;pageContent&quot;</span></span></span>
+<span class="hljs-tag"><span class="language-xml">  @<span class="hljs-attr">update:content</span>=<span class="hljs-string">&quot;pageContent = $event&quot;</span></span></span>
+<span class="hljs-tag"><span class="language-xml">/&gt;</span></span>
+</code></pre></div>
 
 
                 

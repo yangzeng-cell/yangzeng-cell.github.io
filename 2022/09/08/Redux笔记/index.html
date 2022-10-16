@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/13/UQYkeCuR.png">
 <meta property="og:image" content="https://img1.imgtp.com/2022/09/13/6ShJ2AyZ.png">
 <meta property="article:published_time" content="2022-09-08T13:57:45.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.111Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://img1.imgtp.com/2022/09/13/UQYkeCuR.png">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          15k 字
+          14k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          124 分钟
+          117 分钟
         
       </span>
     
@@ -284,27 +284,87 @@
 <p>当然，目前我们的action是固定的对象</p>
 <p>真实应用中，我们会通过函数来定义，返回一个action</p>
 <p>Redux要求我们通过action来更新数据,通过dispatch action来更新数据</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript">//actionCreator.js<br>const &#123; ADD_NUMBER, CHANGE_NAME &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./constants&quot;</span>)<br>const changeNameAction = <span class="hljs-function"><span class="hljs-params">(name)</span> =&gt;</span> (&#123;<br>  type: CHANGE_NAME,<br>  name<br>&#125;)<br>const addNumberAction = <span class="hljs-function"><span class="hljs-params">(num)</span> =&gt;</span> (&#123;<br>  type: ADD_NUMBER,<br>  num<br>&#125;)<br>module.<span class="hljs-built_in">exports</span> = &#123;<br>  changeNameAction,<br>  addNumberAction<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs coffeescript">//actionCreator.js
+const &#123; ADD_NUMBER, CHANGE_NAME &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./constants&quot;</span>)
+const changeNameAction = <span class="hljs-function"><span class="hljs-params">(name)</span> =&gt;</span> (&#123;
+  type: CHANGE_NAME,
+  name
+&#125;)
+const addNumberAction = <span class="hljs-function"><span class="hljs-params">(num)</span> =&gt;</span> (&#123;
+  type: ADD_NUMBER,
+  num
+&#125;)
+module.<span class="hljs-built_in">exports</span> = &#123;
+  changeNameAction,
+  addNumberAction
+&#125;
+</code></pre></div>
 
 <p>constants.js 用来定义type常量</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">ADD_NUMBER</span> = <span class="hljs-string">&quot;add_number&quot;</span><br><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CHANGE_NAME</span> = <span class="hljs-string">&quot;change_name&quot;</span><br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-variable constant_">ADD_NUMBER</span>,<br>  <span class="hljs-variable constant_">CHANGE_NAME</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">ADD_NUMBER</span> = <span class="hljs-string">&quot;add_number&quot;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CHANGE_NAME</span> = <span class="hljs-string">&quot;change_name&quot;</span>
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;
+  <span class="hljs-variable constant_">ADD_NUMBER</span>,
+  <span class="hljs-variable constant_">CHANGE_NAME</span>
+&#125;
+</code></pre></div>
 
 <p>reducer.js</p>
 <p>reducer是将state和action联系起来的桥梁，reducer是纯函数，reducer做的事情是将传入的state和action结合起来生成新的state</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> &#123; <span class="hljs-variable constant_">ADD_NUMBER</span>, <span class="hljs-variable constant_">CHANGE_NAME</span> &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./constants&quot;</span>)<br><br><span class="hljs-comment">// 初始化的数据</span><br><span class="hljs-keyword">const</span> initialState = &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;why&quot;</span>,<br>  <span class="hljs-attr">counter</span>: <span class="hljs-number">100</span><br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">reducer</span>(<span class="hljs-params">state = initialState, action</span>) &#123;<br>  <span class="hljs-keyword">switch</span>(action.<span class="hljs-property">type</span>) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-attr">CHANGE_NAME</span>:<br>      <span class="hljs-keyword">return</span> &#123; ...state, <span class="hljs-attr">name</span>: action.<span class="hljs-property">name</span> &#125;<br>    <span class="hljs-keyword">case</span> <span class="hljs-attr">ADD_NUMBER</span>:<br>      <span class="hljs-keyword">return</span> &#123; ...state, <span class="hljs-attr">counter</span>: state.<span class="hljs-property">counter</span> + action.<span class="hljs-property">num</span> &#125;<br>    <span class="hljs-attr">default</span>:<br>      <span class="hljs-keyword">return</span> state<br>  &#125;<br>&#125;<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = reducer<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> &#123; <span class="hljs-variable constant_">ADD_NUMBER</span>, <span class="hljs-variable constant_">CHANGE_NAME</span> &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./constants&quot;</span>)
+
+<span class="hljs-comment">// 初始化的数据</span>
+<span class="hljs-keyword">const</span> initialState = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;why&quot;</span>,
+  <span class="hljs-attr">counter</span>: <span class="hljs-number">100</span>
+&#125;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">reducer</span>(<span class="hljs-params">state = initialState, action</span>) &#123;
+  <span class="hljs-keyword">switch</span>(action.<span class="hljs-property">type</span>) &#123;
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">CHANGE_NAME</span>:
+      <span class="hljs-keyword">return</span> &#123; ...state, <span class="hljs-attr">name</span>: action.<span class="hljs-property">name</span> &#125;
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">ADD_NUMBER</span>:
+      <span class="hljs-keyword">return</span> &#123; ...state, <span class="hljs-attr">counter</span>: state.<span class="hljs-property">counter</span> + action.<span class="hljs-property">num</span> &#125;
+    <span class="hljs-attr">default</span>:
+      <span class="hljs-keyword">return</span> state
+  &#125;
+&#125;
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = reducer</code></pre></div>
 
 <p>index.js</p>
 <p>创建store实例</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> &#123; createStore &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;redux&quot;</span>)<br><span class="hljs-keyword">const</span> reducer =  <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./reducer.js&quot;</span>)<br><br><span class="hljs-comment">// 创建的store</span><br><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(reducer)<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = store<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> &#123; createStore &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;redux&quot;</span>)
+<span class="hljs-keyword">const</span> reducer =  <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./reducer.js&quot;</span>)
+
+<span class="hljs-comment">// 创建的store</span>
+<span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(reducer)
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = store
+</code></pre></div>
 
 <p>使用store中的数据</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> store = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./store&quot;</span>)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(store.<span class="hljs-title function_">getState</span>())<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> store = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./store&quot;</span>)
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(store.<span class="hljs-title function_">getState</span>())
+</code></pre></div>
 
 <p>修改store中的数据</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">store.<span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeNameAction</span>(<span class="hljs-string">&quot;kobe&quot;</span>))<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js">store.<span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeNameAction</span>(<span class="hljs-string">&quot;kobe&quot;</span>))</code></pre></div>
 
 <p>订阅store中的数据</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> store = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./store&quot;</span>)<br><br><span class="hljs-keyword">const</span> unsubscribe = store.<span class="hljs-title function_">subscribe</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;订阅数据的变化:&quot;</span>, store.<span class="hljs-title function_">getState</span>())<br>&#125;)<br><br><span class="hljs-comment">// 修改store中的数据: 必须action</span><br>store.<span class="hljs-title function_">dispatch</span>(&#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;change_name&quot;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;kobe&quot;</span> &#125;)<br>store.<span class="hljs-title function_">dispatch</span>(&#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;change_name&quot;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;lilei&quot;</span> &#125;)<br><br><span class="hljs-title function_">unsubscribe</span>()<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> store = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./store&quot;</span>)
+
+<span class="hljs-keyword">const</span> unsubscribe = store.<span class="hljs-title function_">subscribe</span>(<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;订阅数据的变化:&quot;</span>, store.<span class="hljs-title function_">getState</span>())
+&#125;)
+
+<span class="hljs-comment">// 修改store中的数据: 必须action</span>
+store.<span class="hljs-title function_">dispatch</span>(&#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;change_name&quot;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;kobe&quot;</span> &#125;)
+store.<span class="hljs-title function_">dispatch</span>(&#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;change_name&quot;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;lilei&quot;</span> &#125;)
+
+<span class="hljs-title function_">unsubscribe</span>()</code></pre></div>
 
 <h4 id="redux-三大核心-store-action-reducer"><a href="#redux-三大核心-store-action-reducer" class="headerlink" title="redux 三大核心 store action reducer"></a>redux 三大核心 store action reducer</h4><h4 id="redux-的三大原则"><a href="#redux-的三大原则" class="headerlink" title="redux 的三大原则"></a>redux 的三大原则</h4><ul>
 <li>单一数据源<ol>
@@ -330,32 +390,265 @@
 
 <p><img src="https://img1.imgtp.com/2022/09/13/6ShJ2AyZ.png" srcset="/img/loading.gif" lazyload alt="QQ截图20220913015145.png"></p>
 <h4 id="react和redux结合使用"><a href="#react和redux结合使用" class="headerlink" title="react和redux结合使用"></a>react和redux结合使用</h4><p>react-redux的使用</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs html">//index.js<br>import React from &#x27;react&#x27;;<br>import ReactDOM from &#x27;react-dom/client&#x27;;<br>import App from &#x27;./App&#x27;;<br>import &#123; Provider &#125; from &quot;react-redux&quot;<br>import store from &quot;./store&quot;<br><br>const root = ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;));<br>root.render(<br>  // <span class="hljs-tag">&lt;<span class="hljs-name">React.StrictMode</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">Provider</span> <span class="hljs-attr">store</span>=<span class="hljs-string">&#123;store&#125;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">Provider</span>&gt;</span><br>  // <span class="hljs-tag">&lt;/<span class="hljs-name">React.StrictMode</span>&gt;</span><br>);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs html">//index.js
+import React from &#x27;react&#x27;;
+import ReactDOM from &#x27;react-dom/client&#x27;;
+import App from &#x27;./App&#x27;;
+import &#123; Provider &#125; from &quot;react-redux&quot;
+import store from &quot;./store&quot;
 
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//在组件中使用</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; <span class="hljs-title class_">PureComponent</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span><br><span class="hljs-keyword">import</span> &#123; connect &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-redux&quot;</span><br><span class="hljs-comment">// import store from &quot;../store&quot;</span><br><span class="hljs-keyword">import</span> &#123; addNumberAction, subNumberAction &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../store/counter&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">About</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">PureComponent</span> &#123;<br><br>  <span class="hljs-title function_">calcNumber</span>(<span class="hljs-params">num, isAdd</span>) &#123;<br>    <span class="hljs-keyword">if</span> (isAdd) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">addNumber</span>(num)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">subNumber</span>(num)<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> &#123; counter, banners, recommends, userInfo &#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span><br><br>    <span class="hljs-keyword">return</span> (<br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&#x27;user&#x27;</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>nickname: &#123;userInfo.nickname&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>About Page: &#123;counter&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.calcNumber(6, true)&#125;&gt;+6<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.calcNumber(88, true)&#125;&gt;+88<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.calcNumber(6, false)&#125;&gt;-6<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.calcNumber(88, false)&#125;&gt;-88<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&#x27;banner&#x27;</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>轮播图数据:<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">            &#123;</span><br><span class="language-xml">              banners.map((item, index) =&gt; &#123;</span><br><span class="language-xml">                return <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;index&#125;</span>&gt;</span>&#123;item.title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br><span class="language-xml">              &#125;)</span><br><span class="language-xml">            &#125;</span><br><span class="language-xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&#x27;recommend&#x27;</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>推荐数据:<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">            &#123;</span><br><span class="language-xml">              recommends.map((item, index) =&gt; &#123;</span><br><span class="language-xml">                return <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;index&#125;</span>&gt;</span>&#123;item.title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br><span class="language-xml">              &#125;)</span><br><span class="language-xml">            &#125;</span><br><span class="language-xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>    )<br>  &#125;<br>&#125;<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">mapStateToProps</span> = (<span class="hljs-params">state</span>) =&gt; (&#123;<br>  <span class="hljs-attr">counter</span>: state.<span class="hljs-property">counter</span>.<span class="hljs-property">counter</span>,<br>  <span class="hljs-attr">banners</span>: state.<span class="hljs-property">home</span>.<span class="hljs-property">banners</span>,<br>  <span class="hljs-attr">recommends</span>: state.<span class="hljs-property">home</span>.<span class="hljs-property">recommends</span>,<br>  <span class="hljs-attr">userInfo</span>: state.<span class="hljs-property">user</span>.<span class="hljs-property">userInfo</span><br>&#125;)<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">mapDispatchToProps</span> = (<span class="hljs-params">dispatch</span>) =&gt; (&#123;<br>  <span class="hljs-title function_">addNumber</span>(<span class="hljs-params">num</span>) &#123;<br>    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">addNumberAction</span>(num))<br>  &#125;,<br>  <span class="hljs-title function_">subNumber</span>(<span class="hljs-params">num</span>) &#123;<br>    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">subNumberAction</span>(num))<br>  &#125;<br>&#125;)<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">connect</span>(mapStateToProps, mapDispatchToProps)(<span class="hljs-title class_">About</span>)<br></code></pre></td></tr></table></figure>
+const root = ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;));
+root.render(
+  // <span class="hljs-tag">&lt;<span class="hljs-name">React.StrictMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Provider</span> <span class="hljs-attr">store</span>=<span class="hljs-string">&#123;store&#125;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Provider</span>&gt;</span>
+  // <span class="hljs-tag">&lt;/<span class="hljs-name">React.StrictMode</span>&gt;</span>
+);</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">//在组件中使用</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; <span class="hljs-title class_">PureComponent</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>
+<span class="hljs-keyword">import</span> &#123; connect &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-redux&quot;</span>
+<span class="hljs-comment">// import store from &quot;../store&quot;</span>
+<span class="hljs-keyword">import</span> &#123; addNumberAction, subNumberAction &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../store/counter&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">About</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">PureComponent</span> &#123;
+
+  <span class="hljs-title function_">calcNumber</span>(<span class="hljs-params">num, isAdd</span>) &#123;
+    <span class="hljs-keyword">if</span> (isAdd) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">addNumber</span>(num)
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">subNumber</span>(num)
+    &#125;
+  &#125;
+
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">const</span> &#123; counter, banners, recommends, userInfo &#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>
+
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&#x27;user&#x27;</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>nickname: &#123;userInfo.nickname&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>About Page: &#123;counter&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.calcNumber(6, true)&#125;&gt;+6<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.calcNumber(88, true)&#125;&gt;+88<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.calcNumber(6, false)&#125;&gt;-6<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.calcNumber(88, false)&#125;&gt;-88<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&#x27;banner&#x27;</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>轮播图数据:<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span>
+<span class="language-xml">            &#123;</span>
+<span class="language-xml">              banners.map((item, index) =&gt; &#123;</span>
+<span class="language-xml">                return <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;index&#125;</span>&gt;</span>&#123;item.title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span>
+<span class="language-xml">              &#125;)</span>
+<span class="language-xml">            &#125;</span>
+<span class="language-xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&#x27;recommend&#x27;</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>推荐数据:<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span>
+<span class="language-xml">            &#123;</span>
+<span class="language-xml">              recommends.map((item, index) =&gt; &#123;</span>
+<span class="language-xml">                return <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;index&#125;</span>&gt;</span>&#123;item.title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span>
+<span class="language-xml">              &#125;)</span>
+<span class="language-xml">            &#125;</span>
+<span class="language-xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    )
+  &#125;
+&#125;
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">mapStateToProps</span> = (<span class="hljs-params">state</span>) =&gt; (&#123;
+  <span class="hljs-attr">counter</span>: state.<span class="hljs-property">counter</span>.<span class="hljs-property">counter</span>,
+  <span class="hljs-attr">banners</span>: state.<span class="hljs-property">home</span>.<span class="hljs-property">banners</span>,
+  <span class="hljs-attr">recommends</span>: state.<span class="hljs-property">home</span>.<span class="hljs-property">recommends</span>,
+  <span class="hljs-attr">userInfo</span>: state.<span class="hljs-property">user</span>.<span class="hljs-property">userInfo</span>
+&#125;)
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">mapDispatchToProps</span> = (<span class="hljs-params">dispatch</span>) =&gt; (&#123;
+  <span class="hljs-title function_">addNumber</span>(<span class="hljs-params">num</span>) &#123;
+    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">addNumberAction</span>(num))
+  &#125;,
+  <span class="hljs-title function_">subNumber</span>(<span class="hljs-params">num</span>) &#123;
+    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">subNumberAction</span>(num))
+  &#125;
+&#125;)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">connect</span>(mapStateToProps, mapDispatchToProps)(<span class="hljs-title class_">About</span>)</code></pre></div>
 
 <p>没有使用react-redux的写法</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; <span class="hljs-title class_">PureComponent</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span><br><span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../store&quot;</span><br><span class="hljs-keyword">import</span> &#123; addNumberAction &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../store/counter&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Home</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">PureComponent</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">super</span>()<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = &#123;<br>      <span class="hljs-attr">counter</span>: store.<span class="hljs-title function_">getState</span>().<span class="hljs-property">counter</span>.<span class="hljs-property">counter</span>,<br><br>      <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;Hello World&quot;</span>,<br>      <span class="hljs-attr">friends</span>: [<br>        &#123;<span class="hljs-attr">id</span>: <span class="hljs-number">111</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;why&quot;</span>&#125;,<br>        &#123;<span class="hljs-attr">id</span>: <span class="hljs-number">112</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;kobe&quot;</span>&#125;,<br>        &#123;<span class="hljs-attr">id</span>: <span class="hljs-number">113</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;james&quot;</span>&#125;,<br>      ]<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-title function_">componentDidMount</span>(<span class="hljs-params"></span>) &#123;<br>    store.<span class="hljs-title function_">subscribe</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> state = store.<span class="hljs-title function_">getState</span>().<span class="hljs-property">counter</span><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>(&#123; <span class="hljs-attr">counter</span>: state.<span class="hljs-property">counter</span> &#125;)<br>    &#125;)<br>  &#125;<br><br>  <span class="hljs-title function_">addNumber</span>(<span class="hljs-params">num</span>) &#123;<br>    store.<span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">addNumberAction</span>(num))<br>  &#125;<br><br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> &#123; counter &#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span><br><br>    <span class="hljs-keyword">return</span> (<br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Home Counter: &#123;counter&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.addNumber(1)&#125;&gt;+1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.addNumber(5)&#125;&gt;+5<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.addNumber(8)&#125;&gt;+8<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>    )<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">Home</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; <span class="hljs-title class_">PureComponent</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>
+<span class="hljs-keyword">import</span> store <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../store&quot;</span>
+<span class="hljs-keyword">import</span> &#123; addNumberAction &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../store/counter&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Home</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">PureComponent</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">super</span>()
+
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = &#123;
+      <span class="hljs-attr">counter</span>: store.<span class="hljs-title function_">getState</span>().<span class="hljs-property">counter</span>.<span class="hljs-property">counter</span>,
+
+      <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;Hello World&quot;</span>,
+      <span class="hljs-attr">friends</span>: [
+        &#123;<span class="hljs-attr">id</span>: <span class="hljs-number">111</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;why&quot;</span>&#125;,
+        &#123;<span class="hljs-attr">id</span>: <span class="hljs-number">112</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;kobe&quot;</span>&#125;,
+        &#123;<span class="hljs-attr">id</span>: <span class="hljs-number">113</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;james&quot;</span>&#125;,
+      ]
+    &#125;
+  &#125;
+
+  <span class="hljs-title function_">componentDidMount</span>(<span class="hljs-params"></span>) &#123;
+    store.<span class="hljs-title function_">subscribe</span>(<span class="hljs-function">() =&gt;</span> &#123;
+      <span class="hljs-keyword">const</span> state = store.<span class="hljs-title function_">getState</span>().<span class="hljs-property">counter</span>
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>(&#123; <span class="hljs-attr">counter</span>: state.<span class="hljs-property">counter</span> &#125;)
+    &#125;)
+  &#125;
+
+  <span class="hljs-title function_">addNumber</span>(<span class="hljs-params">num</span>) &#123;
+    store.<span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">addNumberAction</span>(num))
+  &#125;
+
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">const</span> &#123; counter &#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>
+
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Home Counter: &#123;counter&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.addNumber(1)&#125;&gt;+1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.addNumber(5)&#125;&gt;+5<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;e</span> =&gt;</span> this.addNumber(8)&#125;&gt;+8<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    )
+  &#125;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">Home</span></code></pre></div>
 
 <h4 id="我们可以将react组件中的异步操作放到redux中，使用中间件，中间件的目的是在dispatch的action和最终达到的reducer之间，扩展一些自己的代码"><a href="#我们可以将react组件中的异步操作放到redux中，使用中间件，中间件的目的是在dispatch的action和最终达到的reducer之间，扩展一些自己的代码" class="headerlink" title="我们可以将react组件中的异步操作放到redux中，使用中间件，中间件的目的是在dispatch的action和最终达到的reducer之间，扩展一些自己的代码"></a>我们可以将react组件中的异步操作放到redux中，使用中间件，中间件的目的是在dispatch的action和最终达到的reducer之间，扩展一些自己的代码</h4><p>使用redux-thunk来发布异步请求</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createStore, applyMiddleware, compose &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;redux&quot;</span><br><span class="hljs-keyword">import</span> thunk <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;redux-thunk&quot;</span><br><span class="hljs-keyword">import</span> reducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./reducer&quot;</span><br><br><span class="hljs-comment">// 正常情况下 store.dispatch(object)</span><br><span class="hljs-comment">// 想要派发函数 store.dispatch(function)</span><br><br><span class="hljs-comment">// redux-devtools</span><br><span class="hljs-keyword">const</span> composeEnhancers = <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span>(&#123;<span class="hljs-attr">trace</span>: <span class="hljs-literal">true</span>&#125;) || compose;<br><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(reducer, <span class="hljs-title function_">composeEnhancers</span>(<span class="hljs-title function_">applyMiddleware</span>(thunk)))<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createStore, applyMiddleware, compose &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;redux&quot;</span>
+<span class="hljs-keyword">import</span> thunk <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;redux-thunk&quot;</span>
+<span class="hljs-keyword">import</span> reducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./reducer&quot;</span>
+
+<span class="hljs-comment">// 正常情况下 store.dispatch(object)</span>
+<span class="hljs-comment">// 想要派发函数 store.dispatch(function)</span>
+
+<span class="hljs-comment">// redux-devtools</span>
+<span class="hljs-keyword">const</span> composeEnhancers = <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span>(&#123;<span class="hljs-attr">trace</span>: <span class="hljs-literal">true</span>&#125;) || compose;
+<span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(reducer, <span class="hljs-title function_">composeEnhancers</span>(<span class="hljs-title function_">applyMiddleware</span>(thunk)))
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store
+</code></pre></div>
 
 <p>定义一个返回函数的action</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchHomeMultidataAction</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-comment">// 如果是一个普通的action, 那么我们这里需要返回action对象</span><br>  <span class="hljs-comment">// 问题: 对象中是不能直接拿到从服务器请求的异步数据的</span><br>  <span class="hljs-comment">// return &#123;&#125;</span><br><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">dispatch, getState</span>) &#123;<br>    <span class="hljs-comment">// 异步操作: 网络请求</span><br>    <span class="hljs-comment">// console.log(&quot;foo function execution-----&quot;, getState().counter)</span><br>    axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;http://123.207.32.32:8000/home/multidata&quot;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> banners = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">banner</span>.<span class="hljs-property">list</span><br>      <span class="hljs-keyword">const</span> recommends = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">recommend</span>.<span class="hljs-property">list</span><br><br>      <span class="hljs-comment">// dispatch(&#123; type: actionTypes.CHANGE_BANNERS, banners &#125;)</span><br>      <span class="hljs-comment">// dispatch(&#123; type: actionTypes.CHANGE_RECOMMENDS, recommends &#125;)</span><br>      <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeBannersAction</span>(banners))<br>      <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeRecommendsAction</span>(recommends))<br>    &#125;)<br>  &#125;<br><br>  <span class="hljs-comment">// 如果返回的是一个函数, 那么redux是不支持的</span><br>  <span class="hljs-comment">// return foo</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchHomeMultidataAction</span> = (<span class="hljs-params"></span>) =&gt; &#123;
+  <span class="hljs-comment">// 如果是一个普通的action, 那么我们这里需要返回action对象</span>
+  <span class="hljs-comment">// 问题: 对象中是不能直接拿到从服务器请求的异步数据的</span>
+  <span class="hljs-comment">// return &#123;&#125;</span>
 
-<h4 id="定义applyMiddleware中间件"><a href="#定义applyMiddleware中间件" class="headerlink" title="定义applyMiddleware中间件"></a>定义applyMiddleware中间件</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">applyMiddleware</span>(<span class="hljs-params">store, ...fns</span>) &#123;<br>  fns.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">fn</span> =&gt;</span> &#123;<br>    <span class="hljs-title function_">fn</span>(store)<br>  &#125;)<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> applyMiddleware<br><br></code></pre></td></tr></table></figure>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">dispatch, getState</span>) &#123;
+    <span class="hljs-comment">// 异步操作: 网络请求</span>
+    <span class="hljs-comment">// console.log(&quot;foo function execution-----&quot;, getState().counter)</span>
+    axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;http://123.207.32.32:8000/home/multidata&quot;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
+      <span class="hljs-keyword">const</span> banners = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">banner</span>.<span class="hljs-property">list</span>
+      <span class="hljs-keyword">const</span> recommends = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">recommend</span>.<span class="hljs-property">list</span>
 
-<h4 id="定义log中间件"><a href="#定义log中间件" class="headerlink" title="定义log中间件"></a>定义log中间件</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">log</span>(<span class="hljs-params">store</span>) &#123;<br>  <span class="hljs-keyword">const</span> next = store.<span class="hljs-property">dispatch</span><br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">logAndDispatch</span>(<span class="hljs-params">action</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;当前派发的action:&quot;</span>, action)<br>    <span class="hljs-comment">// 真正派发的代码: 使用之前的dispatch进行派发</span><br>    <span class="hljs-title function_">next</span>(action)<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;派发之后的结果:&quot;</span>, store.<span class="hljs-title function_">getState</span>())<br>  &#125;<br><br>  <span class="hljs-comment">// monkey patch: 猴补丁 =&gt; 篡改现有的代码, 对整体的执行逻辑进行修改</span><br>  store.<span class="hljs-property">dispatch</span> = logAndDispatch<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> log<br></code></pre></td></tr></table></figure>
+      <span class="hljs-comment">// dispatch(&#123; type: actionTypes.CHANGE_BANNERS, banners &#125;)</span>
+      <span class="hljs-comment">// dispatch(&#123; type: actionTypes.CHANGE_RECOMMENDS, recommends &#125;)</span>
+      <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeBannersAction</span>(banners))
+      <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeRecommendsAction</span>(recommends))
+    &#125;)
+  &#125;
 
-<h4 id="定义thunk中间件"><a href="#定义thunk中间件" class="headerlink" title="定义thunk中间件"></a>定义thunk中间件</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">thunk</span>(<span class="hljs-params">store</span>) &#123;<br>  <span class="hljs-keyword">const</span> next = store.<span class="hljs-property">dispatch</span><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">dispatchThunk</span>(<span class="hljs-params">action</span>) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> action === <span class="hljs-string">&quot;function&quot;</span>) &#123;<br>      <span class="hljs-title function_">action</span>(store.<span class="hljs-property">dispatch</span>, store.<span class="hljs-property">getState</span>)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-title function_">next</span>(action)<br>    &#125;<br>  &#125;<br>  store.<span class="hljs-property">dispatch</span> = dispatchThunk<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> thunk<br><br></code></pre></td></tr></table></figure>
+  <span class="hljs-comment">// 如果返回的是一个函数, 那么redux是不支持的</span>
+  <span class="hljs-comment">// return foo</span>
+&#125;</code></pre></div>
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createStore, compose, combineReducers &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;redux&quot;</span><br><span class="hljs-keyword">import</span> &#123; log, thunk, applyMiddleware &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./middleware&quot;</span><br><span class="hljs-comment">// import thunk from &quot;redux-thunk&quot;</span><br><br><span class="hljs-keyword">import</span> counterReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./counter&quot;</span><br><span class="hljs-keyword">import</span> homeReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./home&quot;</span><br><span class="hljs-keyword">import</span> userReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./user&quot;</span><br><br><span class="hljs-comment">// 正常情况下 store.dispatch(object)</span><br><span class="hljs-comment">// 想要派发函数 store.dispatch(function)</span><br><br><span class="hljs-comment">// 将两个reducer合并在一起</span><br><span class="hljs-keyword">const</span> reducer = <span class="hljs-title function_">combineReducers</span>(&#123;<br>  <span class="hljs-attr">counter</span>: counterReducer,<br>  <span class="hljs-attr">home</span>: homeReducer,<br>  <span class="hljs-attr">user</span>: userReducer<br>&#125;)<br><br><span class="hljs-comment">// combineReducers实现原理(了解)</span><br><span class="hljs-comment">// function reducer(state = &#123;&#125;, action) &#123;</span><br><span class="hljs-comment">//   // 返回一个对象, store的state</span><br><span class="hljs-comment">//   return &#123;</span><br><span class="hljs-comment">//     counter: counterReducer(state.counter, action),</span><br><span class="hljs-comment">//     home: homeReducer(state.home, action),</span><br><span class="hljs-comment">//     user: userReducer(state.user, action)</span><br><span class="hljs-comment">//   &#125;</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-comment">// redux-devtools</span><br><span class="hljs-keyword">const</span> composeEnhancers = <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span>(&#123;<span class="hljs-attr">trace</span>: <span class="hljs-literal">true</span>&#125;) || compose;<br><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(reducer)<br><br><span class="hljs-title function_">applyMiddleware</span>(store, log, thunk)<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store<br></code></pre></td></tr></table></figure>
+<h4 id="定义applyMiddleware中间件"><a href="#定义applyMiddleware中间件" class="headerlink" title="定义applyMiddleware中间件"></a>定义applyMiddleware中间件</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">applyMiddleware</span>(<span class="hljs-params">store, ...fns</span>) &#123;
+  fns.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">fn</span> =&gt;</span> &#123;
+    <span class="hljs-title function_">fn</span>(store)
+  &#125;)
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> applyMiddleware
+</code></pre></div>
+
+<h4 id="定义log中间件"><a href="#定义log中间件" class="headerlink" title="定义log中间件"></a>定义log中间件</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">log</span>(<span class="hljs-params">store</span>) &#123;
+  <span class="hljs-keyword">const</span> next = store.<span class="hljs-property">dispatch</span>
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">logAndDispatch</span>(<span class="hljs-params">action</span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;当前派发的action:&quot;</span>, action)
+    <span class="hljs-comment">// 真正派发的代码: 使用之前的dispatch进行派发</span>
+    <span class="hljs-title function_">next</span>(action)
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;派发之后的结果:&quot;</span>, store.<span class="hljs-title function_">getState</span>())
+  &#125;
+
+  <span class="hljs-comment">// monkey patch: 猴补丁 =&gt; 篡改现有的代码, 对整体的执行逻辑进行修改</span>
+  store.<span class="hljs-property">dispatch</span> = logAndDispatch
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> log</code></pre></div>
+
+<h4 id="定义thunk中间件"><a href="#定义thunk中间件" class="headerlink" title="定义thunk中间件"></a>定义thunk中间件</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">thunk</span>(<span class="hljs-params">store</span>) &#123;
+  <span class="hljs-keyword">const</span> next = store.<span class="hljs-property">dispatch</span>
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">dispatchThunk</span>(<span class="hljs-params">action</span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> action === <span class="hljs-string">&quot;function&quot;</span>) &#123;
+      <span class="hljs-title function_">action</span>(store.<span class="hljs-property">dispatch</span>, store.<span class="hljs-property">getState</span>)
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-title function_">next</span>(action)
+    &#125;
+  &#125;
+  store.<span class="hljs-property">dispatch</span> = dispatchThunk
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> thunk
+</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createStore, compose, combineReducers &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;redux&quot;</span>
+<span class="hljs-keyword">import</span> &#123; log, thunk, applyMiddleware &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./middleware&quot;</span>
+<span class="hljs-comment">// import thunk from &quot;redux-thunk&quot;</span>
+
+<span class="hljs-keyword">import</span> counterReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./counter&quot;</span>
+<span class="hljs-keyword">import</span> homeReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./home&quot;</span>
+<span class="hljs-keyword">import</span> userReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./user&quot;</span>
+
+<span class="hljs-comment">// 正常情况下 store.dispatch(object)</span>
+<span class="hljs-comment">// 想要派发函数 store.dispatch(function)</span>
+
+<span class="hljs-comment">// 将两个reducer合并在一起</span>
+<span class="hljs-keyword">const</span> reducer = <span class="hljs-title function_">combineReducers</span>(&#123;
+  <span class="hljs-attr">counter</span>: counterReducer,
+  <span class="hljs-attr">home</span>: homeReducer,
+  <span class="hljs-attr">user</span>: userReducer
+&#125;)
+
+<span class="hljs-comment">// combineReducers实现原理(了解)</span>
+<span class="hljs-comment">// function reducer(state = &#123;&#125;, action) &#123;</span>
+<span class="hljs-comment">//   // 返回一个对象, store的state</span>
+<span class="hljs-comment">//   return &#123;</span>
+<span class="hljs-comment">//     counter: counterReducer(state.counter, action),</span>
+<span class="hljs-comment">//     home: homeReducer(state.home, action),</span>
+<span class="hljs-comment">//     user: userReducer(state.user, action)</span>
+<span class="hljs-comment">//   &#125;</span>
+<span class="hljs-comment">// &#125;</span>
+
+<span class="hljs-comment">// redux-devtools</span>
+<span class="hljs-keyword">const</span> composeEnhancers = <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span>(&#123;<span class="hljs-attr">trace</span>: <span class="hljs-literal">true</span>&#125;) || compose;
+<span class="hljs-keyword">const</span> store = <span class="hljs-title function_">createStore</span>(reducer)
+
+<span class="hljs-title function_">applyMiddleware</span>(store, log, thunk)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store</code></pre></div>
 
 <h4 id="combineReducers"><a href="#combineReducers" class="headerlink" title="combineReducers"></a>combineReducers</h4><p>redux给我们提供了一个combineReducers函数可以方便的让我们对多个reducer进行合并</p>
 <p>事实上，它也是将我们传入的reducers合并到一个对象中，最终返回一个combination的函数（相当于我们之前的reducer函 数了）； </p>
 <p> 在执行combination函数的过程中，它会通过判断前后返回的数据是否相同来决定返回之前的state还是新的state；</p>
 <p> 新的state会触发订阅者发生对应的刷新，而旧的state可以有效的组织订阅者发生刷新</p>
-<h4 id="Redux-Toolkit的用法"><a href="#Redux-Toolkit的用法" class="headerlink" title="Redux Toolkit的用法"></a>Redux Toolkit的用法</h4><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> install @reduxjs/toolkit react-redux<br></code></pre></td></tr></table></figure>
+<h4 id="Redux-Toolkit的用法"><a href="#Redux-Toolkit的用法" class="headerlink" title="Redux Toolkit的用法"></a>Redux Toolkit的用法</h4><div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> install @reduxjs/toolkit react-redux</code></pre></div>
 
 <p>Redux Toolkit 是官方推荐的编写 Redux 逻辑的方法。</p>
 <p>redux toolkit API </p>
@@ -364,15 +657,130 @@
 <li>createSlice:接受reducer函数的对象、切片名称和初始状态值，并自动生成切片reducer，并带有相应的actions</li>
 <li>createAsyncThunk:接受一个动作类型字符串和一个返回promise的函数，并生成一个pending/fulfilled/rejected基于该promise分派动作类型的 thunk</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//store.index.js</span><br><span class="hljs-keyword">import</span> &#123; configureStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@reduxjs/toolkit&quot;</span><br><br><span class="hljs-keyword">import</span> counterReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./features/counter&quot;</span><br><span class="hljs-keyword">import</span> homeReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./features/home&quot;</span><br><br><span class="hljs-keyword">const</span> store = <span class="hljs-title function_">configureStore</span>(&#123;<br>  <span class="hljs-attr">reducer</span>: &#123;<br>    <span class="hljs-attr">counter</span>: counterReducer,<br>    <span class="hljs-attr">home</span>: homeReducer<br>  &#125;<br>&#125;)<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//store.index.js</span>
+<span class="hljs-keyword">import</span> &#123; configureStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@reduxjs/toolkit&quot;</span>
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">///features/counter.js</span><br><span class="hljs-keyword">import</span> &#123; createSlice &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@reduxjs/toolkit&quot;</span><br><br><span class="hljs-keyword">const</span> counterSlice = <span class="hljs-title function_">createSlice</span>(&#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;counter&quot;</span>,<span class="hljs-comment">//用户标记slice的名词,在之后的redux-devtool中会显示对应的名词；</span><br>  <span class="hljs-comment">//初始化值</span><br>  <span class="hljs-attr">initialState</span>: &#123;<br>    <span class="hljs-attr">counter</span>: <span class="hljs-number">888</span><br>  &#125;,<br>  <span class="hljs-comment">//相当于之前的reducer函数</span><br>  <span class="hljs-attr">reducers</span>: &#123;<br>    <span class="hljs-title function_">addNumber</span>(<span class="hljs-params">state, &#123; payload &#125;</span>) &#123;<br>      state.<span class="hljs-property">counter</span> = state.<span class="hljs-property">counter</span> + payload<br>    &#125;,<br>    <span class="hljs-title function_">subNumber</span>(<span class="hljs-params">state, &#123; payload &#125;</span>) &#123;<br>      state.<span class="hljs-property">counter</span> = state.<span class="hljs-property">counter</span> - payload<br>    &#125;<br>  &#125;<br>&#125;)<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> &#123; addNumber, subNumber &#125; = counterSlice.<span class="hljs-property">actions</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> counterSlice.<span class="hljs-property">reducer</span><br><br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">import</span> counterReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./features/counter&quot;</span>
+<span class="hljs-keyword">import</span> homeReducer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./features/home&quot;</span>
+
+<span class="hljs-keyword">const</span> store = <span class="hljs-title function_">configureStore</span>(&#123;
+  <span class="hljs-attr">reducer</span>: &#123;
+    <span class="hljs-attr">counter</span>: counterReducer,
+    <span class="hljs-attr">home</span>: homeReducer
+  &#125;
+&#125;)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store
+</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">///features/counter.js</span>
+<span class="hljs-keyword">import</span> &#123; createSlice &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@reduxjs/toolkit&quot;</span>
+
+<span class="hljs-keyword">const</span> counterSlice = <span class="hljs-title function_">createSlice</span>(&#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;counter&quot;</span>,<span class="hljs-comment">//用户标记slice的名词,在之后的redux-devtool中会显示对应的名词；</span>
+  <span class="hljs-comment">//初始化值</span>
+  <span class="hljs-attr">initialState</span>: &#123;
+    <span class="hljs-attr">counter</span>: <span class="hljs-number">888</span>
+  &#125;,
+  <span class="hljs-comment">//相当于之前的reducer函数</span>
+  <span class="hljs-attr">reducers</span>: &#123;
+    <span class="hljs-title function_">addNumber</span>(<span class="hljs-params">state, &#123; payload &#125;</span>) &#123;
+      state.<span class="hljs-property">counter</span> = state.<span class="hljs-property">counter</span> + payload
+    &#125;,
+    <span class="hljs-title function_">subNumber</span>(<span class="hljs-params">state, &#123; payload &#125;</span>) &#123;
+      state.<span class="hljs-property">counter</span> = state.<span class="hljs-property">counter</span> - payload
+    &#125;
+  &#125;
+&#125;)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> &#123; addNumber, subNumber &#125; = counterSlice.<span class="hljs-property">actions</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> counterSlice.<span class="hljs-property">reducer</span>
+</code></pre></div>
 
 <p>//在组件中使用</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; <span class="hljs-title class_">PureComponent</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span><br><span class="hljs-keyword">import</span> &#123; connect &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../hoc&quot;</span><br><span class="hljs-keyword">import</span> &#123; addNumber &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../store/features/counter&quot;</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">About</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">PureComponent</span> &#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> &#123; counter &#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span><br><br>    <span class="hljs-keyword">return</span> (<br>      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>About Counter: &#123;counter&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>    )<br>  &#125;<br>&#125;<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">mapStateToProps</span> = (<span class="hljs-params">state</span>) =&gt; (&#123;<br>  <span class="hljs-attr">counter</span>: state.<span class="hljs-property">counter</span>.<span class="hljs-property">counter</span><br>&#125;)<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">mapDispatchToProps</span> = (<span class="hljs-params">dispatch</span>) =&gt; (&#123;<br>  <span class="hljs-title function_">addNumber</span>(<span class="hljs-params">num</span>) &#123;<br>    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">addNumber</span>(num))<br>  &#125;<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">connect</span>(mapStateToProps, mapDispatchToProps)(<span class="hljs-title class_">About</span>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; <span class="hljs-title class_">PureComponent</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>
+<span class="hljs-keyword">import</span> &#123; connect &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../hoc&quot;</span>
+<span class="hljs-keyword">import</span> &#123; addNumber &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../store/features/counter&quot;</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">About</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">PureComponent</span> &#123;
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">const</span> &#123; counter &#125; = <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>
+
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>About Counter: &#123;counter&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span>
+<span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    )
+  &#125;
+&#125;
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">mapStateToProps</span> = (<span class="hljs-params">state</span>) =&gt; (&#123;
+  <span class="hljs-attr">counter</span>: state.<span class="hljs-property">counter</span>.<span class="hljs-property">counter</span>
+&#125;)
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">mapDispatchToProps</span> = (<span class="hljs-params">dispatch</span>) =&gt; (&#123;
+  <span class="hljs-title function_">addNumber</span>(<span class="hljs-params">num</span>) &#123;
+    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">addNumber</span>(num))
+  &#125;
+&#125;)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">connect</span>(mapStateToProps, mapDispatchToProps)(<span class="hljs-title class_">About</span>)</code></pre></div>
 
 <h4 id="Redux-Toolkit的异步操作"><a href="#Redux-Toolkit的异步操作" class="headerlink" title="Redux Toolkit的异步操作"></a>Redux Toolkit的异步操作</h4><p>Redux Toolkit默认已经给我们继承了Thunk相关的功能：createAsyncThunk</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createSlice, createAsyncThunk &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@reduxjs/toolkit&#x27;</span><br><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> fetchHomeMultidataAction = <span class="hljs-title function_">createAsyncThunk</span>(<br>  <span class="hljs-string">&quot;fetch/homemultidata&quot;</span>, <br>  <span class="hljs-keyword">async</span> (extraInfo, &#123; dispatch, getState &#125;) =&gt; &#123;<br>    <span class="hljs-comment">// console.log(extraInfo, dispatch, getState)</span><br>    <span class="hljs-comment">// 1.发送网络请求, 获取数据</span><br>    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;http://123.207.32.32:8000/home/multidata&quot;</span>)<br><br>    <span class="hljs-comment">// 2.取出数据, 并且在此处直接dispatch操作(可以不做)</span><br>    <span class="hljs-keyword">const</span> banners = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">banner</span>.<span class="hljs-property">list</span><br>    <span class="hljs-keyword">const</span> recommends = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">recommend</span>.<span class="hljs-property">list</span><br>    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeBanners</span>(banners))<br>    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeRecommends</span>(recommends))<br><br>    <span class="hljs-comment">// 3.返回结果, 那么action状态会变成fulfilled状态</span><br>    <span class="hljs-keyword">return</span> res.<span class="hljs-property">data</span><br>&#125;)<br><br><span class="hljs-keyword">const</span> homeSlice = <span class="hljs-title function_">createSlice</span>(&#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;home&quot;</span>,<br>  <span class="hljs-attr">initialState</span>: &#123;<br>    <span class="hljs-attr">banners</span>: [],<br>    <span class="hljs-attr">recommends</span>: []<br>  &#125;,<br>  <span class="hljs-attr">reducers</span>: &#123;<br>    <span class="hljs-title function_">changeBanners</span>(<span class="hljs-params">state, &#123; payload &#125;</span>) &#123;<br>      state.<span class="hljs-property">banners</span> = payload<br>    &#125;,<br>    <span class="hljs-title function_">changeRecommends</span>(<span class="hljs-params">state, &#123; payload &#125;</span>) &#123;<br>      state.<span class="hljs-property">recommends</span> = payload<br>    &#125;<br>  &#125;,<br>  <span class="hljs-comment">// extraReducers: &#123;</span><br>  <span class="hljs-comment">//   [fetchHomeMultidataAction.pending](state, action) &#123;</span><br>  <span class="hljs-comment">//     console.log(&quot;fetchHomeMultidataAction pending&quot;)</span><br>  <span class="hljs-comment">//   &#125;,</span><br>  <span class="hljs-comment">//   [fetchHomeMultidataAction.fulfilled](state, &#123; payload &#125;) &#123;</span><br>  <span class="hljs-comment">//     state.banners = payload.data.banner.list</span><br>  <span class="hljs-comment">//     state.recommends = payload.data.recommend.list</span><br>  <span class="hljs-comment">//   &#125;,</span><br>  <span class="hljs-comment">//   [fetchHomeMultidataAction.rejected](state, action) &#123;</span><br>  <span class="hljs-comment">//     console.log(&quot;fetchHomeMultidataAction rejected&quot;)</span><br>  <span class="hljs-comment">//   &#125;</span><br>  <span class="hljs-comment">// &#125;</span><br>  <span class="hljs-attr">extraReducers</span>: <span class="hljs-function">(<span class="hljs-params">builder</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// builder.addCase(fetchHomeMultidataAction.pending, (state, action) =&gt; &#123;</span><br>    <span class="hljs-comment">//   console.log(&quot;fetchHomeMultidataAction pending&quot;)</span><br>    <span class="hljs-comment">// &#125;).addCase(fetchHomeMultidataAction.fulfilled, (state, &#123; payload &#125;) =&gt; &#123;</span><br>    <span class="hljs-comment">//   state.banners = payload.data.banner.list</span><br>    <span class="hljs-comment">//   state.recommends = payload.data.recommend.list</span><br>    <span class="hljs-comment">// &#125;)</span><br>  &#125;<br>&#125;)<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> &#123; changeBanners, changeRecommends &#125; = homeSlice.<span class="hljs-property">actions</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> homeSlice.<span class="hljs-property">reducer</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createSlice, createAsyncThunk &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@reduxjs/toolkit&#x27;</span>
+<span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> fetchHomeMultidataAction = <span class="hljs-title function_">createAsyncThunk</span>(
+  <span class="hljs-string">&quot;fetch/homemultidata&quot;</span>, 
+  <span class="hljs-keyword">async</span> (extraInfo, &#123; dispatch, getState &#125;) =&gt; &#123;
+    <span class="hljs-comment">// console.log(extraInfo, dispatch, getState)</span>
+    <span class="hljs-comment">// 1.发送网络请求, 获取数据</span>
+    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;http://123.207.32.32:8000/home/multidata&quot;</span>)
+
+    <span class="hljs-comment">// 2.取出数据, 并且在此处直接dispatch操作(可以不做)</span>
+    <span class="hljs-keyword">const</span> banners = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">banner</span>.<span class="hljs-property">list</span>
+    <span class="hljs-keyword">const</span> recommends = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">recommend</span>.<span class="hljs-property">list</span>
+    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeBanners</span>(banners))
+    <span class="hljs-title function_">dispatch</span>(<span class="hljs-title function_">changeRecommends</span>(recommends))
+
+    <span class="hljs-comment">// 3.返回结果, 那么action状态会变成fulfilled状态</span>
+    <span class="hljs-keyword">return</span> res.<span class="hljs-property">data</span>
+&#125;)
+
+<span class="hljs-keyword">const</span> homeSlice = <span class="hljs-title function_">createSlice</span>(&#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;home&quot;</span>,
+  <span class="hljs-attr">initialState</span>: &#123;
+    <span class="hljs-attr">banners</span>: [],
+    <span class="hljs-attr">recommends</span>: []
+  &#125;,
+  <span class="hljs-attr">reducers</span>: &#123;
+    <span class="hljs-title function_">changeBanners</span>(<span class="hljs-params">state, &#123; payload &#125;</span>) &#123;
+      state.<span class="hljs-property">banners</span> = payload
+    &#125;,
+    <span class="hljs-title function_">changeRecommends</span>(<span class="hljs-params">state, &#123; payload &#125;</span>) &#123;
+      state.<span class="hljs-property">recommends</span> = payload
+    &#125;
+  &#125;,
+  <span class="hljs-comment">// extraReducers: &#123;</span>
+  <span class="hljs-comment">//   [fetchHomeMultidataAction.pending](state, action) &#123;</span>
+  <span class="hljs-comment">//     console.log(&quot;fetchHomeMultidataAction pending&quot;)</span>
+  <span class="hljs-comment">//   &#125;,</span>
+  <span class="hljs-comment">//   [fetchHomeMultidataAction.fulfilled](state, &#123; payload &#125;) &#123;</span>
+  <span class="hljs-comment">//     state.banners = payload.data.banner.list</span>
+  <span class="hljs-comment">//     state.recommends = payload.data.recommend.list</span>
+  <span class="hljs-comment">//   &#125;,</span>
+  <span class="hljs-comment">//   [fetchHomeMultidataAction.rejected](state, action) &#123;</span>
+  <span class="hljs-comment">//     console.log(&quot;fetchHomeMultidataAction rejected&quot;)</span>
+  <span class="hljs-comment">//   &#125;</span>
+  <span class="hljs-comment">// &#125;</span>
+  <span class="hljs-attr">extraReducers</span>: <span class="hljs-function">(<span class="hljs-params">builder</span>) =&gt;</span> &#123;
+    <span class="hljs-comment">// builder.addCase(fetchHomeMultidataAction.pending, (state, action) =&gt; &#123;</span>
+    <span class="hljs-comment">//   console.log(&quot;fetchHomeMultidataAction pending&quot;)</span>
+    <span class="hljs-comment">// &#125;).addCase(fetchHomeMultidataAction.fulfilled, (state, &#123; payload &#125;) =&gt; &#123;</span>
+    <span class="hljs-comment">//   state.banners = payload.data.banner.list</span>
+    <span class="hljs-comment">//   state.recommends = payload.data.recommend.list</span>
+    <span class="hljs-comment">// &#125;)</span>
+  &#125;
+&#125;)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> &#123; changeBanners, changeRecommends &#125; = homeSlice.<span class="hljs-property">actions</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> homeSlice.<span class="hljs-property">reducer</span></code></pre></div>
 
 <h4 id="Redux-Toolkit的数据不可变性"><a href="#Redux-Toolkit的数据不可变性" class="headerlink" title="Redux Toolkit的数据不可变性"></a>Redux Toolkit的数据不可变性</h4><p>我们经常会进行浅拷贝来完成某些操作，但是浅拷贝事实上也是存在问题的</p>
 <p>比如过大的对象，进行浅拷贝也会造成性能的浪费</p>
@@ -381,9 +789,56 @@
 <p>为了节约内存，又出现了一个新的算法：Persistent Data Structure（持久化数据结构或一致性 数据结构）；</p>
 <p>​    用一种数据结构来保存数据；</p>
 <p>​    当数据被修改时，会返回一个对象，但是新的对象会尽可能的利用之前的数据结构而不会 对内存造成浪费；</p>
-<h4 id="自定义connect函数"><a href="#自定义connect函数" class="headerlink" title="自定义connect函数"></a>自定义connect函数</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//connect.js</span><br><span class="hljs-comment">// connect的参数:</span><br><span class="hljs-comment">// 参数一: 函数</span><br><span class="hljs-comment">// 参数二: 函数</span><br><span class="hljs-comment">// 返回值: 函数 =&gt; 高阶组件</span><br><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">PureComponent</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">StoreContext</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./StoreContext&quot;</span>;<br><span class="hljs-comment">// import store from &quot;../store&quot;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">connect</span>(<span class="hljs-params">mapStateToProps, mapDispatchToProps, store</span>) &#123;<br>  <span class="hljs-comment">// 高阶组件: 函数</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">WrapperComponent</span>) &#123;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">NewComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">PureComponent</span> &#123;<br>      <span class="hljs-title function_">constructor</span>(<span class="hljs-params">props, context</span>) &#123;<br>        <span class="hljs-variable language_">super</span>(props)<br>        <br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-title function_">mapStateToProps</span>(context.<span class="hljs-title function_">getState</span>())<br>      &#125;<br><br>      <span class="hljs-title function_">componentDidMount</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">unsubscribe</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>.<span class="hljs-title function_">subscribe</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>          <span class="hljs-comment">// this.forceUpdate()</span><br>          <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>(<span class="hljs-title function_">mapStateToProps</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>.<span class="hljs-title function_">getState</span>()))<br>        &#125;)<br>      &#125;<br><br>      <span class="hljs-title function_">componentWillUnmount</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">unsubscribe</span>()<br>      &#125;<br><br>      <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">const</span> stateObj = <span class="hljs-title function_">mapStateToProps</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>.<span class="hljs-title function_">getState</span>())<br>        <span class="hljs-keyword">const</span> dispatchObj = <span class="hljs-title function_">mapDispatchToProps</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>.<span class="hljs-property">dispatch</span>)<br>        <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">WrapperComponent</span> &#123;<span class="hljs-attr">...this.props</span>&#125; &#123;<span class="hljs-attr">...stateObj</span>&#125; &#123;<span class="hljs-attr">...dispatchObj</span>&#125;/&gt;</span></span><br>      &#125;<br>    &#125;<br><br>    <span class="hljs-title class_">NewComponent</span>.<span class="hljs-property">contextType</span> = <span class="hljs-title class_">StoreContext</span><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">NewComponent</span><br>  &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<h4 id="自定义connect函数"><a href="#自定义connect函数" class="headerlink" title="自定义connect函数"></a>自定义connect函数</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//connect.js</span>
+<span class="hljs-comment">// connect的参数:</span>
+<span class="hljs-comment">// 参数一: 函数</span>
+<span class="hljs-comment">// 参数二: 函数</span>
+<span class="hljs-comment">// 返回值: 函数 =&gt; 高阶组件</span>
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//StoreContext.js</span><br><span class="hljs-keyword">import</span> &#123; createContext &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">StoreContext</span> = <span class="hljs-title function_">createContext</span>()<br><br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">PureComponent</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">StoreContext</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./StoreContext&quot;</span>;
+<span class="hljs-comment">// import store from &quot;../store&quot;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">connect</span>(<span class="hljs-params">mapStateToProps, mapDispatchToProps, store</span>) &#123;
+  <span class="hljs-comment">// 高阶组件: 函数</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">WrapperComponent</span>) &#123;
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">NewComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">PureComponent</span> &#123;
+      <span class="hljs-title function_">constructor</span>(<span class="hljs-params">props, context</span>) &#123;
+        <span class="hljs-variable language_">super</span>(props)
+        
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-title function_">mapStateToProps</span>(context.<span class="hljs-title function_">getState</span>())
+      &#125;
+
+      <span class="hljs-title function_">componentDidMount</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">unsubscribe</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>.<span class="hljs-title function_">subscribe</span>(<span class="hljs-function">() =&gt;</span> &#123;
+          <span class="hljs-comment">// this.forceUpdate()</span>
+          <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>(<span class="hljs-title function_">mapStateToProps</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>.<span class="hljs-title function_">getState</span>()))
+        &#125;)
+      &#125;
+
+      <span class="hljs-title function_">componentWillUnmount</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">unsubscribe</span>()
+      &#125;
+
+      <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;
+        <span class="hljs-keyword">const</span> stateObj = <span class="hljs-title function_">mapStateToProps</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>.<span class="hljs-title function_">getState</span>())
+        <span class="hljs-keyword">const</span> dispatchObj = <span class="hljs-title function_">mapDispatchToProps</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>.<span class="hljs-property">dispatch</span>)
+        <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">WrapperComponent</span> &#123;<span class="hljs-attr">...this.props</span>&#125; &#123;<span class="hljs-attr">...stateObj</span>&#125; &#123;<span class="hljs-attr">...dispatchObj</span>&#125;/&gt;</span></span>
+      &#125;
+    &#125;
+
+    <span class="hljs-title class_">NewComponent</span>.<span class="hljs-property">contextType</span> = <span class="hljs-title class_">StoreContext</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">NewComponent</span>
+  &#125;
+&#125;
+</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//StoreContext.js</span>
+<span class="hljs-keyword">import</span> &#123; createContext &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">StoreContext</span> = <span class="hljs-title function_">createContext</span>()
+</code></pre></div>
 
 
                 

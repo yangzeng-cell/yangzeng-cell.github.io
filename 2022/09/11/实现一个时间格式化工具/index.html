@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1234567891011121314151617181920212223242526&#x2F;&#x2F; 如何封装一个时间格式化工具function formatTime(timeStamp, fmtString) &amp;#123;  &#x2F;&#x2F; 1.先将时间戳转成Date的形式  const date &#x3D; new Date(timeStamp);  &#x2F;&#x2F; 2.建立正则表达式和值匹配的映射  const dateObje">
+    <meta name="description" content="&#x2F;&#x2F; 如何封装一个时间格式化工具 function formatTime(timeStamp, fmtString) &amp;#123;   &#x2F;&#x2F; 1.先将时间戳转成Date的形式   const date &#x3D; new Date(timeStamp);    &#x2F;&#x2F; 2.建立正则表达式和值匹配的映射    const dateObject &#x3D; &amp;#123;     &quot;y+&quot;: date">
 <meta property="og:type" content="article">
 <meta property="og:title" content="实现一个时间格式化工具">
 <meta property="og:url" content="http://example.com/2022/09/11/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1234567891011121314151617181920212223242526&#x2F;&#x2F; 如何封装一个时间格式化工具function formatTime(timeStamp, fmtString) &amp;#123;  &#x2F;&#x2F; 1.先将时间戳转成Date的形式  const date &#x3D; new Date(timeStamp);  &#x2F;&#x2F; 2.建立正则表达式和值匹配的映射  const dateObje">
+<meta property="og:description" content="&#x2F;&#x2F; 如何封装一个时间格式化工具 function formatTime(timeStamp, fmtString) &amp;#123;   &#x2F;&#x2F; 1.先将时间戳转成Date的形式   const date &#x3D; new Date(timeStamp);    &#x2F;&#x2F; 2.建立正则表达式和值匹配的映射    const dateObject &#x3D; &amp;#123;     &quot;y+&quot;: date">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-11T16:39:06.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:45:00.134Z">
+<meta property="article:modified_time" content="2022-10-16T11:00:17.115Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -218,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          701 字
+          658 字
         
       </span>
     
@@ -272,7 +272,32 @@
             
               <div class="markdown-body">
                 
-                <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 如何封装一个时间格式化工具</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">formatTime</span>(<span class="hljs-params">timeStamp, fmtString</span>) &#123;<br>  <span class="hljs-comment">// 1.先将时间戳转成Date的形式</span><br>  <span class="hljs-keyword">const</span> date = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(timeStamp);<br><br>  <span class="hljs-comment">// 2.建立正则表达式和值匹配的映射</span><br><br>  <span class="hljs-keyword">const</span> dateObject = &#123;<br>    <span class="hljs-string">&quot;y+&quot;</span>: date.<span class="hljs-title function_">getFullYear</span>(),<br>    <span class="hljs-string">&quot;M+&quot;</span>: date.<span class="hljs-title function_">getMonth</span>() + <span class="hljs-number">1</span>,<br>    <span class="hljs-string">&quot;d+&quot;</span>: date.<span class="hljs-title function_">getDate</span>(),<br>    <span class="hljs-string">&quot;h+&quot;</span>: date.<span class="hljs-title function_">getHours</span>(),<br>    <span class="hljs-string">&quot;m+&quot;</span>: date.<span class="hljs-title function_">getMinutes</span>(),<br>    <span class="hljs-string">&quot;s+&quot;</span>: date.<span class="hljs-title function_">getSeconds</span>(),<br>  &#125;;<br>  <span class="hljs-comment">// 遍历dateObject匹配</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> dateObject) &#123;<br>    <span class="hljs-keyword">const</span> reg = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RegExp</span>(key);<br>    <span class="hljs-keyword">if</span> (reg.<span class="hljs-title function_">test</span>(fmtString)) &#123;<br>      fmtString = fmtString.<span class="hljs-title function_">replace</span>(reg, (dateObject[key] + <span class="hljs-string">&quot;&quot;</span>).<span class="hljs-title function_">padStart</span>(<span class="hljs-number">2</span>, <span class="hljs-number">0</span>));<br>    &#125;<br>  &#125;<br>  <span class="hljs-keyword">return</span> fmtString;<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">formatTime</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>(), <span class="hljs-string">&quot;yyyy-MM-dd:hh:mm:ss&quot;</span>)); <span class="hljs-comment">//2022-09-11:17:05:48</span><br></code></pre></td></tr></table></figure>
+                <div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 如何封装一个时间格式化工具</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">formatTime</span>(<span class="hljs-params">timeStamp, fmtString</span>) &#123;
+  <span class="hljs-comment">// 1.先将时间戳转成Date的形式</span>
+  <span class="hljs-keyword">const</span> date = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(timeStamp);
+
+  <span class="hljs-comment">// 2.建立正则表达式和值匹配的映射</span>
+
+  <span class="hljs-keyword">const</span> dateObject = &#123;
+    <span class="hljs-string">&quot;y+&quot;</span>: date.<span class="hljs-title function_">getFullYear</span>(),
+    <span class="hljs-string">&quot;M+&quot;</span>: date.<span class="hljs-title function_">getMonth</span>() + <span class="hljs-number">1</span>,
+    <span class="hljs-string">&quot;d+&quot;</span>: date.<span class="hljs-title function_">getDate</span>(),
+    <span class="hljs-string">&quot;h+&quot;</span>: date.<span class="hljs-title function_">getHours</span>(),
+    <span class="hljs-string">&quot;m+&quot;</span>: date.<span class="hljs-title function_">getMinutes</span>(),
+    <span class="hljs-string">&quot;s+&quot;</span>: date.<span class="hljs-title function_">getSeconds</span>(),
+  &#125;;
+  <span class="hljs-comment">// 遍历dateObject匹配</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> dateObject) &#123;
+    <span class="hljs-keyword">const</span> reg = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RegExp</span>(key);
+    <span class="hljs-keyword">if</span> (reg.<span class="hljs-title function_">test</span>(fmtString)) &#123;
+      fmtString = fmtString.<span class="hljs-title function_">replace</span>(reg, (dateObject[key] + <span class="hljs-string">&quot;&quot;</span>).<span class="hljs-title function_">padStart</span>(<span class="hljs-number">2</span>, <span class="hljs-number">0</span>));
+    &#125;
+  &#125;
+  <span class="hljs-keyword">return</span> fmtString;
+&#125;
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">formatTime</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>(), <span class="hljs-string">&quot;yyyy-MM-dd:hh:mm:ss&quot;</span>)); <span class="hljs-comment">//2022-09-11:17:05:48</span></code></pre></div>
 
 
                 
