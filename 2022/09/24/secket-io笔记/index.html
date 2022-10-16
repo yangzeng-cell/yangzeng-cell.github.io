@@ -18,7 +18,7 @@
   
     <meta name="description" content="目前是4.x版本 什么是 Socket.IOSocket.IO 是一个库，可以在客户端和服务器之间实现 低延迟, 双向 和 基于事件的 通信。  它建立在 WebSocket 协议之上，并提供额外的保证，例如回退到 HTTP 长轮询或自动重新连接。 这里只介绍socket.io在web端的使用 这是一个websocket的实例 服务器 (基于 ws) npm i ws    import &amp;#12">
 <meta property="og:type" content="article">
-<meta property="og:title" content="secket.io笔迹">
+<meta property="og:title" content="secket.io笔记">
 <meta property="og:url" content="http://example.com/2022/09/24/secket-io%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="目前是4.x版本 什么是 Socket.IOSocket.IO 是一个库，可以在客户端和服务器之间实现 低延迟, 双向 和 基于事件的 通信。  它建立在 WebSocket 协议之上，并提供额外的保证，例如回退到 HTTP 长轮询或自动重新连接。 这里只介绍socket.io在web端的使用 这是一个websocket的实例 服务器 (基于 ws) npm i ws    import &amp;#12">
@@ -27,8 +27,17 @@
 <meta property="og:image" content="https://socket.io/zh-CN/assets/images/network-monitor-2e47dbe233100aa290595f8687a9fcba.png">
 <meta property="og:image" content="https://socket.io/zh-CN/images/bidirectional-communication-socket.png">
 <meta property="og:image" content="https://socket.io/zh-CN/assets/images/mutiple-nodes-no-sticky-babd7860f217e09eefc2db73e5012f91.png">
+<meta property="og:image" content="https://socket.io/zh-CN/images/bidirectional-communication-socket.png">
+<meta property="og:image" content="https://socket.io/images/client_socket_events.png">
+<meta property="og:image" content="https://socket.io/zh-CN/images/broadcasting.png">
+<meta property="og:image" content="https://socket.io/zh-CN/images/broadcasting2.png">
+<meta property="og:image" content="https://socket.io/zh-CN/images/broadcasting-redis.png">
+<meta property="og:image" content="https://socket.io/zh-CN/images/broadcasting-redis-local.png">
+<meta property="og:image" content="https://socket.io/zh-CN/images/rooms.png">
+<meta property="og:image" content="https://socket.io/zh-CN/images/rooms2.png">
+<meta property="og:image" content="https://socket.io/zh-CN/images/rooms-redis.png">
 <meta property="article:published_time" content="2022-09-24T15:31:44.000Z">
-<meta property="article:modified_time" content="2022-10-16T14:09:34.022Z">
+<meta property="article:modified_time" content="2022-10-16T15:35:57.691Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="socket.io">
 <meta name="twitter:card" content="summary_large_image">
@@ -36,7 +45,7 @@
   
   
   
-  <title>secket.io笔迹 - Hexo</title>
+  <title>secket.io笔记 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -201,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="secket.io笔迹"></span>
+            <span id="subtitle" data-typed-text="secket.io笔记"></span>
           
         </div>
 
@@ -224,7 +233,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          33k 字
+          49k 字
         
       </span>
     
@@ -235,7 +244,7 @@
         
         
         
-          273 分钟
+          412 分钟
         
       </span>
     
@@ -273,7 +282,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">secket.io笔迹</h1>
+            <h1 style="display: none">secket.io笔记</h1>
             
             
               <div class="markdown-body">
@@ -1710,6 +1719,768 @@ backend nodes
 
 <h2 id="在节点之间传递事件"><a href="#在节点之间传递事件" class="headerlink" title="在节点之间传递事件"></a>在节点之间传递事件</h2><p>既然您有多个接受连接的Socket.IO 节点，如果您想向所有客户端（或某个<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/rooms/">房间</a>中的客户端）广播事件，您将需要某种方式在进程或计算机之间传递消息。</p>
 <p>负责路由消息的接口就是我们所说的<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/adapter/">Adapter</a>。</p>
+<h1 id="处理-CORS"><a href="#处理-CORS" class="headerlink" title="处理 CORS"></a>处理 CORS</h1><p>从 Socket.IO v3 开始，您需要显式启用<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">跨域资源共享</a>(CORS)。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createServer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;http&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Server</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;socket.io&quot;</span>;
+
+<span class="hljs-keyword">const</span> httpServer = <span class="hljs-title function_">createServer</span>();
+<span class="hljs-keyword">const</span> io = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Server</span>(httpServer, &#123;
+  <span class="hljs-attr">cors</span>: &#123;
+    <span class="hljs-attr">origin</span>: <span class="hljs-string">&quot;https://example.com&quot;</span>
+  &#125;
+&#125;);</code></pre></div>
+
+<p>所有选项都将转发到<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/cors">cors</a>包。可以在<a target="_blank" rel="noopener" href="https://github.com/expressjs/cors#configuration-options">此处</a>找到完整的选项列表。</p>
+<p>带有 cookie ( <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials">withCredentials</a>) 和附加标头的示例：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// server-side</span>
+<span class="hljs-keyword">const</span> io = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Server</span>(httpServer, &#123;
+  <span class="hljs-attr">cors</span>: &#123;
+    <span class="hljs-attr">origin</span>: <span class="hljs-string">&quot;https://example.com&quot;</span>,
+    <span class="hljs-attr">allowedHeaders</span>: [<span class="hljs-string">&quot;my-custom-header&quot;</span>],
+    <span class="hljs-attr">credentials</span>: <span class="hljs-literal">true</span>
+  &#125;
+&#125;);
+
+<span class="hljs-comment">// client-side</span>
+<span class="hljs-keyword">import</span> &#123; io &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;socket.io-client&quot;</span>;
+<span class="hljs-keyword">const</span> socket = <span class="hljs-title function_">io</span>(<span class="hljs-string">&quot;https://api.example.com&quot;</span>, &#123;
+  <span class="hljs-attr">withCredentials</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">extraHeaders</span>: &#123;
+    <span class="hljs-string">&quot;my-custom-header&quot;</span>: <span class="hljs-string">&quot;abcd&quot;</span>
+  &#125;
+&#125;);</code></pre></div>
+
+<p>注意：如果您的 Web 应用程序和服务器不是从同一个端口提供服务，这也适用于 localhost</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> io = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Server</span>(httpServer, &#123;
+  <span class="hljs-attr">cors</span>: &#123;
+    <span class="hljs-attr">origin</span>: <span class="hljs-string">&quot;http://localhost:8080&quot;</span>
+  &#125;
+&#125;);
+
+httpServer.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>);</code></pre></div>
+
+<p>您可以使用以下选项禁止所有跨域请求<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/server-options/#allowrequest"><code>allowRequest</code></a> option:</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> io = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Server</span>(httpServer, &#123;
+  <span class="hljs-attr">allowRequest</span>: <span class="hljs-function">(<span class="hljs-params">req, callback</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">const</span> noOriginHeader = req.<span class="hljs-property">headers</span>.<span class="hljs-property">origin</span> === <span class="hljs-literal">undefined</span>;
+    <span class="hljs-title function_">callback</span>(<span class="hljs-literal">null</span>, noOriginHeader);
+  &#125;
+&#125;);</code></pre></div>
+
+<h2 id="故障排除"><a href="#故障排除" class="headerlink" title="故障排除"></a>故障排除<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/handling-cors/#troubleshooting"></a></h2><h3 id="缺少-CORS-标头“Access-Control-Allow-Origin”"><a href="#缺少-CORS-标头“Access-Control-Allow-Origin”" class="headerlink" title="缺少 CORS 标头“Access-Control-Allow-Origin”"></a>缺少 CORS 标头“Access-Control-Allow-Origin”<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/handling-cors/#cors-header-access-control-allow-origin-missing"></a></h3><p>完整的错误信息：</p>
+<blockquote>
+<p><em>跨域请求被阻止：同源策略不允许读取位于 …/socket.io/?EIO=4&amp;transport=polling&amp;t=NMnp2WI 的远程资源。（原因：缺少 CORS 标头“Access-Control-Allow-Origin”）。</em></p>
+</blockquote>
+<p>如果您已正确配置您的服务器（见<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/handling-cors/#configuration">上文</a>），这可能意味着您的浏览器无法访问 Socket.IO 服务器。</p>
+<p>以下命令：</p>
+<div class="code-wrapper"><pre><code class="hljs text">curl &quot;https://api.example.com/socket.io/?EIO=4&amp;transport=polling&quot;</code></pre></div>
+
+<p>应该返回类似：</p>
+<div class="code-wrapper"><pre><code class="hljs text">0&#123;&quot;sid&quot;:&quot;Lbo5JLzTotvW3g2LAAAA&quot;,&quot;upgrades&quot;:[&quot;websocket&quot;],&quot;pingInterval&quot;:25000,&quot;pingTimeout&quot;:20000&#125;</code></pre></div>
+
+<p>如果不是这种情况，请检查您的服务器是否正在侦听并且实际上可以在给定端口上访问。</p>
+<h3 id="如果-CORS-标头“Access-Control-Allow-Origin”为“-”，则不支持凭据"><a href="#如果-CORS-标头“Access-Control-Allow-Origin”为“-”，则不支持凭据" class="headerlink" title="如果 CORS 标头“Access-Control-Allow-Origin”为“*”，则不支持凭据"></a>如果 CORS 标头“Access-Control-Allow-Origin”为“*”，则不支持凭据<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/handling-cors/#credential-is-not-supported-if-the-cors-header-access-control-allow-origin-is-"></a></h3><p>完整的错误信息：</p>
+<blockquote>
+<p><em>跨域请求被阻止：同源策略不允许读取位于“…/socket.io/?EIO=4&amp;transport=polling&amp;t=NvQfU77”的远程资源。（原因：如果 CORS 标头“Access-Control-Allow-Origin”为“*”，则不支持凭证）</em></p>
+</blockquote>
+<p>您不能同时设置<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-options/#withcredentials"><code>withCredentials</code></a> 为 <code>true</code> 和 <code>origin: *</code>，您需要使用特定的来源：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createServer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;http&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Server</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;socket.io&quot;</span>;
+
+<span class="hljs-keyword">const</span> httpServer = <span class="hljs-title function_">createServer</span>();
+<span class="hljs-keyword">const</span> io = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Server</span>(httpServer, &#123;
+  <span class="hljs-attr">cors</span>: &#123;
+    <span class="hljs-attr">origin</span>: <span class="hljs-string">&quot;https://my-frontend.com&quot;</span>,
+    <span class="hljs-comment">// or with an array of origins</span>
+    <span class="hljs-comment">// origin: [&quot;https://my-frontend.com&quot;, &quot;https://my-other-frontend.com&quot;, &quot;http://localhost:3000&quot;],</span>
+    <span class="hljs-attr">credentials</span>: <span class="hljs-literal">true</span>
+  &#125;
+&#125;);</code></pre></div>
+
+<h3 id="CORS-标头“Access-Control-Allow-Credentials”中预期为“true”"><a href="#CORS-标头“Access-Control-Allow-Credentials”中预期为“true”" class="headerlink" title="CORS 标头“Access-Control-Allow-Credentials”中预期为“true”"></a>CORS 标头“Access-Control-Allow-Credentials”中预期为“true”<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/handling-cors/#expected-true-in-cors-header-access-control-allow-credentials"></a></h3><p>完整的错误信息：</p>
+<blockquote>
+<p><em>跨域请求被阻止：同源策略不允许读取位于 …/socket.io/?EIO=4&amp;transport=polling&amp;t=NvQny19 的远程资源。（原因：CORS 标头“Access-Control-Allow-Credentials”中预期为“true”）</em></p>
+</blockquote>
+<p>在这种情况下，在客户端上<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-options/#withcredentials"><code>withCredentials</code></a>设置为<code>true</code>，但服务器缺少选项<code>credentials</code>中的属性<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/server-options/#cors"><code>cors</code></a> 。请参见上面的示例。</p>
+<h1 id="客户端初始化"><a href="#客户端初始化" class="headerlink" title="客户端初始化"></a>客户端初始化</h1><p>在下面的示例中，<code>io</code>对象来自：</p>
+<ul>
+<li>使用 <code>&lt;script&gt;</code> 引入</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/socket.io/socket.io.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre></div>
+
+<p>复制</p>
+<ul>
+<li>使用 ESM 引入</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">  <span class="hljs-keyword">import</span> &#123; io &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;https://cdn.socket.io/4.3.2/socket.io.esm.min.js&quot;</span>;</span>
+<span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre></div>
+
+<p>复制</p>
+<ul>
+<li>NPM</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; io &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;socket.io-client&quot;</span>;</code></pre></div>
+
+<h2 id="来自同一域"><a href="#来自同一域" class="headerlink" title="来自同一域"></a>来自同一域<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-initialization/#from-the-same-domain"></a></h2><p>如果您的前端与您的服务器在同一个域上提供服务，您可以简单地使用：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> socket = <span class="hljs-title function_">io</span>();</code></pre></div>
+
+<p>服务器 URL 将从 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Window/location">window.location</a>对象中推导出来</p>
+<h2 id="来自不同的域"><a href="#来自不同的域" class="headerlink" title="来自不同的域"></a>来自不同的域<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-initialization/#from-a-different-domain"></a></h2><p>如果您的前端不是来自与服务器相同的域，则必须传递服务器的 URL。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> socket = <span class="hljs-title function_">io</span>(<span class="hljs-string">&quot;https://server-domain.com&quot;</span>);</code></pre></div>
+
+<p>在这种情况下，请确保在服务器上启用 <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/handling-cors/">跨域资源共享 (CORS)</a>。</p>
+<h5 id="信息"><a href="#信息" class="headerlink" title="信息"></a>信息</h5><p>您可以使用<code>https</code> 或 <code>wss</code> (分别为, <code>http</code> 或 <code>ws</code>).</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// the following forms are similar</span>
+<span class="hljs-keyword">const</span> socket = <span class="hljs-title function_">io</span>(<span class="hljs-string">&quot;https://server-domain.com&quot;</span>);
+<span class="hljs-keyword">const</span> socket = <span class="hljs-title function_">io</span>(<span class="hljs-string">&quot;wss://server-domain.com&quot;</span>);
+<span class="hljs-keyword">const</span> socket = <span class="hljs-title function_">io</span>(<span class="hljs-string">&quot;server-domain.com&quot;</span>); <span class="hljs-comment">// only in the browser when the page is served over https (will not work in Node.js)</span></code></pre></div>
+
+<h2 id="自定义命名空间"><a href="#自定义命名空间" class="headerlink" title="自定义命名空间"></a>自定义命名空间<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-initialization/#custom-namespace"></a></h2><p>在上面的示例中，客户端将连接到主命名空间。对于大多数用例来说，仅使用主命名空间就足够了，但您可以使用以下命令指定命名空间：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// same origin version</span>
+<span class="hljs-keyword">const</span> socket = <span class="hljs-title function_">io</span>(<span class="hljs-string">&quot;/admin&quot;</span>);
+<span class="hljs-comment">// cross origin version</span>
+<span class="hljs-keyword">const</span> socket = <span class="hljs-title function_">io</span>(<span class="hljs-string">&quot;https://server-domain.com/admin&quot;</span>);</code></pre></div>
+
+<p>您可以<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/namespaces/">在此处</a>找到有关名称空间的更多详细信息。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-initialization/#options"></a></h2><p>可在<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-options/">此处</a>找到可用配置的完整列表</p>
+<h1 id="Socket-实例（客户端）"><a href="#Socket-实例（客户端）" class="headerlink" title="Socket 实例（客户端）"></a>Socket 实例（客户端）</h1><p><code>Socket</code>是与服务器交互的基础类。它继承了 Node.js<a target="_blank" rel="noopener" href="https://nodejs.org/api/events.html#class-eventemitter">EventEmitter</a>的大部分方法，例如 <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-api/#socketemiteventname-args">emit</a>, <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-api/#socketoneventname-callback">on</a>, <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-api/#socketonceeventname-callback">once</a> 或 <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-api/#socketoffeventname">off</a>。</p>
+<p><img src="https://socket.io/zh-CN/images/bidirectional-communication-socket.png" srcset="/img/loading.gif" lazyload alt="Bidirectional communication between server and client"></p>
+<p>除了<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/emitting-events/">emitting</a> 和 <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/">listening to</a>事件之外，Socket 实例还有一些可能在您的应用程序中使用的属性：</p>
+<h2 id="Socket-id-1"><a href="#Socket-id-1" class="headerlink" title="Socket#id"></a>Socket#id<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#socketid"></a></h2><p>每个新连接都分配有一个随机的 20 个字符的标识符。</p>
+<p>此标识符与服务器端的值同步。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// server-side</span>
+io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(socket.<span class="hljs-property">id</span>); <span class="hljs-comment">// x8WIv7-mJelg7on_ALbx</span>
+&#125;);
+
+<span class="hljs-comment">// client-side</span>
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(socket.<span class="hljs-property">id</span>); <span class="hljs-comment">// x8WIv7-mJelg7on_ALbx</span>
+&#125;);
+
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;disconnect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(socket.<span class="hljs-property">id</span>); <span class="hljs-comment">// undefined</span>
+&#125;);</code></pre></div>
+
+<h2 id="Socket-connected"><a href="#Socket-connected" class="headerlink" title="Socket#connected"></a>Socket#connected<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#socketconnected"></a></h2><p>该属性描述套接字当前是否连接到服务器。</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(socket.<span class="hljs-property">connected</span>); <span class="hljs-comment">// true</span>
+&#125;);
+
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;disconnect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(socket.<span class="hljs-property">connected</span>); <span class="hljs-comment">// false</span>
+&#125;);</code></pre></div>
+
+<h2 id="Socket-io"><a href="#Socket-io" class="headerlink" title="Socket#io"></a>Socket#io<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#socketio"></a></h2><p>对基础<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-api/#manager">Manager</a>的引用。</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> engine = socket.<span class="hljs-property">io</span>.<span class="hljs-property">engine</span>;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(engine.<span class="hljs-property">transport</span>.<span class="hljs-property">name</span>); <span class="hljs-comment">// in most cases, prints &quot;polling&quot;</span>
+
+  engine.<span class="hljs-title function_">once</span>(<span class="hljs-string">&quot;upgrade&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-comment">// called when the transport is upgraded (i.e. from HTTP long-polling to WebSocket)</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(engine.<span class="hljs-property">transport</span>.<span class="hljs-property">name</span>); <span class="hljs-comment">// in most cases, prints &quot;websocket&quot;</span>
+  &#125;);
+
+  engine.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;packet&quot;</span>, <span class="hljs-function">(<span class="hljs-params">&#123; type, data &#125;</span>) =&gt;</span> &#123;
+    <span class="hljs-comment">// called for each packet received</span>
+  &#125;);
+
+  engine.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;packetCreate&quot;</span>, <span class="hljs-function">(<span class="hljs-params">&#123; type, data &#125;</span>) =&gt;</span> &#123;
+    <span class="hljs-comment">// called for each packet sent</span>
+  &#125;);
+
+  engine.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;drain&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-comment">// called when the write buffer is drained</span>
+  &#125;);
+
+  engine.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;close&quot;</span>, <span class="hljs-function">(<span class="hljs-params">reason</span>) =&gt;</span> &#123;
+    <span class="hljs-comment">// called when the underlying connection is closed</span>
+  &#125;);
+&#125;);</code></pre></div>
+
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#lifecycle"></a></h2><p><img src="https://socket.io/images/client_socket_events.png" srcset="/img/loading.gif" lazyload alt="Lifecycle diagram"></p>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#events"></a></h2><p>Socket 实例发出三个特殊事件：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#connect"><code>connect</code></a></li>
+<li><a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#connect-error"><code>connect_error</code></a></li>
+<li><a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#disconnect"><code>disconnect</code></a></li>
+</ul>
+<p>请注意，从 Socket.IO v3 开始，Socket 实例不再发出任何与重新连接逻辑相关的事件。您可以直接监听 Manager 实例上的事件：</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-property">io</span>.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;reconnect_attempt&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;);
+
+socket.<span class="hljs-property">io</span>.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;reconnect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;);</code></pre></div>
+
+<p>更多信息可以在<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/migrating-from-2-x-to-3-0/#the-socket-instance-will-no-longer-forward-the-events-emitted-by-its-manager">迁移指南</a>中找到</p>
+<h3 id="connect"><a href="#connect" class="headerlink" title="connect"></a><code>connect</code><a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#connect"></a></h3><p>此事件由 Socket 实例在连接<strong>和</strong>重新连接时触发。</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;);</code></pre></div>
+
+<p>请注意，您不应在<code>connect</code>处理程序本身中注册事件处理程序，因为每次 Socket 重新连接时都会注册一个新的处理程序：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// BAD</span>
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123; <span class="hljs-comment">/* ... */</span> &#125;);
+&#125;);
+
+<span class="hljs-comment">// GOOD</span>
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;);
+
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123; <span class="hljs-comment">/* ... */</span> &#125;);</code></pre></div>
+
+<h3 id="connect-error"><a href="#connect-error" class="headerlink" title="connect_error"></a><code>connect_error</code><a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#connect_error"></a></h3><p>在以下情况下触发此事件：</p>
+<ul>
+<li>低级连接无法建立</li>
+<li>服务器在<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/middlewares/">中间件功能</a>中拒绝连接</li>
+</ul>
+<p>在第一种情况下，Socket 会在 <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-options/#reconnectiondelay">给定的延迟</a>之后自动尝试重新连接。</p>
+<p>在后一种情况下，您需要手动重新连接。您可能需要更新凭据：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// either by directly modifying the `auth` attribute</span>
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connect_error&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  socket.<span class="hljs-property">auth</span>.<span class="hljs-property">token</span> = <span class="hljs-string">&quot;abcd&quot;</span>;
+  socket.<span class="hljs-title function_">connect</span>();
+&#125;);
+
+<span class="hljs-comment">// or if the `auth` attribute is a function</span>
+<span class="hljs-keyword">const</span> socket = <span class="hljs-title function_">io</span>(&#123;
+  <span class="hljs-attr">auth</span>: <span class="hljs-function">(<span class="hljs-params">cb</span>) =&gt;</span> &#123;
+    <span class="hljs-title function_">cb</span>(<span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&quot;token&quot;</span>));
+  &#125;
+&#125;);
+
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connect_error&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
+    socket.<span class="hljs-title function_">connect</span>();
+  &#125;, <span class="hljs-number">1000</span>);
+&#125;);</code></pre></div>
+
+<h3 id="disconnect-1"><a href="#disconnect-1" class="headerlink" title="disconnect"></a><code>disconnect</code><a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#disconnect"></a></h3><p>此事件在断开连接时触发。</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;disconnect&quot;</span>, <span class="hljs-function">(<span class="hljs-params">reason</span>) =&gt;</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;);</code></pre></div>
+
+<p>复制</p>
+<p>以下是可能的原因列表：</p>
+<table>
+<thead>
+<tr>
+<th>Reason</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>io server disconnect</code></td>
+<td>服务器已使用<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/server-api/#socketdisconnectclose">socket.disconnect()</a>强制断开socket</td>
+</tr>
+<tr>
+<td><code>io client disconnect</code></td>
+<td>使用<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-api/#socketdisconnect">socket.disconnect()</a>手动断开socket</td>
+</tr>
+<tr>
+<td><code>ping timeout</code></td>
+<td>服务器未在该<code>pingInterval + pingTimeout</code>范围内发送 PING</td>
+</tr>
+<tr>
+<td><code>transport close</code></td>
+<td>连接已关闭（例如：用户失去连接，或网络从 WiFi 更改为 4G）</td>
+</tr>
+<tr>
+<td><code>transport error</code></td>
+<td>连接遇到错误（例如：服务器在 HTTP 长轮询周期中被杀死）</td>
+</tr>
+</tbody></table>
+<p>前两种情况（显式断开），客户端不会尝试重新连接，需要手动调用<code>socket.connect()</code>.</p>
+<p>在所有其他情况下，客户端将等待一个小的<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-options/#reconnectiondelay">随机延迟</a>，然后尝试重新连接：</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;disconnect&quot;</span>, <span class="hljs-function">(<span class="hljs-params">reason</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">if</span> (reason === <span class="hljs-string">&quot;io server disconnect&quot;</span>) &#123;
+    <span class="hljs-comment">// the disconnection was initiated by the server, you need to reconnect manually</span>
+    socket.<span class="hljs-title function_">connect</span>();<span class="hljs-comment">//服务器断开的，需要手动执行重连</span>
+  &#125;
+  <span class="hljs-comment">// else the socket will automatically try to reconnect</span>
+&#125;);</code></pre></div>
+
+<p>注意：这些事件以及<code>disconnecting</code>, <code>newListener</code> 和 <code>removeListener</code>是不应在您的应用程序中使用的特殊事件：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// BAD, will throw an error</span>
+socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;disconnect&quot;</span>);</code></pre></div>
+
+<h1 id="离线行为"><a href="#离线行为" class="headerlink" title="离线行为"></a>离线行为</h1><h2 id="缓冲事件"><a href="#缓冲事件" class="headerlink" title="缓冲事件"></a>缓冲事件<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-offline-behavior/#buffered-events"></a></h2><p>默认情况下，在 Socket 未连接时发出的任何事件都将被缓冲，直到重新连接。</p>
+<p>虽然在大多数情况下很有用（当重新连接延迟很短时），但它可能会在连接恢复时导致大量事件。</p>
+<p>有几种解决方案可以防止这种行为，具体取决于您的用例：</p>
+<ul>
+<li>使用Socket 实例的<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/client-socket-instance/#socketconnected">connected 属性</a> attribute of the Socket instance</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">if</span> (socket.<span class="hljs-property">connected</span>) &#123;
+  socket.<span class="hljs-title function_">emit</span>( <span class="hljs-comment">/* ... */</span> );
+&#125; <span class="hljs-keyword">else</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;</code></pre></div>
+
+<ul>
+<li>使用 <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/emitting-events/#volatile-events">volatile 事件</a></li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-property">volatile</span>.<span class="hljs-title function_">emit</span>( <span class="hljs-comment">/* ... */</span> );</code></pre></div>
+
+<h1 id="发送事件"><a href="#发送事件" class="headerlink" title="发送事件"></a>发送事件</h1><p>有几种方法可以在服务器和客户端之间发送事件。</p>
+<h2 id="基本的-emit"><a href="#基本的-emit" class="headerlink" title="基本的 emit"></a>基本的 emit<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/emitting-events/#%E5%9F%BA%E6%9C%AC%E7%9A%84-emit"></a></h2><p>Socket.IO API 的灵感来自 Node.js <a target="_blank" rel="noopener" href="https://nodejs.org/docs/latest/api/events.html#events_events">EventEmitter</a>，这意味着您可以在一侧发出事件并在另一侧注册侦听器：</p>
+<p><em>服务器</em></p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>);
+&#125;);</code></pre></div>
+
+<p><em>客户端</em></p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-function">(<span class="hljs-params">arg</span>) =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arg); <span class="hljs-comment">// world</span>
+&#125;);</code></pre></div>
+
+<p>这也适用于另一个方向：</p>
+<p><em>服务器</em></p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-function">(<span class="hljs-params">arg</span>) =&gt;</span> &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arg); <span class="hljs-comment">// world</span>
+  &#125;);
+&#125;);</code></pre></div>
+
+<p><em>客户端</em></p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>);</code></pre></div>
+
+<p>您可以发送任意数量的参数，并且支持所有可序列化的数据结构，包括像<a target="_blank" rel="noopener" href="https://nodejs.org/docs/latest/api/buffer.html#buffer_buffer">Buffer</a> 或 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray">TypedArray</a>这样的二进制对象。</p>
+<p><em>服务器</em></p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-number">1</span>, <span class="hljs-string">&quot;2&quot;</span>, &#123; <span class="hljs-number">3</span>: <span class="hljs-string">&#x27;4&#x27;</span>, <span class="hljs-number">5</span>: <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>([<span class="hljs-number">6</span>]) &#125;);
+&#125;);</code></pre></div>
+
+<p><em>客户端</em></p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// client-side</span>
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-function">(<span class="hljs-params">arg1, arg2, arg3</span>) =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arg1); <span class="hljs-comment">// 1</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arg2); <span class="hljs-comment">// &quot;2&quot;</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arg3); <span class="hljs-comment">// &#123; 3: &#x27;4&#x27;, 5: ArrayBuffer (1) [ 6 ] &#125;</span>
+&#125;);</code></pre></div>
+
+<p>无需<code>JSON.stringify()</code>，因为它会为您完成。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// BAD</span>
+socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(&#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;John&quot;</span> &#125;));
+
+<span class="hljs-comment">// GOOD</span>
+socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hello&quot;</span>, &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;John&quot;</span> &#125;);</code></pre></div>
+
+<p>笔记：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>对象将被转换为（并作为）它们的字符串表示形式，例如<code>1970-01-01T00:00:00.000Z</code></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a> 和 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set">Set</a>必须手动序列化：</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> serializedMap = [...myMap.<span class="hljs-title function_">entries</span>()];
+<span class="hljs-keyword">const</span> serializedSet = [...mySet.<span class="hljs-title function_">keys</span>()];</code></pre></div>
+
+<ul>
+<li>您可以使用该<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#tojson_behavior"><code>toJSON()</code></a>方法自定义对象的序列化</li>
+</ul>
+<p>一个类的例子：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Hero</span> &#123;
+  #hp;
+
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.#hp = <span class="hljs-number">42</span>;
+  &#125;
+
+  <span class="hljs-title function_">toJSON</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">hp</span>: <span class="hljs-variable language_">this</span>.#hp &#125;;
+  &#125;
+&#125;
+
+socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;here&#x27;s a hero&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Hero</span>());</code></pre></div>
+
+<h2 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/emitting-events/#%E5%9B%9E%E8%B0%83"></a></h2><p>事件很棒，但在某些情况下，您可能需要更经典的请求-响应 API。在 Socket.IO 中，此功能称为确认。</p>
+<p>您可以添加一个回调作为<code>emit()</code>的最后一个参数，一旦对方确认事件，就会调用此回调：</p>
+<p><em>服务器</em></p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;update item&quot;</span>, <span class="hljs-function">(<span class="hljs-params">arg1, arg2, callback</span>) =&gt;</span> &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arg1); <span class="hljs-comment">// 1</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arg2); <span class="hljs-comment">// &#123; name: &quot;updated&quot; &#125;</span>
+    <span class="hljs-title function_">callback</span>(&#123;
+      <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;ok&quot;</span>
+    &#125;);
+  &#125;);
+&#125;);</code></pre></div>
+
+<p><em>客户端</em></p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;update item&quot;</span>, <span class="hljs-string">&quot;1&quot;</span>, &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;updated&quot;</span> &#125;, <span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(response.<span class="hljs-property">status</span>); <span class="hljs-comment">// ok</span>
+&#125;);</code></pre></div>
+
+<h2 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/emitting-events/#%E8%B6%85%E6%97%B6"></a></h2><p>从 Socket.IO v4.4.0 开始，您现在可以为每个发射分配超时：</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">timeout</span>(<span class="hljs-number">5000</span>).<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;my-event&quot;</span>, <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">if</span> (err) &#123;
+    <span class="hljs-comment">// the other side did not acknowledge the event in the given delay</span>
+  &#125;
+&#125;);</code></pre></div>
+
+<p>You can also use both a timeout and an <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/emitting-events/#acknowledgements">acknowledgement</a>:</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">timeout</span>(<span class="hljs-number">5000</span>).<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;my-event&quot;</span>, <span class="hljs-function">(<span class="hljs-params">err, response</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">if</span> (err) &#123;
+    <span class="hljs-comment">// the other side did not acknowledge the event in the given delay</span>
+  &#125; <span class="hljs-keyword">else</span> &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(response);
+  &#125;
+&#125;);</code></pre></div>
+
+<h2 id="易失性事件"><a href="#易失性事件" class="headerlink" title="易失性事件"></a>易失性事件<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/emitting-events/#%E6%98%93%E5%A4%B1%E6%80%A7%E4%BA%8B%E4%BB%B6"></a></h2><p>易失性事件是在底层连接未准备好时不会发送的事件（有点像<a target="_blank" rel="noopener" href="https://fr.wikipedia.org/wiki/User_Datagram_Protocol">UDP</a>，在可靠性方面）。</p>
+<p>例如，如果您需要发送在线游戏中角色的位置（因为只有最新的值才有用），这可能会很有趣。</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-property">volatile</span>.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;might or might not be received&quot;</span>);</code></pre></div>
+
+<p>另一个用例是在客户端未连接时丢弃事件（默认情况下，事件会被缓冲直到重新连接）。</p>
+<p>例子：</p>
+<p><em>服务器</em></p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;connect&quot;</span>);
+
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;ping&quot;</span>, <span class="hljs-function">(<span class="hljs-params">count</span>) =&gt;</span> &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(count);
+  &#125;);
+&#125;);</code></pre></div>
+
+<p><em>客户端</em></p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+<span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;
+  socket.<span class="hljs-property">volatile</span>.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;ping&quot;</span>, ++count);
+&#125;, <span class="hljs-number">1000</span>);</code></pre></div>
+
+<p>如果重新启动服务器，您将在控制台中看到：</p>
+<div class="code-wrapper"><pre><code class="hljs text">connect
+1
+2
+3
+4
+# the server is restarted, the client automatically reconnects
+connect
+9
+10
+11</code></pre></div>
+
+
+
+<p>如果没有<code>volatile</code>标志，您将看到：</p>
+<div class="code-wrapper"><pre><code class="hljs text">connect
+1
+2
+3
+4
+# the server is restarted, the client automatically reconnects and sends its buffered events
+connect
+5
+6
+7
+8
+9
+10
+11</code></pre></div>
+
+<h1 id="监听事件"><a href="#监听事件" class="headerlink" title="监听事件"></a>监听事件</h1><p>有几种方法可以处理在服务器和客户端之间传输的事件。</p>
+<h2 id="EventEmitter-方法"><a href="#EventEmitter-方法" class="headerlink" title="EventEmitter 方法"></a>EventEmitter 方法<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#eventemitter-methods"></a></h2><p>在服务器端，Socket 实例扩展了 Node.js <a target="_blank" rel="noopener" href="https://nodejs.org/docs/latest/api/events.html#events_events">EventEmitter</a>类。</p>
+<p>在客户端，Socket 实例使用<a target="_blank" rel="noopener" href="https://github.com/component/emitter">component-emitter</a>库提供的事件发射器，它公开了 EventEmitter 方法的子集。</p>
+<h3 id="socket-on-eventName-listener"><a href="#socket-on-eventName-listener" class="headerlink" title="socket.on(eventName, listener)"></a>socket.on(eventName, listener)<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#socketoneventname-listener"></a></h3><p>将<em>侦听器</em>函数添加到名为<em>eventName</em>的事件的侦听器数组的末尾。</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;details&quot;</span>, <span class="hljs-function">(<span class="hljs-params">...args</span>) =&gt;</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;);</code></pre></div>
+
+
+
+<h3 id="socket-once-eventName-listener"><a href="#socket-once-eventName-listener" class="headerlink" title="socket.once(eventName, listener)"></a>socket.once(eventName, listener)<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#socketonceeventname-listener"></a></h3><p>为名为<em>eventName</em>的事件添加<strong>一次性</strong>监听函数</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">once</span>(<span class="hljs-string">&quot;details&quot;</span>, <span class="hljs-function">(<span class="hljs-params">...args</span>) =&gt;</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;);</code></pre></div>
+
+
+
+<h3 id="socket-off-eventName-listener"><a href="#socket-off-eventName-listener" class="headerlink" title="socket.off(eventName, listener)"></a>socket.off(eventName, listener)<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#socketoffeventname-listener"></a></h3><p>从名为<em>eventName</em>的事件的侦听器数组中移除指定的<em>侦听器</em>。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">listener</span> = (<span class="hljs-params">...args</span>) =&gt; &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args);
+&#125;
+
+socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;details&quot;</span>, listener);
+
+<span class="hljs-comment">// and then later...</span>
+socket.<span class="hljs-title function_">off</span>(<span class="hljs-string">&quot;details&quot;</span>, listener);</code></pre></div>
+
+
+
+<h3 id="socket-removeAllListeners-eventName"><a href="#socket-removeAllListeners-eventName" class="headerlink" title="socket.removeAllListeners([eventName])"></a>socket.removeAllListeners([eventName])<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#socketremovealllistenerseventname"></a></h3><p>删除所有侦听器，或指定<em>eventName</em>的侦听器。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// for a specific event</span>
+socket.<span class="hljs-title function_">removeAllListeners</span>(<span class="hljs-string">&quot;details&quot;</span>);
+<span class="hljs-comment">// for all events</span>
+socket.<span class="hljs-title function_">removeAllListeners</span>();</code></pre></div>
+
+
+
+<h2 id="Catch-all-侦听器"><a href="#Catch-all-侦听器" class="headerlink" title="Catch-all 侦听器"></a>Catch-all 侦听器<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#catch-all-listeners"></a></h2><p>从 Socket.IO v3 开始，受<a target="_blank" rel="noopener" href="https://github.com/EventEmitter2/EventEmitter2">EventEmitter2</a>库启发的新 API 允许声明 Catch-all 侦听器。</p>
+<p>此功能在客户端和服务器上均可用。</p>
+<h3 id="socket-onAny-listener"><a href="#socket-onAny-listener" class="headerlink" title="socket.onAny(listener)"></a>socket.onAny(listener)<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#socketonanylistener"></a></h3><p>添加一个监听器，当任何事件发出时将被触发。</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">onAny</span>(<span class="hljs-function">(<span class="hljs-params">eventName, ...args</span>) =&gt;</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;);</code></pre></div>
+
+
+
+<h3 id="socket-prependAny-listener"><a href="#socket-prependAny-listener" class="headerlink" title="socket.prependAny(listener)"></a>socket.prependAny(listener)<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#socketprependanylistener"></a></h3><p>添加一个监听器，当任何事件发出时将被触发。侦听器被添加到侦听器数组的开头。</p>
+<div class="code-wrapper"><pre><code class="hljs js">socket.<span class="hljs-title function_">prependAny</span>(<span class="hljs-function">(<span class="hljs-params">eventName, ...args</span>) =&gt;</span> &#123;
+  <span class="hljs-comment">// ...</span>
+&#125;);</code></pre></div>
+
+
+
+<h3 id="socket-offAny-listener"><a href="#socket-offAny-listener" class="headerlink" title="socket.offAny([listener])"></a>socket.offAny([listener])<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#socketoffanylistener"></a></h3><p>删除所有catch-all侦听器或给定的侦听器。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">listener</span> = (<span class="hljs-params">eventName, ...args</span>) =&gt; &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(eventName, args);
+&#125;
+
+socket.<span class="hljs-title function_">onAny</span>(listener);
+
+<span class="hljs-comment">// and then later...</span>
+socket.<span class="hljs-title function_">offAny</span>(listener);
+
+<span class="hljs-comment">// or all listeners</span>
+socket.<span class="hljs-title function_">offAny</span>();</code></pre></div>
+
+
+
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#validation"></a></h2><p>事件参数的验证超出了 Socket.IO 库的范围。</p>
+<p>JS 生态系统中有许多包涵盖了这个用例，其中包括：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/joi">joi</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/ajv">ajv</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/validatorjs">validatorjs</a></li>
+</ul>
+<p>带有<a target="_blank" rel="noopener" href="https://joi.dev/api/">joi</a>和<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/emitting-events/#acknowledgements">acknowledgements</a>的示例：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title class_">Joi</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;joi&quot;</span>);
+
+<span class="hljs-keyword">const</span> userSchema = <span class="hljs-title class_">Joi</span>.<span class="hljs-title function_">object</span>(&#123;
+  <span class="hljs-attr">username</span>: <span class="hljs-title class_">Joi</span>.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">max</span>(<span class="hljs-number">30</span>).required(),
+  <span class="hljs-attr">email</span>: <span class="hljs-title class_">Joi</span>.<span class="hljs-title function_">string</span>().<span class="hljs-title function_">email</span>().required()
+&#125;);
+
+io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;create user&quot;</span>, <span class="hljs-function">(<span class="hljs-params">payload, callback</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> callback !== <span class="hljs-string">&quot;function&quot;</span>) &#123;
+      <span class="hljs-comment">// not an acknowledgement</span>
+      <span class="hljs-keyword">return</span> socket.<span class="hljs-title function_">disconnect</span>();
+    &#125;
+    <span class="hljs-keyword">const</span> &#123; error, value &#125; = userSchema.<span class="hljs-title function_">validate</span>(payload);
+    <span class="hljs-keyword">if</span> (error) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">callback</span>(&#123;
+        <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;KO&quot;</span>,
+        error
+      &#125;);
+    &#125;
+    <span class="hljs-comment">// do something with the value, and then</span>
+    <span class="hljs-title function_">callback</span>(&#123;
+      <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;OK&quot;</span>
+    &#125;);
+  &#125;);
+
+&#125;);</code></pre></div>
+
+
+
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/listening-to-events/#error-handling"></a></h2><p>Socket.IO 库中目前没有内置的错误处理，这意味着您必须捕获任何可能在侦听器中引发的错误。</p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;list items&quot;</span>, <span class="hljs-keyword">async</span> (callback) =&gt; &#123;
+    <span class="hljs-keyword">try</span> &#123;
+      <span class="hljs-keyword">const</span> items = <span class="hljs-keyword">await</span> <span class="hljs-title function_">findItems</span>();
+      <span class="hljs-title function_">callback</span>(&#123;
+        <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;OK&quot;</span>,
+        items
+      &#125;);
+    &#125; <span class="hljs-keyword">catch</span> (e) &#123;
+      <span class="hljs-title function_">callback</span>(&#123;
+        <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;NOK&quot;</span>
+      &#125;);
+    &#125;
+  &#125;);
+&#125;);</code></pre></div>
+
+
+
+<p>在服务器端，使用<code>EventEmitter.captureRejections = true</code>（实验性，请参见<a target="_blank" rel="noopener" href="https://nodejs.org/api/events.html#events_capture_rejections_of_promises">此处</a>）也可能很有趣，具体取决于您的用例。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;events&quot;</span>).<span class="hljs-property">captureRejections</span> = <span class="hljs-literal">true</span>;
+
+io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;list products&quot;</span>, <span class="hljs-keyword">async</span> () =&gt; &#123;
+    <span class="hljs-keyword">const</span> products = <span class="hljs-keyword">await</span> <span class="hljs-title function_">findProducts</span>();
+    socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;products&quot;</span>, products);
+  &#125;);
+
+  socket[<span class="hljs-title class_">Symbol</span>.<span class="hljs-title function_">for</span>(<span class="hljs-string">&#x27;nodejs.rejection&#x27;</span>)] = <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;
+    socket.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;error&quot;</span>, err);
+  &#125;;
+&#125;);</code></pre></div>
+
+<h1 id="广播事件"><a href="#广播事件" class="headerlink" title="广播事件"></a>广播事件</h1><p>Socket.IO 使向所有连接的客户端发送事件变得容易。</p>
+<h5 id="INFO"><a href="#INFO" class="headerlink" title="INFO"></a>INFO</h5><p>请注意，广播是<strong>仅服务器</strong>功能。</p>
+<h2 id="给所有连接的客户端"><a href="#给所有连接的客户端" class="headerlink" title="给所有连接的客户端"></a>给所有连接的客户端<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/broadcasting-events/#to-all-connected-clients"></a></h2><p><img src="https://socket.io/zh-CN/images/broadcasting.png" srcset="/img/loading.gif" lazyload alt="Broadcasting to all connected clients"></p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>);</code></pre></div>
+
+
+
+<h5 id="CAUTION"><a href="#CAUTION" class="headerlink" title="CAUTION"></a>CAUTION</h5><p>当前断开连接（或正在重新连接）的客户端将不会收到该事件。将此事件存储在某处（例如在数据库中）取决于您的用例。</p>
+<h2 id="除发送者外的所有连接的客户端"><a href="#除发送者外的所有连接的客户端" class="headerlink" title="除发送者外的所有连接的客户端"></a>除发送者外的所有连接的客户端<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/broadcasting-events/#to-all-connected-clients-except-the-sender"></a></h2><p><img src="https://socket.io/zh-CN/images/broadcasting2.png" srcset="/img/loading.gif" lazyload alt="Broadcasting to all connected clients excepting the sender"></p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-property">broadcast</span>.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>);
+&#125;);</code></pre></div>
+
+<h5 id="NOTE"><a href="#NOTE" class="headerlink" title="NOTE"></a>NOTE</h5><p>在上面的示例中，使用<code>socket.emit(&quot;hello&quot;, &quot;world&quot;)</code>（不带<code>broadcast</code>标志）会将事件发送到“客户端 A”。您可以在<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/emit-cheatsheet/">备忘单</a>中找到发送事件的所有方式的列表。</p>
+<h2 id="使用多个-Socket-IO-服务器"><a href="#使用多个-Socket-IO-服务器" class="headerlink" title="使用多个 Socket.IO 服务器"></a>使用多个 Socket.IO 服务器<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/broadcasting-events/#with-multiple-socketio-servers"></a></h2><p>广播也适用于多个 Socket.IO 服务器。</p>
+<p>您只需将默认适配器替换为<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/adapter/">Redis 适配器</a>或其他<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/redis-adapter/">兼容的适配器</a>。</p>
+<p><img src="https://socket.io/zh-CN/images/broadcasting-redis.png" srcset="/img/loading.gif" lazyload alt="Broadcasting with Redis"></p>
+<p>在某些情况下，您可能只想向连接到当前服务器的客户端广播。您可以使用<code>local</code>标志实现此目的：</p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-property">local</span>.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>);</code></pre></div>
+
+<p>复制</p>
+<p><img src="https://socket.io/zh-CN/images/broadcasting-redis-local.png" srcset="/img/loading.gif" lazyload alt="Broadcasting with Redis but local"></p>
+<p>为了在广播时针对特定客户，请参阅有关<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/rooms/">Rooms</a>的文档。</p>
+<h1 id="房间"><a href="#房间" class="headerlink" title="房间"></a>房间</h1><p>sockets可以<code>join</code> 和 <code>leave</code><em>房间</em>。它可用于向一部分客户端广播事件：</p>
+<p><img src="https://socket.io/zh-CN/images/rooms.png" srcset="/img/loading.gif" lazyload alt="Broadcasting to all clients in a room"></p>
+<h5 id="信息-1"><a href="#信息-1" class="headerlink" title="信息"></a>信息</h5><p>请注意，房间是一个<strong>仅限服务器</strong>的概念（即客户端无权访问它已加入的房间列表）。</p>
+<h2 id="加入和离开"><a href="#加入和离开" class="headerlink" title="加入和离开"></a>加入和离开<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/rooms/#joining-and-leaving"></a></h2><p>您可以调用<code>join</code>以将socket订阅到给定的频道：</p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;some room&quot;</span>);
+&#125;);</code></pre></div>
+
+
+
+<p>然后在广播或发射时简单地使用<code>to</code> 或 <code>in</code>（它们是相同的）：</p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;some room&quot;</span>).<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;some event&quot;</span>);</code></pre></div>
+
+
+
+<p>您可以同时发射到多个房间：</p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;room1&quot;</span>).<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;room2&quot;</span>).<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;room3&quot;</span>).<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;some event&quot;</span>);</code></pre></div>
+
+
+
+<p>在这种情况下，将执行<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Union_(set_theory)">联合</a>：至少在其中一个房间中的每个socket都将获得<strong>一次</strong>事件（即使socket在两个或更多房间中）。</p>
+<p>您还可以从给定的socket广播到房间：</p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;some room&quot;</span>).<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;some event&quot;</span>);
+&#125;);</code></pre></div>
+
+
+
+<p>在这种情况下，房间中<strong>除</strong>发送者之外的每个socket都会收到该事件。</p>
+<p><img src="https://socket.io/zh-CN/images/rooms2.png" srcset="/img/loading.gif" lazyload alt="Broadcasting to all clients in a room excepting the sender"></p>
+<p>要离开频道，您调用<code>leave</code>的方式与<code>join</code>相同。</p>
+<h2 id="默认房间"><a href="#默认房间" class="headerlink" title="默认房间"></a>默认房间<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/rooms/#default-room"></a></h2><p>Socket.IO 中的每一个<code>socket</code>都由一个随机的、不可猜测的、唯一的标识符<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/server-socket-instance/#socketid">Socket#id</a>。为了您的方便，每个socket都会自动加入一个由其自己的 id 标识的房间。</p>
+<p>这使得实现私人消息变得容易：</p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;private message&quot;</span>, <span class="hljs-function">(<span class="hljs-params">anotherSocketId, msg</span>) =&gt;</span> &#123;
+    socket.<span class="hljs-title function_">to</span>(anotherSocketId).<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;private message&quot;</span>, socket.<span class="hljs-property">id</span>, msg);
+  &#125;);
+&#125;);</code></pre></div>
+
+
+
+<h2 id="示例用例"><a href="#示例用例" class="headerlink" title="示例用例"></a>示例用例<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/rooms/#sample-use-cases"></a></h2><ul>
+<li>向给定用户的每个设备/选项卡广播数据</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-keyword">async</span> (socket) =&gt; &#123;
+  <span class="hljs-keyword">const</span> userId = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUserId</span>(socket);
+
+  socket.<span class="hljs-title function_">join</span>(userId);
+
+  <span class="hljs-comment">// and then later</span>
+  io.<span class="hljs-title function_">to</span>(userId).<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;hi&quot;</span>);
+&#125;);</code></pre></div>
+
+<p>复制</p>
+<ul>
+<li>发送有关给定实体的通知</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-keyword">async</span> (socket) =&gt; &#123;
+  <span class="hljs-keyword">const</span> projects = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchProjects</span>(socket);
+
+  projects.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">project</span> =&gt;</span> socket.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;project:&quot;</span> + project.<span class="hljs-property">id</span>));
+
+  <span class="hljs-comment">// and then later</span>
+  io.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;project:4321&quot;</span>).<span class="hljs-title function_">emit</span>(<span class="hljs-string">&quot;project updated&quot;</span>);
+&#125;);</code></pre></div>
+
+
+
+<h2 id="断开"><a href="#断开" class="headerlink" title="断开"></a>断开<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/rooms/#disconnection"></a></h2><p>断开连接后，<code>leave</code>会自动将它们所属的所有通道连接起来，您不需要进行特殊的拆卸。</p>
+<p>您可以通过监听<code>disconnecting</code>事件来获取 Socket 所在的房间：</p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;connection&quot;</span>, <span class="hljs-function"><span class="hljs-params">socket</span> =&gt;</span> &#123;
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;disconnecting&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(socket.<span class="hljs-property">rooms</span>); <span class="hljs-comment">// the Set contains at least the socket ID</span>
+  &#125;);
+
+  socket.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;disconnect&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-comment">// socket.rooms.size === 0</span>
+  &#125;);
+&#125;);</code></pre></div>
+
+
+
+<h2 id="使用多个-Socket-IO-服务器-1"><a href="#使用多个-Socket-IO-服务器-1" class="headerlink" title="使用多个 Socket.IO 服务器"></a>使用多个 Socket.IO 服务器<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/rooms/#with-multiple-socketio-servers"></a></h2><p>与<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/broadcasting-events/#with-multiple-socketio-servers">全局广播</a>一样，向房间广播也适用于多个 Socket.IO 服务器。</p>
+<p>您只需要将默认的<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/glossary/#adapter">Adapter</a>替换为 Redis Adapter。更多关于它的信息在<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/redis-adapter/">这里</a>。</p>
+<p><img src="https://socket.io/zh-CN/images/rooms-redis.png" srcset="/img/loading.gif" lazyload alt="Broadcasting to all clients in a room with Redis"></p>
+<h2 id="实施细节"><a href="#实施细节" class="headerlink" title="实施细节"></a>实施细节<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/rooms/#implementation-details"></a></h2><p>“房间”功能由我们称为适配器的东西实现。该适配器是一个服务器端组件，负责：</p>
+<ul>
+<li>存储 Socket 实例和房间之间的关系</li>
+<li>向所有（或部分）客户端广播事件</li>
+</ul>
+<p>您可以在<a target="_blank" rel="noopener" href="https://github.com/socketio/socket.io-adapter">此处</a>找到默认内存适配器的代码。</p>
+<p>基本上，它包含两个<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">ES6 Maps</a>:</p>
+<ul>
+<li><code>sids</code>: <code>Map&lt;SocketId, Set&lt;Room&gt;&gt;</code></li>
+<li><code>rooms</code>: <code>Map&lt;Room, Set&lt;SocketId&gt;&gt;</code></li>
+</ul>
+<p>调用<code>socket.join(&quot;the-room&quot;)</code>将导致：</p>
+<ul>
+<li>在<code>sids</code> Map中，将“the-room”添加到由Socket ID 标识的 Set</li>
+<li>在<code>rooms</code> Map 中，将Socket ID 添加到由字符串“the-room”标识的 Set 中</li>
+</ul>
+<p>然后在广播时使用这两个地图：</p>
+<ul>
+<li>对所有套接字的广播（<code>io.emit()</code>）循环通过<code>sids</code>Map，并将数据包发送到所有sockets</li>
+<li>对给定房间的广播 ( <code>io.to(&quot;room21&quot;).emit()</code>）循环通过<code>rooms</code>Map 中的 Set，并将数据包发送到所有匹配的sockets</li>
+</ul>
+<p>您可以通过以下方式访问这些对象：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// main namespace</span>
+<span class="hljs-keyword">const</span> rooms = io.<span class="hljs-title function_">of</span>(<span class="hljs-string">&quot;/&quot;</span>).<span class="hljs-property">adapter</span>.<span class="hljs-property">rooms</span>;
+<span class="hljs-keyword">const</span> sids = io.<span class="hljs-title function_">of</span>(<span class="hljs-string">&quot;/&quot;</span>).<span class="hljs-property">adapter</span>.<span class="hljs-property">sids</span>;
+
+<span class="hljs-comment">// custom namespace</span>
+<span class="hljs-keyword">const</span> rooms = io.<span class="hljs-title function_">of</span>(<span class="hljs-string">&quot;/my-namespace&quot;</span>).<span class="hljs-property">adapter</span>.<span class="hljs-property">rooms</span>;
+<span class="hljs-keyword">const</span> sids = io.<span class="hljs-title function_">of</span>(<span class="hljs-string">&quot;/my-namespace&quot;</span>).<span class="hljs-property">adapter</span>.<span class="hljs-property">sids</span>;</code></pre></div>
+
+
+
+<p>笔记：</p>
+<ul>
+<li>这些对象并不意味着直接修改，您应该始终使用<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/server-api/#socketjoinroom"><code>socket.join(...)</code></a> 和 <a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/server-api/#socketleaveroom"><code>socket.leave(...)</code></a>来代替。</li>
+<li>在<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/using-multiple-nodes/">多服务器</a>设置中，<code>rooms</code> 和 <code>sids</code>对象不会在 Socket.IO 服务器之间共享（房间可能只“存在”在一个服务器上而不是另一个服务器上）。</li>
+</ul>
+<h2 id="房间事件"><a href="#房间事件" class="headerlink" title="房间事件"></a>房间事件<a target="_blank" rel="noopener" href="https://socket.io/zh-CN/docs/v4/rooms/#room-events"></a></h2><p>从<code>socket.io@3.1.0</code>开始，底层适配器将发出以下事件：</p>
+<ul>
+<li><code>create-room</code> (argument: room)</li>
+<li><code>delete-room</code> (argument: room)</li>
+<li><code>join-room</code> (argument: room, id)</li>
+<li><code>leave-room</code> (argument: room, id)</li>
+</ul>
+<p>例子：</p>
+<div class="code-wrapper"><pre><code class="hljs js">io.<span class="hljs-title function_">of</span>(<span class="hljs-string">&quot;/&quot;</span>).<span class="hljs-property">adapter</span>.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;create-room&quot;</span>, <span class="hljs-function">(<span class="hljs-params">room</span>) =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`room <span class="hljs-subst">$&#123;room&#125;</span> was created`</span>);
+&#125;);
+
+io.<span class="hljs-title function_">of</span>(<span class="hljs-string">&quot;/&quot;</span>).<span class="hljs-property">adapter</span>.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;join-room&quot;</span>, <span class="hljs-function">(<span class="hljs-params">room, id</span>) =&gt;</span> &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`socket <span class="hljs-subst">$&#123;id&#125;</span> has joined room <span class="hljs-subst">$&#123;room&#125;</span>`</span>);
+&#125;);</code></pre></div>
+
 
                 
               </div>
@@ -1734,7 +2505,7 @@ backend nodes
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>secket.io笔迹</div>
+      <div>secket.io笔记</div>
       <div>http://example.com/2022/09/24/secket-io笔记/</div>
     </div>
     <div class="license-meta">
