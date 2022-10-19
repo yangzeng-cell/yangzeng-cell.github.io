@@ -16,19 +16,24 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
-<meta property="og:title" content="操作系统">
-<meta property="og:url" content="http://example.com/2022/09/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html">
+    <meta name="description" content="网格布局的基本概念Grid是二维的网格布局系统，可用于布局页面主要的区域布局或小型组件，flex是一维的布局 什么是网格？网格是一组相交的水平线和垂直线，它定义了网格的列和行。我们可以将网格元素放置在与这些行和列相关的位置上。CSS 网格布局具有以下特点 固定的位置和弹性的轨道的大小你可以使用固定的单位尺寸来构建网格，例如px,或者使用专门为grid创建的新的单位fr用来创建弹性网格。 元素位置你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Grid布局">
+<meta property="og:url" content="http://example.com/2022/10/19/Grid%E5%B8%83%E5%B1%80/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="网格布局的基本概念Grid是二维的网格布局系统，可用于布局页面主要的区域布局或小型组件，flex是一维的布局 什么是网格？网格是一组相交的水平线和垂直线，它定义了网格的列和行。我们可以将网格元素放置在与这些行和列相关的位置上。CSS 网格布局具有以下特点 固定的位置和弹性的轨道的大小你可以使用固定的单位尺寸来构建网格，例如px,或者使用专门为grid创建的新的单位fr用来创建弹性网格。 元素位置你">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-09-14T10:28:42.000Z">
-<meta property="article:modified_time" content="2022-10-19T15:24:20.664Z">
+<meta property="og:image" content="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout/1-grid-inspector.png">
+<meta property="article:published_time" content="2022-10-19T22:46:44.000Z">
+<meta property="article:modified_time" content="2022-10-19T15:24:20.660Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Grid">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout/1-grid-inspector.png">
   
   
   
-  <title>操作系统 - Hexo</title>
+  <title>Grid布局 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -193,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="操作系统"></span>
+            <span id="subtitle" data-typed-text="Grid布局"></span>
           
         </div>
 
@@ -204,8 +209,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-09-14 10:28" pubdate>
-          2022年9月14日 上午
+        <time datetime="2022-10-19 22:46" pubdate>
+          2022年10月19日 晚上
         </time>
       </span>
     
@@ -216,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          2k 字
         
       </span>
     
@@ -227,7 +232,7 @@
         
         
         
-          1 分钟
+          17 分钟
         
       </span>
     
@@ -265,12 +270,94 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">操作系统</h1>
+            <h1 style="display: none">Grid布局</h1>
             
             
               <div class="markdown-body">
                 
-                
+                <h1 id="网格布局的基本概念"><a href="#网格布局的基本概念" class="headerlink" title="网格布局的基本概念"></a>网格布局的基本概念</h1><p>Grid是二维的网格布局系统，可用于布局页面主要的区域布局或小型组件，flex是一维的布局</p>
+<h2 id="什么是网格？"><a href="#什么是网格？" class="headerlink" title="什么是网格？"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BD%91%E6%A0%BC%EF%BC%9F">什么是网格？</a></h2><p>网格是一组相交的水平线和垂直线，它定义了网格的列和行。我们可以将网格元素放置在与这些行和列相关的位置上。CSS 网格布局具有以下特点</p>
+<h3 id="固定的位置和弹性的轨道的大小"><a href="#固定的位置和弹性的轨道的大小" class="headerlink" title="固定的位置和弹性的轨道的大小"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout#%E5%9B%BA%E5%AE%9A%E7%9A%84%E4%BD%8D%E7%BD%AE%E5%92%8C%E5%BC%B9%E6%80%A7%E7%9A%84%E8%BD%A8%E9%81%93%E7%9A%84%E5%A4%A7%E5%B0%8F">固定的位置和弹性的轨道的大小</a></h3><p>你可以使用固定的单位尺寸来构建网格，例如px,或者使用专门为grid创建的新的单位fr用来创建弹性网格。</p>
+<h3 id="元素位置"><a href="#元素位置" class="headerlink" title="元素位置"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout#%E5%85%83%E7%B4%A0%E4%BD%8D%E7%BD%AE">元素位置</a></h3><p>你可以用使用行好，行名或者一个标定来精确的定位每个网格的排列</p>
+<h3 id="创建额外的轨道来包含元素"><a href="#创建额外的轨道来包含元素" class="headerlink" title="创建额外的轨道来包含元素"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout#%E5%88%9B%E5%BB%BA%E9%A2%9D%E5%A4%96%E7%9A%84%E8%BD%A8%E9%81%93%E6%9D%A5%E5%8C%85%E5%90%AB%E5%85%83%E7%B4%A0">创建额外的轨道来包含元素</a></h3><p>可以使用网格布局定义一个显式网格，但是根据规范它会处理你加在网格外面的内容，当必要时它会自动增加行和列，它会尽可能多的容纳所有的列。</p>
+<h3 id="创建额外的轨道来包含元素-1"><a href="#创建额外的轨道来包含元素-1" class="headerlink" title="创建额外的轨道来包含元素"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout#%E5%88%9B%E5%BB%BA%E9%A2%9D%E5%A4%96%E7%9A%84%E8%BD%A8%E9%81%93%E6%9D%A5%E5%8C%85%E5%90%AB%E5%85%83%E7%B4%A0">创建额外的轨道来包含元素</a></h3><p>可以使用网格布局定义一个显式网格，但是根据规范它会处理你加在网格外面的内容，当必要时它会自动增加行和列，它会尽可能多的容纳所有的列。</p>
+<p>使用display:grid/inline-grid就可以是用网格</p>
+<div class="code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;wrapper&quot;</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>One<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Two<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Three<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Four<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Five<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.wrapper</span> &#123;
+  <span class="hljs-attribute">display</span>: grid;
+&#125;
+</code></pre></div>
+
+<p><img src="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout/1-grid-inspector.png" srcset="/img/loading.gif" lazyload alt="Using the Grid Highlighter in DevTools to view a grid"></p>
+<p>我们通过 <strong>grid-template-columns</strong> 和 <strong>grid-template-rows</strong> 属性来定义网格中的行和列,这些属性定义了网格的轨道。一个网格轨道就是网格中任意两条线之间的空间。在下图中你可以看到一个高亮的轨道——网格的第一个行轨道。</p>
+<div class="code-wrapper"><pre><code class="hljs pgsql">&lt;div <span class="hljs-keyword">class</span>=&quot;wrapper&quot;&gt;
+   &lt;div&gt;One&lt;/div&gt;
+   &lt;div&gt;Two&lt;/div&gt;
+   &lt;div&gt;Three&lt;/div&gt;
+   &lt;div&gt;Four&lt;/div&gt;
+   &lt;div&gt;Five&lt;/div&gt;
+&lt;/div&gt;
+.<span class="hljs-keyword">wrapper</span> &#123;
+  display: grid;
+  grid-<span class="hljs-keyword">template</span>-<span class="hljs-keyword">columns</span>: <span class="hljs-number">200</span>px <span class="hljs-number">200</span>px <span class="hljs-number">200</span>px;//每一列的宽度都是<span class="hljs-number">200</span>px，分为三列
+&#125;</code></pre></div>
+
+<h3 id="fr"><a href="#fr" class="headerlink" title="fr"></a>fr</h3><p>f r是专门用于grid的单位，新的<code>fr</code>单位代表网格容器中可用空间的一等份。下一个网格定义将创建三个相等宽度的轨道，这些轨道会随着可用空间增长和收缩。</p>
+<div class="code-wrapper"><pre><code class="hljs pgsql">&lt;div <span class="hljs-keyword">class</span>=&quot;wrapper&quot;&gt;
+   &lt;div&gt;One&lt;/div&gt;
+   &lt;div&gt;Two&lt;/div&gt;
+   &lt;div&gt;Three&lt;/div&gt;
+   &lt;div&gt;Four&lt;/div&gt;
+   &lt;div&gt;Five&lt;/div&gt;
+&lt;/div&gt;
+.<span class="hljs-keyword">wrapper</span> &#123;
+  display: grid;
+  grid-<span class="hljs-keyword">template</span>-<span class="hljs-keyword">columns</span>: <span class="hljs-number">1</span>fr <span class="hljs-number">1</span>fr <span class="hljs-number">1</span>fr;//这样将等分为三分
+&#125;
+.<span class="hljs-keyword">wrapper</span> &#123;
+  display: grid;
+  grid-<span class="hljs-keyword">template</span>-<span class="hljs-keyword">columns</span>: <span class="hljs-number">2</span>fr <span class="hljs-number">1</span>fr <span class="hljs-number">1</span>fr;//这样就是分为四分，其中第一个div站两份
+&#125;
+.<span class="hljs-keyword">wrapper</span> &#123;
+  display: grid;
+  grid-<span class="hljs-keyword">template</span>-<span class="hljs-keyword">columns</span>: <span class="hljs-number">500</span>px <span class="hljs-number">1</span>fr <span class="hljs-number">2</span>fr;//还可以和其他单位混用，第一个是固定单位，其他剩余的等分
+&#125;
+</code></pre></div>
+
+<h3 id="repeat"><a href="#repeat" class="headerlink" title="repeat"></a>repeat</h3><div class="code-wrapper"><pre><code class="hljs pgsql">.<span class="hljs-keyword">wrapper</span> &#123;
+  display: grid;
+  grid-<span class="hljs-keyword">template</span>-<span class="hljs-keyword">columns</span>: <span class="hljs-number">1</span>fr <span class="hljs-number">1</span>fr <span class="hljs-number">1</span>fr;
+&#125;
+</code></pre></div>
+
+<p>也可以写成</p>
+<div class="code-wrapper"><pre><code class="hljs pgsql">.<span class="hljs-keyword">wrapper</span> &#123;
+  display: grid;
+  grid-<span class="hljs-keyword">template</span>-<span class="hljs-keyword">columns</span>: repeat(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>fr);//<span class="hljs-number">1</span>fr重复<span class="hljs-number">3</span>次，就是三等分
+&#125;
+</code></pre></div>
+
+<p>Repeat 语句可以用于重复轨道列表中的一部分。在下面的例子中我创建了一个网格：它起始轨道为 20 像素，接着重复了 6 个<code>1fr</code>的轨道，最后再添加了一个 20 像素的轨道。</p>
+<div class="code-wrapper"><pre><code class="hljs pgsql">.<span class="hljs-keyword">wrapper</span> &#123;
+  display: grid;
+  grid-<span class="hljs-keyword">template</span>-<span class="hljs-keyword">columns</span>: <span class="hljs-number">20</span>px repeat(<span class="hljs-number">6</span>, <span class="hljs-number">1</span>fr) <span class="hljs-number">20</span>px;
+&#125;</code></pre></div>
+
+<p>Repeat 语句可以传入一个轨道列表，因此你可以用它来创建一个多轨道模式的重复轨道列表。在下一个例子中，网格将有共计 10 个轨道，为 1 个<code>1fr</code>轨道后面跟着 1 个<code>2fr</code>轨道，该模式重复 5 次。</p>
+<div class="code-wrapper"><pre><code class="hljs pgsql">.<span class="hljs-keyword">wrapper</span> &#123;
+  display: grid;
+  grid-<span class="hljs-keyword">template</span>-<span class="hljs-keyword">columns</span>: repeat(<span class="hljs-number">5</span>, <span class="hljs-number">1</span>fr <span class="hljs-number">2</span>fr);
+&#125;</code></pre></div>
+
+
                 
               </div>
             
@@ -288,8 +375,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  <a href="/categories/CSS/" class="category-chain-item">CSS</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/CSS/Grid/" class="category-chain-item">Grid</a>
+  
+  
+
   
 
       </span>
@@ -300,6 +394,13 @@
     </div>
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Grid/">#Grid</a>
+      
+    </div>
+  
 </div>
 
 
@@ -308,8 +409,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>操作系统</div>
-      <div>http://example.com/2022/09/14/操作系统/</div>
+      <div>Grid布局</div>
+      <div>http://example.com/2022/10/19/Grid布局/</div>
     </div>
     <div class="license-meta">
       
@@ -321,7 +422,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年9月14日</div>
+          <div>2022年10月19日</div>
         </div>
       
       
@@ -353,9 +454,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/09/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络">
+                      <a href="/2022/11/08/Puppeteer/" title="什么是Puppeteer">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">计算机网络</span>
+                        <span class="hidden-mobile">什么是Puppeteer</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -363,8 +464,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/09/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" title="计算机组成原理">
-                        <span class="hidden-mobile">计算机组成原理</span>
+                      <a href="/2022/10/19/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
