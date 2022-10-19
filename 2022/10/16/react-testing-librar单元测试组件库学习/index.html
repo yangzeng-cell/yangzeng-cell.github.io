@@ -16,13 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="React Testing LibraryReact Testing Library是在DOM Testing Library的基础上增加了一些API用于React组件测试，如果项目通过create-react-app创建的项目提供了开箱即用的React Testing Library.，如果你不是使用creact-react-app创建项目，可以使用例如·npm&#x2F;yarn npm install">
+<meta property="og:type" content="article">
 <meta property="og:title" content="react-testing-library单元测试组件库学习">
 <meta property="og:url" content="http://example.com/2022/10/16/react-testing-librar%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%BB%84%E4%BB%B6%E5%BA%93%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="React Testing LibraryReact Testing Library是在DOM Testing Library的基础上增加了一些API用于React组件测试，如果项目通过create-react-app创建的项目提供了开箱即用的React Testing Library.，如果你不是使用creact-react-app创建项目，可以使用例如·npm&#x2F;yarn npm install">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-16T23:40:18.000Z">
-<meta property="article:modified_time" content="2022-10-16T15:45:18.206Z">
+<meta property="article:modified_time" content="2022-10-19T13:57:31.580Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="react-testing-library">
 <meta name="twitter:card" content="summary_large_image">
@@ -217,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          3.6k 字
         
       </span>
     
@@ -228,7 +230,7 @@
         
         
         
-          1 分钟
+          30 分钟
         
       </span>
     
@@ -271,7 +273,126 @@
             
               <div class="markdown-body">
                 
-                
+                <h1 id="React-Testing-Library"><a href="#React-Testing-Library" class="headerlink" title="React Testing Library"></a>React Testing Library</h1><p><a target="_blank" rel="noopener" href="https://github.com/testing-library/react-testing-library"><code>React Testing Library</code></a>是在DOM Testing Library的基础上增加了一些API用于React组件测试，如果项目通过create-react-app创建的项目提供了开箱即用的<strong>React Testing Library</strong>.，如果你不是使用creact-react-app创建项目，可以使用例如·npm/yarn</p>
+<div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> install --save-dev @testing-library/react</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs css">yarn add <span class="hljs-attr">--dev</span> <span class="hljs-keyword">@testing-library</span>/react</code></pre></div>
+
+<h2 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem<a target="_blank" rel="noopener" href="https://testing-library.com/docs/react-testing-library/intro/#the-problem"></a></h2><p>如果你想写可持续性的测试为你的组件，作为这个目标的一部分，如果你想避免你的测试包含组件的详细的细节，并且专注于你的测试给你的组件带来信心，你的测试是可维护的，并且重构你的组件并不会破坏测试，和减慢你开发的进度</p>
+<h2 id="This-solution"><a href="#This-solution" class="headerlink" title="This solution"></a>This solution<a target="_blank" rel="noopener" href="https://testing-library.com/docs/react-testing-library/intro/#this-solution"></a></h2><p>React Testing Library测试库是非常轻量化的解决方案，它提供了基于react-dom和react-dom/test-utils，您的测试与您的软件使用方式越相似，它们能给您的信心就越大。你的测试将使用实际的DOM节点，而不是处理渲染的组件实例，这个工具库将提供函数有助于和用户相同的方式访问DOM，以更贴近用户的使用的方式测试组件，这个库可以作为enzyme的替代品</p>
+<h1 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h1><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>
+<span class="hljs-keyword">import</span> &#123;rest&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;msw&#x27;</span>
+<span class="hljs-keyword">import</span> &#123;setupServer&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;msw/node&#x27;</span><span class="hljs-comment">//用于mock 数据请求</span>
+<span class="hljs-keyword">import</span> &#123;render, fireEvent, waitFor, screen&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@testing-library/react&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;@testing-library/jest-dom&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Fetch</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../fetch&#x27;</span>
+<span class="hljs-comment">//mock 请求数据的接口，模拟返回的数据</span>
+<span class="hljs-keyword">const</span> server = <span class="hljs-title function_">setupServer</span>(
+  rest.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/greeting&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res, ctx</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">res</span>(ctx.<span class="hljs-title function_">json</span>(&#123;<span class="hljs-attr">greeting</span>: <span class="hljs-string">&#x27;hello there&#x27;</span>&#125;))
+  &#125;),
+)
+<span class="hljs-comment">//建立api 的mock 在所有测试以前</span>
+<span class="hljs-title function_">beforeAll</span>(<span class="hljs-function">() =&gt;</span> server.<span class="hljs-title function_">listen</span>())
+<span class="hljs-comment">//每次测试完后都重置请求</span>
+<span class="hljs-title function_">afterEach</span>(<span class="hljs-function">() =&gt;</span> server.<span class="hljs-title function_">resetHandlers</span>())
+<span class="hljs-comment">//关闭请求</span>
+<span class="hljs-title function_">afterAll</span>(<span class="hljs-function">() =&gt;</span> server.<span class="hljs-title function_">close</span>())
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;loads and displays greeting&#x27;</span>, <span class="hljs-keyword">async</span> () =&gt; &#123;
+  <span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Fetch</span> <span class="hljs-attr">url</span>=<span class="hljs-string">&quot;/greeting&quot;</span> /&gt;</span></span>)
+<span class="hljs-comment">//模拟用户点击事件</span>
+  fireEvent.<span class="hljs-title function_">click</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Load Greeting&#x27;</span>))
+<span class="hljs-comment">//等待直到获取请求成功并且组件调用setState和重新渲染</span>
+  <span class="hljs-comment">//waitFor会等待直到回调函数响应成功</span>
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;heading&#x27;</span>))
+	<span class="hljs-comment">// assert that the alert message is correct using</span>
+<span class="hljs-comment">// toHaveTextContent, a custom matcher from jest-dom.</span>
+  <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;heading&#x27;</span>)).<span class="hljs-title function_">toHaveTextContent</span>(<span class="hljs-string">&#x27;hello there&#x27;</span>)
+  <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>)).<span class="hljs-title function_">toBeDisabled</span>()
+&#125;)
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;handles server error&#x27;</span>, <span class="hljs-keyword">async</span> () =&gt; &#123;
+  <span class="hljs-comment">//重写测试接口</span>
+  server.<span class="hljs-title function_">use</span>(
+    rest.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/greeting&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res, ctx</span>) =&gt;</span> &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">res</span>(ctx.<span class="hljs-title function_">status</span>(<span class="hljs-number">500</span>))
+    &#125;),
+  )
+
+  <span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Fetch</span> <span class="hljs-attr">url</span>=<span class="hljs-string">&quot;/greeting&quot;</span> /&gt;</span></span>)
+
+  fireEvent.<span class="hljs-title function_">click</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Load Greeting&#x27;</span>))
+
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;alert&#x27;</span>))
+
+  <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;alert&#x27;</span>)).<span class="hljs-title function_">toHaveTextContent</span>(<span class="hljs-string">&#x27;Oops, failed to fetch!&#x27;</span>)
+  <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>)).<span class="hljs-property">not</span>.<span class="hljs-title function_">toBeDisabled</span>()
+&#125;)</code></pre></div>
+
+<p>推荐使用<a target="_blank" rel="noopener" href="https://github.com/mswjs/msw">Mock Service Worker</a> 这个库来mock window.fetch API</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123;useState, useReducer&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>
+<span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>
+
+<span class="hljs-keyword">const</span> initialState = &#123;
+  <span class="hljs-attr">error</span>: <span class="hljs-literal">null</span>,
+  <span class="hljs-attr">greeting</span>: <span class="hljs-literal">null</span>,
+&#125;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">greetingReducer</span>(<span class="hljs-params">state, action</span>) &#123;
+  <span class="hljs-keyword">switch</span> (action.<span class="hljs-property">type</span>) &#123;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;SUCCESS&#x27;</span>: &#123;
+      <span class="hljs-keyword">return</span> &#123;
+        <span class="hljs-attr">error</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">greeting</span>: action.<span class="hljs-property">greeting</span>,
+      &#125;
+    &#125;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;ERROR&#x27;</span>: &#123;
+      <span class="hljs-keyword">return</span> &#123;
+        <span class="hljs-attr">error</span>: action.<span class="hljs-property">error</span>,
+        <span class="hljs-attr">greeting</span>: <span class="hljs-literal">null</span>,
+      &#125;
+    &#125;
+    <span class="hljs-attr">default</span>: &#123;
+      <span class="hljs-keyword">return</span> state
+    &#125;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Fetch</span>(<span class="hljs-params">&#123;url&#125;</span>) &#123;
+  <span class="hljs-keyword">const</span> [&#123;error, greeting&#125;, dispatch] = <span class="hljs-title function_">useReducer</span>(
+    greetingReducer,
+    initialState,
+  )
+  <span class="hljs-keyword">const</span> [buttonClicked, setButtonClicked] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>)
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchGreeting</span> = <span class="hljs-keyword">async</span> url =&gt;
+    axios
+      .<span class="hljs-title function_">get</span>(url)
+      .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;
+        <span class="hljs-keyword">const</span> &#123;data&#125; = response
+        <span class="hljs-keyword">const</span> &#123;greeting&#125; = data
+        <span class="hljs-title function_">dispatch</span>(&#123;<span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;SUCCESS&#x27;</span>, greeting&#125;)
+        <span class="hljs-title function_">setButtonClicked</span>(<span class="hljs-literal">true</span>)
+      &#125;)
+      .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;
+        <span class="hljs-title function_">dispatch</span>(&#123;<span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;ERROR&#x27;</span>, error&#125;)
+      &#125;)
+
+  <span class="hljs-keyword">const</span> buttonText = buttonClicked ? <span class="hljs-string">&#x27;Ok&#x27;</span> : <span class="hljs-string">&#x27;Load Greeting&#x27;</span>
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span>
+<span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> fetchGreeting(url)&#125; disabled=&#123;buttonClicked&#125;&gt;</span>
+<span class="language-xml">        &#123;buttonText&#125;</span>
+<span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+<span class="language-xml">      &#123;greeting &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;greeting&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>&#125;</span>
+<span class="language-xml">      &#123;error &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;alert&quot;</span>&gt;</span>Oops, failed to fetch!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>&#125;</span>
+<span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  )
+&#125;</code></pre></div>
+
+
                 
               </div>
             
@@ -340,9 +461,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/11/08/Puppeteer/" title="什么是Puppeteer">
+                      <a href="/2022/10/19/hello-world/" title="Hello World">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">什么是Puppeteer</span>
+                        <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -350,8 +471,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/10/16/hello-world/" title="Hello World">
-                        <span class="hidden-mobile">Hello World</span>
+                      <a href="/2022/10/12/canvas%E7%AC%94%E8%AE%B0/" title="canvas笔记">
+                        <span class="hidden-mobile">canvas笔记</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
