@@ -134,3 +134,20 @@ Repeat 语句可以传入一个轨道列表，因此你可以用它来创建一�
 }
 ```
 
+### grid-auto-rows和grid-auto-columns
+
+```html
+<div class="wrapper">
+   <div>One</div>
+   <div>Two</div>
+   <div>Three</div>
+   <div>Four</div>
+   <div>Five</div>
+</div>
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 200px;
+}
+```
+
