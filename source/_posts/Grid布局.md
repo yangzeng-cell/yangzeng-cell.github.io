@@ -362,3 +362,298 @@ gap：是row-gap和column-gap的缩写
 ```
 
 <iframe class="sample-code-frame" title="控制顺序 sample" id="frame_控制顺序" width="210" height="410" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout/_sample_.%E6%8E%A7%E5%88%B6%E9%A1%BA%E5%BA%8F.html" loading="lazy"></iframe>
+
+## [`grid-column` 和 `grid-row` 的简写](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#grid-column_和_grid-row_的简写)
+
+grid-column-start和grid-column-end的缩写是grid-column，grid-row-start和grid-row-end的缩写
+
+```
+<div class="wrapper">
+   <div class="box1">One</div>
+   <div class="box2">Two</div>
+   <div class="box3">Three</div>
+   <div class="box4">Four</div>
+</div>
+
+```
+
+```
+.box1 {
+   grid-column: 1 / 2;
+   grid-row: 1 / 4;
+}
+.box2 {
+   grid-column: 3 / 4;
+   grid-row: 1 / 3;
+}
+.box3 {
+   grid-column: 2 / 3;
+   grid-row: 1 /  2;
+}
+.box4 {
+   grid-column: 2 / 4;
+   grid-row: 3 / 4;
+}
+
+```
+
+<iframe class="sample-code-frame" title="grid-column 和 grid-row 的简写 sample" id="frame_grid-column_和_grid-row_的简写" width="300" height="330" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.grid-column_%E5%92%8C_grid-row_%E7%9A%84%E7%AE%80%E5%86%99.html" loading="lazy"></iframe>
+
+## [默认跨度](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#默认跨度)
+
+实际上如果一个元素只延伸一个轨道的话，你可以省略 `grid-column-end` 或 `grid-row-end` 值。元素默认延伸一个轨道
+
+### [默认跨度的普通写法](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#默认跨度的普通写法)
+
+我们最初的示例的普通写法会是这样：
+
+```
+<div class="wrapper">
+   <div class="box1">One</div>
+   <div class="box2">Two</div>
+   <div class="box3">Three</div>
+   <div class="box4">Four</div>
+</div>
+```
+
+```
+.box1 {
+   grid-column-start: 1;
+   grid-row-start: 1;
+   grid-row-end: 4;
+}
+.box2 {
+   grid-column-start: 3;
+   grid-row-start: 1;
+   grid-row-end: 3;
+}
+.box3 {
+   grid-column-start: 2;
+   grid-row-start: 1;
+}
+.box4 {
+   grid-column-start: 2;
+   grid-column-end: 4;
+   grid-row-start: 3;
+}
+```
+
+### [默认跨度的简写](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#默认跨度的简写)
+
+```
+<div class="wrapper">
+   <div class="box1">One</div>
+   <div class="box2">Two</div>
+   <div class="box3">Three</div>
+   <div class="box4">Four</div>
+</div>
+```
+
+```
+.box1 {
+   grid-column: 1 ;//可以省略第二个值
+   grid-row: 1 / 4;
+}
+.box2 {
+   grid-column: 3 ;
+   grid-row: 1 / 3;
+}
+.box3 {
+   grid-column: 2 ;
+   grid-row: 1 ;
+}
+.box4 {
+   grid-column: 2 / 4;
+   grid-row: 3 ;
+}
+```
+
+<iframe class="sample-code-frame" title="默认跨度的简写 sample" id="frame_默认跨度的简写" width="300" height="330" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.%E9%BB%98%E8%AE%A4%E8%B7%A8%E5%BA%A6%E7%9A%84%E7%AE%80%E5%86%99.html" loading="lazy"></iframe>
+
+## [`grid-area` 属性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#grid-area_属性)
+
+我们可以更进一步，给每个元素只定义一个属性 [`grid-area`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-area)。值的顺序如下
+
+- grid-row-start
+- grid-column-start
+- grid-row-end
+- grid-column-end
+
+```
+<div class="wrapper">
+   <div class="box1">One</div>
+   <div class="box2">Two</div>
+   <div class="box3">Three</div>
+   <div class="box4">Four</div>
+</div>
+.box1 {
+   grid-area: 1 / 1 / 4 / 2;
+}
+.box2 {
+   grid-area: 1 / 3 / 3 / 4;
+}
+.box3 {
+   grid-area: 1 / 2 / 2 / 3;
+}
+.box4 {
+   grid-area: 3 / 2 / 4 / 4;
+}
+```
+
+`grid-area` 的值的顺序看起来可能有点奇怪，比如说它正好和定义 margin 和 padding 的简写的值的顺序相反。但如果说是因为它与 CSS 书写模式规范中的书写方向相关就不难理解了。我们会在之后的文章中探讨网格与书写模式的关系，但我们有 4 个书写流关联的方向：
+
+- 块起始（block-start）
+- 块结束（block-end）
+- 行起始（inline-start）
+- 行结束（inline-end）
+
+## [反方向计数](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#反方向计数)
+
+我们也可以从行和块结束线开始反方向计数，对于英语来说就是右端的列线和底端的行线。这些线会被记为 `-1`，然后你可以从这往前数，所以倒数第 2 条线会被记为 `-2`。值得注意的是最后一条线是指显式定义网格的最后一条线，即由 `grid-template-columns` 和 `grid-template-rows` 定义的网格，并不把隐式定义网格的加入的行和列纳入考虑。
+
+下面这个示例中，我们通过从右端和底端开始定义布局，把之前的示例的布局翻转了。
+
+```
+<div class="wrapper">
+   <div class="box1">One</div>
+   <div class="box2">Two</div>
+   <div class="box3">Three</div>
+   <div class="box4">Four</div>
+</div>
+.box1 {
+   grid-column-start: -1;
+   grid-column-end: -2;
+   grid-row-start: -1;
+   grid-row-end: -4;
+}
+.box2 {
+   grid-column-start: -3;
+   grid-column-end: -4;
+   grid-row-start: -1;
+   grid-row-end: -3;
+}
+.box3 {
+   grid-column-start: -2;
+   grid-column-end: -3;
+   grid-row-start: -1;
+   grid-row-end: -2;
+}
+.box4 {
+   grid-column-start: -2;
+   grid-column-end: -4;
+   grid-row-start: -3;
+   grid-row-end: -4;
+}
+```
+
+<iframe class="sample-code-frame" title="反方向计数 sample" id="frame_反方向计数" width="300" height="330" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.%E5%8F%8D%E6%96%B9%E5%90%91%E8%AE%A1%E6%95%B0.html" loading="lazy" style="box-sizing: content-box; border: 1px solid var(--border-primary); max-width: 100%; width: calc((100% - 2rem) - 2px); background: rgb(255, 255, 255); border-radius: var(--elem-radius); padding: 1rem;"></iframe>
+
+### [使元素跨越整个网格](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#使元素跨越整个网格)
+
+拥有从开始计数和从末尾计数这两种定位方法使得使一个元素跨越整个网格变得很方便：
+
+```
+.item {
+    grid-column: 1 / -1;
+}
+```
+
+## [间距](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#间距)
+
+CSS 网格规范加入了用 [`column-gap`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/column-gap) 和 [`row-gap`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/row-gap) 属性定义列间距和行间距的能力。这两个属性的行为和多列布局中的 [`column-gap`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/column-gap) 属性很像。
+
+**备注：** 在浏览器首次引入网格属性 [`column-gap`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/column-gap)、[`row-gap`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/row-gap) 和 [`gap`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/gap) 时，具有 `grid-` 前缀。分别是 `grid-column-gap`、`grid-row-gap` 和 `grid-gap`。
+
+浏览器正在更新它们的渲染引擎，以删除这一前缀，但是携带有前缀的版本将以别名的形式进行维护，使得它们可以被安全地使用。
+
+间距只出现在网格轨道与轨道之间，它们并不会出现在网格容器的四周。通过在网格容器上定义这些属性，我们给上例加上了间距：
+
+```
+<div class="wrapper">
+   <div class="box1">One</div>
+   <div class="box2">Two</div>
+   <div class="box3">Three</div>
+   <div class="box4">Four</div>
+</div>
+```
+
+```
+.box1 {
+    grid-column: 1 ;
+    grid-row: 1 / 4;
+}
+.box2 {
+    grid-column: 3 ;
+    grid-row: 1 / 3;
+}
+.box3 {
+    grid-column: 2 ;
+    grid-row: 1 ;
+}
+.box4 {
+    grid-column: 2 / 4;
+    grid-row: 3 ;
+}
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 100px);
+    column-gap: 20px;
+    row-gap: 1em;
+}
+```
+
+<iframe class="sample-code-frame" title="间距 sample" id="frame_间距" width="300" height="350" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.%E9%97%B4%E8%B7%9D.html" loading="lazy" style="box-sizing: content-box; border: 1px solid var(--border-primary); max-width: 100%; width: calc((100% - 2rem) - 2px); background: rgb(255, 255, 255); border-radius: var(--elem-radius); padding: 1rem;"></iframe>
+
+间距可以使用gap进行简写
+
+## [使用 `span` 关键字](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#使用_span_关键字)
+
+除了”起始线与结束线“的定位方法，你还可以使用”起始线与跨越轨道数量“的定位方法
+
+```
+<div class="wrapper">
+   <div class="box1">One</div>
+   <div class="box2">Two</div>
+   <div class="box3">Three</div>
+   <div class="box4">Four</div>
+</div>
+.box1 {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+}
+.box2 {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+}
+.box3 {
+    grid-column: 2;
+    grid-row: 1;
+}
+.box4 {
+    grid-column: 2 / span 2;
+    grid-row: 3;
+}
+```
+
+<iframe class="sample-code-frame" title="使用 span 关键字 sample" id="frame_使用_span_关键字" width="300" height="330" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.%E4%BD%BF%E7%94%A8_span_%E5%85%B3%E9%94%AE%E5%AD%97.html" loading="lazy" style="box-sizing: content-box; border: 1px solid var(--border-primary); max-width: 100%; width: calc((100% - 2rem) - 2px); background: rgb(255, 255, 255); border-radius: var(--elem-radius); padding: 1rem; color: rgb(27, 27, 27); font-family: Inter, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, Cantarell, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+
+你也可以在 `grid-row-start`/`grid-row-end` 和 `grid-column-start`/`grid-column-end` 属性中使用 `span` 关键字。接下来两个例子会创建同样的网格。第一个例子中我们设定了起始行，然后说我们想结束线在跨越 3 条线之后。那这个元素就会从 1 号线开始，跨越 3 条线，到 4 号线结束。
+
+```
+.box1 {
+    grid-column-start: 1;
+    grid-row-start: 1;
+    grid-row-end: span 3;
+}
+```
+
+第二个例子中，我们定义了结束行线，然后设置起始线为跨越 3 条线。意味着这个元素会从指定的线往上跨越 3 条线。这个元素会从 4 号线开始，跨越 3 条线到 1 号线。
+
+```
+.box1 {
+    grid-column-start: 1;
+    grid-row-start: span 3;
+    grid-row-end: 4;
+}
+```
