@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout/1_grid_area.png">
 <meta property="og:image" content="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout/1_nested_grids_in_flow.png">
 <meta property="article:published_time" content="2022-10-19T22:46:44.000Z">
-<meta property="article:modified_time" content="2022-10-20T15:49:19.522Z">
+<meta property="article:modified_time" content="2022-10-22T01:38:17.922Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Grid">
 <meta name="twitter:card" content="summary_large_image">
@@ -224,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.8k 字
+          11k 字
         
       </span>
     
@@ -235,7 +235,7 @@
         
         
         
-          49 分钟
+          89 分钟
         
       </span>
     
@@ -531,6 +531,241 @@
 
 <iframe class="sample-code-frame" title="控制顺序 sample" id="frame_控制顺序" width="210" height="410" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout/_sample_.%E6%8E%A7%E5%88%B6%E9%A1%BA%E5%BA%8F.html" loading="lazy"></iframe>
 
+<h2 id="grid-column-和-grid-row-的简写"><a href="#grid-column-和-grid-row-的简写" class="headerlink" title="grid-column 和 grid-row 的简写"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#grid-column_%E5%92%8C_grid-row_%E7%9A%84%E7%AE%80%E5%86%99"><code>grid-column</code> 和 <code>grid-row</code> 的简写</a></h2><p>grid-column-start和grid-column-end的缩写是grid-column，grid-row-start和grid-row-end的缩写</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript">&lt;div <span class="hljs-keyword">class</span>=&quot;<span class="hljs-symbol">wrapper</span>&quot;&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box1</span>&quot;&gt;<span class="hljs-symbol">One</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box2</span>&quot;&gt;<span class="hljs-symbol">Two</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box3</span>&quot;&gt;<span class="hljs-symbol">Three</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box4</span>&quot;&gt;<span class="hljs-symbol">Four</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+&lt;/<span class="hljs-symbol">div</span>&gt;
+</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.box1</span> &#123;
+   <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">1</span> / <span class="hljs-number">2</span>;
+   <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> / <span class="hljs-number">4</span>;
+&#125;
+<span class="hljs-selector-class">.box2</span> &#123;
+   <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">3</span> / <span class="hljs-number">4</span>;
+   <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> / <span class="hljs-number">3</span>;
+&#125;
+<span class="hljs-selector-class">.box3</span> &#123;
+   <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">2</span> / <span class="hljs-number">3</span>;
+   <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> /  <span class="hljs-number">2</span>;
+&#125;
+<span class="hljs-selector-class">.box4</span> &#123;
+   <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">2</span> / <span class="hljs-number">4</span>;
+   <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">3</span> / <span class="hljs-number">4</span>;
+&#125;
+</code></pre></div>
+
+<iframe class="sample-code-frame" title="grid-column 和 grid-row 的简写 sample" id="frame_grid-column_和_grid-row_的简写" width="300" height="330" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.grid-column_%E5%92%8C_grid-row_%E7%9A%84%E7%AE%80%E5%86%99.html" loading="lazy"></iframe>
+
+<h2 id="默认跨度"><a href="#默认跨度" class="headerlink" title="默认跨度"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#%E9%BB%98%E8%AE%A4%E8%B7%A8%E5%BA%A6">默认跨度</a></h2><p>实际上如果一个元素只延伸一个轨道的话，你可以省略 <code>grid-column-end</code> 或 <code>grid-row-end</code> 值。元素默认延伸一个轨道</p>
+<h3 id="默认跨度的普通写法"><a href="#默认跨度的普通写法" class="headerlink" title="默认跨度的普通写法"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#%E9%BB%98%E8%AE%A4%E8%B7%A8%E5%BA%A6%E7%9A%84%E6%99%AE%E9%80%9A%E5%86%99%E6%B3%95">默认跨度的普通写法</a></h3><p>我们最初的示例的普通写法会是这样：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript">&lt;div <span class="hljs-keyword">class</span>=&quot;<span class="hljs-symbol">wrapper</span>&quot;&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box1</span>&quot;&gt;<span class="hljs-symbol">One</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box2</span>&quot;&gt;<span class="hljs-symbol">Two</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box3</span>&quot;&gt;<span class="hljs-symbol">Three</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box4</span>&quot;&gt;<span class="hljs-symbol">Four</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+&lt;/<span class="hljs-symbol">div</span>&gt;</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.box1</span> &#123;
+   <span class="hljs-attribute">grid-column-start</span>: <span class="hljs-number">1</span>;
+   <span class="hljs-attribute">grid-row-start</span>: <span class="hljs-number">1</span>;
+   <span class="hljs-attribute">grid-row-end</span>: <span class="hljs-number">4</span>;
+&#125;
+<span class="hljs-selector-class">.box2</span> &#123;
+   <span class="hljs-attribute">grid-column-start</span>: <span class="hljs-number">3</span>;
+   <span class="hljs-attribute">grid-row-start</span>: <span class="hljs-number">1</span>;
+   <span class="hljs-attribute">grid-row-end</span>: <span class="hljs-number">3</span>;
+&#125;
+<span class="hljs-selector-class">.box3</span> &#123;
+   <span class="hljs-attribute">grid-column-start</span>: <span class="hljs-number">2</span>;
+   <span class="hljs-attribute">grid-row-start</span>: <span class="hljs-number">1</span>;
+&#125;
+<span class="hljs-selector-class">.box4</span> &#123;
+   <span class="hljs-attribute">grid-column-start</span>: <span class="hljs-number">2</span>;
+   <span class="hljs-attribute">grid-column-end</span>: <span class="hljs-number">4</span>;
+   <span class="hljs-attribute">grid-row-start</span>: <span class="hljs-number">3</span>;
+&#125;</code></pre></div>
+
+<h3 id="默认跨度的简写"><a href="#默认跨度的简写" class="headerlink" title="默认跨度的简写"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#%E9%BB%98%E8%AE%A4%E8%B7%A8%E5%BA%A6%E7%9A%84%E7%AE%80%E5%86%99">默认跨度的简写</a></h3><div class="code-wrapper"><pre><code class="hljs angelscript">&lt;div <span class="hljs-keyword">class</span>=&quot;<span class="hljs-symbol">wrapper</span>&quot;&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box1</span>&quot;&gt;<span class="hljs-symbol">One</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box2</span>&quot;&gt;<span class="hljs-symbol">Two</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box3</span>&quot;&gt;<span class="hljs-symbol">Three</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box4</span>&quot;&gt;<span class="hljs-symbol">Four</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+&lt;/<span class="hljs-symbol">div</span>&gt;</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.box1</span> &#123;
+   <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">1</span> ;//可以省略第二个值
+   <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> / <span class="hljs-number">4</span>;
+&#125;
+<span class="hljs-selector-class">.box2</span> &#123;
+   <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">3</span> ;
+   <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> / <span class="hljs-number">3</span>;
+&#125;
+<span class="hljs-selector-class">.box3</span> &#123;
+   <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">2</span> ;
+   <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> ;
+&#125;
+<span class="hljs-selector-class">.box4</span> &#123;
+   <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">2</span> / <span class="hljs-number">4</span>;
+   <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">3</span> ;
+&#125;</code></pre></div>
+
+<iframe class="sample-code-frame" title="默认跨度的简写 sample" id="frame_默认跨度的简写" width="300" height="330" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.%E9%BB%98%E8%AE%A4%E8%B7%A8%E5%BA%A6%E7%9A%84%E7%AE%80%E5%86%99.html" loading="lazy"></iframe>
+
+<h2 id="grid-area-属性"><a href="#grid-area-属性" class="headerlink" title="grid-area 属性"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#grid-area_%E5%B1%9E%E6%80%A7"><code>grid-area</code> 属性</a></h2><p>我们可以更进一步，给每个元素只定义一个属性 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-area"><code>grid-area</code></a>。值的顺序如下</p>
+<ul>
+<li>grid-row-start</li>
+<li>grid-column-start</li>
+<li>grid-row-end</li>
+<li>grid-column-end</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs gradle">&lt;<span class="hljs-keyword">div</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;wrapper&quot;</span>&gt;
+   &lt;<span class="hljs-keyword">div</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;One&lt;/<span class="hljs-keyword">div</span>&gt;
+   &lt;<span class="hljs-keyword">div</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;Two&lt;/<span class="hljs-keyword">div</span>&gt;
+   &lt;<span class="hljs-keyword">div</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;box3&quot;</span>&gt;Three&lt;/<span class="hljs-keyword">div</span>&gt;
+   &lt;<span class="hljs-keyword">div</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;box4&quot;</span>&gt;Four&lt;/<span class="hljs-keyword">div</span>&gt;
+&lt;/<span class="hljs-keyword">div</span>&gt;
+.box1 &#123;
+   grid-area: <span class="hljs-number">1</span> <span class="hljs-regexp">/ 1 /</span> <span class="hljs-number">4</span> / <span class="hljs-number">2</span>;
+&#125;
+.box2 &#123;
+   grid-area: <span class="hljs-number">1</span> <span class="hljs-regexp">/ 3 /</span> <span class="hljs-number">3</span> / <span class="hljs-number">4</span>;
+&#125;
+.box3 &#123;
+   grid-area: <span class="hljs-number">1</span> <span class="hljs-regexp">/ 2 /</span> <span class="hljs-number">2</span> / <span class="hljs-number">3</span>;
+&#125;
+.box4 &#123;
+   grid-area: <span class="hljs-number">3</span> <span class="hljs-regexp">/ 2 /</span> <span class="hljs-number">4</span> / <span class="hljs-number">4</span>;
+&#125;</code></pre></div>
+
+<p><code>grid-area</code> 的值的顺序看起来可能有点奇怪，比如说它正好和定义 margin 和 padding 的简写的值的顺序相反。但如果说是因为它与 CSS 书写模式规范中的书写方向相关就不难理解了。我们会在之后的文章中探讨网格与书写模式的关系，但我们有 4 个书写流关联的方向：</p>
+<ul>
+<li>块起始（block-start）</li>
+<li>块结束（block-end）</li>
+<li>行起始（inline-start）</li>
+<li>行结束（inline-end）</li>
+</ul>
+<h2 id="反方向计数"><a href="#反方向计数" class="headerlink" title="反方向计数"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#%E5%8F%8D%E6%96%B9%E5%90%91%E8%AE%A1%E6%95%B0">反方向计数</a></h2><p>我们也可以从行和块结束线开始反方向计数，对于英语来说就是右端的列线和底端的行线。这些线会被记为 <code>-1</code>，然后你可以从这往前数，所以倒数第 2 条线会被记为 <code>-2</code>。值得注意的是最后一条线是指显式定义网格的最后一条线，即由 <code>grid-template-columns</code> 和 <code>grid-template-rows</code> 定义的网格，并不把隐式定义网格的加入的行和列纳入考虑。</p>
+<p>下面这个示例中，我们通过从右端和底端开始定义布局，把之前的示例的布局翻转了。</p>
+<div class="code-wrapper"><pre><code class="hljs pgsql">&lt;div <span class="hljs-keyword">class</span>=&quot;wrapper&quot;&gt;
+   &lt;div <span class="hljs-keyword">class</span>=&quot;box1&quot;&gt;One&lt;/div&gt;
+   &lt;div <span class="hljs-keyword">class</span>=&quot;box2&quot;&gt;Two&lt;/div&gt;
+   &lt;div <span class="hljs-keyword">class</span>=&quot;box3&quot;&gt;Three&lt;/div&gt;
+   &lt;div <span class="hljs-keyword">class</span>=&quot;box4&quot;&gt;Four&lt;/div&gt;
+&lt;/div&gt;
+.box1 &#123;
+   grid-<span class="hljs-keyword">column</span>-<span class="hljs-keyword">start</span>: <span class="hljs-number">-1</span>;
+   grid-<span class="hljs-keyword">column</span>-<span class="hljs-keyword">end</span>: <span class="hljs-number">-2</span>;
+   grid-<span class="hljs-keyword">row</span>-<span class="hljs-keyword">start</span>: <span class="hljs-number">-1</span>;
+   grid-<span class="hljs-keyword">row</span>-<span class="hljs-keyword">end</span>: <span class="hljs-number">-4</span>;
+&#125;
+.box2 &#123;
+   grid-<span class="hljs-keyword">column</span>-<span class="hljs-keyword">start</span>: <span class="hljs-number">-3</span>;
+   grid-<span class="hljs-keyword">column</span>-<span class="hljs-keyword">end</span>: <span class="hljs-number">-4</span>;
+   grid-<span class="hljs-keyword">row</span>-<span class="hljs-keyword">start</span>: <span class="hljs-number">-1</span>;
+   grid-<span class="hljs-keyword">row</span>-<span class="hljs-keyword">end</span>: <span class="hljs-number">-3</span>;
+&#125;
+.box3 &#123;
+   grid-<span class="hljs-keyword">column</span>-<span class="hljs-keyword">start</span>: <span class="hljs-number">-2</span>;
+   grid-<span class="hljs-keyword">column</span>-<span class="hljs-keyword">end</span>: <span class="hljs-number">-3</span>;
+   grid-<span class="hljs-keyword">row</span>-<span class="hljs-keyword">start</span>: <span class="hljs-number">-1</span>;
+   grid-<span class="hljs-keyword">row</span>-<span class="hljs-keyword">end</span>: <span class="hljs-number">-2</span>;
+&#125;
+.box4 &#123;
+   grid-<span class="hljs-keyword">column</span>-<span class="hljs-keyword">start</span>: <span class="hljs-number">-2</span>;
+   grid-<span class="hljs-keyword">column</span>-<span class="hljs-keyword">end</span>: <span class="hljs-number">-4</span>;
+   grid-<span class="hljs-keyword">row</span>-<span class="hljs-keyword">start</span>: <span class="hljs-number">-3</span>;
+   grid-<span class="hljs-keyword">row</span>-<span class="hljs-keyword">end</span>: <span class="hljs-number">-4</span>;
+&#125;</code></pre></div>
+
+<iframe class="sample-code-frame" title="反方向计数 sample" id="frame_反方向计数" width="300" height="330" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.%E5%8F%8D%E6%96%B9%E5%90%91%E8%AE%A1%E6%95%B0.html" loading="lazy" style="box-sizing: content-box; border: 1px solid var(--border-primary); max-width: 100%; width: calc((100% - 2rem) - 2px); background: rgb(255, 255, 255); border-radius: var(--elem-radius); padding: 1rem;"></iframe>
+
+<h3 id="使元素跨越整个网格"><a href="#使元素跨越整个网格" class="headerlink" title="使元素跨越整个网格"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#%E4%BD%BF%E5%85%83%E7%B4%A0%E8%B7%A8%E8%B6%8A%E6%95%B4%E4%B8%AA%E7%BD%91%E6%A0%BC">使元素跨越整个网格</a></h3><p>拥有从开始计数和从末尾计数这两种定位方法使得使一个元素跨越整个网格变得很方便：</p>
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.item</span> &#123;
+    <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">1</span> / -<span class="hljs-number">1</span>;
+&#125;</code></pre></div>
+
+<h2 id="间距"><a href="#间距" class="headerlink" title="间距"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#%E9%97%B4%E8%B7%9D">间距</a></h2><p>CSS 网格规范加入了用 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/column-gap"><code>column-gap</code></a> 和 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/row-gap"><code>row-gap</code></a> 属性定义列间距和行间距的能力。这两个属性的行为和多列布局中的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/column-gap"><code>column-gap</code></a> 属性很像。</p>
+<p><strong>备注：</strong> 在浏览器首次引入网格属性 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/column-gap"><code>column-gap</code></a>、<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/row-gap"><code>row-gap</code></a> 和 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/gap"><code>gap</code></a> 时，具有 <code>grid-</code> 前缀。分别是 <code>grid-column-gap</code>、<code>grid-row-gap</code> 和 <code>grid-gap</code>。</p>
+<p>浏览器正在更新它们的渲染引擎，以删除这一前缀，但是携带有前缀的版本将以别名的形式进行维护，使得它们可以被安全地使用。</p>
+<p>间距只出现在网格轨道与轨道之间，它们并不会出现在网格容器的四周。通过在网格容器上定义这些属性，我们给上例加上了间距：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript">&lt;div <span class="hljs-keyword">class</span>=&quot;<span class="hljs-symbol">wrapper</span>&quot;&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box1</span>&quot;&gt;<span class="hljs-symbol">One</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box2</span>&quot;&gt;<span class="hljs-symbol">Two</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box3</span>&quot;&gt;<span class="hljs-symbol">Three</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+   &lt;<span class="hljs-symbol">div</span> <span class="hljs-symbol">class</span>=&quot;<span class="hljs-symbol">box4</span>&quot;&gt;<span class="hljs-symbol">Four</span>&lt;/<span class="hljs-symbol">div</span>&gt;
+&lt;/<span class="hljs-symbol">div</span>&gt;</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.box1</span> &#123;
+    <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">1</span> ;
+    <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> / <span class="hljs-number">4</span>;
+&#125;
+<span class="hljs-selector-class">.box2</span> &#123;
+    <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">3</span> ;
+    <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> / <span class="hljs-number">3</span>;
+&#125;
+<span class="hljs-selector-class">.box3</span> &#123;
+    <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">2</span> ;
+    <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> ;
+&#125;
+<span class="hljs-selector-class">.box4</span> &#123;
+    <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">2</span> / <span class="hljs-number">4</span>;
+    <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">3</span> ;
+&#125;
+<span class="hljs-selector-class">.wrapper</span> &#123;
+    <span class="hljs-attribute">display</span>: grid;
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>fr);
+    <span class="hljs-attribute">grid-template-rows</span>: <span class="hljs-built_in">repeat</span>(<span class="hljs-number">3</span>, <span class="hljs-number">100px</span>);
+    <span class="hljs-attribute">column-gap</span>: <span class="hljs-number">20px</span>;
+    <span class="hljs-attribute">row-gap</span>: <span class="hljs-number">1em</span>;
+&#125;</code></pre></div>
+
+<iframe class="sample-code-frame" title="间距 sample" id="frame_间距" width="300" height="350" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.%E9%97%B4%E8%B7%9D.html" loading="lazy" style="box-sizing: content-box; border: 1px solid var(--border-primary); max-width: 100%; width: calc((100% - 2rem) - 2px); background: rgb(255, 255, 255); border-radius: var(--elem-radius); padding: 1rem;"></iframe>
+
+<p>间距可以使用gap进行简写</p>
+<h2 id="使用-span-关键字"><a href="#使用-span-关键字" class="headerlink" title="使用 span 关键字"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid#%E4%BD%BF%E7%94%A8_span_%E5%85%B3%E9%94%AE%E5%AD%97">使用 <code>span</code> 关键字</a></h2><p>除了”起始线与结束线“的定位方法，你还可以使用”起始线与跨越轨道数量“的定位方法</p>
+<div class="code-wrapper"><pre><code class="hljs stylus">&lt;<span class="hljs-selector-tag">div</span> class=<span class="hljs-string">&quot;wrapper&quot;</span>&gt;
+   &lt;<span class="hljs-selector-tag">div</span> class=<span class="hljs-string">&quot;box1&quot;</span>&gt;One&lt;/div&gt;
+   &lt;<span class="hljs-selector-tag">div</span> class=<span class="hljs-string">&quot;box2&quot;</span>&gt;Two&lt;/div&gt;
+   &lt;<span class="hljs-selector-tag">div</span> class=<span class="hljs-string">&quot;box3&quot;</span>&gt;Three&lt;/div&gt;
+   &lt;<span class="hljs-selector-tag">div</span> class=<span class="hljs-string">&quot;box4&quot;</span>&gt;Four&lt;/div&gt;
+&lt;/div&gt;
+<span class="hljs-selector-class">.box1</span> &#123;
+    <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">1</span>;
+    <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> / span <span class="hljs-number">3</span>;
+&#125;
+<span class="hljs-selector-class">.box2</span> &#123;
+    <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">3</span>;
+    <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span> / span <span class="hljs-number">2</span>;
+&#125;
+<span class="hljs-selector-class">.box3</span> &#123;
+    <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">2</span>;
+    <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">1</span>;
+&#125;
+<span class="hljs-selector-class">.box4</span> &#123;
+    <span class="hljs-attribute">grid-column</span>: <span class="hljs-number">2</span> / span <span class="hljs-number">2</span>;
+    <span class="hljs-attribute">grid-row</span>: <span class="hljs-number">3</span>;
+&#125;</code></pre></div>
+
+<iframe class="sample-code-frame" title="使用 span 关键字 sample" id="frame_使用_span_关键字" width="300" height="330" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid/_sample_.%E4%BD%BF%E7%94%A8_span_%E5%85%B3%E9%94%AE%E5%AD%97.html" loading="lazy" style="box-sizing: content-box; border: 1px solid var(--border-primary); max-width: 100%; width: calc((100% - 2rem) - 2px); background: rgb(255, 255, 255); border-radius: var(--elem-radius); padding: 1rem; color: rgb(27, 27, 27); font-family: Inter, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, Cantarell, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"></iframe>
+
+<p>你也可以在 <code>grid-row-start</code>/<code>grid-row-end</code> 和 <code>grid-column-start</code>/<code>grid-column-end</code> 属性中使用 <code>span</code> 关键字。接下来两个例子会创建同样的网格。第一个例子中我们设定了起始行，然后说我们想结束线在跨越 3 条线之后。那这个元素就会从 1 号线开始，跨越 3 条线，到 4 号线结束。</p>
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.box1</span> &#123;
+    <span class="hljs-attribute">grid-column-start</span>: <span class="hljs-number">1</span>;
+    <span class="hljs-attribute">grid-row-start</span>: <span class="hljs-number">1</span>;
+    <span class="hljs-attribute">grid-row-end</span>: span <span class="hljs-number">3</span>;
+&#125;</code></pre></div>
+
+<p>第二个例子中，我们定义了结束行线，然后设置起始线为跨越 3 条线。意味着这个元素会从指定的线往上跨越 3 条线。这个元素会从 4 号线开始，跨越 3 条线到 1 号线。</p>
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.box1</span> &#123;
+    <span class="hljs-attribute">grid-column-start</span>: <span class="hljs-number">1</span>;
+    <span class="hljs-attribute">grid-row-start</span>: span <span class="hljs-number">3</span>;
+    <span class="hljs-attribute">grid-row-end</span>: <span class="hljs-number">4</span>;
+&#125;</code></pre></div>
+
                 
               </div>
             
@@ -627,9 +862,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/10/20/hello-world/" title="Hello World">
+                      <a href="/2022/10/22/CSS%E5%B8%B8%E8%A7%81%E7%9A%84%E5%B8%83%E5%B1%80%E6%96%B9%E5%BC%8F/" title="CSS常见的布局方式">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Hello World</span>
+                        <span class="hidden-mobile">CSS常见的布局方式</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
