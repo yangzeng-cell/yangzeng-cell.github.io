@@ -480,6 +480,30 @@ const p: IPersonRequired = {
 
 #### 49.**内置工具和类型体操**
 
+**类型系统其实在很多语言里面都是有的，比如Java、Swift、C++等等，但是相对来说TypeScript的类型非常灵活：**
+
+ 这是因为TypeScript的目的是为JavaScript添加一套类型校验系统，因为JavaScript本身的灵活性，也让TypeScript类型系统
+
+不得不增加更附加的功能以适配JavaScript的灵活性；
+
+ 所以TypeScript是一种可以支持类型编程的类型系统； 
+
+◼ **这种类型编程系统为TypeScript增加了很大的灵活度，同时也增加了它的难度：**
+
+ 如果你不仅仅在开发业务的时候为自己的JavaScript代码增加上类型约束，那么基本不需要太多的类型编程能力；
+
+ 但是如果你在开发一些框架、库，或者通用性的工具，为了考虑各种适配的情况，就需要使用类型编程； 
+
+◼ **TypeScript本身为我们提供了类型工具，帮助我们辅助进行类型转换（前面有用过关于this的类型工具）。**
+
+◼ **很多开发者为了进一步增强自己的TypeScript编程能力，还会专门去做一些类型体操的题目：**
+
+ https://github.com/type-challenges/type-challenges
+
+ https://ghaiklor.github.io/type-challenges-solutions/en/
+
+◼ **我们课堂上会学习TypeScript的编程能力的语法，并且通过学习内置工具来练习一些类型体操的题目**
+
 47.namespace
 
 namespace会形成独立的空间，里面的内容需要使用export，外部才可以使用，否则外部无法访问
