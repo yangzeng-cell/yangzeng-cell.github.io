@@ -3,7 +3,7 @@ title: vuex4.0
 date: 2022-08-23 10:22:47
 tags:
 categories:
-- [vue, note]
+- [Vue, note]
 ---
 
 #### Vuex 是什么

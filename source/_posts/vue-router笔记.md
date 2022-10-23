@@ -3,7 +3,7 @@ title: vue-router笔记
 date: 2022-08-20 16:29:09
 tags:
 categories:
-- [vue, note]
+- [Vue, note]
 ---
 
 #### 路由器维护一张映射表，映射表会决定数据的流向，一个ip地址对应的一台服务器的mac地址，一台服务器只有一个mac地址

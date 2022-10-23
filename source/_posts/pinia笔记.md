@@ -2,8 +2,9 @@
 title: pinia笔记
 date: 2022-08-23 15:53:55
 tags:
+- [pinia]
 categories:
-- [vue, note]
+- [Vue, note]
 ---
 
 #### Pinia和Vuex的区别

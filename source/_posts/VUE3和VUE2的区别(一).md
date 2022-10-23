@@ -2,7 +2,7 @@
 title: vue2和vue3的区别(vue2向vue3迁移)(一)
 date: 2022-08-12 11:35:32
 categories:
-- [vue, daily]
+- [Vue, daily]
 ---
 1. ### vue2的源码使用Flow进行类型检测的，vue3使用Typescript进行重构，比vue2更好的对typescript进行支持。
 2. ### vue3中使用Proxy来实现对数据劫持，vue2中使用Object.defineProperty来劫持数据的getter和setter方法的，这这种方式存在缺点就是在给对象添加和删除属性的时候，是无法劫持和监听的。所以必须使用$set和$delete方法。

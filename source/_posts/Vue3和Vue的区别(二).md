@@ -2,7 +2,7 @@
 title: vue2和vue3的区别(vue2向vue3迁移)(二)
 date: 2022-08-12 11:35:32
 categories:
-- [vue, daily]
+- [Vue, daily]
 ---
 ### 15.key属性
 

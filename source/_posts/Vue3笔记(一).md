@@ -6,7 +6,7 @@ date: 2022-08-16 01:18:36
 
 categories:
 
-- [vue, note]
+- [Vue, note]
 
 ---
 

@@ -3,7 +3,7 @@ title: secket.io笔记
 date: 2022-09-24 15:31:44
 tags:
 - [socket.io]
-catagories:
+categories:
 - [计算机网络,websocket]
 ---
 

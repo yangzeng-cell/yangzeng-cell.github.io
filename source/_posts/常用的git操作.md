@@ -2,8 +2,9 @@
 title: 常用的git操作
 date: 2022-09-08 16:44:11
 tags:
+- [Git]
 categories:
-- [git, note]
+- [Git, note]
 ---
 
 
