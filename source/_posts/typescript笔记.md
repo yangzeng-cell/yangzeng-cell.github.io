@@ -572,7 +572,46 @@ https://www.typescriptlang.org/tsconfig#lib
 
 情况二：我们给自己的代码中声明一些类型，方便在其他地方直接进行使用；
 
+​				原则上所有类型声明都可以写在.d.ts文件上，一般建议在d.ts文件中定义全局的变量，函数，文件类型声明，或者类
+
+例如在全局定义变量
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSDemo</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js
+  "></script>
+</head>
+<body>
+
+  <script>
+    const whyName = "why"
+    const whyAge = 18
+    const whyHeight = 1.88
+
+    function foo(bar) {
+      return "hello world"
+    }
+
+    function Person(name, age) {
+      this.name = name
+      this.age = age
+    }
+  </script>
+  
+</body>
+</html>
+```
+
+在ts文件下访问的时候报错，找不到这个变量或者函数，需要在.d.ts文件中声明变量
+
 ```ts
+//第三方库使用js编写的文件，在ts中使用的时候需要自己声明这个库，例如如下这种声明方式
 declare module "lodash" {
   export function join(...args: any[]): any
 }
@@ -591,7 +630,7 @@ declare class Person {
 // 作为一个第三方库为其他开发者提供类型声明文件 .d.ts => axios.d.ts
 
 
-// 声明文件模块
+// 声明文件模块，引入某些模块的时候，ts不支持这些模块，所以需要声明
 declare module "*.png"
 declare module "*.jpg"
 declare module "*.jpeg"
@@ -600,8 +639,11 @@ declare module "*.svg"
 declare module "*.vue"
 
 
-// 声明成模块(不合适)
-// 声明命名空间
+
+//当使用cdn的方式引入一个包的时候
+//一种方式 声明成模块(不合适)因为没有导入
+// 另一种方式 声明命名空间
+//例如声明jquery'
 declare namespace $ {
   export function ajax(settings: any): any
 }
