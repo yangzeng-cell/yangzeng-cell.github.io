@@ -70,7 +70,7 @@
 <meta property="og:image" content="https://img1.imgtp.com/2022/08/05/qr2xvkmZ.png">
 <meta property="og:image" content="https://img1.imgtp.com/2022/08/05/Eq2OIARP.png">
 <meta property="article:published_time" content="2022-08-05T10:57:32.000Z">
-<meta property="article:modified_time" content="2022-10-25T15:44:32.518Z">
+<meta property="article:modified_time" content="2022-10-30T15:35:43.664Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="typescript">
 <meta name="twitter:card" content="summary_large_image">
@@ -266,7 +266,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7k 字
+          7.9k 字
         
       </span>
     
@@ -277,7 +277,7 @@
         
         
         
-          59 分钟
+          66 分钟
         
       </span>
     
@@ -621,7 +621,41 @@ type <span class="hljs-title class_">IKunKeys</span> = keyof <span class="hljs-t
 <p> 什么情况下需要自己来定义声明文件呢？</p>
 <p>情况一：我们使用的第三方库是一个纯的JavaScript库，没有对应的声明文件；比如lodash</p>
 <p>情况二：我们给自己的代码中声明一些类型，方便在其他地方直接进行使用；</p>
-<div class="code-wrapper"><pre><code class="hljs ts"><span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&quot;lodash&quot;</span> &#123;
+<p>​                原则上所有类型声明都可以写在.d.ts文件上，一般建议在d.ts文件中定义全局的变量，函数，文件类型声明，或者类</p>
+<p>例如在全局定义变量</p>
+<div class="code-wrapper"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>TSDemo<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js</span></span>
+<span class="hljs-string"><span class="hljs-tag">  &quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">    <span class="hljs-keyword">const</span> whyName = <span class="hljs-string">&quot;why&quot;</span></span>
+<span class="language-javascript">    <span class="hljs-keyword">const</span> whyAge = <span class="hljs-number">18</span></span>
+<span class="language-javascript">    <span class="hljs-keyword">const</span> whyHeight = <span class="hljs-number">1.88</span></span>
+<span class="language-javascript"></span>
+<span class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">bar</span>) &#123;</span>
+<span class="language-javascript">      <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello world&quot;</span></span>
+<span class="language-javascript">    &#125;</span>
+<span class="language-javascript"></span>
+<span class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">Person</span>(<span class="hljs-params">name, age</span>) &#123;</span>
+<span class="language-javascript">      <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name</span>
+<span class="language-javascript">      <span class="hljs-variable language_">this</span>.<span class="hljs-property">age</span> = age</span>
+<span class="language-javascript">    &#125;</span>
+<span class="language-javascript">  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
+<p>在ts文件下访问的时候报错，找不到这个变量或者函数，需要在.d.ts文件中声明变量</p>
+<div class="code-wrapper"><pre><code class="hljs ts"><span class="hljs-comment">//第三方库使用js编写的文件，在ts中使用的时候需要自己声明这个库，例如如下这种声明方式</span>
+<span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&quot;lodash&quot;</span> &#123;
   <span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">join</span>(<span class="hljs-params">...args: <span class="hljs-built_in">any</span>[]</span>): <span class="hljs-built_in">any</span>
 &#125;
 
@@ -639,7 +673,7 @@ type <span class="hljs-title class_">IKunKeys</span> = keyof <span class="hljs-t
 <span class="hljs-comment">// 作为一个第三方库为其他开发者提供类型声明文件 .d.ts =&gt; axios.d.ts</span>
 
 
-<span class="hljs-comment">// 声明文件模块</span>
+<span class="hljs-comment">// 声明文件模块，引入某些模块的时候，ts不支持这些模块，所以需要声明</span>
 <span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&quot;*.png&quot;</span>
 <span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&quot;*.jpg&quot;</span>
 <span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&quot;*.jpeg&quot;</span>
@@ -648,8 +682,11 @@ type <span class="hljs-title class_">IKunKeys</span> = keyof <span class="hljs-t
 <span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&quot;*.vue&quot;</span>
 
 
-<span class="hljs-comment">// 声明成模块(不合适)</span>
-<span class="hljs-comment">// 声明命名空间</span>
+
+<span class="hljs-comment">//当使用cdn的方式引入一个包的时候</span>
+<span class="hljs-comment">//一种方式 声明成模块(不合适)因为没有导入</span>
+<span class="hljs-comment">// 另一种方式 声明命名空间</span>
+<span class="hljs-comment">//例如声明jquery&#x27;</span>
 <span class="hljs-keyword">declare</span> <span class="hljs-keyword">namespace</span> $ &#123;
   <span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">ajax</span>(<span class="hljs-params">settings: <span class="hljs-built_in">any</span></span>): <span class="hljs-built_in">any</span>
 &#125;
