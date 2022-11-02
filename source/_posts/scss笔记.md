@@ -451,6 +451,68 @@ span.emoji-women-holding-hands {
 }
 ```
 
+插值几乎可以在 Sass 样式表中的任何地方使用，以将[SassScript 表达式](https://sass-lang.com/documentation/syntax/structure#expressions)的结果嵌入到 CSS 块中。只需在以下任何地方包装一个表达式`#{}`：
+
+#### 在sassscript中使用
+
+```scss
+@mixin inline-animation($duration) {
+  $name: inline-#{unique-id()};
+
+  @keyframes #{$name} {
+    @content;
+  }
+
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-iteration-count: infinite;
+}
+
+.pulse {
+  @include inline-animation(2s) {
+    from { background-color: yellow }
+    to { background-color: red }
+  }
+}
+```
+
+转成css
+
+```css
+.pulse {
+  animation-name: inline-uoqjh6kaq;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+@keyframes inline-uoqjh6kaq {
+  from {
+    background-color: yellow;
+  }
+  to {
+    background-color: red;
+  }
+}
+
+```
+
+#### 引用字符串
+
+```scss
+.example {
+  unquoted: #{"string"};
+}
+```
+
+Css
+
+```css
+.example {
+  unquoted: #{"string"};
+}
+```
+
+
+
 ### 属性声明
 
 在sass中和在css中一样，属性声明定义匹配元素选择器的样式，但是sass添加了额外的功能，例如样式的值可以是任何变量
