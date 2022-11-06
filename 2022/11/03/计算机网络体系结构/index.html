@@ -16,19 +16,22 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
-<meta property="og:title" content="计算机网路笔记(一)">
-<meta property="og:url" content="http://example.com/2022/09/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E8%B7%AF%E7%AC%94%E8%AE%B0-%E4%B8%80/index.html">
+    <meta name="description" content="计算机网路的概念计算机网络是一个将分散的，具有独立功能的计算机系统，通过通信设备与线路连接起来，由功能完善的软件实现资源共享和信息传递的系统 计算机网络是互连的，自治的计算机集合 互连-通过通信链路互联互通 自治-无主从关系 计算机网络的功能数据通信 资源共享 分布式处理 提高可靠性 负载均衡 计算机网络的组成组成部分：硬件，软件，协议（一系列规则和约定的集合） 工作方式： ​    1.边缘部分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络体系结构">
+<meta property="og:url" content="http://example.com/2022/11/03/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="计算机网路的概念计算机网络是一个将分散的，具有独立功能的计算机系统，通过通信设备与线路连接起来，由功能完善的软件实现资源共享和信息传递的系统 计算机网络是互连的，自治的计算机集合 互连-通过通信链路互联互通 自治-无主从关系 计算机网络的功能数据通信 资源共享 分布式处理 提高可靠性 负载均衡 计算机网络的组成组成部分：硬件，软件，协议（一系列规则和约定的集合） 工作方式： ​    1.边缘部分">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-09-14T10:26:54.000Z">
-<meta property="article:modified_time" content="2022-11-02T15:29:36.876Z">
+<meta property="article:published_time" content="2022-11-03T22:34:13.000Z">
+<meta property="article:modified_time" content="2022-11-06T07:30:12.543Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>计算机网路笔记(一) - Hexo</title>
+  <title>计算机网络体系结构 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -193,7 +196,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="计算机网路笔记(一)"></span>
+            <span id="subtitle" data-typed-text="计算机网络体系结构"></span>
           
         </div>
 
@@ -204,8 +207,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-09-14 10:26" pubdate>
-          2022年9月14日 上午
+        <time datetime="2022-11-03 22:34" pubdate>
+          2022年11月3日 晚上
         </time>
       </span>
     
@@ -216,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          1.8k 字
         
       </span>
     
@@ -227,7 +230,7 @@
         
         
         
-          1 分钟
+          16 分钟
         
       </span>
     
@@ -265,12 +268,80 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">计算机网路笔记(一)</h1>
+            <h1 style="display: none">计算机网络体系结构</h1>
             
             
               <div class="markdown-body">
                 
-                
+                <h4 id="计算机网路的概念"><a href="#计算机网路的概念" class="headerlink" title="计算机网路的概念"></a>计算机网路的概念</h4><p>计算机网络是一个将分散的，具有独立功能的计算机系统，通过通信设备与线路连接起来，由功能完善的软件实现资源共享和信息传递的系统</p>
+<p>计算机网络是互连的，自治的计算机集合</p>
+<p>互连-通过通信链路互联互通</p>
+<p>自治-无主从关系</p>
+<h4 id="计算机网络的功能"><a href="#计算机网络的功能" class="headerlink" title="计算机网络的功能"></a>计算机网络的功能</h4><p>数据通信</p>
+<p>资源共享</p>
+<p>分布式处理</p>
+<p>提高可靠性</p>
+<p>负载均衡</p>
+<h4 id="计算机网络的组成"><a href="#计算机网络的组成" class="headerlink" title="计算机网络的组成"></a>计算机网络的组成</h4><p>组成部分：硬件，软件，协议（一系列规则和约定的集合）</p>
+<p>工作方式：</p>
+<p>​    1.边缘部分  为用户直接使用的 ：c/s方式。 P2P方式</p>
+<p>​    2.核心部分  为边缘部分服务</p>
+<p>功能组成：</p>
+<p>​    分为通信子网和资源子网，通信子网实现数据通信，资源子网实现资源共享和数据处理</p>
+<p>​    资源子网是实现资源共享功能的设备和软件的集合，包括OSI参考模型中的应用层，表示层，会话层</p>
+<p>​    通信子网是由各种传输介质，通信设备，相应的网络协议组成，包括OSI参考模型中的传输层，网络层，数据链路层，物理层等组成</p>
+<h4 id="计算机网络的分类"><a href="#计算机网络的分类" class="headerlink" title="计算机网络的分类"></a>计算机网络的分类</h4><ol>
+<li>按分布范围分广域网(WAN),城域网(MAN)，局域网(LAN),个人区域网(PAN)，前两者使用的是交换技术，后两者使用的是广播技术</li>
+<li>按使用者分为公共网和专用网</li>
+<li>按交换技术分为电路交换 报文交换分组交换</li>
+<li>按拓扑结构分为 总线型 星型 环型网状型</li>
+<li>按传播技术分为广播式网络（共享公共通信信道）点对点网络 （是用分组存储转发和路由选择机制）</li>
+</ol>
+<h4 id="性能指标"><a href="#性能指标" class="headerlink" title="性能指标"></a>性能指标</h4><h5 id="速率"><a href="#速率" class="headerlink" title="速率"></a>速率</h5><p>速率就是数据率或者数据传输率或者比特率</p>
+<p>比特 由0/1组成</p>
+<p>连接计算机网络上的主机在数字信道上传送数据位数的速率</p>
+<p>单位是b/s kb/s Mb/s Gb/s Tb/s</p>
+<p>速率使用小写的b表示，而存储容量 1Byte 字节=8 bit</p>
+<p>1kb/s=10^3b/s</p>
+<p>1Mb/s=10^3 kb/s =10^6b/s</p>
+<p>1Gb/s=10^3 Mb/s =10^6 kb/s=10^9 b/s</p>
+<p>1Tb/s=10^3 Gb/s=….</p>
+<h5 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h5><p>原本指的是某个信号具有的频带宽度，及最高频率和最低频率之差，单位是赫兹hz</p>
+<p>计算机网络中，带宽用来表示网络的通信线路传送数据的能力，通常是指单位时间内从网络中的某一个点到另一个点所能通过的最高数据率，单位是比特每秒 b/s kb/s mb/s gb/s tb/s</p>
+<p>网络设备具备的最高速度</p>
+<h5 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h5><p>表示单位时间内通过的某个网络(或者信道，接口)的数据量，单位是b/s Kb/s Mb/s</p>
+<p>吞吐量受网络带宽或者网络的额定速率的限制</p>
+<h5 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h5><p>指数据(报文/分组/比特流)从网络或早或者链路的一端传送到另一端所需要的时间，也叫时延或者迟延，单位是s</p>
+<p>时延分为发送时延(传输时延)，传播时延，排队时延，处理时延</p>
+<p>发送时延：从发送分组的第一个比特算起，到该分组的最后一个比特发送完毕所需要的时间<br>$$<br>发送时延=数据长度/信号带宽(发送速率)<br>$$<br>传播时延：取决于电磁波传播速度和链路长度<br>$$<br>传播时延=信道长度/电磁波在信道上的传播速率<br>$$<br>排队时延：等待输入/出链路可用</p>
+<p>处理时延：检错找出口</p>
+<h5 id="时延带宽积"><a href="#时延带宽积" class="headerlink" title="时延带宽积"></a>时延带宽积</h5><p>$$<br>时延带宽积=传播时延*带宽<br>$$</p>
+<p>时延带宽积又称为以比特为单位的链路长度，既某段链路现在有多少比特。 容量</p>
+<h5 id="往返时间RTT"><a href="#往返时间RTT" class="headerlink" title="往返时间RTT"></a>往返时间RTT</h5><p>从发送方发送数据开始到发送方到接收方确认（接收方收到数据后立即发送确认）总共经历的时延</p>
+<p>RTT包括末端处理时间，往返传播时延=传播时延*2</p>
+<h5 id="利用率"><a href="#利用率" class="headerlink" title="利用率"></a>利用率</h5><p>$$<br>信道利用率=有数据通过的时间/（有+无）数据通过的时间<br>$$</p>
+<p>$$<br>网络利用率=信道利用率加权平均值<br>$$</p>
+<h4 id="网络分层结构"><a href="#网络分层结构" class="headerlink" title="网络分层结构"></a>网络分层结构</h4><p>网络体系分层结构是从功能上描述计算机网络的结构</p>
+<p>计算机网络体系结构简称计算机网络体系结构是分层结构</p>
+<p>每层遵循某些网络协议以完成本层的功能</p>
+<p>计算机网络体系结构是计算机网络的各层及其协议的集合</p>
+<p>第n层在向n+1层提供服务的时候，该服务不仅包括第n层本身的功能，海波啊哭哦由下层服务提供的功能</p>
+<p>仅仅在相邻层间有街口，且所提供的服务的具体实现细节对上一层完全屏蔽</p>
+<p>体系结构是抽象的·，而实现是指运行的一些软件和硬件</p>
+<h4 id="OSI-ISO参考模型"><a href="#OSI-ISO参考模型" class="headerlink" title="OSI/ISO参考模型"></a>OSI/ISO参考模型</h4><p>应用层</p>
+<p>​    所有能和用户交互产生网络流量的程序</p>
+<p>​    典型的应用层服务：</p>
+<p>​            文件传输（FTP）</p>
+<p>​            电子邮件 （SMTP）</p>
+<p>​            万维网（http）</p>
+<p>表示层</p>
+<p>会话层</p>
+<p>传输层</p>
+<p>网络层</p>
+<p>数据链路层</p>
+<p>物理层</p>
+<h5 id="通信过程"><a href="#通信过程" class="headerlink" title="通信过程"></a>通信过程</h5><p>传输过程中上面4层是端对端协议传输，下面是点对点传输会经过中间系统 ，中间系统只有下三层，OSI参考模型的传输过程经历打包和拆包的过程，在应用层数据向下传输的过程中要加首部header，从表示层向下传输也要加header，数据链路层首尾都要加header，物理层不需要，因为物理层已经是010101，解包就是通过对应的协议解析header</p>
+
                 
               </div>
             
@@ -300,6 +371,13 @@
     </div>
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
+      
+    </div>
+  
 </div>
 
 
@@ -308,8 +386,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>计算机网路笔记(一)</div>
-      <div>http://example.com/2022/09/14/计算机网路笔记-一/</div>
+      <div>计算机网络体系结构</div>
+      <div>http://example.com/2022/11/03/计算机网络体系结构/</div>
     </div>
     <div class="license-meta">
       
@@ -321,7 +399,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年9月14日</div>
+          <div>2022年11月3日</div>
         </div>
       
       
@@ -353,9 +431,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/09/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="数据结构">
+                      <a href="/2022/11/06/hello-world/" title="Hello World">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数据结构</span>
+                        <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -363,8 +441,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/09/13/%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/" title="vue3项目搭建">
-                        <span class="hidden-mobile">vue3项目搭建</span>
+                      <a href="/2022/11/02/react%E6%BA%90%E7%A0%81/" title="react源码">
+                        <span class="hidden-mobile">react源码</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
