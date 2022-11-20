@@ -4,9 +4,109 @@
   
   
   <entry>
+    <title>应用层</title>
+    <link href="/2022/11/20/%E5%BA%94%E7%94%A8%E5%B1%82/"/>
+    <url>/2022/11/20/%E5%BA%94%E7%94%A8%E5%B1%82/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>传输层</title>
+    <link href="/2022/11/20/%E4%BC%A0%E8%BE%93%E5%B1%82/"/>
+    <url>/2022/11/20/%E4%BC%A0%E8%BE%93%E5%B1%82/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>网络层</title>
+    <link href="/2022/11/20/%E7%BD%91%E7%BB%9C%E5%B1%82/"/>
+    <url>/2022/11/20/%E7%BD%91%E7%BB%9C%E5%B1%82/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>数据链路层</title>
+    <link href="/2022/11/20/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/"/>
+    <url>/2022/11/20/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Hello World</title>
-    <link href="/2022/11/09/hello-world/"/>
-    <url>/2022/11/09/hello-world/</url>
+    <link href="/2022/11/20/hello-world/"/>
+    <url>/2022/11/20/hello-world/</url>
     
     <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="code-wrapper"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span></code></pre></div><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="code-wrapper"><pre><code class="hljs bash">$ hexo server</code></pre></div><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="code-wrapper"><pre><code class="hljs bash">$ hexo generate</code></pre></div><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="code-wrapper"><pre><code class="hljs bash">$ hexo deploy</code></pre></div><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
     
@@ -40,7 +140,7 @@
     <link href="/2022/11/06/%E7%89%A9%E7%90%86%E5%B1%82/"/>
     <url>/2022/11/06/%E7%89%A9%E7%90%86%E5%B1%82/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h1><h2 id="物理层的接口特性"><a href="#物理层的接口特性" class="headerlink" title="物理层的接口特性"></a>物理层的接口特性</h2><p>物理层解决如何在连接各种计算机的传输媒体上传输比特流数据，而不是指具体的传输媒体，就是具体的010101</p><p>物理层的主要任务：确定与传输媒体接口相关的一些特性</p><p>1.机械特性。定义物理连接的特性，规定物理连接时所采用的规格，接口形状，引脚数量和排列状况</p><p>2.电气特性。规定传输二进制位时，线路上信号的电压范围，阻抗匹配，传输速率·和距离限制等</p><p>3.功能特性。指明某条线上出现的某一电平表示何种意义，接口部件的信号线的用途</p><p>4.规程特性（过程特性）定义各条物理线路的工作规程和时许关系</p><h2 id="数据通信相关术语"><a href="#数据通信相关术语" class="headerlink" title="数据通信相关术语"></a>数据通信相关术语</h2><p>通信的目的是传输消息</p><p>数据：传输信息的实体，通常是有意义的符号序列</p><p>信号：数据的电气/电磁的表现，是数据在传输过程中的存在形式</p><p>​            数字信号/离散信号：代表信息的参数的取值是离散的</p><p>​            模拟信号/连续信号：代表消息的参数的取值是连续的</p><p>信源：产生和发送数据的源头</p><p>信宿：接受数据的终点</p><p>信道：信号的传输媒介。一般用来表示向某一个方向传送信息的介质，因此一条通信线路往往包含一条发送信道和接受信道</p><p>信道 按传输信号分为 模拟信道和数字信道，按传输介质分为有线信道和无线信道</p><h2 id="设计数据通信系统要考虑3个问题"><a href="#设计数据通信系统要考虑3个问题" class="headerlink" title="设计数据通信系统要考虑3个问题"></a>设计数据通信系统要考虑3个问题</h2><ul><li><p>采用单工通信/半双工通信/全双工通信方式？</p></li><li><p>采用串行通信/并行通信？</p></li><li><p>采用同步通信还是异步通信</p></li></ul><h3 id="三种通信方式"><a href="#三种通信方式" class="headerlink" title="三种通信方式"></a>三种通信方式</h3><p>单工通信</p><p>​    只有一个方向的通信而没有反方向的交互，仅需一条信道</p><p>半双工通信/双向交替通信</p><p>​    通信的双方都可以发送或者接受信息，但是任何一方都不能同时发送或者接受</p><p>全双工/双向同时通信</p><p>​    通信双方可以同时发送或者接受信息，也需要两条信道</p><h3 id="数据传输方式"><a href="#数据传输方式" class="headerlink" title="数据传输方式"></a>数据传输方式</h3><p>串行传输。将表示一个字符的8位二进制数按由低位到高位的顺序依次发送，速度慢，费用低，适合远距离传输</p><p>并行传输。将表示一个字符的8位二进制数同时通过8条信道发送。速度快，费用高，适合近距离传输，计算机内部就是并行传输</p><p>同步传输。 在同步传输模式下，数据的传送是以一个数据块为单位，因此同步传输又称为区块传输，在传输数据时，需要先送出一个或者多个同步字符，再送出一批数据</p><p>异步传输。异步传输是将比特分成小组进行传输，小组可以是8位的一个字符或者更长，发送方可以在任何时候发送这些比特组，而接收方不知道他们会在什么时候到达，传送数据时，加一个字符起始位和字符终止位</p><h2 id="码元"><a href="#码元" class="headerlink" title="码元"></a>码元</h2><p>码元是指一个固定时长的信号波形（数字脉冲），代表不同离散数值的基本波形，是数字通信中数字信号的计量单位，这个时长内的信号称之为k进制码元，而该时长称之为码元宽度，当码元的离散状态有m个时（m&gt;2），此时码元称之为m进制码元。</p><p>一码元可以携带多个比特的信息量，例如使用二进制码元的时候只有两种状态·的码元，1，0</p><p>k进制码元，例如4进制码元，码元的离散状态有4个，四种高低不同的码元，00，01，10，11</p><h2 id="数字通信系统数据传输速率的两种表示方法"><a href="#数字通信系统数据传输速率的两种表示方法" class="headerlink" title="数字通信系统数据传输速率的两种表示方法"></a>数字通信系统数据传输速率的两种表示方法</h2><p>速率也叫数据率，是指数据的传输速率，表示单位时间传输的数据量，可以用码元传输速率和信息传输速率来表示</p><p>码元传输速率：也叫码元速率，波形速率，调制速率，符号速率，他表示单位时间内数字通信系统所传输的码元个数（也称为脉冲个数或者信号变化的次数），单位是波特(Baud),1波特表示数字通信每秒传输一个码元</p><p>数字信号有多进制和二进制之分，但码元速率与进制数无关，只与码元长度T有关。<br>$$<br>R=1/T(B)<br>$$<br>信息传输速率：别名信息速率，比特率，表示单位时间内数字通信系统传输的二进制码元个数即比特数，单位是比特/秒（b/s）</p><p>关系：若一个码元携带nbit的信息量，则M Baud的码元传输速率所对应的信息传输速率为Mxnbit/s</p>]]></content>
     
     
     <categories>
