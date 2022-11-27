@@ -16,14 +16,17 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="链表Util.js&#x2F;&#x2F; 对两个数值进行浅层比较  export function defaultEquals(a, b) &amp;#123;   return a &#x3D;&#x3D;&#x3D; b; &amp;#125;  export function defaultToString(item) &amp;#123;   if (item &#x3D;&#x3D;&#x3D; null) &amp;#123;     return &quot;NULL&quot;;   &amp;#">
+<meta property="og:type" content="article">
 <meta property="og:title" content="学习JavaScript数据结构与算法（第3版）第六章链表">
 <meta property="og:url" content="http://example.com/2022/09/17/%E5%AD%A6%E4%B9%A0JavaScript%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC3%E7%89%88%EF%BC%89%E7%AC%AC%E5%85%AD%E7%AB%A0%E9%93%BE%E8%A1%A8/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="链表Util.js&#x2F;&#x2F; 对两个数值进行浅层比较  export function defaultEquals(a, b) &amp;#123;   return a &#x3D;&#x3D;&#x3D; b; &amp;#125;  export function defaultToString(item) &amp;#123;   if (item &#x3D;&#x3D;&#x3D; null) &amp;#123;     return &quot;NULL&quot;;   &amp;#">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-17T13:46:40.000Z">
-<meta property="article:modified_time" content="2022-11-20T09:53:50.913Z">
+<meta property="article:modified_time" content="2022-11-27T04:23:02.838Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -216,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          7.6k 字
         
       </span>
     
@@ -227,7 +230,7 @@
         
         
         
-          1 分钟
+          64 分钟
         
       </span>
     
@@ -270,7 +273,418 @@
             
               <div class="markdown-body">
                 
-                
+                <h1 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h1><h2 id="Util-js"><a href="#Util-js" class="headerlink" title="Util.js"></a>Util.js</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 对两个数值进行浅层比较</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">defaultEquals</span>(<span class="hljs-params">a, b</span>) &#123;
+  <span class="hljs-keyword">return</span> a === b;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">defaultToString</span>(<span class="hljs-params">item</span>) &#123;
+  <span class="hljs-keyword">if</span> (item === <span class="hljs-literal">null</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;NULL&quot;</span>;
+  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (item === <span class="hljs-literal">undefined</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;undefined&quot;</span>;
+  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> item === <span class="hljs-string">&quot;string&quot;</span> || item <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">String</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;item&#125;</span>`</span>;
+  &#125;
+
+  <span class="hljs-keyword">return</span> item.<span class="hljs-title function_">toString</span>();
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Compare</span> = &#123;
+  <span class="hljs-attr">LESS_THAN</span>: -<span class="hljs-number">1</span>,
+  <span class="hljs-attr">BIGGER_THAN</span>: <span class="hljs-number">1</span>,
+&#125;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">defaultCompare</span>(<span class="hljs-params">a, b</span>) &#123;
+  <span class="hljs-keyword">if</span> (a === b) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+  &#125;
+  <span class="hljs-keyword">return</span> a &lt; b ? <span class="hljs-title class_">Compare</span>.<span class="hljs-property">LESS_THAN</span> : <span class="hljs-title class_">Compare</span>.<span class="hljs-property">BIGGER_THAN</span>;
+&#125;
+</code></pre></div>
+
+<h2 id="linked-list-models-js"><a href="#linked-list-models-js" class="headerlink" title="linked-list-models.js"></a>linked-list-models.js</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 定义每个节点的信息</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">element</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span> = element;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">next</span> = <span class="hljs-literal">undefined</span>;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DoublyNode</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Node</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">element, next, prev</span>) &#123;
+    <span class="hljs-variable language_">super</span>(element, next);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">prev</span> = prev;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ValuePair</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">key, value</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">key</span> = key;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> = value;
+  &#125;
+
+  <span class="hljs-title function_">toString</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`[<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.key&#125;</span>,<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.value&#125;</span>]`</span>;
+  &#125;
+&#125;
+</code></pre></div>
+
+
+
+<h2 id="普通链表"><a href="#普通链表" class="headerlink" title="普通链表"></a>普通链表</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; defaultEquals &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../util.js&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Node</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../linked-list-models.js&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LinkedList</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">equalFn = defaultEquals</span>) &#123;
+    <span class="hljs-comment">// 用来存储链表中的元素数量</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = <span class="hljs-literal">undefined</span>;
+    <span class="hljs-comment">//自定义 用来比较是否相等 如果没有定义则使用默认的比较方法</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">equalFn</span> = equalFn;
+  &#125;
+  <span class="hljs-comment">//向链表尾部添加一个新元素</span>
+  <span class="hljs-title function_">push</span>(<span class="hljs-params">element</span>) &#123;
+    <span class="hljs-keyword">const</span> node = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(element);
+    <span class="hljs-comment">// 先判断链表为空的情况</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> === <span class="hljs-literal">undefined</span>) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = node;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+      <span class="hljs-comment">// 循环找到最后一个节点</span>
+      <span class="hljs-keyword">while</span> (current.<span class="hljs-property">next</span> != <span class="hljs-literal">null</span>) &#123;
+        current = current.<span class="hljs-property">next</span>;
+      &#125;
+
+      current.<span class="hljs-property">next</span> = node;
+    &#125;
+    <span class="hljs-comment">// 数值加一</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>++;
+  &#125;
+
+  <span class="hljs-comment">// 向链表的特定位置插入一个新元素</span>
+  <span class="hljs-title function_">insert</span>(<span class="hljs-params">element, position</span>) &#123;
+    <span class="hljs-keyword">if</span> (position &gt;= <span class="hljs-number">0</span> &amp;&amp; position &lt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>) &#123;
+      <span class="hljs-keyword">const</span> node = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(element);
+      <span class="hljs-keyword">if</span> (position === <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-keyword">const</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = node;
+        node.<span class="hljs-property">next</span> = current;
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">const</span> previous = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getElementAt</span>(position - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">const</span> current = previous.<span class="hljs-property">next</span>;
+        previous.<span class="hljs-property">next</span> = node;
+        node.<span class="hljs-property">next</span> = current;
+      &#125;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>++;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+
+  <span class="hljs-comment">// 返回链表中特定位置的元素。如果链表中不存在这样的元素，则返回 undefined</span>
+  <span class="hljs-title function_">getElementAt</span>(<span class="hljs-params">index</span>) &#123;
+    <span class="hljs-keyword">if</span> (index &lt; <span class="hljs-number">0</span> || index &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+    &#125;
+
+    <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; index &amp;&amp; current != <span class="hljs-literal">null</span>; i++) &#123;
+      current = current.<span class="hljs-property">next</span>;
+    &#125;
+
+    <span class="hljs-keyword">return</span> current;
+  &#125;
+
+  <span class="hljs-comment">// 从链表中移除一个元素</span>
+  <span class="hljs-title function_">remove</span>(<span class="hljs-params">element</span>) &#123;
+    <span class="hljs-keyword">const</span> currentIndex = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">indexOf</span>(element);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">removeAt</span>(currentIndex);
+  &#125;
+
+  <span class="hljs-comment">// 返回元素在链表中的索引。如果链表中没有该元素则返回-1</span>
+  <span class="hljs-title function_">indexOf</span>(<span class="hljs-params">element</span>) &#123;
+    <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> &amp;&amp; current != <span class="hljs-literal">null</span>; i++) &#123;
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">equalFn</span>(element, current.<span class="hljs-property">element</span>)) &#123;
+        <span class="hljs-keyword">return</span> i;
+      &#125;
+      current = current.<span class="hljs-property">next</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+  &#125;
+
+  <span class="hljs-comment">// 从链表的特定位置移除一个元素</span>
+  <span class="hljs-title function_">removeAt</span>(<span class="hljs-params">position</span>) &#123;
+    <span class="hljs-comment">// 边界判断</span>
+    <span class="hljs-keyword">if</span> (position &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> || position &lt; <span class="hljs-number">0</span>) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+    &#125;
+
+    <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+    <span class="hljs-keyword">let</span> previous = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+    <span class="hljs-comment">// 当是第一个值时</span>
+    <span class="hljs-keyword">if</span> (position === <span class="hljs-number">0</span>) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = current.<span class="hljs-property">next</span>;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-comment">// for循环拿到curent</span>
+      <span class="hljs-comment">// for (let i = 0; i &lt; position; i++) &#123;</span>
+      <span class="hljs-comment">//   /**</span>
+      <span class="hljs-comment">//    * 获得之前的值，当到达目标值的时候，current.next就指向下一个值了，previous指向前一个之</span>
+      <span class="hljs-comment">//    */</span>
+      <span class="hljs-comment">//   previous = current;</span>
+      <span class="hljs-comment">//   current = current.next;</span>
+      <span class="hljs-comment">// &#125;</span>
+      <span class="hljs-comment">// 重构</span>
+      previous = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getElementAt</span>(position - <span class="hljs-number">1</span>);
+      current = previous.<span class="hljs-property">next</span>;
+      previous.<span class="hljs-property">next</span> = current.<span class="hljs-property">next</span>;
+    &#125;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>--;
+
+    <span class="hljs-keyword">return</span> current.<span class="hljs-property">element</span>;
+  &#125;
+
+  <span class="hljs-comment">// 如果链表中不包含任何元素，返回 true，如果链表长度大于 0则返回 false</span>
+  <span class="hljs-title function_">isEmpty</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> === <span class="hljs-number">0</span>;
+  &#125;
+
+  <span class="hljs-comment">// 返回链表包含的元素个数，与数组的 length 属性类似</span>
+  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>;
+  &#125;
+
+  <span class="hljs-comment">// 返回表示整个链表的字符串。由于列表项使用了 Node 类，就需要重写继承自 JavaScript 对象默认的 toString 方法，让其只输出元素的值</span>
+  <span class="hljs-title function_">toString</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> === <span class="hljs-literal">null</span>) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">let</span> objString = <span class="hljs-string">`<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.head.element&#125;</span>`</span>;
+    <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>.<span class="hljs-property">next</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> &amp;&amp; current != <span class="hljs-literal">null</span>; i++) &#123;
+      objString += <span class="hljs-string">`,<span class="hljs-subst">$&#123;current.element&#125;</span>`</span>;
+      current = current.<span class="hljs-property">next</span>;
+    &#125;
+
+    <span class="hljs-keyword">return</span> objString;
+  &#125;
+&#125;
+</code></pre></div>
+
+<h2 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">DoublyNode</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../linked-list-models.js&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; defaultEquals &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../util.js&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">LinkedList</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./LinkedList.js&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DoublyLinkedList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">LinkedList</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">equalsFn = defaultEquals</span>) &#123;
+    <span class="hljs-variable language_">super</span>(equalsFn);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">tail</span> = <span class="hljs-literal">undefined</span>;
+  &#125;
+  <span class="hljs-title function_">insert</span>(<span class="hljs-params">element, index</span>) &#123;
+    <span class="hljs-keyword">if</span> (index &gt;= <span class="hljs-number">0</span> &amp;&amp; index &lt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>) &#123;
+      <span class="hljs-keyword">const</span> node = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DoublyNode</span>(element);
+      <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+      <span class="hljs-keyword">if</span> (index === <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-keyword">if</span> (thid.<span class="hljs-property">head</span> === <span class="hljs-literal">null</span>) &#123;
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = node;
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">tail</span> = node;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+          node.<span class="hljs-property">next</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+          current.<span class="hljs-property">prev</span> = node;
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = node;
+        &#125;
+      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (index === <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>) &#123;
+        current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">tail</span>;
+        current.<span class="hljs-property">next</span> = node;
+        node.<span class="hljs-property">prev</span> = current;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">tail</span> = node;
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">const</span> previous = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getElementAt</span>(index - <span class="hljs-number">1</span>);
+        current = previous.<span class="hljs-property">next</span>;
+        previous.<span class="hljs-property">next</span> = node;
+        node.<span class="hljs-property">prev</span> = previous;
+        node.<span class="hljs-property">next</span> = current;
+        current.<span class="hljs-property">prev</span> = node;
+      &#125;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>++;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+
+    <span class="hljs-keyword">return</span> falses;
+  &#125;
+
+  <span class="hljs-title function_">removeAt</span>(<span class="hljs-params">index</span>) &#123;
+    <span class="hljs-keyword">if</span> (index &gt;= <span class="hljs-number">0</span> &amp;&amp; index &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>) &#123;
+      <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+      <span class="hljs-keyword">if</span> (index === <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = current.<span class="hljs-property">next</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> === <span class="hljs-number">1</span>) &#123;
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">tail</span> = <span class="hljs-literal">undefined</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+          current.<span class="hljs-property">prev</span> = <span class="hljs-literal">undefined</span>;
+        &#125;
+      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((index = <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> - <span class="hljs-number">1</span>)) &#123;
+        current = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getElementAt</span>(index);
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">tail</span> = current.<span class="hljs-property">prev</span>;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">tail</span>.<span class="hljs-property">next</span> = <span class="hljs-literal">undefined</span>;
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        current = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getElementAt</span>(index);
+        current.<span class="hljs-property">prev</span>.<span class="hljs-property">next</span> = current.<span class="hljs-property">next</span>;
+        current.<span class="hljs-property">next</span>.<span class="hljs-property">prev</span> = current.<span class="hljs-property">prev</span>;
+        current.<span class="hljs-property">next</span> = <span class="hljs-literal">undefined</span>;
+        current.<span class="hljs-property">prev</span> = <span class="hljs-literal">undefined</span>;
+      &#125;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>--;
+      <span class="hljs-keyword">return</span> current.<span class="hljs-property">element</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+  &#125;
+&#125;
+</code></pre></div>
+
+<h2 id="循环链表"><a href="#循环链表" class="headerlink" title="循环链表"></a>循环链表</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; defaultEquals &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../util&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">LinkedList</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./LinkedList.js&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CircularLinkedList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">LinkedList</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">equalsFn = defaultEquals</span>) &#123;
+    <span class="hljs-variable language_">super</span>(equalsFn);
+  &#125;
+
+  <span class="hljs-title function_">insert</span>(<span class="hljs-params">element, index</span>) &#123;
+    <span class="hljs-keyword">if</span> (index &gt;= <span class="hljs-number">0</span> &amp;&amp; index &lt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>) &#123;
+      <span class="hljs-keyword">const</span> node = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(element);
+      <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+      <span class="hljs-keyword">if</span> (index === <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> === <span class="hljs-literal">null</span>) &#123;
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = node;
+          node.<span class="hljs-property">next</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = node;
+          current = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getElementAt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>());
+          current.<span class="hljs-property">next</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+        &#125;
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">const</span> previous = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getElementAt</span>(index - <span class="hljs-number">1</span>);
+        current = previous.<span class="hljs-property">next</span>;
+        previous.<span class="hljs-property">next</span> = node;
+        node.<span class="hljs-property">next</span> = currents;
+      &#125;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>++;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+
+  <span class="hljs-title function_">removeAt</span>(<span class="hljs-params">index</span>) &#123;
+    <span class="hljs-keyword">if</span> (index &gt;= <span class="hljs-number">0</span> &amp;&amp; index &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>()) &#123;
+      <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+      <span class="hljs-keyword">if</span> (index === <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>() === <span class="hljs-number">1</span>) &#123;
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = <span class="hljs-literal">null</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+          <span class="hljs-keyword">const</span> removed = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+          current = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getElementAt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>());
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>.<span class="hljs-property">next</span>;
+          current.<span class="hljs-property">next</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+          current = removed;
+        &#125;
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">const</span> previous = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getElementAt</span>(index - <span class="hljs-number">1</span>);
+        current = previous.<span class="hljs-property">next</span>;
+        previous.<span class="hljs-property">next</span> = current.<span class="hljs-property">next</span>;
+      &#125;
+
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>--;
+      <span class="hljs-keyword">return</span> current.<span class="hljs-property">element</span>;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+  &#125;
+&#125;</code></pre></div>
+
+<h2 id="有序链表"><a href="#有序链表" class="headerlink" title="有序链表"></a>有序链表</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Compare</span>, defaultCompare, defaultEquals &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../util&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">LinkedList</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./LinkedList.js&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SortLinkedList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">LinkedList</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">equalsFn = defaultEquals, compareFn = defaultCompare</span>) &#123;
+    <span class="hljs-variable language_">super</span>(equalsFn);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">compareFn</span> = compareFn;
+  &#125;
+
+  <span class="hljs-title function_">insert</span>(<span class="hljs-params">element, index = <span class="hljs-number">0</span></span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>().<span class="hljs-title function_">insert</span>(element, index);
+    &#125;
+    <span class="hljs-keyword">const</span> position = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getIndexNextSortedElement</span>(element);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>().<span class="hljs-title function_">insert</span>(element, position);
+  &#125;
+
+  <span class="hljs-title function_">getIndexNextSortedElement</span>(<span class="hljs-params">element</span>) &#123;
+    <span class="hljs-keyword">let</span> current = <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>;
+    <span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (; i &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>(); i++) &#123;
+      <span class="hljs-keyword">const</span> comp = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">compareFn</span>(element, current.<span class="hljs-property">element</span>);
+
+      <span class="hljs-keyword">if</span> (comp === <span class="hljs-title class_">Compare</span>.<span class="hljs-property">LESS_THAN</span>) &#123;
+        <span class="hljs-keyword">return</span> i;
+      &#125;
+
+      current = current.<span class="hljs-property">next</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> i;
+  &#125;
+&#125;
+</code></pre></div>
+
+<h2 id="通过链表创建栈"><a href="#通过链表创建栈" class="headerlink" title="通过链表创建栈"></a>通过链表创建栈</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">DoublyLinkedList</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./DoublyLinkedList&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StackLinkedList</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DoublyLinkedList</span>();
+  &#125;
+
+  <span class="hljs-title function_">push</span>(<span class="hljs-params">element</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">push</span>(element);
+  &#125;
+
+  <span class="hljs-title function_">pop</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">removeAt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">size</span>() - <span class="hljs-number">1</span>);
+  &#125;
+
+  <span class="hljs-title function_">peek</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">getElementAt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">size</span>() - <span class="hljs-number">1</span>);
+  &#125;
+
+  <span class="hljs-title function_">isEmpty</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">isEmpty</span>();
+  &#125;
+
+  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">size</span>();
+  &#125;
+
+  <span class="hljs-title function_">clear</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">clear</span>();
+  &#125;
+
+  <span class="hljs-title function_">toString</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">item</span>.<span class="hljs-title function_">toString</span>();
+  &#125;
+&#125;</code></pre></div>
+
+
                 
               </div>
             
@@ -299,6 +713,13 @@
 
     </div>
   
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+      
+    </div>
   
 </div>
 

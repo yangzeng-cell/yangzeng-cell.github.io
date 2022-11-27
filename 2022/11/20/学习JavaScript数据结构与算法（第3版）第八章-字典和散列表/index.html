@@ -1,0 +1,1075 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="字典和散列表Util.js&#x2F;&#x2F; 对两个数值进行浅层比较  export function defaultEquals(a, b) &amp;#123;   return a &#x3D;&#x3D;&#x3D; b; &amp;#125;  export function defaultToString(item) &amp;#123;   if (item &#x3D;&#x3D;&#x3D; null) &amp;#123;     return &quot;NULL&quot;;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习JavaScript数据结构与算法（第3版）第八章 字典和散列表">
+<meta property="og:url" content="http://example.com/2022/11/20/%E5%AD%A6%E4%B9%A0JavaScript%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC3%E7%89%88%EF%BC%89%E7%AC%AC%E5%85%AB%E7%AB%A0-%E5%AD%97%E5%85%B8%E5%92%8C%E6%95%A3%E5%88%97%E8%A1%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="字典和散列表Util.js&#x2F;&#x2F; 对两个数值进行浅层比较  export function defaultEquals(a, b) &amp;#123;   return a &#x3D;&#x3D;&#x3D; b; &amp;#125;  export function defaultToString(item) &amp;#123;   if (item &#x3D;&#x3D;&#x3D; null) &amp;#123;     return &quot;NULL&quot;;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-20T18:32:16.000Z">
+<meta property="article:modified_time" content="2022-11-27T04:23:02.838Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>学习JavaScript数据结构与算法（第3版）第八章 字典和散列表 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Piggy的记录版</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="学习JavaScript数据结构与算法（第3版）第八章 字典和散列表"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-20 18:32" pubdate>
+          2022年11月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          70 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">学习JavaScript数据结构与算法（第3版）第八章 字典和散列表</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="字典和散列表"><a href="#字典和散列表" class="headerlink" title="字典和散列表"></a>字典和散列表</h1><h2 id="Util-js"><a href="#Util-js" class="headerlink" title="Util.js"></a>Util.js</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 对两个数值进行浅层比较</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">defaultEquals</span>(<span class="hljs-params">a, b</span>) &#123;
+  <span class="hljs-keyword">return</span> a === b;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">defaultToString</span>(<span class="hljs-params">item</span>) &#123;
+  <span class="hljs-keyword">if</span> (item === <span class="hljs-literal">null</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;NULL&quot;</span>;
+  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (item === <span class="hljs-literal">undefined</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;undefined&quot;</span>;
+  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> item === <span class="hljs-string">&quot;string&quot;</span> || item <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">String</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;item&#125;</span>`</span>;
+  &#125;
+
+  <span class="hljs-keyword">return</span> item.<span class="hljs-title function_">toString</span>();
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Compare</span> = &#123;
+  <span class="hljs-attr">LESS_THAN</span>: -<span class="hljs-number">1</span>,
+  <span class="hljs-attr">BIGGER_THAN</span>: <span class="hljs-number">1</span>,
+&#125;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">defaultCompare</span>(<span class="hljs-params">a, b</span>) &#123;
+  <span class="hljs-keyword">if</span> (a === b) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+  &#125;
+  <span class="hljs-keyword">return</span> a &lt; b ? <span class="hljs-title class_">Compare</span>.<span class="hljs-property">LESS_THAN</span> : <span class="hljs-title class_">Compare</span>.<span class="hljs-property">BIGGER_THAN</span>;
+&#125;</code></pre></div>
+
+<h2 id="linked-list-models-js"><a href="#linked-list-models-js" class="headerlink" title="linked-list-models.js"></a>linked-list-models.js</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 定义每个节点的信息</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">element</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span> = element;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">next</span> = <span class="hljs-literal">undefined</span>;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DoublyNode</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Node</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">element, next, prev</span>) &#123;
+    <span class="hljs-variable language_">super</span>(element, next);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">prev</span> = prev;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ValuePair</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">key, value</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">key</span> = key;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">value</span> = value;
+  &#125;
+
+  <span class="hljs-title function_">toString</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`[<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.key&#125;</span>,<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.value&#125;</span>]`</span>;
+  &#125;
+&#125;</code></pre></div>
+
+<h2 id="Dictionary"><a href="#Dictionary" class="headerlink" title="Dictionary"></a>Dictionary</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">ValuePair</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../linked-list-models.js&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; defaultToString &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../util.js&quot;</span>;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Dictionary</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">toStrFn = defaultToString</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">toStrFn</span> = toStrFn;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span> = &#123;&#125;;
+  &#125;
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 向字典中添加新元素。如果 key 已经存在，那么已存在的 value 会 被新的值覆盖。</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">key</span></span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">value</span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-title function_">set</span>(<span class="hljs-params">key, value</span>) &#123;
+    <span class="hljs-keyword">if</span> (key != <span class="hljs-literal">null</span> &amp;&amp; value != <span class="hljs-literal">null</span>) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">toStrFn</span>(key)] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValuePair</span>(key, value);
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+  <span class="hljs-comment">//通过使用键值作为参数来从字典中移除键值对应的数据值</span>
+  <span class="hljs-title function_">remove</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hasKey</span>(key)) &#123;
+      <span class="hljs-keyword">delete</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">toStrFn</span>(key)];
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+
+  <span class="hljs-comment">// 如果某个键值存在于该字典中，返回 true，否则返回 false</span>
+  <span class="hljs-title function_">hasKey</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">toStrFn</span>(key)] != <span class="hljs-literal">null</span>;
+  &#125;
+
+  <span class="hljs-comment">//  通过以键值作为参数查找特定的数值并返回</span>
+  <span class="hljs-title function_">get</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">const</span> valuePair = <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">toStrFn</span>[key]];
+
+    <span class="hljs-keyword">return</span> valuePair == <span class="hljs-literal">null</span> ? <span class="hljs-string">&quot;undefined&quot;</span> : valuePair.<span class="hljs-property">value</span>;
+  &#125;
+
+  <span class="hljs-comment">//删除该字典中的所有值</span>
+  <span class="hljs-title function_">clear</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span> = &#123;&#125;;
+  &#125;
+
+  <span class="hljs-comment">//返回字典所包含值的数量。与数组的 length 属性类似</span>
+  <span class="hljs-title function_">size</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>).<span class="hljs-property">length</span>;
+  &#125;
+
+  <span class="hljs-comment">//在 size 等于零的时候返回 true，否则返回 false</span>
+
+  <span class="hljs-title function_">isEmpty</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>() === <span class="hljs-number">0</span> ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;
+  &#125;
+
+  <span class="hljs-comment">// 将字典所包含的所有键名以数组形式返回</span>
+  <span class="hljs-title function_">keys</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">keyValues</span>().<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">valuePair</span>) =&gt;</span> valuePair.<span class="hljs-property">key</span>);
+  &#125;
+
+  <span class="hljs-comment">// 将字典所包含的所有数值以数组形式返回</span>
+  <span class="hljs-title function_">values</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">keyValues</span>().<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">valuePair</span>) =&gt;</span> valuePair.<span class="hljs-property">value</span>);
+  &#125;
+
+  <span class="hljs-comment">//将字典中所有[键，值]对返回</span>
+  <span class="hljs-title function_">keyValues</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-comment">// return Object.values(this.table);</span>
+    <span class="hljs-keyword">const</span> valuePairs = [];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>) &#123;
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hasKey</span>(key)) &#123;
+        valuePairs.<span class="hljs-title function_">push</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[key]);
+      &#125;
+    &#125;
+
+    <span class="hljs-keyword">return</span> valuePairs;
+  &#125;
+
+  <span class="hljs-comment">//迭代字典中所有的键值对。callbackFn 有两个参数:key 和value。该方法可以在回调函数返回 false 时被中止(和 Array 类中的 every 方法相似)。</span>
+  <span class="hljs-title function_">foreach</span>(<span class="hljs-params">callbackFN</span>) &#123;
+    <span class="hljs-keyword">const</span> valuePairs = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">keyValues</span>();
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; valuePairs.<span class="hljs-property">length</span>; i++) &#123;
+      <span class="hljs-keyword">const</span> result = <span class="hljs-title function_">callbackFN</span>(valuePairs[i].<span class="hljs-property">key</span>, valuePairs[i].<span class="hljs-property">value</span>);
+      <span class="hljs-keyword">if</span> (result === <span class="hljs-literal">false</span>) &#123;
+        <span class="hljs-keyword">break</span>;
+      &#125;
+    &#125;
+  &#125;
+
+  <span class="hljs-title function_">toString</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isEmpty</span>()) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
+    &#125;
+
+    <span class="hljs-keyword">const</span> valuePairs=<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">keyValues</span>()
+    <span class="hljs-keyword">let</span> str=valuePairs[<span class="hljs-number">0</span>].<span class="hljs-title function_">toString</span>()
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>=<span class="hljs-number">1</span>;i&lt;valuePairs.<span class="hljs-property">length</span>;i++)&#123;
+      str+=<span class="hljs-string">`,<span class="hljs-subst">$&#123;valuePairs[i].toString()&#125;</span>`</span>
+    &#125;
+    <span class="hljs-keyword">return</span> str
+  &#125;
+
+&#125;</code></pre></div>
+
+<h2 id="散列表"><a href="#散列表" class="headerlink" title="散列表"></a>散列表</h2><p>HashTable 类，也叫 HashMap 类，它是 Dictionary 类的一种散列表实现方式。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">ValuePair</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../linked-list-models&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; defaultToString &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../util&quot;</span>;
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 基础版，相同的hashkey的话会被覆盖</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HashTable</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">toStrFn = defaultToString</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">toStrFn</span> = toStrFn;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span> = &#123;&#125;;
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 向散列表增加一个新的项（也能更新散列表）</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">key</span></span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">value</span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-title function_">put</span>(<span class="hljs-params">key, value</span>) &#123;
+    <span class="hljs-keyword">if</span> (key == <span class="hljs-literal">null</span> || value == <span class="hljs-literal">null</span>) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+
+    <span class="hljs-keyword">const</span> position = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashCode</span>(key);
+
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValuePair</span>(position, value);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  &#125;
+  <span class="hljs-comment">// 根据键值从散列表中移除值</span>
+  <span class="hljs-title function_">remove</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">const</span> hash = <span class="hljs-variable language_">this</span>.<span class="hljs-property">hashCode</span>[key];
+    <span class="hljs-keyword">const</span> valuePair = <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[hash];
+
+    <span class="hljs-keyword">if</span> (valuePair != <span class="hljs-literal">null</span>) &#123;
+      <span class="hljs-keyword">delete</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[hash];
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+  <span class="hljs-comment">// 返回根据键值检索到的特定的值</span>
+  <span class="hljs-title function_">get</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">const</span> valuePair = thia.<span class="hljs-property">table</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashCode</span>(key)];
+    <span class="hljs-keyword">return</span> valuePair == <span class="hljs-literal">null</span> ? <span class="hljs-literal">undefined</span> : valuePair.<span class="hljs-property">value</span>;
+  &#125;
+
+  <span class="hljs-title function_">loseloseHashCode</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> key === <span class="hljs-string">&quot;number&quot;</span>) &#123;
+      <span class="hljs-keyword">return</span> key;
+    &#125;
+
+    <span class="hljs-keyword">const</span> tableKey = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">toStrFn</span>(key);
+    <span class="hljs-keyword">let</span> hash = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; tableKey.<span class="hljs-property">length</span>; i++) &#123;
+      hash += <span class="hljs-variable language_">this</span>.<span class="hljs-property">tableKey</span>.<span class="hljs-title function_">charCodeAt</span>(tableKey[i]);
+    &#125;
+
+    <span class="hljs-keyword">return</span> hash % <span class="hljs-number">37</span>;
+  &#125;
+
+  <span class="hljs-title function_">hashCode</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">loseloseHashCode</span>(key);
+  &#125;
+&#125;
+</code></pre></div>
+
+<h2 id="处理散列表中的冲突"><a href="#处理散列表中的冲突" class="headerlink" title="处理散列表中的冲突"></a>处理散列表中的冲突</h2><p>分离链接法包括为散列表的每一个位置创建一个链表并将元素存储在里面。它是解决冲突的最简单的方法，但是在 HashTable 实例之外还需要额外的存储空间。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; defaultToString &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../util&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">LinkedList</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../LinkedList/LinkedList&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">ValuePair</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../linked-list-models&quot;</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HashTableSeparateChaining</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">toStrFn = defaultToString</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">toStrFn</span> = toStrFn;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span> = &#123;&#125;;
+  &#125;
+  <span class="hljs-title function_">loseloseHashCode</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> key === <span class="hljs-string">&quot;number&quot;</span>) &#123;
+      <span class="hljs-keyword">return</span> key;
+    &#125;
+
+    <span class="hljs-keyword">const</span> tableKey = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">toStrFn</span>(key);
+    <span class="hljs-keyword">let</span> hash = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; tableKey.<span class="hljs-property">length</span>; i++) &#123;
+      hash += <span class="hljs-variable language_">this</span>.<span class="hljs-property">tableKey</span>.<span class="hljs-title function_">charCodeAt</span>(tableKey[i]);
+    &#125;
+
+    <span class="hljs-keyword">return</span> hash % <span class="hljs-number">37</span>;
+  &#125;
+
+  <span class="hljs-title function_">hashCode</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">loseloseHashCode</span>(key);
+  &#125;
+
+  <span class="hljs-title function_">put</span>(<span class="hljs-params">key, value</span>) &#123;
+    <span class="hljs-keyword">if</span> (key != <span class="hljs-literal">null</span> || value != <span class="hljs-literal">null</span>) &#123;
+      <span class="hljs-keyword">const</span> position = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashCode</span>(key);
+
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position] == <span class="hljs-literal">null</span>) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>();
+      &#125;
+      <span class="hljs-keyword">const</span> valuePair = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValuePair</span>(key, value);
+
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position].<span class="hljs-title function_">push</span>(valuePair);
+
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+
+  <span class="hljs-title function_">get</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">const</span> position = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashCode</span>(key);
+
+    <span class="hljs-keyword">const</span> linkedList = <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position];
+
+    <span class="hljs-keyword">if</span> (linkedList != <span class="hljs-literal">null</span> &amp;&amp; !linkedList.<span class="hljs-title function_">isEmpty</span>()) &#123;
+      <span class="hljs-keyword">let</span> current = linkedList.<span class="hljs-title function_">getHead</span>();
+      <span class="hljs-keyword">while</span> (current != <span class="hljs-literal">null</span>) &#123;
+        <span class="hljs-keyword">if</span> (current.<span class="hljs-property">element</span>.<span class="hljs-property">key</span> === key) &#123;
+          <span class="hljs-keyword">return</span> current.<span class="hljs-property">element</span>.<span class="hljs-property">value</span>;
+        &#125;
+        current = current.<span class="hljs-property">next</span>;
+      &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+  &#125;
+
+  <span class="hljs-title function_">remove</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">const</span> position = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashCode</span>(key);
+
+    <span class="hljs-keyword">const</span> linkedList = <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position];
+
+    <span class="hljs-keyword">if</span> (linkedList != <span class="hljs-literal">null</span> &amp;&amp; !linkedList.<span class="hljs-title function_">isEmpty</span>()) &#123;
+      <span class="hljs-keyword">let</span> current = linkedList.<span class="hljs-title function_">getHead</span>();
+      <span class="hljs-keyword">while</span> (!current) &#123;
+        <span class="hljs-keyword">if</span> (current.<span class="hljs-property">element</span>.<span class="hljs-property">key</span> === key) &#123;
+          linkedList.<span class="hljs-title function_">remove</span>(current.<span class="hljs-property">element</span>);
+          <span class="hljs-keyword">if</span> (linkedList.<span class="hljs-title function_">isEmpty</span>()) &#123;
+            <span class="hljs-keyword">delete</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position];
+          &#125;
+          <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        &#125;
+        current = current.<span class="hljs-property">next</span>;
+      &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+&#125;
+</code></pre></div>
+
+<p>另一种解决冲突的方法是线性探查。之所以称作线性，是因为它处理冲突的方法是将元素直接存储到表中，而不是在单独的数据结构中。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; defaultToString &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../util&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">LinkedList</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../LinkedList/LinkedList&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">ValuePair</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../linked-list-models&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HashTableLinearProbing</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">toStrFn = defaultToString</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">toStrFn</span> = toStrFn;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span> = &#123;&#125;;
+  &#125;
+  <span class="hljs-title function_">loseloseHashCode</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> key === <span class="hljs-string">&quot;number&quot;</span>) &#123;
+      <span class="hljs-keyword">return</span> key;
+    &#125;
+
+    <span class="hljs-keyword">const</span> tableKey = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">toStrFn</span>(key);
+    <span class="hljs-keyword">let</span> hash = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; tableKey.<span class="hljs-property">length</span>; i++) &#123;
+      hash += <span class="hljs-variable language_">this</span>.<span class="hljs-property">tableKey</span>.<span class="hljs-title function_">charCodeAt</span>(tableKey[i]);
+    &#125;
+
+    <span class="hljs-keyword">return</span> hash % <span class="hljs-number">37</span>;
+  &#125;
+
+  <span class="hljs-comment">//另外一种散列函数</span>
+  <span class="hljs-title function_">djb2HashCode</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">const</span> tableKey = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">toStrFn</span>(key);
+
+    <span class="hljs-keyword">let</span> hash = <span class="hljs-number">5381</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; tableKey.<span class="hljs-property">length</span>; i++) &#123;
+      hash = hash * <span class="hljs-number">33</span> + tableKey.<span class="hljs-title function_">charCodeAt</span>(i);
+    &#125;
+    <span class="hljs-keyword">return</span> hash % <span class="hljs-number">1013</span>;
+  &#125;
+
+  <span class="hljs-title function_">hashCode</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">loseloseHashCode</span>(key);
+  &#125;
+
+  <span class="hljs-title function_">put</span>(<span class="hljs-params">key, value</span>) &#123;
+    <span class="hljs-keyword">if</span> (key != <span class="hljs-literal">null</span> &amp;&amp; value != <span class="hljs-literal">null</span>) &#123;
+      <span class="hljs-keyword">const</span> position = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashCode</span>(key);
+      <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position]) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValuePair</span>(key, value);
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">let</span> index = position + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index]) &#123;
+          index++;
+        &#125;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValuePair</span>(key, value);
+      &#125;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+
+  <span class="hljs-title function_">get</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">const</span> position = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashCode</span>(key);
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position]) &#123;
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position].<span class="hljs-property">key</span> === key) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position].<span class="hljs-property">value</span>;
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">let</span> index = position + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index] != <span class="hljs-literal">null</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index].<span class="hljs-property">key</span> !== key) &#123;
+          index++;
+        &#125;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index] != <span class="hljs-literal">null</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index].<span class="hljs-property">key</span> === key) &#123;
+          <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index].<span class="hljs-property">value</span>;
+        &#125;
+      &#125;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+  &#125;
+
+  <span class="hljs-title function_">remove</span>(<span class="hljs-params">key</span>) &#123;
+    <span class="hljs-keyword">const</span> position = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashCode</span>(key);
+
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position]) &#123;
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position].<span class="hljs-property">key</span> === key) &#123;
+        <span class="hljs-keyword">delete</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[position];
+        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">verifyRemoveSideEffect</span>(key, position);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">let</span> index = position + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index] != <span class="hljs-literal">null</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index].<span class="hljs-property">key</span> !== key) &#123;
+          index++;
+        &#125;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index] != <span class="hljs-literal">null</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index].<span class="hljs-property">key</span> === key) &#123;
+          <span class="hljs-keyword">delete</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index];
+          <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">verifyRemoveSideEffect</span>(key, index);
+          <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        &#125;
+      &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+
+  <span class="hljs-title function_">verifyRemoveSideEffect</span>(<span class="hljs-params">key, removedPosition</span>) &#123;
+    <span class="hljs-keyword">const</span> hash = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashCode</span>(key);
+
+    <span class="hljs-keyword">let</span> index = removedPosition + <span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">while</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index] != <span class="hljs-literal">null</span>) &#123;
+      <span class="hljs-keyword">const</span> posHash = <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index].<span class="hljs-property">key</span>];
+
+      <span class="hljs-keyword">if</span> (posHash &lt;= hash || posHash &lt;= removedPosition) &#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[removedPosition] = <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index];
+        <span class="hljs-keyword">delete</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">table</span>[index];
+
+        removedPosition = index;
+      &#125;
+      index++;
+    &#125;
+  &#125;
+&#125;
+
+</code></pre></div>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>学习JavaScript数据结构与算法（第3版）第八章 字典和散列表</div>
+      <div>http://example.com/2022/11/20/学习JavaScript数据结构与算法（第3版）第八章-字典和散列表/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/20/%E5%AD%A6%E4%B9%A0JavaScript%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC3%E7%89%88%EF%BC%89%E7%AC%AC%E5%8D%81%E7%AB%A0-%E6%A0%91/" title="学习JavaScript数据结构与算法（第3版）第十章 树">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">学习JavaScript数据结构与算法（第3版）第十章 树</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/20/%E5%AD%A6%E4%B9%A0JavaScript%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC3%E7%89%88%EF%BC%89%E7%AC%AC%E4%B8%83%E7%AB%A0-%E9%9B%86%E5%90%88/" title="学习JavaScript数据结构与算法（第3版）第七章 集合">
+                        <span class="hidden-mobile">学习JavaScript数据结构与算法（第3版）第七章 集合</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
