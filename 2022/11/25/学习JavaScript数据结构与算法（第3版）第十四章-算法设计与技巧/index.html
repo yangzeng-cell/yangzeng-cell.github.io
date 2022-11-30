@@ -24,7 +24,7 @@
 <meta property="og:description" content="分而治之了归并和排序算法。两者的共同点在于它们都是分而治之算法。分而治之是算法设计中的一种方法。它将一个问题分成多个和原问题相似的小问题，递归解决小问题，再将解决方式合并以解决原来的问题 分而治之算法可以分成三个部分 (1) 分解原问题为多个子问题（原问题的多个小实例）。 (2) 解决子问题，用返回解决子问题的方式的递归算法。递归算法的基本情形可以用来解决子 问题。 (3) 组合这些子问题的解决方">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-25T22:44:56.000Z">
-<meta property="article:modified_time" content="2022-11-27T04:23:02.838Z">
+<meta property="article:modified_time" content="2022-11-30T15:11:29.329Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.7k 字
+          8.5k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          57 分钟
+          72 分钟
         
       </span>
     
@@ -542,6 +542,82 @@ console.log(knap<span class="hljs-constructor">Sack(<span class="hljs-params">ca
 </code></pre></div>
 
 <p>LCS 问题也可以写成递归形式。你可以在本书的源代码包中找到它的递归版本</p>
+<h2 id="矩阵链相乘"><a href="#矩阵链相乘" class="headerlink" title="矩阵链相乘"></a>矩阵链相乘</h2><p>矩阵链相乘是另一个可以用动态规划解决的著名问题。这个问题是要找出一组矩阵相乘的最佳方式（顺序）。</p>
+<p>让我们试着更好地理解这个问题。<em>n</em> 行 <em>m</em> 列的矩阵 <strong>A</strong> 和 <em>m</em> 行 <em>p</em> 列的矩阵 <strong>B</strong> 相乘，结果是 <em>n</em> 行 <em>p</em> 列的矩阵 <strong>C</strong>。</p>
+<p>考虑我们想做 <strong>A</strong><em><strong>B</strong></em><strong>C</strong>*<strong>D</strong> 的乘法。因为乘法满足结合律，所以我们可以让这些矩阵以任意顺序相乘。因此，考虑如下情况：</p>
+<p> <strong>A</strong> 是一个 10 行 100 列的矩阵；</p>
+<p> <strong>B</strong> 是一个 100 行 5 列的矩阵；</p>
+<p> <strong>C</strong> 是一个 5 行 50 列的矩阵；</p>
+<p> <strong>D</strong> 是一个 50 行 1 列的矩阵；</p>
+<p> <strong>A</strong><em><strong>B</strong></em><strong>C</strong>*<strong>D</strong> 的结果是一个 10 行 1 列的矩阵。</p>
+<p>在这个例子里，相乘的方式有五种。</p>
+<p>(1) (<strong>A</strong>(<strong>B</strong>(<strong>CD</strong>)))：乘法运算的次数是 1750 次。</p>
+<p>(2) ((<strong>AB</strong>)(<strong>CD</strong>))：乘法运算的次数是 5300 次。</p>
+<p>(3) (((<strong>AB</strong>)<strong>C</strong>)<strong>D</strong>)：乘法运算的次数是 8000 次。</p>
+<p>(4) ((<strong>A</strong>(<strong>BC</strong>))<strong>D</strong>)：乘法运算的次数是 75 500 次。</p>
+<p>(5) (<strong>A</strong>((<strong>BC</strong>)<strong>D</strong>))：乘法运算的次数是 31 000 次。</p>
+<p>相乘的顺序不一样，要进行的乘法运算总数也有很大差异。那么，要如何构建一个算法，求出最少的乘法运算次数？矩阵链相乘的算法如下。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//矩阵链相乘</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">matrixChainOrder</span>(<span class="hljs-params">p</span>) &#123;
+  <span class="hljs-keyword">const</span> n = p.<span class="hljs-property">length</span>;
+  <span class="hljs-keyword">const</span> m = [];
+  <span class="hljs-keyword">const</span> s = [];
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) &#123;
+    m[i] = [];
+    m[i][i] = <span class="hljs-number">0</span>;
+  &#125;
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> l = <span class="hljs-number">2</span>; l &lt; n; l++) &#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt;= n - l + <span class="hljs-number">1</span>; i++) &#123;
+      <span class="hljs-keyword">const</span> j = i + l - <span class="hljs-number">1</span>;
+      m[i][j] = <span class="hljs-title class_">Number</span>.<span class="hljs-property">MAX_SAFE_INTEGER</span>;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> k = <span class="hljs-number">0</span>; k &lt;= j - <span class="hljs-number">1</span>; k++) &#123;
+        <span class="hljs-keyword">const</span> q = m[i][k] + m[k + <span class="hljs-number">1</span>][j] + p[i - <span class="hljs-number">1</span>] * p[k] * p[j]; <span class="hljs-comment">//&#123;1&#125;</span>
+        <span class="hljs-keyword">if</span> (q &lt; m[i][j]) &#123;
+          m[i][j] = q; <span class="hljs-comment">//&#123;2&#125;</span>
+        &#125;
+      &#125;
+    &#125;
+  &#125;
+  <span class="hljs-keyword">return</span> m[<span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
+&#125;</code></pre></div>
+
+<p>整个算法中最重要的是行{1}，神奇之处全都在这一行。它计算了给定括号顺序的乘法运算次数，并将值保存在辅助矩阵 m 中。对开头的例子执行上面的算法，会得到结果 1750。正如我们前面提到的，这是最少的运算次数。看看下面的代码。</p>
+<div class="code-wrapper"><pre><code class="hljs arcade">const p = [<span class="hljs-number">10</span>, <span class="hljs-number">100</span>, <span class="hljs-number">5</span>, <span class="hljs-number">50</span>, <span class="hljs-number">1</span>]; 
+
+<span class="hljs-built_in">console</span>.<span class="hljs-built_in">log</span>(matrixChainOrder(p));</code></pre></div>
+
+<p>然而，这个算法也不会给出最优解的括号顺序。为了得到这些信息，我们可以对代码做一些改动。</p>
+<p>首先，需要通过以下代码声明并初始化一个辅助矩阵 s。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> s = []; 
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++)&#123; 
+ s[i] = []; 
+ <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j=<span class="hljs-number">0</span>; j &lt;= n; j++)&#123; 
+ s[i][j] = <span class="hljs-number">0</span>; 
+ &#125; 
+&#125;</code></pre></div>
+
+<p>然后，在 matrixChainOrder 函数的行{2}添加下面的代码。</p>
+<div class="code-wrapper"><pre><code class="hljs js">s[i][j] = k;</code></pre></div>
+
+<p>在行{3}，我们调用打印括号的函数，如下所示。</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml">print<span class="hljs-constructor">OptimalParenthesis(<span class="hljs-params">s</span>, 1, <span class="hljs-params">n</span>-1)</span>;</code></pre></div>
+
+<p>最后，我们的 printOptimalParenthesis 函数如</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">printOptimalParenthesis</span>(<span class="hljs-params">s, i, j</span>) &#123;
+  <span class="hljs-keyword">if</span> (i === j) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;A[&quot;</span> + i + <span class="hljs-string">&quot;]&quot;</span>);
+  &#125; <span class="hljs-keyword">else</span> &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;(&quot;</span>);
+    <span class="hljs-title function_">printOptimalParenthesis</span>(s, i, s[i][j]);
+    <span class="hljs-title function_">printOptimalParenthesis</span>(s, s[i][j] + <span class="hljs-number">1</span>, j);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;)&quot;</span>);
+  &#125;
+&#125;</code></pre></div>
+
+<p>执行修改后的算法，也能得到括号的最佳顺序(A<a href="A%5B2%5D(A%5B3%5DA%5B4%5D)">1</a>)，并可以转化为(A(B(CD)))。</p>
+<h1 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h1><p>贪心算法遵循一种近似解决问题的技术，期盼通过每个阶段的局部最优选择（当前最好的解），从而达到全局的最优（全局最优解）。它不像动态规划算法那样计算更大的格局。我们来看看如何用贪心算法解决动态规划话题中最少硬币找零问题和背包问题</p>
+<p>我们在第 12 章介绍了一些其他的贪心算法，比如 Dijkstra 算法、Prim 算法和Kruskal 算法。</p>
 
                 
               </div>
@@ -632,7 +708,7 @@ console.log(knap<span class="hljs-constructor">Sack(<span class="hljs-params">ca
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/11/27/hello-world/" title="Hello World">
+                      <a href="/2022/11/30/hello-world/" title="Hello World">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">上一篇</span>
