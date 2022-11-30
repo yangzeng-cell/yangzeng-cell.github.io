@@ -2,7 +2,7 @@
 title: react源码
 date: 2022-11-02 23:07:16
 tags:
-- [reac源码]
+- [react源码]
 categories:
 - [react,react源码]
 ---
