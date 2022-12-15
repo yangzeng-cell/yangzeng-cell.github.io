@@ -284,3 +284,346 @@ while(start < SIZE) { ➌//以 1 MB 为步长迭代数据块
 XHR 不支持请求流，这意味着在调用 send() 时必须提供完整的文件。不过，前面的例子示范了一个简单的解决方案：切分文件，然后通过多个 XHR 请求分段上传。这种实现方案当然不能替代真正的请求流 API，但对某些应用来说却是一个可行的方案。
 
 ***切分大文件上传是个不错的技巧，适合连接不稳定或经常中断的场景。此时，假如某个块由于掉线而上传失败，应用可以随后只重新上传该块，而不必重新上传整个大文件。***
+
+#### 监控下载和上传进度
+
+因为网络连接可能中断，而延时或者带宽也是高度不稳定。XHR提供了监听进度的事件API
+
+| 事件类型  | 说明       | 触发次数 |
+| --------- | ---------- | -------- |
+| loadstart | 传输已开始 | 一次     |
+| progress  | 正在传输   | 零或一次 |
+| error     | 传输出错   | 零或一次 |
+| abort     | 传输中止   | 零或一次 |
+| load      | 传输成功   | 零或一次 |
+| loadend   | 传输完成   | 一次·    |
+
+每个 XHR 请求开始时都会触发 loadstart 事件，而结束时都会触发 loadend 事件。在这两事件之间，还可能触发一或多个其他事件，表示传输状态。因此，要监控进度，可以在 XHR 对象上注册一系列 JavaScript 事件监听器：
+
+```js
+var xhr = new XMLHttpRequest();
+xhr.open('GET','/resource');
+xhr.timeout = 5000; //➊设置请求的超时时间为 5000 ms（默认无超时限制）
+xhr.addEventListener('load', function() { ... }); //➋为请求成功注册回调
+xhr.addEventListener('error', function() { ... }); //➌为请求失败注册回调
+var onProgressHandler = function(event) { if(event.lengthComputable) {
+ var progress = (event.loaded / event.total) * 100; //➍计算传输进度
+ ...
+ }
+}
+xhr.upload.addEventListener('progress', onProgressHandler);// ➎为上传进度事件注册回调
+xhr.addEventListener('progress', onProgressHandler);// ➏为下载进度事件注册回调
+xhr.send();
+```
+
+无 论 load 和 error 中 的 哪 一 个 被 触 发 了， 都 代 表 XHR 传 输 的 最 终 状 态， 而progress 事件则可能触发任意多次，这就为监控传输状态提供了便利：我们可以比较 loaded 与 total 属性，估算传输完成的数据比例。
+
+**<u>*要估算传输完成的数据量，服务器必须在其响应中提供内容长度（ContentLength）首部。而对于分块数据，由于响应的总长度未知，因此就无法估计进度了。*</u>**
+
+**<u>*另外，XHR 请求默认没有超时限制，这意味着一个请求的“进度”可以无限长。作为最佳实践，一定要为应用设置合理的超时时间，并适当处理错误。</u>***
+
+#### 通过XHR实现流式数据传输
+
+XHR很难实现流传输。
+
+**上传时，send 方法只接受完整的载荷**
+
+**response、responseText 和 responseXML 属性也不是为流设计的**
+
+虽然没有官方的api为实现流的传输的，但是还有有人提供了一些方法来实现：
+
+```
+Web 应用必须有能力获得并操作各种形式的数据，包括随着时间推移逐渐可用的一系列数据。本规范定义了流的基本表示法、流触发的错误，以及通过
+编程方式读取和创建流的方式。
+																																															——W3C Streams API
+```
+
+但是这种xhr+streams的方式还没有浏览器实现，但是虽然通过上传无法实现这种方式，但是下载还是可以通过流传输的
+
+```js
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '/stream');
+xhr.seenBytes = 0;
+xhr.onreadystatechange = function() { ➊//预订状态和进度通知
+ if(xhr.readyState > 2) {
+ var newData = xhr.responseText.substr(xhr.seenBytes); ➋//从部分响应中提取新数据
+ // 处理 newData
+ xhr.seenBytes = xhr.responseText.length; ➌//更新处理的字节偏移量
+ }
+};
+xhr.send();
+```
+
+这个例子在多数现代浏览器中都可以运行，但性能并不理想。另外，还有很多关于实现的问题和注意事项。
+
+我们是手工跟踪看到的字节的偏移量，然后再手工切分数据：responseText 则缓冲了完整的响应！对于少量数据传输而言，这不是问题。但如果下载的数据很大，特别是在内存十分有限的设备比如手机上，这就是问题了。释放缓冲数据的唯一方式就是完成当前请求，并且打开一个新请求。部分响应只能通过读取 responseText 属性获取，因此也就只能局限于文本数据了。没有办法部分读取二进制数据的响应。读取完部分数据后，我们必须自己标识数据的界限：应用代码必须定义自己的数据格式，然后再缓冲并解析数据流，提取出相应的信息。浏览器缓冲收到数据的方式也不相同：有的会立即释放，而有的只缓冲小响应，对较大的响应块则立即释放。浏览器允许递增读取的数据类型也不一样：有的允许 text/html，而有的只允许application/x-javascript。
+
+虽然 XHR 满足不了我们的要求，我们还有其他办法，而且是专门为流式数据处理设计的：Server-Sent Events 提供方便的流 API，用于从服务器向客户端发送文本数据，而 WebSocket 则提供了高效、双向的流机制，而且同时支持二进制和文本数据。
+
+#### 实时通知与交付
+
+XHR 提供了一种简单有效的客户端与服务器同步的方式：必要时，客户端可以向服务器发送一个 XHR 请求，以更新服务器上的相应数据。然而，实现同样但相反的操作却要困难一些。如果服务器的数据更新了，那怎么通知客户端呢？主流浏览器对 XHR 流的支持有限，那我们就只能使用 XHR 轮询了
+
+##### 通过XHR实现轮询
+
+从服务器取得更新的一个最简单的办法，就是客户端在后台定时发起 XHR 请求，也就是轮询（polling）。如果服务器有新数据，返回新数据，否则返回空响应。
+
+轮询实现起来简单，但也经常效率很低。其中关键在于选择轮询间隔：长轮询间隔意味着延迟交付，而短轮询间隔会导致客户端与服务器间不必要的流量和协议开销
+
+```
+function checkUpdates(url) {
+ var xhr = new XMLHttpRequest();
+ xhr.open('GET', url);
+ xhr.onload = function() { ... }; ➊
+ xhr.send();
+}
+setInterval("checkUpdates('/updates'), 60000"); ➋
+```
+
+##### 通过XHR实现长轮询
+
+定时轮询的一个大问题就是很可能造成大量没必要的空检查。我们需要对此进行改进，在没有更新的时候不再返回空响应，而是把连接保持到有更新的时候。
+
+通过将连接一直保持打开到有更新（长轮询），就可以把更新立即从服务器发送给客户端。这样，长轮询就解决了消息交付延迟的问题，同时也消灭了空检查，减少了XHR 请求次数和轮询的整体开销。在交付更新后，长轮询请求完成，然后客户端再发送下一次长轮询请求，等待下一次更新：
+
+```js
+function checkUpdates(url) {
+ var xhr = new XMLHttpRequest();
+ xhr.open('GET', url);
+ xhr.onload = function() { ➊//处理更新并打开新的长轮询 XHR
+ ...
+ checkUpdates('/updates'); ➋//发送长轮询请求并等待下次更新（如此不停循环）
+ };
+ xhr.send();
+}
+checkUpdates('/updates'); ➌//发送第一次长轮询 XHR 请求
+```
+
+这样的话，是不是可以说长轮询永远都比定时轮询好呢？除非更新到达频率已知且固定，否则长轮询的延迟总是最短的。如果延迟是一个重要考虑因素，那么长轮询就是最好方案
+
+从另一方面看，还需要更仔细地分析一下开销。首先，每次更新都会伴有相同的HTTP 开销，即每次更新都需要一次独立的 HTTP 请求。如果更新频率很高，那么长轮询又会导致比定时轮询更多的 XHR 请求！
+
+长轮询通过最小化延迟可以动态适应更新频率，这种行为可能是也可能不是我们所期望的。如果应用可以容许一定时间的延迟，那么定时轮询可能更有效。因为在更新频率很高的情况下，定时轮询就是一个简单的“更新累积”机制，不仅能减少请求次数，还能减少对手机电量的消耗。
+
+### 服务器发送事件
+
+Server-Sent Events（SSE）让服务器可以向客户端流式发送文本消息，比如服务器上生成的实时通知或更新。为达到这个目标，SSE 设计了两个组件：浏览器中的EventSource 和新的“事件流”数据格式。其中，EventSource 可以让客户端以 DOM事件的形式接收到服务器推送的通知，而新数据格式则用于交付每一次更新
+
+EventSource API 和定义完善的事件流数据格式，使得 SSE 成为了在浏览器中处理实时数据的高效而不可或缺的工具：
+
+通过一个长连接低延迟交付；
+
+高效的浏览器消息解析，不会出现无限缓冲；
+
+自动跟踪最后看到的消息及自动重新连接；
+
+消息通知在客户端以 DOM 事件形式呈现。
+
+实际上，SSE 提供的是一个高效、跨浏览器的 XHR 流实现，消息交付只使用一个长 HTTP 连接。然而，与我们自己实现 XHR 流不同，浏览器会帮我们管理连接、解析消息，从而让我们只关注业务逻辑。
+
+#### EventSource API
+
+EventSource 接口通过一个简单的浏览器 API 隐藏了所有的底层细节，包括建立连接和解析消息。要使用它，只需指定 SSE 事件流资源的 URL，并在该对象上注册相应 JavaScript 事件监听器即可：
+
+```js
+var source = new EventSource("/path/to/stream-url"); //➊打开到流终点的 SSE 连接
+source.onopen = function () { ... }; //➋可选的回调，建立连接时调用
+source.onerror = function () { ... };//➌可选的回调，连接失败时调用
+source.addEventListener("foo", function (event) { //➍监听 "foo" 事件，调用自定义代码
+ processFoo(event.data);
+});
+source.onmessage = function (event) { //➎监听所有事件，不明确指定事件类型
+ log_message(event.id, event.data);
+ if (event.id== "CLOSE") {
+ source.close(); //➏如果服务器发送 "CLOSE" 消息 ID，关闭 SSE 连接
+ }
+}
+```
+
+***EventSource 可以像常规 XHR 一样利用 CORS 许可及选择同意机制，实现客户端到远程服务器的流式事件数据传输。***
+
+***SSE 实现了节省内存的 XHR 流。与原始的 XHR 流在连接关闭前会缓冲接收到的所有响应不同，SSE 连接会丢弃已经处理过的消息，而不会在内存中累积***
+
+EventSource 接口还能自动重新连接并跟踪最近接收的消息：如果连接断开了，EventSource 会自动重新连接到服务器，还可以向服务器发送上一次接收到的消息 ID，以便服务器重传丢失的消息并恢复流。
+
+针对不支持SSE的浏览器我们可以这么处理：
+
+```js
+if (!window.EventSource) {
+ // 加载 JavaScript 腻子脚本
+}
+var source = new EventSource("/event-stream-endpoint");
+```
+
+使用腻子脚本的好处，仍然是让我们只关注应用逻辑，而不是因浏览器支持情况闹心。
+
+不支持的可以使用XHR的轮询。腻子脚本只是提供了一致的 API，底层的 XHR 传输机制依旧不那么高效：
+
+XHR 轮询会导致消息延迟和很高的请求开销；
+
+XHR 长轮询能最小化延迟，但开销还是很高；
+
+XHR 对流的支持有限，且在内存中缓冲所有数据
+
+#### Event Stream协议
+
+SSE 事件流是以流式 HTTP 响应形式交付的：客户端发起常规 HTTP 请求，服务器以自定义的“text/event-stream”内容类型响应，然后交付 UTF-8 编码的事件数据。
+
+```js
+=> 请求
+GET /stream HTTP/1.1 //➊ 客户端通过 EventSource 接口发起连接
+Host: example.com
+Accept: text/event-stream
+<= 响应
+HTTP/1.1 200 OK //➋ 服务器以 "text/event-stream" 内容类型响应
+Connection: keep-alive
+Content-Type: text/event-stream
+Transfer-Encoding: chunked
+retry: 15000 //➌ 服务器设置连接中断后重新连接的间隔时间（15 s）
+data: First message is a simple string. //➍ 不带消息类型的简单文本事件
+data: {"message": "JSON payload"} //➎ 不带消息类型的 JSON 数据载荷
+event: foo //➏ 类型为 "foo" 的简单文本事件
+data: Message of type "foo"
+id: 42 // ➐带消息 ID 和类型的多行事件
+event: bar
+data: Multi-line message of
+data: type "bar" and id "42"
+id: 43 //➑带可选 ID 的简单文本事件
+data: Last message, id "43"
+```
+
+以上事件流协议很好理解，也很好实现：
+
+• 事件载荷就是一或多个相邻 data 字段的值；
+
+• 事件可以带 ID 和 event 表示事件类型；
+
+• 事件边界用换行符标识。
+
+在接收端，EventSource 接口通过检查换行分隔符来解析到来的数据流，从 data 字段中提取有效载荷，检查可选的 ID 和类型，最后再分派一个 DOM 事件告知应用。如果存在某个类型，那么就会触发自定义的 DOM 事件处理程序；否则，就会调用通用的 onmessage 回调
+
+##### SSE 中的 UTF-8 编码与二进制传输
+
+EventSource 不会对实际载荷进行任何额外处理：从一或多个 data 字段中提取出来的消息，会被拼接起来直接交给应用。因此，服务器可以推送任何文本格式（例如，简单字符串、JSON，等等），应用必须自己解码。话虽如此，但所有事件源数据都是 UTF-8 编码的：SSE 不是为传输二进制载荷而设计的！如果有必要，可以把二进制对象编码为 base64 形式，然后再使用 SSE。但这样会导致很高（33%）的字节开销，担心 UTF-8 编码也会造成高开销？ SSE 连接本质上是 HTTP 流式响应，因此响应是可以压缩的（如 gzip 压缩），就跟压缩其他 HTTP 响应一样，而且是动态压缩！虽然 SSE 不是为传输二进制数据而设计的，但它却是一个高效的机制——只要让你的服务器对 SSE 流应用 gzip 压缩。不支持二进制传输是有意为之的。SSE 的设计目标是简单、高效，作为一种服务器向客户端传送文本数据的机制。如果你想传输二进制数据，WebSocket 才是更合适的选择
+
+最后，除了自动解析事件数据，SSE 还内置支持断线重连，以及恢复客户端因断线而丢失的消息。默认情况下，如果连接中断，浏览器会自动重新连接。SSE 规范建议的间隔时间是 2~3 s，这也是大多数浏览器采用的默认值。不过，服务器也可以设置一个自定义的间隔时间，只要在推送任何消息时向客户端发送一个 retry 命令即可。
+
+类似地，服务器还可以给每条消息关联任意 ID 字符串。浏览器会自动记录最后一次收到的消息 ID，并在发送重连请求时自动在 HTTP 首部追加“Last-Event-ID”值。下面看一个例子：
+
+```js
+（既有 SSE 连接）
+retry: 4500 //➊ 服务器将客户端的重连间隔设置为 4.5 s
+id: 43 //➋ 简单文本事件，ID:43
+data: Lorem ipsum
+（连接断开）
+（4500 ms 后）
+=> 请求
+GET /stream HTTP/1.1 //➌ 带最后一次事件 ID 的客户端重连请求
+Host: example.com
+Accept: text/event-stream
+Last-Event-ID: 43
+<= 响应
+HTTP/1.1 200 OK //➍ 服务器以 'text/event-stream' 内容类型响应
+Content-Type: text/event-stream
+Connection: keep-alive
+Transfer-Encoding: chunked
+id: 44 //➎ 简单文本事件，ID:44
+data: dolor sit amet
+```
+
+客户端应用不必为重新连接和记录上一次事件 ID 编写任何代码。这些都由浏览器自动完成，然后就是服务器负责恢复了。值得注意的是，根据应用的要求和数据流，服务器可以采取不同的实现策略。
+
+如果丢失消息可以接受，就不需要事件 ID 或特殊逻辑，只要让客户端重连并恢复数据流即可。如果必须恢复消息，那服务器就需要指定相关事件的 ID，以便客户端在重连时报告最后接收到的 ID。同样，服务器也需要实现某种形式的本地缓存，以便恢复并向客户端重传错过的消息。
+
+当然，像要保留多少条消息这种细节一定取决于具体的应用。另外，要知道 ID 是可选的事件流字段。而服务器也可以在交付的事件流中对特定消息设置检查点或者里程碑标记。一句话，根据你的需求，实现服务器逻辑。
+
+#### SSE使用场景及性能
+
+SSE 是服务器向客户端发送实时文本消息的高性能机制：服务器可以在消息刚刚生成就将其推送到客户端（低延迟），使用长连接的事件流协议，而且可以 gzip 压缩（低开销），浏览器负责解析消息，也没有无限缓冲。再加上超级简单的 EventSource API 能自动重新连接和把消息通知作为 DOM 事件，使得 SSE 成为处理实时数据不可或缺的得力工具！
+
+SSE 主要有两个局限。一，只能从服务器向客户端发送数据，不能满足需要请求流的场景（比如向服务器流式上传大文件）；二，事件流协议设计为只能传输 UTF-8数据，即使可以传输二进制流，效率也不高。话虽如此，UTF-8 的限制往往可以在应用层克服：SSE 可以通知应用说服务器上有一个新的二进制文件可以下载了，应用只要再分派一个 XHR 请求去下载即可。虽然这样多了一次往返延迟，但也能利用上 XHR 提供的诸多便利：响应缓存、传输编码（压缩），等等。如果文件是流式下载的，那它就无法被浏览器缓存。
+
+实时推送就像轮询一样，可能会极大影响电池的待机时间。首先，可以考虑批量处理消息，尽量少唤醒无线电模块。其次，避免不必要的长连接，SSE 连接在无线电空闲时不会断开。更多信息，请参考 “**消除周期性及无效的数据传输**”。
+
+```
+                                          通过 TLS 实现 SSE 流
+ SSE 通过常规 HTTP 连接实现了简单便捷的实时传输机制，服务器端容易部署，客户端也容易打补丁。可是，现有网络中间设备，比如代理服务器和防火墙，都不支持 SSE，而这有可能带来问题：中间设备可能会缓冲事件流数据，导致额外延迟，甚至彻底毁掉 SSE 连接。如果你碰到了这样或类似的问题，那么可以考虑通过 TLS 发送 SSE 事件流，具体请参考 4.1 节中的“Web 代理、中间设备、TLS 与新协议”。
+```
+
+### WebSocket
+
+WebSocket 可以实现客户端与服务器间双向、基于消息的文本或二进制数据传输。它是浏览器中最靠近套接字的 API。但 WebSocket 连接远远不是一个网络套接字，因为浏览器在这个简单的 API 之后隐藏了所有的复杂性，而且还提供了更多服务：
+
+连接协商和同源策略；
+
+与既有 HTTP 基础设施的互操作；
+
+基于消息的通信和高效消息分帧；
+
+子协议协商及可扩展能力。
+
+WebSocket 是浏览器中最通用最灵活的一个传输机制，其极简的 API 可以让我们在客户端和服务器之间以数据流的形式实现各种应用数据交换（包括 JSON 及自定义的二进制消息格式），而且两端都可以随时向另一端发送数据。
+
+不过，自定义数据交换协议的问题通常也在于自定义。因为应用必须考虑状态管理、压缩、缓存及其他原来由浏览器提供的服务。设计限制和性能权衡始终会有，利用WebSocket 也不例外。简单来说，WebSocket 并不能取代 HTTP、XHR 或 SSE，而为了追求最佳性能，关键还是要利用这些机制的长处。
+
+WebSocket 由多个标准构成：WebSocket API 是 W3C 定义的，而 WebSocket协议（RFC 6455）及其扩展则由 HyBi Working Group（IETF）定义
+
+#### WebSocket API
+
+```js
+var ws = new WebSocket('wss://example.com/socket'); //➊ 打开新的安全 WebSocket 连接（wss）
+ws.onerror = function (error) { ... } //➋ 可选的回调，在连接出错时调用
+ws.onclose = function () { ... } //➌ 可选的回调，在连接终止时调用
+ws.onopen = function () { //➍ 可选的回调，在 WebSocket 连接建立时调用
+ ws.send("Connection established. Hello server!"); //➎ 客户端先向服务器发送一条消息
+}
+ws.onmessage = function(msg) { //➏回调函数，服务器每发回一条消息就调用一次
+ if(msg.data instanceof Blob) { //➐ 根据接收到的消息，决定调用二进制还是文本处理逻辑
+ processBlob(msg.data);
+ } else {
+ processText(msg.data);
+ }
+}
+```
+
+##### WS与WSS
+
+WebSocket 资源 URL 采用了自定义模式：ws 表示纯文本通信（如 ws://example.com/socket），wss 表示使用加密信道通信（TCP+TLS）。WebSocket 的主要目的，是在浏览器中的应用与服务器之间提供优化的、双向通信机制。可是，WebSocket 的连接协议也可以用于浏览器之外的场景，景，可以通过非 HTTP协商机制交换数据。考虑到这一点，HyBi Working Group 就选择采用了自定义的
+
+URL 模式。
+
+**使用自定义的 URL 模式虽然让非 HTTP 协商成为可能，但实践中还没有既定标准可以作为建立 WebSocket 会话的替代握手机制。**
+
+##### 接收文本和二进制数据
+
+WebSocket 通信只涉及消息，应用代码无需担心缓冲、解析、重建接收到的数据。比如，服务器发来了一个 1 MB 的净荷，应用的 onmessage 回调只会在客户端接收到全部数据时才会被调用
+
+此外，WebSocket 协议不作格式假设，对应用的净荷也没有限制：文本或者二进制数据都没问题。从内部看，协议只关注消息的两个信息：净荷长度和类型（前者是一个可变长度字段），据以区别 UTF-8 数据和二进制数据。
+
+浏览器接收到新消息后，如果是文本数据，会自动将其转换成 DOMString 对象，如果是二进制数据或 Blob 对象，会直接将其转交给应用。唯一可以（作为性能暗示和优化措施）多余设置的，就是告诉浏览器把接收到的二进制数据转换成 ArrayBuffer而非 Blob：
+
+```js
+var ws = new WebSocket('wss://example.com/socket');
+ws.binaryType = "arraybuffer"; //➊ 如果接收到二进制数据，将其强制转换成 ArrayBuffer
+ws.onmessage = function(msg) {
+ if(msg.data instanceof ArrayBuffer) {
+ processArrayBuffer(msg.data);
+ } else {
+ processText(msg.data);
+ }
+}
+```
+
+------
+
+用户代理可以将这个选项看作一个暗示，以决定如何处理接收到的二进制数
+
+据：如果这里设置为“blob”，那就可以放心地将其转存到磁盘上；而如果
+
+设置为“arraybuffer”，那很可能在内存里处理它更有效。自然地，我们鼓励
+
+用户代理使用更细微的线索，以决定是否将到来的数据放到内存里……
+
+——The WebSocket API 
+
+W3C Candidate Recommendation 
