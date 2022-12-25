@@ -24,7 +24,7 @@
 <meta property="og:description" content="web性能权威指南网络技术概览网络通信决定性影响的两个方面：延迟与带宽 延迟：分组从信息源发送到目的地所需要的时间 带宽：逻辑或者物理通信路径最大的吞吐量 延迟的构成 传播延迟：消息从发送端到接收端所需要的时间，是信号传播距离和速度的函数 传输延迟：把消息中的所有比特转移到链路中需要的时间，是消息长度和链路速率的函数 处理延迟：处理分组首部，检查位错误及确定分组目标 排队延迟：到来的分组排队等待处">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-09T08:17:27.000Z">
-<meta property="article:modified_time" content="2022-12-15T15:10:10.624Z">
+<meta property="article:modified_time" content="2022-12-25T14:50:57.151Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="web性能权威指南">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          17k 字
+          59k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          144 分钟
+          495 分钟
         
       </span>
     
@@ -733,6 +733,775 @@ ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">fun
 <p>用户代理使用更细微的线索，以决定是否将到来的数据放到内存里……</p>
 <p>——The WebSocket API </p>
 <p>W3C Candidate Recommendation </p>
+<p>Blob 对象一般代表一个不可变的文件对象或原始数据。如果你不需要修改它或者不需要把它切分成更小的块，那这种格式是理想的（比如，可以把一个完整的 Blob 对象传给 img 标签，参见 15.3 节“通过 XHR 下载数据”）。而如果你还需要再处理接收到的二进制数据，那么选择 ArrayBuffer 应该更合适。</p>
+<div class="code-wrapper"><pre><code class="hljs js">使用 <span class="hljs-title class_">JavaScript</span> 解码二进制数据
+<span class="hljs-title class_">ArrayBuffer</span> 表示一个普通的、固定长度的二进制数据缓冲。不过，可以用
+<span class="hljs-title class_">ArrayBuffer</span> 创建一或多个 <span class="hljs-title class_">ArrayBufferView</span> 对象，每一个都可以通过特定的格式
+来展示缓冲中的内容。比如，假设我们需要处理下面类似 C 的二进制数据结构：
+struct someStruct &#123;
+ char username[<span class="hljs-number">16</span>];
+ unsigned short id;
+ float scores[<span class="hljs-number">32</span>];
+&#125;;
+在取得这个类型的 <span class="hljs-title class_">ArrayBuffer</span> 对象后，可以对同一个缓冲创建多个不同的视图，
+每个视图的偏移量和数据类型都可以不一样：
+<span class="hljs-keyword">var</span> buffer = msg.<span class="hljs-property">data</span>;
+<span class="hljs-keyword">var</span> usernameView = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Uint8Array</span>(buffer, <span class="hljs-number">0</span>, <span class="hljs-number">16</span>);
+<span class="hljs-keyword">var</span> idView = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Uint16Array</span>(buffer, <span class="hljs-number">16</span>, <span class="hljs-number">1</span>);
+<span class="hljs-keyword">var</span> scoresView = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Float32Array</span>(buffer, <span class="hljs-number">18</span>, <span class="hljs-number">32</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;ID: &quot;</span> + idView[<span class="hljs-number">0</span>] + <span class="hljs-string">&quot; username: &quot;</span> + usernameView[<span class="hljs-number">0</span>]);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">32</span>；j++) &#123; <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(scoresView[j]) &#125;
+
+每个视图都以父缓冲、开始字节偏移量和要处理的元素数作为参数，其中偏移量
+根据之前字段的大小计算。结果，<span class="hljs-title class_">ArrayBuffer</span> 和 <span class="hljs-title class_">WebSocket</span> 实际上为我们在浏览
+器中处理二进制数据提供了所有必要的工具。</code></pre></div>
+
+<h5 id="发送文本和二进制数据"><a href="#发送文本和二进制数据" class="headerlink" title="发送文本和二进制数据"></a>发送文本和二进制数据</h5><p>建立了 WebSocket 连接后，客户端就可以随时发送或接收 UTF-8 或二进制消息。WebSocket 提供的是一条双向通信的信道，也就是说，在同一个 TCP 连接上，可以双向传输数据</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&#x27;wss://example.com/socket&#x27;</span>);
+ws.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+ socket.<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;Hello server!&quot;</span>); <span class="hljs-comment">//➊ 发送 UTF-8 编码的文本消息</span>
+ socket.<span class="hljs-title function_">send</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(&#123;<span class="hljs-string">&#x27;msg&#x27;</span>: <span class="hljs-string">&#x27;payload&#x27;</span>&#125;)); <span class="hljs-comment">//➋ 发送 UTF-8 编码的 JSON 净荷</span>
+ <span class="hljs-keyword">var</span> buffer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayBuffer</span>(<span class="hljs-number">128</span>);
+ socket.<span class="hljs-title function_">send</span>(buffer); <span class="hljs-comment">//➌ 发送二进制 ArrayBuffer</span>
+ <span class="hljs-keyword">var</span> intview = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Uint32Array</span>(buffer);
+ socket.<span class="hljs-title function_">send</span>(intview); <span class="hljs-comment">//➍ 发送二进制 ArrayBufferView</span>
+ <span class="hljs-keyword">var</span> blob = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Blob</span>([buffer]);
+ socket.<span class="hljs-title function_">send</span>(blob); <span class="hljs-comment">//➎ 发送二进制 Blob</span>
+&#125;</code></pre></div>
+
+<p>WebSocket API 可以接收 UTF-8 编码的 DOMString 对象，也可以接收 ArrayBuffer、ArrayBufferView 或 Blob 等二进制数据。但要注意，所有二进制数据类型只是为了简化 API：在传输中，只通过一位（bit）即可将 WebSocket 帧标记为二进制或者文本。假如应用或服务器需要传输其他的内容类型，就必须通过其他机制来沟通这个信息。这里的 send() 方法是异步的：提供的数据会在客户端排队，而函数则立即返回。特别是在传输大文件的时候，千万别因为返回快，就错误地以为数据已经发送出去了！要监控在浏览器中排队的数据量，可以查询套接字的 bufferedAmount 属性：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&#x27;wss://example.com/socket&#x27;</span>);
+ws.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+ <span class="hljs-title function_">subscribeToApplicationUpdates</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) &#123; <span class="hljs-comment">//➊预订应用更新（如游戏状态更新）</span>
+ <span class="hljs-keyword">if</span> (ws.<span class="hljs-property">bufferedAmount</span> == <span class="hljs-number">0</span>) <span class="hljs-comment">//➋检查客户端缓冲的数据量</span>
+ ws.<span class="hljs-title function_">send</span>(evt.<span class="hljs-property">data</span>); <span class="hljs-comment">//➌如果缓冲是空的，发送下一次更新</span>
+ &#125;);
+&#125;</code></pre></div>
+
+<p>前面的例子是要向服务器发送应用数据，但前提是客户端缓冲区已经没有之前待发送的数据了。为什么非要做这个检查？所有 WebSocket 消息都会按照它们在客户端排队的次序逐个发送。因此，大量排队的消息，甚至一个大消息，都可能导致排在它后面的消息延迟——队首阻塞！为解决这个问题，应用可以将大消息切分成小块，通过监控 bufferedAmount 的值来避免队首阻塞。甚至还可以实现自己的优先队列，而不是盲目都把它们送到套接字上排队。</p>
+<div class="code-wrapper"><pre><code class="hljs">很多应用都会生成多种消息：有高优先级的更新，也有低优先级的更新。前者比如流量控制消息，后者比如后台传输。要实现最优化传输，应用必
+须关心任意时刻在套接字上排队的是什么消息</code></pre></div>
+
+<h5 id="子协议协商"><a href="#子协议协商" class="headerlink" title="子协议协商"></a>子协议协商</h5><p>WebSocket 协议对每条消息的格式事先不作任何假设：仅用一位标记消息是文本还是二进制，以便客户端和服务器有效地解码数据，而除此之外的消息内容就是未知的</p>
+<p>此外，与 HTTP 或 XHR 请求不同——它们是通过每次请求和响应的 HTTP 首部来沟通元数据，WebSocket 并没有等价的机制。因此，如果需要沟通关于消息的元数据，客户端和服务器必须达成沟通这一数据的子协议</p>
+<p>客户端和服务器可以提前确定一种固定的消息格式，比如所有通信都通过 JSON编码的消息或者某种自定义的二进制格式进行，而必要的元数据作为这种数据结构的一个部分</p>
+<p>如果客户端和服务器要发送不同的数据类型，那它们可以确定一个双方都知道的消息首部，利用它来沟通说明信息或有关净荷的其他解码信息</p>
+<p>混合使用文本和二进制消息可以沟通净荷和元数据，比如用文本消息实现 HTTP首部的功能，后跟包含应用净荷的二进制消息。</p>
+<p>以上只列举了几种可能的策略。与 WebSocket 消息的灵活性和低延迟对应的，就是应用逻辑必须复杂一点。不过，消息的串行化和元数据管理只是问题的一方面！确定了消息的串行格式化，怎么保证客户端和服务器相互理解，怎么确保它们同步呢？</p>
+<p>好在，WebSocket 为此提供了一个简单便捷的子协议协商 API。客户端可以在初次连接握手时，告诉服务器自己支持哪种协议：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&#x27;wss://example.com/socket&#x27;</span>,
+ [<span class="hljs-string">&#x27;appProtocol&#x27;</span>, <span class="hljs-string">&#x27;appProtocol-v2&#x27;</span>]); <span class="hljs-comment">//➊ 在 WebSocket 握手期间发送子协议数组</span>
+ws.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+ <span class="hljs-keyword">if</span> (ws.<span class="hljs-property">protocol</span> == <span class="hljs-string">&#x27;appProtocol-v2&#x27;</span>) &#123; <span class="hljs-comment">//➋ 检查服务器选择了哪个子协议</span>
+ ...
+ &#125; <span class="hljs-keyword">else</span> &#123;
+ ...
+ &#125;
+&#125;</code></pre></div>
+
+<p>如这个例子所示，WebSocket 构造函数可以接受一个可选的子协议名字的数组，通过这个数组，客户端可以向服务器通告自己能够理解或希望服务器接受的协议。这个协议数组会发送给服务器，服务器可以从中挑选一个。</p>
+<p>如果子协议协商成功，就会触发客户端的 onopen 回调，应用可以查询 WebSocket 对象上的 protocol 属性，从而得知服务器选定的协议。另一方面，服务器如果不支持客户端声明的任何一个协议，则 WebSocket 握手是不完整的，此时会触发 onerror 回调，连接断开。</p>
+<p><u>子协议名由应用自己定义，且在初次 HTTP 握手期间发送给服务器。除此之外，指定的子协议对核心 WebSocket API 不会有任何影响。</u></p>
+<h4 id="WebSocket协议"><a href="#WebSocket协议" class="headerlink" title="WebSocket协议"></a>WebSocket协议</h4><p>HyBi Working Group 制定的 WebSocket 通信协议（RFC 6455）包含两个高层组件：开放性 HTTP 握手用于协商连接参数，二进制消息分帧机制用于支持低开销的基于消息的文本和二进制数据传输</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">WebSocket</span> 协议尝试在既有 HTTP 基础设施中实现双向 HTTP 通信，因此也使用 HTTP 的 <span class="hljs-number">80</span> 和 <span class="hljs-number">443</span> 端口……不过，这个设计不限于通过 HTTP 实现WebSocket 通信，未来的实现可以在某个专用端口上使用更简单的握手，而不必重新定义么一个协议。</code></pre></div>
+
+<p>WebSocket 协议是一个独立完善的协议，可以在浏览器之外实现。不过，它的主要应用目标还是实现浏览器应用的双向通信</p>
+<h4 id="二进制分帧层"><a href="#二进制分帧层" class="headerlink" title="二进制分帧层"></a>二进制分帧层</h4><p>客户端和服务器 WebSocket 应用通过基于消息的 API 通信：发送端提供任意 UTF-8或二进制的净荷，接收端在整个消息可用时收到通知。为此，WebSocket 使用了自定义的二进制分帧格式（图 17-1），把每个应用消息切分成一或多个帧，发送到目的地之后再组装起来，等到接收到完整的消息后再通知接收端。</p>
+<ul>
+<li>帧</li>
+</ul>
+<p>最小的通信单位，包含可变长度的帧首部和净荷部分，净荷可能包含完整或部分</p>
+<p>应用消息。</p>
+<ul>
+<li>消息</li>
+</ul>
+<p>一系列帧，与应用消息对等。</p>
+<p>是否把消息分帧由客户端和服务器实现决定。事实上，应用可以对个别 WebSocket帧或如何分帧毫无概念。即便如此，理解每个 WebSocket 帧也很重要。</p>
+<ul>
+<li><p>每一帧的第一位（FIN）表示当前帧是不是消息的最后一帧。一条消息有可能只对应一帧。</p>
+</li>
+<li><p>操作码（4 位）表示被传输帧的类型：传输应用数据时，是文本（1）还是二进制 （2）；连接有效性检查时，是关闭（8）、呼叫（ping，9）还是回应（pong，10）。</p>
+</li>
+<li><p>掩码位表示净荷是否有掩码（只适用于客户端发送给服务器的消息）。</p>
+</li>
+<li><p>净荷长度由可变长度字段表示：</p>
+<ul>
+<li>如果是 0~125，就是净荷长度；</li>
+<li>如果是 126，则接下来 2 字节表示的 16 位无符号整数才是这一帧的长度；</li>
+<li>如果是 127，则接下来 8 字节表示的 64 位无符号整数才是这一帧的长度</li>
+</ul>
+</li>
+<li><p>掩码键包含 32 位值，用于给净荷加掩护。</p>
+</li>
+<li><p>净荷包含应用数据，如果客户端和服务器在建立连接时协商过，也可以包含自定义的扩展数据</p>
+</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs awk">所有客户端发送帧的净荷都要使用帧首部中指定的值加掩码，这样可以防
+止客户端中运行的恶意脚本对不支持 WebSocket 的中间设备进行缓存投
+毒攻击（cache poisoning attack）。要了解这种攻击的细节，请参考 W2SP 
+<span class="hljs-number">2011</span> 的论文“Talking to Yourself <span class="hljs-keyword">for</span> Fun and Profit”（http:<span class="hljs-regexp">//</span>w2spconf.com/ 
+<span class="hljs-number">2011</span><span class="hljs-regexp">/papers/</span>websocket.pdf）。</code></pre></div>
+
+<p>算下来，服务器发送的每个 WebSocket 帧会产生 2<del>10 字节的分帧开销。而客户端必须发送掩码键，这又会增加 4 字节，结果就是 6</del>14 字节的开销。除此之外，没有其他元数据（比如首部字段或其他关于净荷的信息）：所有 WebSocket 通信都是通过交换帧实现的，而帧将净荷视为不透明的应用数据块。</p>
+<p><strong>WebSocket 的多路复用及队首阻塞</strong></p>
+<p>WebSocket 很容易发生队首阻塞的情况：消息可能会被分成一或多个帧，但不同消息的帧不能交错发送，因为没有与 HTTP 2.0 分帧机制中“流 ID”对等的字段</p>
+<p>显然，如果一个大消息被分成多个 WebSocket 帧，就会阻塞其他消息的帧。如果你的应用不容许有交付延迟，那可以小心控制每条消息的净荷大小，甚至可以考虑把大消息拆分成多个小消息！</p>
+<p>WebSocket 不支持多路复用，还意味着每个 WebSocket 连接都需要一个专门的TCP 连接。对于 HTTP 1.x 而言，由于浏览器针对每个来源有连接数量限制，因此可能会导致问题</p>
+<p>好 在，HyBi Working Group 正 着 手 制 定 的 新 的“Multiplexing Extension for WebSockets”（WebSockets 多路复用扩展）会解决这个问题</p>
+<p><em>这个扩展通过封装帧并加上信道 ID，可以让一个 TCP 连接支持多个虚拟 WebSocket 连接……这个多路复用扩展维护独立的逻辑信道，每个逻辑信道与独立的 WebSocket 连接没有差别，包括独立的握手首部。</em></p>
+<p>有了这个扩展后，多个 WebSocket 连接（信道）就可能在同一个 TCP 连接上得到复用。可是，每个信道依旧容易产生队首阻塞问题！可能的解决方案是使用不同的信道，或者专用 TCP 连接，多路并行发送消息。</p>
+<p>最后，注意前面的扩展仅对 HTTP 1.x 连接是必要的。虽然通过 HTTP 2.0 传输WebSocket 帧的官方规范尚未发布，但相对来说就容易多了。因为 HTTP 2.0 内置了流的多路复用，只要通过 HTTP 2.0 的分帧机制来封装 WebSocket 帧，多个WebSocket 连接就可以在一个会话中传输。</p>
+<h5 id="协议扩展"><a href="#协议扩展" class="headerlink" title="协议扩展"></a>协议扩展</h5><p>WebSocket 规范允许对协议进行扩展：数据格式和 WebSocket 协议的语义可以通过新的操作码和数据字段扩展。虽然有些不同寻常，但这却是一个非常强大的特性，因为它允许客户端和服务器在基本的 WebSocket 分帧层之上实现更多功能，又不需要应用代码介入或协作。</p>
+<p>WebSocket 协议扩展有哪些例子？负责制定 WebSocket 规范的 HyBi Working Group就进行了两项扩展。</p>
+<ul>
+<li>多路复用扩展（A Multiplexing Extension for WebSockets）这个扩展可以将 WebSocket 的逻辑连接独立出来，实现共享底层的 TCP 连接。</li>
+<li>压缩扩展（Compression Extensions for WebSocket） 给 WebSocket 协议增加了压缩功能。</li>
+</ul>
+<p>如前所述，每个 WebSocket 连接都需要一个专门的 TCP 连接，这样效率很低。多路复用扩展解决了这个问题。它使用“信道 ID”扩展每个 WebSocket 帧，从而实现多个虚拟的 WebSocket 信道共享一个 TCP 连接。</p>
+<p>类似地，基本的 WebSocket 规范没有压缩数据的机制或建议，每个帧中的净荷就是应用提供的净荷。虽然这对优化的二进制数据结构不是问题，但除非应用实现自己的压缩和解压缩逻辑，否则很多情况下都会造成传输载荷过大的问题。实际上，压缩扩展就相当于 HTTP 的传输编码协商。</p>
+<h5 id="HTTP升级协商"><a href="#HTTP升级协商" class="headerlink" title="HTTP升级协商"></a>HTTP升级协商</h5><p>WebSocket 协议提供了很多强大的特性：基于消息的通信、自定义的二进制分帧层、子协议协商、可选的协议扩展，等等。换句话说，在交换数据之前，客户端必须与服务器协商适当的参数以建立连接。</p>
+<p>利用 HTTP 完成握手有几个好处。首先，让 WebSockets 与现有 HTTP 基础设施兼容：WebSocket 服务器可以运行在 80 和 443 端口上，这通常是对客户端唯一开放的端口。其次，让我们可以重用并扩展 HTTP 的 Upgrade 流，为其添加自定义的WebSocket 首部，以完成协商</p>
+<p><strong>Sec-WebSocket-Version</strong></p>
+<p>客户端发送，表示它想使用的 WebSocket 协议版本（“13”表示 RFC 6455）。如果服务器不支持这个版本，必须回应自己支持的版本。</p>
+<p><strong>Sec-WebSocket-Key</strong></p>
+<p>客户端发送，自动生成的一个键，作为一个对服务器的“挑战”，以验证服务器支持请求的协议版本。</p>
+<p><strong>Sec-WebSocket-Accept</strong></p>
+<p>服务器响应，包含 Sec-WebSocket-Key 的签名值，证明它支持请求的协议版本。</p>
+<p>有了这些协商字段，就可以在客户端和服务器之间进行 HTTP Upgrade 并协商新的WebSocket 连接了：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-variable constant_">GET</span> /socket <span class="hljs-variable constant_">HTTP</span>/<span class="hljs-number">1.1</span>
+<span class="hljs-title class_">Host</span>: thirdparty.<span class="hljs-property">com</span>
+<span class="hljs-title class_">Origin</span>: <span class="hljs-attr">http</span>:<span class="hljs-comment">//example.com</span>
+<span class="hljs-title class_">Connection</span>: <span class="hljs-title class_">Upgrade</span>
+<span class="hljs-title class_">Upgrade</span>: websocket <span class="hljs-comment">//➊ 请求升级到 WebSocket 协议</span>
+<span class="hljs-title class_">Sec</span>-<span class="hljs-title class_">WebSocket</span>-<span class="hljs-title class_">Version</span>: <span class="hljs-number">13</span> <span class="hljs-comment">//➋ 客户端使用的 WebSocket 协议版本</span>
+<span class="hljs-title class_">Sec</span>-<span class="hljs-title class_">WebSocket</span>-<span class="hljs-title class_">Key</span>: dGhlIHNhbXBsZSBub25jZQ== <span class="hljs-comment">//➌ 自动生成的键，以验证服务器对协议的支持</span>
+<span class="hljs-title class_">Sec</span>-<span class="hljs-title class_">WebSocket</span>-<span class="hljs-title class_">Protocol</span>: appProtocol, appProtocol-v2 <span class="hljs-comment">//➍ 可选的应用指定的子协议列表</span>
+<span class="hljs-title class_">Sec</span>-<span class="hljs-title class_">WebSocket</span>-<span class="hljs-title class_">Extensions</span>: x-webkit-deflate-message, x-custom-extension <span class="hljs-comment">//➎ 可选的客户端支持的协议扩展列表</span></code></pre></div>
+
+<p>与浏览器中客户端发起的任何连接一样，WebSocket 请求也必须遵守同源策略：浏览器会自动在升级握手请求中追加 Origin 首部，远程服务器可能使用 CORS 判断接受或拒绝跨源请求 [ 参见 15.2 节“跨源资源共享（CORS）”]。要完成握手，服务器必须返回一个成功的“Switching Protocols”（切换协议）响应，并确认选择了客户端发送的哪个选项：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-variable constant_">HTTP</span>/<span class="hljs-number">1.1</span> <span class="hljs-number">101</span> <span class="hljs-title class_">Switching</span> <span class="hljs-title class_">Protocols</span> <span class="hljs-comment">//➊101 响应码确认升级到 WebSocket 协议</span>
+<span class="hljs-title class_">Upgrade</span>: websocket
+<span class="hljs-title class_">Connection</span>: <span class="hljs-title class_">Upgrade</span>
+<span class="hljs-title class_">Access</span>-<span class="hljs-title class_">Control</span>-<span class="hljs-title class_">Allow</span>-<span class="hljs-title class_">Origin</span>: <span class="hljs-attr">http</span>:<span class="hljs-comment">//example.com ➋CORS 首部表示选择同意跨源连接</span>
+<span class="hljs-title class_">Sec</span>-<span class="hljs-title class_">WebSocket</span>-<span class="hljs-title class_">Accept</span>: s3pPLMBiTxaQ9kYGzzhZRbK+xOo= <span class="hljs-comment">//➌签名的键值验证协议支持</span>
+<span class="hljs-title class_">Sec</span>-<span class="hljs-title class_">WebSocket</span>-<span class="hljs-title class_">Protocol</span>: appProtocol-v2 <span class="hljs-comment">//➍ 服务器选择的应用子协议</span>
+<span class="hljs-title class_">Sec</span>-<span class="hljs-title class_">WebSocket</span>-<span class="hljs-title class_">Extensions</span>: x-custom-extension <span class="hljs-comment">//➎ 服务器选择的 WebSocket 扩展</span></code></pre></div>
+
+<p>所有兼容 RFC 6455 的 WebSocket 服务器都使用相同的算法计算客户端挑战的答案：将 Sec-WebSocket-Key 的内容与标准定义的唯一 GUID 字符串拼接起来，计算出 SHA1 散列值，结果是一个 base-64 编码的字符串，把这个字符串发给客户端即可。</p>
+<p>最低限度，成功的 WebSocket 握手必须是客户端发送协议版本和自动生成的挑战值，服务器返回 101 HTTP 响应码（Switching Protocols）和散列形式的挑战答案，确认选择的协议版本：</p>
+<p>客户端必须发送 Sec-WebSocket-Version 和 Sec-WebSocket-Key； </p>
+<p>服务器必须返回 Sec-WebSocket-Accept 确认协议；</p>
+<p>客户端可以通过 Sec-WebSocket-Protocol 发送应用子协议列表；</p>
+<p>服务器必须选择一个子协议并通过 Sec-WebSocket-Protocol 返回协议名；如果服务器不支持任何一个协议，连接断开；</p>
+<p>客户端可以通过 Sec-WebSocket-Extensions 发送协议扩展；</p>
+<p>服务器可以通过 Sec-WebSocket-Extensions 确认一或多个扩展；如果服务器没有返回扩展，则连接不支持扩展</p>
+<p>最后，前述握手完成后，如果握手成功，该连接就可以用作双向通信信道交换WebSocket 消息。从此以后，客户端与服务器之间不会再发生 HTTP 通信，一切由WebSocket 协议接管。</p>
+<div class="code-wrapper"><pre><code class="hljs routeros">代理、中间设备与 WebSocket
+实践中，考虑到安全和保密，很多用户都只开放有限的端口，通常只有 80
+（HTTP）和 443（HTTPS）。正因为如此，WebSocket 协商是通过 HTTP<span class="hljs-built_in"> Upgrade</span>
+<span class="hljs-built_in"></span>流进行的，这样可以确保与现有网络策略及基础设施兼容。
+不过，正如 4.1 节的“Web 代理、中间设备、TLS 与新协议”所说，很多现有的
+HTTP 中间设备可能不理解新的 WebSocket 协议，而这可能导致各种问题：盲目
+的连接升级、意外缓冲 WebSocket 帧、不明就里地修改内容、把 WebSocket 流量
+误当作不完整的 HTTP 通信，等等。
+WebSocket 的 Key 和 Accept 握手可以解决其中一些问题：这是服务器的一个安全
+策略，而盲目“升级”连接的中间设备可能并不理解 WebSocket 协议。虽然这个
+预防措施对某些代理可以解决问题，但对于那些“透明代理”还是不行，它们可
+能会分析并意外地修改数据。
+解决之道？建立一条端到端的安全通道。比如，使用 WSS ！在执行 HTTP <span class="hljs-built_in"></span>
+<span class="hljs-built_in">Upgrade </span>握手之前，先协商一次 TLS 会话，在客户端与服务器之间建立一条加密
+通道，就可以解决前述所有问题。这个方案尤其适合移动客户端，因为它们的流
+量经常要穿越各种代理服务，这些代理服务很可能不认识 WebSocket。</code></pre></div>
+
+<h4 id="WebSocket使用场景及性能"><a href="#WebSocket使用场景及性能" class="headerlink" title="WebSocket使用场景及性能"></a>WebSocket使用场景及性能</h4><p>WebSocket API 提供一个简单的接口，能够在客户端与服务器之间实现基于消息的双向通信，可以是文本数据，可以是二进制数据：</p>
+<p>把 WebSocket URL 传递给构造函数，设置几个 JavaScript 回调函数，就好了——剩下的就全都由浏览器负责了。再加上 WebSocket 协议提供的二进制分帧、可扩展性以及子协议协商，使得WebSocket 成为在浏览器中采用自定义应用协议的最佳选择</p>
+<h5 id="请求和响应流"><a href="#请求和响应流" class="headerlink" title="请求和响应流"></a>请求和响应流</h5><p>WebSocket 是唯一一个能通过同一个 TCP 连接实现双向通信的机制（图 17-2），客户端和服务器随时可以交换数据。因此，WebSocket 在两个方向上都能保证文本和二进制应用数据的低延迟交付</p>
+<p>XHR 是专门为“事务型”请求 / 响应通信而优化的：客户端向服务器发送完整的、格式良好的 HTTP 请求，服务器返回完整的响应。这里不支持请求流，在Streams API 可用之前，没有可靠的跨浏览器响应流 API。</p>
+<p>SSE 可以实现服务器到客户端的高效、低延迟的文本数据流：客户端发起 SSE 连接，服务器使用事件源协议将更新流式发送给客户端。客户端在初次握手后，不能向服务器发送任何数据</p>
+<div class="code-wrapper"><pre><code class="hljs">传播与排队延迟
+把传输机制从 XHR 切换为 SSE 或 WebSocket 并不会减少客户端与服务器间的往
+返次数！不管什么传输机制，数据包的传播延迟都一样。不过，除了传播延迟，
+还有一个排队延迟——消息在被发送给另一端之前必须在客户端或服务器上等待
+的时间。
+对 XHR 轮询而言，排队延迟就是客户端轮询间隔：服务器上的消息可用之后，必
+须等到下一次客户端 XHR 请求才能发送（参见 15.7.1 节的“XHR 轮询的性能建
+模”）。相对来说，SSE 和 WebSocket 使用持久连接，这样服务器（和客户端——
+如果是 WebSocket）就可以在消息可用时立即发送它。
+综上所述，SSE 和 WebSocket 的“低延迟交付”专指消除了消息的排队延迟。我
+们还没发现怎么让 WebSocket 数据包跑得比光还快！</code></pre></div>
+
+<h5 id="消息开销"><a href="#消息开销" class="headerlink" title="消息开销"></a>消息开销</h5><p>建立了 WebSocket 连接后，客户端和服务器通过 WebSocket 协议交换数据：应用消息会被拆分为一或多个帧，每个帧会添加 2~14 字节的开销。而且，由于分帧是按照自定义的二进制格式完成的，UTF-8 和二进制应用数据可以有效地通过相同的机制编码。这一点与 XHR 和 SSE 比如何呢？</p>
+<p>1.SSE 会给每个消息添加 5 字节，但仅限于 UTF-8 内容</p>
+<p>2.HTTP 1.x 请求（XHR 及其他常规请求）会携带 500~800 字节的 HTTP 元数据，加上 cookie，参见 11.5 节“度量和控制协议开销”。</p>
+<p>3.HTTP 2.0 压缩 HTTP 元数据，这样可以显著减少开销，参见 12.3.8 节“首部压缩”。事实上，如果请求都不修改首部，那么开销可以低至 8 字节！</p>
+<div class="code-wrapper"><pre><code class="hljs armasm">记住，这里的开销数不包括 <span class="hljs-built_in">IP</span>、TCP 和 TLS 分帧的开销，后者一共会给
+每个消息增加 <span class="hljs-number">60</span>~<span class="hljs-number">100</span> 字节，无论使用的是什么应用协议，参见 <span class="hljs-number">4</span>.<span class="hljs-number">7</span>.<span class="hljs-number">4</span> 节 “TLS 记录大小</code></pre></div>
+
+<h5 id="数据效率及压缩"><a href="#数据效率及压缩" class="headerlink" title="数据效率及压缩"></a>数据效率及压缩</h5><p>通过常规的 HTTP 协商，每个 XHR 请求都可以协商最优的传输编码格式（如对文本数据采用 gzip 压缩）。类似地，SSE 局限于 UTF-8 文本数据，因此事件流数据可以在整个会话期间使用 gzip 压缩</p>
+<p>而使用 WebSocket 时，情况要复杂一些：WebSocket 可以传输文本和二进制数据，因此压缩整个会话行不通。二进制的净荷也可能已经压缩过了！为此，WebSocket必须实现自己的压缩机制，并针对每个消息选择应用。</p>
+<p>好在 HyBi 工作组正在为 WebSocket 协议制定以消息为单位的压缩扩展。只是这个扩展尚未得到任何浏览器支持。因此，除非应用通过细致优化自己的二进制净荷实现自己的压缩逻辑（参见 17.1.2 节的“使用 JavaScript 解码二进制数据”），同时也针对文本消息实现自己的压缩逻辑，否则传输数据过程中一定会产生很大的字节开销！</p>
+<h5 id="自定义应用协议"><a href="#自定义应用协议" class="headerlink" title="自定义应用协议"></a>自定义应用协议</h5><p>浏览器是为 HTTP 数据传输而优化的，它理解 HTTP 协议，提供各种服务，比如认证、缓存、压缩，等等。于是，XHR 请求自然而然就继承了所有这些功能。</p>
+<p>相对来说，流式数据处理可以让我们在客户端和服务器间自定义协议，代价是错过浏览器提供的很多服务：初次 HTTP 握手可以执行某些连接参数的协商，而一旦建立会话，所有后续客户端与服务器间的数据流对浏览器都将是不透明的。这样来看，自定义应用协议的灵活性也有缺点，应用可能必须实现自已的逻辑来填充某些功能空白，比如缓存、状态管理、元数据交付，等等</p>
+<p>初始的 HTTP Upgrade 握手可以让服务器利用既有的 HTTP cookie 机制来验证用户。如果验证失败，服务器可以拒绝 WebSocket 升级</p>
+<div class="code-wrapper"><pre><code class="hljs">利用浏览器和中间设备的缓存
+使用常规 HTTP 有很多明显的优势。问自己一个简单的问题：客户端会不会因缓
+存接收到的数据而受益？或者中间设备如果缓存数据，是否可以优化对该数据的
+交付？
+举个例子，WebSocket 支持二进制传输，因此应用可以流式传输任意图片而没有
+开销！然而，由于图片是采用自定义协议交付的，它不会被保存到浏览器或任何
+中间设备（如 CDN）的缓存中。结果，就可能给客户端造成不必要的下载，给来
+源服务器带来相当高的流量。同样的道理也适用于视频、文本等数据格式。
+因此，要根据应用选择合适的传输机制！一个简单但有效的策略，就是使用
+WebSocket 交付无需缓存的数据，如实时更新和应用“控制”消息，后者再触发
+XHR 请求通过 HTTP 协议取得其他资源。</code></pre></div>
+
+<h5 id="部署WebSocket基础设施"><a href="#部署WebSocket基础设施" class="headerlink" title="部署WebSocket基础设施"></a>部署WebSocket基础设施</h5><p>HTTP 是专为短时突发性传输设计的。于是，很多服务器、代理和其他中间设备的HTTP 连接空闲超时设置都很激进。而这显然是我们在持久的 WebSocket 会话中所不愿意看到的。为解决这个问题，要考虑三个方面：</p>
+<p>位于各自网络中的路由器、负载均衡器和代理；</p>
+<p>外部网络中透明、确定的代理服务器（如 ISP 和运营商的代理）；</p>
+<p>客户网络中的路由器、防火墙和代理。</p>
+<p>我们没有权限控制客户网络的策略。事实上，某些网络甚至会完全屏蔽 WebSocket通信，而这正是必须有备用机制的原因。类似地，我们也没有权限控制外部网络中的代理。可是，这里可以借助 TLS ！通过建立一条端到端的加密信道，可以让WebSocket 通信绕过所有中间代理。</p>
+<p>使用 TLS 不会阻止中间设备超时断开空闲的 TCP 连接。可是，实践中，WebSocket 会话协商的成功率越来越高，这样也有助于增加连接超时的间隔。</p>
+<p>最后，就是我们自己部署并管理的基础设施，需要经常关注和调优。就跟我们经常抱怨客户和外部网络一样，我们自己家的问题其实一点也不少。通信路径上的每一台负载均衡器、路由器和 Web 服务器都必须针对长时连接进行调优。</p>
+<p>例如，Nginx 1.3.13+ 可以代理 WebSocket 通信，但默认设置了激进的 60 秒超时！为了突破这个限制，我们必须明确定义更长的超时：</p>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-section">location</span> /websocket &#123;
+ <span class="hljs-attribute">proxy_pass</span> http://backend;
+ <span class="hljs-attribute">proxy_http_version</span> <span class="hljs-number">1</span>.<span class="hljs-number">1</span>;
+ <span class="hljs-attribute">proxy_set_header</span> Upgrade <span class="hljs-variable">$http_upgrade</span>;
+ <span class="hljs-attribute">proxy_set_header</span> Connection <span class="hljs-string">&quot;upgrade&quot;</span>;
+ <span class="hljs-attribute">proxy_read_timeout</span> <span class="hljs-number">3600</span>;// ➊设置两次读操作间的超时为 60 分钟
+ <span class="hljs-attribute">proxy_send_timeout</span> <span class="hljs-number">3600</span>; //➋设置两次写操作间的超时为 60 分钟
+&#125;</code></pre></div>
+
+<p>类似地，Nginx 服务器前面经常少不了要部署一台负载均衡器，比如 HAProxy。毫不奇怪，在此也要采取相同的策略，以 HAProxy 为例：</p>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">defaults</span> http
+ timeout connect <span class="hljs-number">30s</span>
+ timeout client <span class="hljs-number">30s</span>
+ timeout server <span class="hljs-number">30s</span>
+ timeout tunnel <span class="hljs-number">1h</span> //➊为专用信道设置 <span class="hljs-number">60</span> 分钟的不活动超时</code></pre></div>
+
+<p>前面例子的关键在于额外的“信道”超时。对 HAProxy 来说，connect、client 和server 超时只适用于初始的 HTTP Upgrade 握手，而一旦升级完成，超时就会由信道（tunnel）值控制。</p>
+<p>Nginx 和 HAProxy 只是我们数据中心内几百种服务器、代理和负载均衡器中的两种。我不可能在这里把所有可能的配置项都罗列出来。前面的例子只是为了说明大多数基础设施都需要自定义的配置，才能顺利处理长时会话。请记住，在实现应用的持久连接之前，首先要保证基础设施的配置正确。</p>
+<p>长时连接和空闲会话会占用所有中间设备及服务器的内存和套接字资源。实际上，短超时经常被视为安全、资源管理及运维的预防措施。无论部署WebSocket、SSE，还是 HTTP 2.0，都有赖于长时会话，都会对运维提出新的挑战。</p>
+<h4 id="性能检查表"><a href="#性能检查表" class="headerlink" title="性能检查表"></a>性能检查表</h4><p>部署高性能的 WebSocket 服务要求细致地调优和考量，无论在客户端还是在服务器上。可以参考下列要点</p>
+<p>• 使用安全 WebSocket（基于 TLS 的 WSS）实现可靠的部署。</p>
+<p>• 密切关注腻子脚本的性能（如果使用腻子脚本）。</p>
+<p>• 利用子协议协商确定应用协议。</p>
+<p>• 优化二进制净荷以最小化传输数据。</p>
+<p>• 考虑压缩 UTF-8 内容以最小化传输数据。</p>
+<p>• 设置正确的二进制类型以接收二进制净荷。</p>
+<p>• 监控客户端缓冲数据的量。</p>
+<p>• 切分应用消息以避免队首阻塞。</p>
+<p>• 合用的情况下利用其他传输机制。</p>
+<p>最后但同样重要的是，为移动应用而优化！实时推送对于手持设备而言，反倒可能造成负面影响，因为手持设备的电池始终很宝贵。这并不代表不能在移动应用中使用 WebSocket。相反，WebSocket 其实是一个高效的传输机制，但一定要确保注意以下问题：</p>
+<p>“节约用电”；</p>
+<p>“消除周期性及无效的数据传输”；</p>
+<p>“内格尔及有效的服务器推送”；</p>
+<p>“消除不必要的长连接”。</p>
+<h3 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h3><h4 id="Web性能要点"><a href="#Web性能要点" class="headerlink" title="Web性能要点"></a><strong>Web</strong>性能要点</h4><p>• 延迟和带宽对 Web 性能的影响；</p>
+<p>• 传输协议（TCP）对 HTTP 的限制；</p>
+<p>• HTTP 协议自身的功能和缺陷；</p>
+<p>• Web 应用的发展趋势及性能需求；</p>
+<p>• 浏览器局限性和优化思路</p>
+<p><strong>时间和用户感觉</strong></p>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>感觉</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0-100ms</td>
+<td>很快</td>
+</tr>
+<tr>
+<td>100-300ms</td>
+<td>有一点慢</td>
+</tr>
+<tr>
+<td>300-1000ms</td>
+<td>机器在工作</td>
+</tr>
+<tr>
+<td>&gt;1000ms</td>
+<td>先干点别的吧</td>
+</tr>
+<tr>
+<td>&gt;10000ms</td>
+<td>不能用了</td>
+</tr>
+</tbody></table>
+<p>这个表格解释了 Web 性能社区总结的经验法则：必须 250 ms 内渲染页面，或者至少提供视觉反馈，才能保证用户不走开！</p>
+<p>如果想让人感觉很快，就必须在几百 ms 内响应用户操作。超过 1 s，用户的预期流程就会中断，心思就会向其他任务转移，而超过 10 s，除非你有反馈，否则用户基本上就会终止任务！</p>
+<p>现在，把 DNS 查询，随后的 TCP 握手，以及请求网页所需的几次往返时间都算上，光网络上的延迟就能轻易突破 100~1000 ms 的预算。难怪有那么多用户，特别是那些移动或无线用户，抱怨上网速度慢了！</p>
+<p>谈到 Web 性能，必然要谈资源瀑布。事实上，资源瀑布很可能是我们可以用来分析网络性能，诊断网络问题的一个最有价值的工具。很多浏览器都内置了一些手段，让我们能查看资源瀑布。此外，还有一些不错的在线工具，比如 WebPageTest（<a target="_blank" rel="noopener" href="http://www.webpagetest.org/%EF%BC%89%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%9C%A8%E4%B8%8D%E5%90%8C%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E5%91%88%E7%8E%B0%E8%B5%84%E6%BA%90%E7%80%91%E5%B8%83%E3%80%82">http://www.webpagetest.org/），可以在不同的浏览器中呈现资源瀑布。</a></p>
+<p>网络的瀑布图是个很强大的工具，有助于揭示任何页面或应用是否处于优化状态。前面分析和优化资源瀑布的过程，一般称为前端性能分析和优化。不过，这个称呼有误导性，好像所有性能瓶颈都在客户端似的。实际上，尽管 JavaScript、CSS 和渲染流水线很重要，而且资源对性能影响很大，但服务器响应时间和网络延迟（“后端性能”）对资源瀑布的影响也不容忽视。毕竟，如果网络被阻塞，也就谈不上什么解析或运行资源了！</p>
+<p>限制 Web 性能的主要因素是客户端与服务器之间的网络往返延迟。</p>
+<h5 id="性能来源：计算、渲染和网络访问"><a href="#性能来源：计算、渲染和网络访问" class="headerlink" title="性能来源：计算、渲染和网络访问"></a>性能来源：计算、渲染和网络访问</h5><p>Web 应用的执行主要涉及三个任务：取得资源、页面布局和渲染、JavaScript 执行。其中，渲染和脚本执行在一个线程上交错进行，不可能并发修改生成的 DOM,实际上，优化运行时的渲染和脚本执行是至关重要可是，就算优化了 JavaScript 执行和渲染管道，如果浏览器因网络阻塞而等待资源到来，那结果也好不到哪里去。对运行在浏览器中的应用来说，迅速而有效地获取网络资源是第一要义。</p>
+<h5 id="更多带宽其实不（太）重要"><a href="#更多带宽其实不（太）重要" class="headerlink" title="更多带宽其实不（太）重要"></a>更多带宽其实不（太）重要</h5><h5 id="延迟是性能瓶颈"><a href="#延迟是性能瓶颈" class="headerlink" title="延迟是性能瓶颈"></a>延迟是性能瓶颈</h5><p>大多数 HTTP 数据流都是小型突发性数据流，而 TCP 则是为持久连接和大块数据传输而进行过优化的。网络往返时间在大多数情况下都是 TCP 吞吐量和性能的限制因素，详细信息可参见 2.5 节“针对 TCP 的优化建议”。于是，延迟自然也就成了 HTTP 及大多数基于 HTTP 交付的应用的性能瓶颈。</p>
+<h5 id="针对浏览器的优化建议"><a href="#针对浏览器的优化建议" class="headerlink" title="针对浏览器的优化建议"></a>针对浏览器的优化建议</h5><p><strong>基于文档的优化</strong></p>
+<p>熟悉网络协议，了解文档、CSS 和 JavaScript 解析管道，发现和优先安排关键网</p>
+<p>络资源，尽早分派请求并取得页面，使其尽快达到可交互的状态。主要方法是优</p>
+<p>先获取资源、提前解析等。</p>
+<p><strong>推测性优化</strong></p>
+<p>浏览器可以学习用户的导航模式，执行推测性优化，尝试预测用户的下一次操作。然后，预先解析 DNS、预先连接可能的目标。好消息是，所有这些优化都由浏览器替我们自动完成，经常可以节省几百 ms 的网络延迟。既然如此，那理解这些优化背后的原理就至关重要资• 源预取和排定优先次序</p>
+<p>文档、CSS 和 JavaScript 解析器可以与网络协议层沟通，声明每种资源的优先级：初始渲染必需的阻塞资源具有最高优先级，而低优先级的请求可能会被临时</p>
+<p>保存在队列中。</p>
+<p>• DNS预解析</p>
+<p>对可能的域名进行提前解析，避免将来 HTTP 请求时的 DNS 延迟。预解析可以通过学习导航历史、用户的鼠标悬停，或其他页面信号来触发。</p>
+<p>• TCP预连接</p>
+<p>DNS 解析之后，浏览器可以根据预测的 HTTP 请求，推测性地打开 TCP 连接。如果猜对的话，则可以节省一次完整的往返（TCP 握手）时间。</p>
+<p>• 页面预渲染</p>
+<p>某些浏览器可以让我们提示下一个可能的目标，从而在隐藏的标签页中预先渲染整个页面。这样，当用户真的触发导航时，就能立即切换过来了，这样才能利用浏览器的这些特性，提升应用性能。大多数浏览器都利用了如下四种技术</p>
+<p>从外部看，现代浏览器的网络协议实现以简单的资源获取机制的面目示人，而从内部来说，它又极为复杂精密，为了解如何优化性能，非常值得深入钻研。那么，在探寻的过程中，我们怎么利用浏览器的这些机制呢？首先，要密切关注每个页面的结构和交付：</p>
+<p>• CSS 和 JavaScript 等重要资源应该尽早在文档中出现；</p>
+<p>• 应该尽早交付 CSS，从而解除渲染阻塞并让 JavaScript 执行；</p>
+<p>• 非关键性 JavaScript 应该推迟，以避免阻塞 DOM 和 CSSOM 构建；</p>
+<p>• HTML 文档由解析器递增解析，从而保证文档可以间隙性发送，以求得最佳性能。</p>
+<p>除了优化页面结构，还可以在文档中嵌入提示，以触发浏览器为我们采用其他优化机制：</p>
+<div class="code-wrapper"><pre><code class="hljs js">&lt;link rel=<span class="hljs-string">&quot;dns-prefetch&quot;</span> href=<span class="hljs-string">&quot;//hostname_to_resolve.com&quot;</span>&gt; <span class="hljs-comment">//➊预解析特定的域名</span>
+&lt;link rel=&quot;subresource&quot; href=&quot;/javascript/myapp.js&quot;&gt; //➋预取得页面后面要用到的关键性资源
+&lt;link rel=&quot;prefetch&quot; href=&quot;/images/big.jpeg&quot;&gt; //➌预取得将来导航要用的资源
+&lt;link rel=&quot;prerender&quot; href=&quot;//example.org/next_page.html&quot;&gt; //➍根据对用户下一个目标的预测，预渲染特定页面</code></pre></div>
+
+<p>对大多数用户甚至 Web 开发者而言，DNS、TCP 和 SSL 延迟完全不可见，它们都是在网络层协商确定的，我们中很少有人关注它们。然而，这其中每一步都关乎整体的用户体验，因为每一次额外的网络往返都会增加几十甚至几百 ms 的网络延迟。通过帮助浏览器预测这些往返，可以消除这些瓶颈，从而向用户交付更快更好的体验。</p>
+<h4 id="HTTP-1-x"><a href="#HTTP-1-x" class="headerlink" title="HTTP 1.x"></a><strong>HTTP 1.x</strong></h4><p>改进 HTTP 的性能是 HTTP 1.1 工作组的一个重要目标，后来这个版本也引入了大量增强性能的重要特性，其中一些大家比较熟知的有：</p>
+<p>• 持久化连接以支持连接重用；</p>
+<p>• 分块传输编码以支持流式响应；</p>
+<p>• 请求管道以支持并行请求处理；</p>
+<p>• 字节服务以支持基于范围的资源请求；　</p>
+<p>• 改进的更好的缓存机制</p>
+<h5 id="持久连接的优点"><a href="#持久连接的优点" class="headerlink" title="持久连接的优点"></a>持久连接的优点</h5><p>服务器处理时间无法预测，因为这个时间因资源和后端硬件而异。不过，这里的重点其实是由一个新 TCP 连接发送的 HTTP 请求所花的总时间，最少等于两次网络往返的时间：一次用于握手，一次用于请求和响应。这是所有非持久 HTTP 会话都要付出的固定时间成本。</p>
+<p>实际上，这时候最简单的优化就是重用底层的连接！添加对 HTTP 持久连接的支持，就可以避免第二次 TCP 连接时的三次握手、消除另一次 TCP 慢启动的往返，节约整整一次网络延迟。</p>
+<p>在我们两个请求的例子中，总共只节约了一次往返时间。但是，更常见的情况是一次 TCP 连接要发送 <em>N</em> 次 HTTP 请求，这时：</p>
+<p>• 没有持久连接，每次请求都会导致两次往返延迟；</p>
+<p>• 有持久连接，只有第一次请求会导致两次往返延迟，后续请求只会导致一次往返延迟</p>
+<p>在启用持久连接的情况下，<em>N</em> 次请求节省的总延迟时间就是（<em>N</em>-1）×RTT。还记得吗，前面说过，在当代 Web 应用中，<em>N</em> 的平均值是 90，而且还在继续增加（10.2节“剖析现代 Web 应用”）。因此，依靠持久连接节约的时间，很快就可以用秒来衡量了！这充分说明持久化 HTTP 是每个 Web 应用的关键优化手段。</p>
+<h5 id="客户端和服务器上的连接重用"><a href="#客户端和服务器上的连接重用" class="headerlink" title="客户端和服务器上的连接重用"></a>客户端和服务器上的连接重用</h5><div class="code-wrapper"><pre><code class="hljs armasm">好消息是，只要服务器愿意配合，所有现代浏览器都会尝试使用持久化 HTTP 连
+接。可以检查一下自己的应用和代理服务器配置，确保使用持久连接。为保证最
+好的结果，请使用 HTTP <span class="hljs-number">1</span>.<span class="hljs-number">1</span>，因为它默认启用持久连接。如果只能使用 HTTP 
+<span class="hljs-number">1</span>.<span class="hljs-number">0</span>，则可以明确使用 Connection: <span class="hljs-meta">Keep</span>-Alive 首部声明使用持久连接。
+此外，还要注意 HTTP 库和框架的默认行为，因为很多库和框架经常会默认使用
+非持久连接，这种做法多数源于它们提供“更简单 API”的理念。只要使用原始
+<span class="hljs-symbol">HTTP</span> 连接，一定记得重用它们：重用连接的性能提升非常巨大！</code></pre></div>
+
+<h5 id="HTTP管道"><a href="#HTTP管道" class="headerlink" title="HTTP管道"></a>HTTP管道</h5><p>持久 HTTP 可以让我们重用已有的连接来完成多次应用请求，但多次请求必须严格满足先进先出（FIFO）的队列顺序：发送请求，等待响应完成，再发送客户端队列中的下一个请求。HTTP 管道是一个很小但对上述工作流却非常重要的一次优化。管道可以让我们把 FIFO 队列从客户端（请求队列）迁移到服务器（响应队列）。要理解这样做的好处，首先，服务器处理完第一次请求后，会发生了一次完整的往返：先是响应回传，接着是第二次请求。在此期间服务器空闲。如果服务器能在处理完第一次请求后，立即开始处理第二次请求呢？甚至，如果服务器可以并行或在多线程上或者使用多个工作进程，同时处理两个请求呢？</p>
+<p>通过尽早分派请求，不被每次响应阻塞，可以再次消除额外的网络往返。这样，就从非持久连接状态下的每个请求两次往返，变成了整个请求队列只需要两次网络往返</p>
+<p>HTTP 1.1 管道的好处，主要就是消除了发送请求和响应的等待时间。这种并行处理请求的能力对提升应用性能的帮助非常之大。</p>
+<p>现在我们暂停一会，回顾一下在性能优化方面的收获。一开始，每个请求要用两个TCP 连接（图 11-1），总延迟为 284 ms。在使用持久连接后（图 11-2），避免了一次握手往返，总延迟减少为 228 ms。最后，通过使用 HTTP 管道，又减少了两次请求之间的一次往返，总延迟减少为 172 ms。这样，从 284 ms 到 172 ms，这 40% 的性能提升完全拜简单的协议优化所赐。</p>
+<p>而且，这 40% 的性能提升还不是固定不变的。这个数字与我们选择的网络延迟和两个请求的例子有关。希望读者自己能够尝试一些不同的情况，比如延迟更高、请求更多的情况。尝试之后，你会惊讶于性能提升效果比这里还要高得多。事实上，网络延迟越高，请求越多，节省的时间就越多。我觉得大家很有必要自己动手验证一下这个结果。因此，越是大型应用，网络优化的影响越大。</p>
+<p>不过，这还不算完。眼光敏锐的读者可能已经发现了，我们可以在服务器上并行处理请求。理论上讲，没有障碍可以阻止服务器同时处理管道中的请求，从而再减少20 ms 的延迟。</p>
+<p>图 11-4 演示了如下几个方面：</p>
+<p>• HTML 和 CSS 请求同时到达，但先处理的是 HTML 请求；</p>
+<p>• 服务器并行处理两个请求，其中处理 HTML 用时 40 ms，处理 CSS 用时 20 ms； </p>
+<p>• CSS 请求先处理完成，但被缓冲起来以等候发送 HTML 响应；</p>
+<p>• 发送完 HTML 响应后，再发送服务器缓冲中的 CSS 响应。</p>
+<p>即使客户端同时发送了两个请求，而且 CSS 资源先准备就绪，服务器也会先发送HTML 响应，然后再交付 CSS。这种情况通常被称作队首阻塞，并经常导致次优化交付：不能充分利用网络连接，造成服务器缓冲开销，最终导致无法预测的客户端延迟。假如第一个请求无限期挂起，或者要花很长时间才能处理完，怎么办呢？在HTTP 1.1 中，所有后续的请求都将被阻塞，等待它完成在前面讨论 TCP 时，我们已经提到过队首阻塞的问题了。由于 TCP 要求严格按照顺序交付，丢失一个 TCP 分组就会阻塞所有高序号的分组，除非重传那个丢失的分组，这样就会导致额外的应用延迟，详细情况请参考 2.4节“队首阻塞”。</p>
+<p>实际中，由于不可能实现多路复用，HTTP 管道会导致 HTTP 服务器、代理和客户端出现很多微妙的，不见文档记载的问题</p>
+<p>• 一个慢响应就会阻塞所有后续请求；</p>
+<p>• 并行处理请求时，服务器必须缓冲管道中的响应，从而占用服务器资源，如果有</p>
+<p>个响应非常大，则很容易形成服务器的受攻击面；</p>
+<p>• 响应失败可能终止 TCP 连接，从页强迫客户端重新发送对所有后续资源的请求，</p>
+<p>导致重复处理；</p>
+<p>• 由于可能存在中间代理，因此检测管道兼容性，确保可靠性很重要；</p>
+<p>• 如果中间代理不支持管道，那它可能会中断连接，也可能会把所有请求串联起来。</p>
+<p>由于存在这些以及其他类似的问题，而 HTTP 1.1 标准中也未对此做出说明，HTTP 管道技术的应用非常有限，虽然其优点毋庸置疑。今天，一些支持管道的浏览器，通常都将其作为一个高级配置选项，但大多数浏览器都会禁用它。换句话说，如果浏览器是 Web 应用的主要交付工具，那还是很难指望通过 HTTP 管道来提升性能。</p>
+<div class="code-wrapper"><pre><code class="hljs tap">在浏览器外部使用 HTTP 管道
+在完全忽略 HTTP 管道的优点之前，有必要提醒一下大家，如果你对客户端和服
+务器拥有完全控制的权限，那么还是可以使用它的，并且效果非常好。事实上，
+苹果 iTunes 那个案例就说明了问题，参见本章开头的“让 iTunes 用户感受到<span class="hljs-number"> 3 </span>倍
+以上的性能增强”。如此巨大的性能提升，就来自启用持久 HTTP 连接，以及在服
+务器和 iTunes 客户端内启用 HTTP 管道。
+要在你自己的应用中启用管道，要注意如下事项：
+• 确保 HTTP 客户端支持管道；
+• 确保 HTTP 服务器支持管道；
+• 应用必须处理中断的连接并恢复；
+• 应用必须处理中断请求的幂等问题；
+• 应用必须保护自身不受出问题的代理的影响。
+实践中部署 HTTP 管道的最佳途径，就是在客户端和服务器间使用安全通道
+（HTTPS）。这样，就能可靠地避免那些不理解或不支持管道的中间代理的干扰。</code></pre></div>
+
+<h5 id="域名分区"><a href="#域名分区" class="headerlink" title="域名分区"></a>域名分区</h5><p>HTTP 1.x 协议的一项空白强迫浏览器开发商引入并维护着连接池，每个主机最多 6 个 TCP 流。好的一方面是对这些连接的管理工作都由浏览器来处理。作为应用开发者，你根本不必修改自己的应用。不好的一方面呢，就是 6 个并行的连接对你的应用来说可能仍然不够用</p>
+<p>根据 HTTP Archive 的统计，目前平均每个页面都包含 90 多个独立的资源，如果这些资源都来自同一个主机，那么仍然会导致明显的排队等待（图 11-5）。实际上，何必把自己只限制在一个主机上呢？我们不必只通过一个主机（例如 <a href="http://www.example.com）提供所有资源，而是可以手工将所有资源分散到多个子域名：{shard1">www.example.com）提供所有资源，而是可以手工将所有资源分散到多个子域名：{shard1</a>, shardn}.example.com。由于主机名称不一样了，就可以突破浏览器的连接限制，实现更高的并行能力。域名分区使用得越多，并行能力就越强！</p>
+<p>当然，天下没有免费的午餐，域名分区也不例外：每个新主机名都要求有一次额外的 DNS 查询，每多一个套接字都会多消耗两端的一些资源，而更糟糕的是，站点作者必须手工分离这些资源，并分别把它们托管到多个主机上。</p>
+<p>实践中，把多个域名（如 shard1.example.com、shard2.example.com）解析到同一个 IP 地址是很常见的做法。所有分区都通过 CNAME DNS 记录指向同一个服务器，而浏览器连接限制针对的是主机名，不是 IP 地址。另</p>
+<p>外，每个分区也可以指向一个 CDN 或其他可以访问到的服务器。</p>
+<p>怎么计算最优的分区数目呢？这个问题不好回答，因为没有简单的方程式。答案取决于页面中资源的数量（每个页面都可能不一样），以及客户端连接的可用带宽和延迟（因客户端而异）。实际上，我们能做的，就是在调查的基础上做出预测，然后使用固定数量的分区。幸运的话，多这么一点复杂性，还是能给大多数用户带来好处的。</p>
+<p>实践中，域名分区经常会被滥用，导致几十个 TCP 流都得不到充分利用，其中很多永远也避免不了 TCP 慢启动，最坏的情况下还会降低性能。此外，如果使用的是HTTPS，那么由于 TLS 握手导致的额外网络往返，会使得上述代价更高。此时，请大家注意如下几条：</p>
+<p>• 首先，把 TCP 利用好，参见 2.5 节“针对 TCP 的优化建议”；</p>
+<p>• 浏览器会自动为你打开 6 个连接；</p>
+<p>• 资源的数量、大小和响应时间都会影响最优的分区数目；</p>
+<p>• 客户端延迟和带宽会影响最优的分区数目；</p>
+<p>• 域名分区会因为额外的 DNS 查询和 TCP 慢启动而影响性能</p>
+<p>域名分区是一种合理但又不完美的优化手段。请大家一定先从最小分区数目（不分区）开始，然后逐个增加分区并度量分区后对应用的影响。现实当中，真正因同时打开十几个连接而提升性能的站点并不多，如果你最终使用了很多分区，那么你会发现减少资源数量或者将它们合并为更少的请求，反而能带来更大的好处。</p>
+<p>DNS 查询和 TCP 慢启动导致的额外消耗对高延迟客户端的影响最大。换句话说，移动（3G、4G）客户端经常是受过度域名分区影响最大的！</p>
+<h5 id="度量和控制协议开销"><a href="#度量和控制协议开销" class="headerlink" title="度量和控制协议开销"></a>度量和控制协议开销</h5><p>HTTP 0.9 当初就是一个简单的只有一行的 ASCII 请求，用于取得一个超文本文档，这样导致的开销是最小的。HTTP 1.0 增加了请求和响应首部，以便双方能够交换有关请求和响应的元信息。最终，HTTP 1.1 把这种格式变成了标准：服务器和客户端都可以轻松扩展首部，而且始终以纯文本形式发送，以保证与之前 HTTP版本的兼容。</p>
+<p>今天，每个浏览器发起的 HTTP 请求，都会携带额外 500<del>800 字节的 HTTP 元数据：用户代理字符串、很少改变的接收和传输首部、缓存指令，等等。有时候，500</del>800 字节都少说了，因为没有包含最大的一块：HTTP cookie。现代应用经常通过cookie 进行会话管理、记录个性选项或者完成分析。综合到一起，所有这些未经压缩的 HTTP 元数据经常会给每个 HTTP 请求增加几千字节的协议开销。</p>
+<p><strong>RFC 2616（HTTP 1.1）没有对 HTTP 首部的大小规定任何限制。然而，实际中，很多服务器和代理都会将其限制在 8 KB 或 16 KB 之内。</strong></p>
+<p>HTTP 首部的增多对它本身不是坏事，因为大多数首部都有其特定用途。然而，由于所有 HTTP 首部都以纯文本形式发送（不会经过任何压缩），这就会给每个请求附加较高的额外负荷，而这在某些应用中可能造成严重的性能问题。举个例子，API 驱动的 Web 应用越来越多，这些应用需要频繁地以序列化消息（如 JSON）的形式通信。在这些应用中，额外的 HTTP 开销经常会超过实际传输的数据静荷一个数量级：</p>
+<div class="code-wrapper"><pre><code class="hljs awk">$&gt; curl --trace-ascii - -d<span class="hljs-string">&#x27;&#123;&quot;msg&quot;:&quot;hello&quot;&#125;&#x27;</span> http:<span class="hljs-regexp">//</span>www.igvita.com/api
+== Info: Connected to www.igvita.com
+=&gt; Send header, <span class="hljs-number">218</span> bytes <span class="hljs-regexp">//</span>➊ HTTP 请求首部：<span class="hljs-number">218</span> 字节
+POST <span class="hljs-regexp">/api HTTP/</span><span class="hljs-number">1.1</span>
+User-Agent: curl<span class="hljs-regexp">/7.24.0 (x86_64-apple-darwin12.0) libcurl/</span><span class="hljs-number">7.24</span>.<span class="hljs-number">0</span> ...
+Host: www.igvita.com
+Accept: */*
+Content-Length: <span class="hljs-number">15</span> <span class="hljs-regexp">//</span>➋应用静荷 <span class="hljs-number">15</span> 字节（&#123;<span class="hljs-string">&quot;msg&quot;</span>:<span class="hljs-string">&quot;hello&quot;</span>&#125;）
+Content-Type: application/x-www-form-urlencoded
+=&gt; Send data, <span class="hljs-number">15</span> bytes (<span class="hljs-number">0</span>xf)
+&#123;<span class="hljs-string">&quot;msg&quot;</span>:<span class="hljs-string">&quot;hello&quot;</span>&#125;
+&lt;= Recv header, <span class="hljs-number">134</span> bytes <span class="hljs-regexp">//</span>➌服务器的 <span class="hljs-number">204</span> 响应：<span class="hljs-number">134</span> 字节
+HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">204</span> No Content
+Server: nginx/<span class="hljs-number">1.0</span>.<span class="hljs-number">11</span>
+Via: HTTP/<span class="hljs-number">1.1</span> GWA
+Date: Thu, <span class="hljs-number">20</span> Sep <span class="hljs-number">2012</span> <span class="hljs-number">05</span>:<span class="hljs-number">41</span>:<span class="hljs-number">30</span> GMT
+Cache-Control: max-age=<span class="hljs-number">0</span>, no-cache</code></pre></div>
+
+<p>在前面的例子中，寥寥 15 个字符的 JSON 消息被 352 字节的 HTTP 首部包裹着，全部以纯文本形式发送——协议字节开销占 96%，而且这还是没有 cookie 的最好情况。减少要传输的首部数据（高度重复且未压缩），可以节省相当于一次往返的延迟时间，显著提升很多 Web 应用的性能。</p>
+<h5 id="连接与拼合"><a href="#连接与拼合" class="headerlink" title="连接与拼合"></a>连接与拼合</h5><p>• 连接</p>
+<p>把多个 JavaScript 或 CSS 文件组合为一个文件。</p>
+<p>• 拼合</p>
+<p>把多张图片组合为一个更大的复合的图片。</p>
+<p>对 JavaScript 和 CSS 来说，只要保持一定的顺序，就可以做到把多个文件连接起来而不影响代码的行为和执行。类似地，多张图片可以组合为一个“图片精灵”，然后使用 CSS 选择这张大图中的适当部分，显示在浏览器中。这两种技术都具备两方面的优点。 </p>
+<p>• 减少协议开销</p>
+<p>通过把文件组合成一个资源，可以消除与文件相关的协议开销。如前所述，每个文件很容易招致 KB 级未压缩数据的开销。</p>
+<p>• 应用层管道</p>
+<p>说到传输的字节，这两种技术的效果都好像是启用了 HTTP 管道：来自多个响应的数据前后相继地连接在一起，消除了额外的网络延迟。实际上，就是把管道提高了一层，置入了应用中。</p>
+<p>连接和拼合技术都属于以内容为中心的应用层优化，它们通过减少网络往返开销，可以获得明显的性能提升。可是，实现这些技术也要求额外的处理、部署和编码（比如选择图片精灵中子图的 CSS 代码），因而也会给应用带来额外的复杂性。此外，把多个资源打包到一块，也可能给缓存带来负担，影响页面的执行速度。</p>
+<p>要理解为什么这些技术会伤害性能，可以考虑一种并不少见的情况：一个包含十来个 JavaScript 和 CSS 文件的应用，在产品状态下把所有文件合并为一个 CSS 文件和一个 JavaScript 文件。</p>
+<p>• 相同类型的资源都位于一个 URL（缓存键）下面。</p>
+<p>• 资源包中可能包含当前页面不需要的内容。</p>
+<p>• 对资源包中任何文件的更新，都要求重新下载整个资源包，导致较高的字节开销。</p>
+<p>• JavaScript 和 CSS 只有在传输完成后才能被解析和执行，因而会拖慢应用的执行速度。</p>
+<p>实践中，大多数 Web 应用都不是只有一个页面，而是由多个视图构成。每个视图都有自己的资源，同时资源之间还有部分重叠：公用的 CSS、JavaScript 和图片。实际上，把所有资源都组合到一个文件经常会导致处理和加载不必要的字节。虽然可以把它看成一种预获取，但代价则是降低了初始启动的速度。</p>
+<p>对很多应用来说，更新资源带来的问题更大。更新图片精灵或组合 JavaScript 文件中的某一处，可能就会导致重新传输几百 KB 数据。由于牺牲了模块化和缓存粒度，假如打包资源变动频率过高，特别是在资源包过大的情况下，很快就会得不偿失。如果你的应用真到了这种境地，那么可以考虑把“稳定的核心”，比如框架和库，转移到独立的包中。</p>
+<p>内存占用也会成为问题。对图片精灵来说，浏览器必须分析整个图片，即便实际上只显示了其中的一小块，也要始终把整个图片都保存在内存中。浏览器是不会把不显示的部分从内存中剔除掉的！</p>
+<div class="code-wrapper"><pre><code class="hljs tap">计算图片对内存的需求
+
+
+所有编码的图片经浏览器解析后都会以 RGBA 位图的形式保存于内存当中。每个
+RGBA 图片的像素需要占用<span class="hljs-number"> 4 </span>字节：红、绿、蓝通道各占<span class="hljs-number"> 1 </span>字节，Alpha（透明）
+通道占<span class="hljs-number"> 1 </span>字节。这样算下来，一张图片占用的内存量就是图片像素宽度 × 像素高
+度 ×4 字节。
+举个例子，800×600 像素的位图会占多大内存呢？
+800 ×<span class="hljs-number"> 600 </span>×<span class="hljs-number"> 4 </span>B =<span class="hljs-number"> 1 </span>920<span class="hljs-number"> 000 </span>B ≈ 1.83 MB 
+在资源受限的设备，比如手机上，内存占用很快就会成为瓶颈。对于游戏等严重
+依赖图片的应用来说，这个问题就会更明显。</code></pre></div>
+
+<p>最后，为什么执行速度还会受影响呢？我们知道，浏览器是以递增方式处理HTML 的，而对于 JavaScript 和 CSS 的解析及执行，则要等到整个文件下载完毕。JavaScript 和 CSS 处理器都不允许递增式执行。</p>
+<p><strong>CSS 和 JavaScript 文件大小与执行性能</strong></p>
+<p>CSS 文件越大，浏览器在构建 CSSOM 前经历的阻塞时间就越长，从而推迟首次绘制页面的时间。类似地，JavaScript 文件越大，对执行速度的影响同样越大；小文件倒是能实现“递增式”执行。打包文件到底多大合适呢？可惜的是，没有理想的大小。然而，谷歌 PageSpeed</p>
+<p>团队的测试表明，30~50 KB（压缩后）是每个 JavaScript 文件大小的合适范围：既大到了能够减少小文件带来的网络延迟，还能确保递增及分层式的执行。具体的结果可能会由于应用类型和脚本数量而有所不同。</p>
+<p>总之，连接和拼合是在 HTTP 1.x 协议限制（管道没有得到普遍支持，多请求开销大）的现实之下可行的应用层优化。使用得当的话，这两种技术可以带来明显的性能提升，代价则是增加应用的复杂度，以及导致缓存、更新、执行速度，甚至渲染页面的问题。应用这两种优化时，要注意度量结果，根据实际情况考虑如下问题。</p>
+<p>• 你的应用在下载很多小型的资源时是否会被阻塞？</p>
+<p>• 有选择地组合一些请求对你的应用有没有好处？</p>
+<p>• 放弃缓存粒度对用户有没有负面影响？</p>
+<p>• 组合图片是否会占用过多内存？</p>
+<p>• 首次渲染时是否会遭遇延迟执行？</p>
+<p>在上述问题的答案间求得平衡是一种艺术</p>
+<p><strong>优化 Gmail 性能</strong></p>
+<p>Gmail 使用了大量 JavaScript，而且也不断拓展了现代浏览器的性能边界。要提升首次加载性能，Gmail 团队尝试了各种技术，目前包括如下这些：</p>
+<p>• 把首次绘制所需的 CSS 单独拿出来，优先于其他 CSS 文件发送；</p>
+<p>• 递增地交付较小的 JavaScript 块，以实现递增式执行；</p>
+<p>• 使用定制的外部更新机制，即客户端在后台下载新的 JavaScript 文件，然后在页面刷新时更新。</p>
+<p>鉴于 Gmail 如此庞大的用户数量，如果所有打开的浏览器都要更新脚本，那哪怕一次简单的 JavaScript 更新，都可能演变为一次自残式的 DoS 攻击。为此，Gmail会在用户使用旧版本页面时，在后台预先加载更新文件，这样既可以分散负荷，又能提升下一次刷新时的速度。这个过程每天都重复不止一次。在此基础上，为了让用户感觉第一次加载的速度很快，Gmail 团队还在 HTML 文档中嵌入了关键性 CSS 和 JavaScript，然后以块的形式递增加载其余 JavaScript 文件，以加快脚本执行——第一次打开 Gmail 时显示的进度条，反映的就是这个过程！</p>
+<h5 id="嵌入资源"><a href="#嵌入资源" class="headerlink" title="嵌入资源"></a>嵌入资源</h5><p>嵌入资源是另一种非常流行的优化方法，把资源嵌入文档可以减少请求的次数。比如，JavaScript 和 CSS 代码，通过适当的 script 和 style 块可以直接放在页面中，而图片甚至音频或 PDF 文件，都可以通过数据 URI（data:[mediatype][;base64],data）的方式嵌入到页面中：</p>
+<div class="code-wrapper"><pre><code class="hljs routeros">&lt;img <span class="hljs-attribute">src</span>=<span class="hljs-string">&quot;data:image/gif;base64,R0lGODlhAQABAIAAAAA</span>
+<span class="hljs-string"> AAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==&quot;</span>
+ <span class="hljs-attribute">alt</span>=<span class="hljs-string">&quot;1x1 transparent (GIF) pixel&quot;</span> /&gt;</code></pre></div>
+
+<p>前面的例子是在文档中嵌入了一个 1×1 的透明 GIF 像素。而任何 MIME类型，只要浏览器能理解，都可以通过类似方式嵌入到页面中，包括PDF、音频、视频。不过，有些浏览器会限制数据 URI 的大小，比如 IE8最大只允许 32 KB。</p>
+<p>数据 URI 适合特别小的，理想情况下，最好是只用一次的资源。以嵌入方式放到页面中的资源，应该算是页面的一部分，不能被浏览器、CDN 或其他缓存代理作为单独的资源缓存。换句话说，如果在多个页面中都嵌入同样的资源，那么这个资源将会随着每个页面的加载而被加载，从而增大每个页面的总体大小。另外，如果嵌入资源被更新，那么所有以前出现过它的页面都将被宣告无效，而由客户端重新从服务器获取。</p>
+<p>最后，虽然 CSS 和 JavaScript 等基于文本的资源很容易直接嵌入页面，也不会带来多余的开销，但非文本性资源则必须通过 base64 编码，而这会导致开销明显增大：编码后的资源大小比原大小增大 33% ！</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">base64</span> 编码使用 <span class="hljs-number">64</span> 个 ASCII 符号和空白符将任意字节流编码为 ASCII字符串。编码过程中，base64 会导致被编码的流变成原来的 <span class="hljs-number">4</span>/<span class="hljs-number">3</span>，即增大<span class="hljs-number">33</span>% 的字节开销</code></pre></div>
+
+<p>实践中，常见的一个经验规则是只考虑嵌入 1~2 KB 以下的资源，因为小于这个标准的资源经常会导致比它自身更高的 HTTP 开销。然而，如果嵌入的资源频繁变更，又会导致宿主文档的无效缓存率升高。嵌入资源也不是完美的方法。如果你的应用要使用很小的、个别的文件，在考虑是否嵌入时，可以参照如下建议：</p>
+<p>• 如果文件很小，而且只有个别页面使用，可以考虑嵌入；</p>
+<p>• 如果文件很小，但需要在多个页面中重用，应该考虑集中打包；</p>
+<p>• 如果小文件经常需要更新，就不要嵌入了；</p>
+<p>• 通过减少 HTTP cookie 的大小将协议开销最小化。</p>
+<h4 id="HTTP-2-0"><a href="#HTTP-2-0" class="headerlink" title="HTTP 2.0"></a><strong>HTTP 2.0</strong></h4><p>HTTP 2.0 的目的就是通过支持请求与响应的多路复用来减少延迟，通过压缩 HTTP首部字段将协议开销降至最低，同时增加对请求优先级和服务器端推送的支持。为达成这些目标，HTTP 2.0 还会给我们带来大量其他协议层面的辅助实现，比如新的流量控制、错误处理和更新机制。上述几种机制虽然不是全部，但却是最重要的，所有 Web 开发者都应该理解并在自己的应用中利用它们。</p>
+<p>HTTP 2.0 不会改动 HTTP 的语义。HTTP 方法、状态码、URI 及首部字段，等等这些核心概念一如往常。但是，HTTP 2.0 修改了格式化数据（分帧）的方式，以及客户端与服务器间传输这些数据的方式。这两点统帅全局，通过新的组帧机制向我们的应用隐藏了所有复杂性。换句话说，所有原来的应用都可以不必修改而在新协议运行。这当然是好事。</p>
+<p>可是，我们关心的不止是交付能用的应用，我们目标是交付最佳性能！ HTTP 2.0为我们的应用提供了很多新的优化机制，这些机制是前所未有的，而我们的工作就是把它们都利用好。下面我们就来详细介绍一下这些机制。</p>
+<h5 id="历史及其与SPDY的渊源"><a href="#历史及其与SPDY的渊源" class="headerlink" title="历史及其与SPDY的渊源"></a>历史及其与SPDY的渊源</h5><p>SPDY 是谷歌开发的一个实验性协议，于 2009 年年中发布，其主要目标是通过解决HTTP 1.1 中广为人知的一些性能限制，来减少网页的加载延迟。大致上，这个项目设定的目标如下：</p>
+<p>• 页面加载时间（PLT，Page Load Time）降低 50%； </p>
+<p>• 无需网站作者修改任何内容；</p>
+<p>• 把部署复杂性降至最低，无需变更网络基础设施；</p>
+<p>• 与开源社区合作开发这个新协议；</p>
+<p>• 收集真实性能数据，验证这个实验性协议是否有效。</p>
+<p>为了达到降低 50% 页面加载时间的目标，SPDY 引入了一个新的二进制分帧数据层，以实现多向请求和响应、优先次序、最小化及消除不必要的网络延迟，目的是更有效地利用底层 TCP 连接；参见 10.3.2 节“延迟是性能瓶颈”。</p>
+<h5 id="走向HTTP-2-0"><a href="#走向HTTP-2-0" class="headerlink" title="走向HTTP 2.0"></a>走向HTTP 2.0</h5><p>SPDY 是 HTTP 2.0 的催化剂，但 SPDY 并非 HTTP 2.0。2012 年初，W3C 向社会征集 HTTP 2.0 的建议，HTTP-WG 经过内部讨论，决定将 SPDY 规范作为制定标准的基础。从那时起，SPDY 已经经过了很多变化和改进，而且在 HTTP 2.0 官方标准公布之前，还将有很多变化和改进。</p>
+<p>在此，有必要回顾一下 HTTP 2.0 宣言草稿，因为这份宣言明确了该协议的范围和关键设计要求：</p>
+<p>HTTP/2.0 应该满足如下条件：</p>
+<p>• 相对于使用 TCP 的 HTTP 1.1，用户在大多数情况下的感知延迟要有实质上、可度量的改进；</p>
+<p>• 解决 HTTP 中的“队首阻塞”问题；</p>
+<p>• 并行操作无需与服务器建立多个连接，从而改进 TCP 的利用率，特别是拥塞控制方面；</p>
+<p>• 保持 HTTP 1.1 的语义，利用现有文档，包括（但不限于）HTTP 方法、状态码、URI，以及首部字段；</p>
+<p>• 明确规定 HTTP 2.0 如何与 HTTP 1.x 互操作，特别是在中间介质上；</p>
+<p>• 明确指出所有新的可扩展机制以及适当的扩展策略。</p>
+<p>对现有的 HTTP 部署——特别是 Web 浏览器（桌面及移动）、非浏览器（“HTTP API”）、Web 服务（各种规模），以及中间介质（代理、公司防火墙、“反向”代理及 CDN）而言，最终规范应该满足上述这些目标。类似地，当前和未来对 HTTP/1.x 的语义扩展（如首部、方法、状态码、缓存指令）也应该得到新协议的支持。</p>
+<p>​                                                                                                                                                                             ——HTTPbis WG 宣言 HTTP 2.0 </p>
+<p>简言之，HTTP 2.0 致力于突破上一代标准众所周知的性能限制，但它也是对之前1.x 标准的扩展，而非替代。HTTP 的语义不变，提供的功能不变，HTTP 方法、状态码、URI 和首部字段，等等这些核心概念也不变；这些方面的变化都不在考虑之列。既然如此，那“2.0”还名副其实吗？</p>
+<p>之所以要递增一个大版本到 2.0，主要是因为它改变了客户端与服务器之间交换数据的方式。为实现宏伟的性能改进目标，HTTP 2.0 增加了新的二进制分帧数据层，而这一层并不兼容之前的 HTTP 1.x 服务器及客户端——是谓 2.0。</p>
+<p>HTTP/2.0 通过支持首部字段压缩和在同一连接上发送多个并发消息，让应用更有效地利用网络资源，减少感知的延迟时间。而且，它还支持服务器到客户端的主动推送机制。</p>
+<h6 id="二进制分帧层-1"><a href="#二进制分帧层-1" class="headerlink" title="二进制分帧层"></a>二进制分帧层</h6><p>HTTP 2.0 性能增强的核心，全在于新增的二进制分帧层（图 12-1），它定义了如何封装 HTTP 消息并在客户端与服务器之间传输。</p>
+<p>这里所谓的“层”，指的是位于套接字接口与应用可见的高层 HTTP API 之间的一个新机制：HTTP 的语义，包括各种动词、方法、首部，都不受影响，不同的是传输期间对它们的编码方式变了。HTTP 1.x 以换行符作为纯文本的分隔符，而 HTTP 2.0 将所有传输的信息分割为更小的消息和帧，并对它们采用二进制格式的编码。</p>
+<p>这样一来，客户端和服务器为了相互理解，必须都使用新的二进制编码机制：HTTP 1.x 客户端无法理解只支持 HTTP 2.0 的服务器，反之亦然。不过不要紧，现有的应用不必担心这些变化，因为客户端和服务器会替它们完成必要的分帧工作。</p>
+<p>HTTPS 是二进制分帧的另一个典型示例：所有 HTTP 消息都以透明的方式为我们编码和解码（参见 4.6 节“TLS 记录协议”），从而实现客户端与服务器安全通信，但不必对应用进行任何修改。HTTP 2.0 的工作原理差不多也是这样。</p>
+<h6 id="流、消息和帧"><a href="#流、消息和帧" class="headerlink" title="流、消息和帧"></a>流、消息和帧</h6><p>新的二进制分帧机制改变了客户端与服务器之间交互数据的方式（图 12-2）。为了说明这个过程，我们需要了解 HTTP 2.0 的两个新概念。</p>
+<p>• 流</p>
+<p>已建立的连接上的双向字节流。</p>
+<p>• 消息</p>
+<p>与逻辑消息对应的完整的一系列数据帧。</p>
+<p>• 帧</p>
+<p>HTTP 2.0 通信的最小单位，每个帧包含帧首部，至少也会标识出当前帧所属的流。</p>
+<p>所有 HTTP 2.0 通信都在一个连接上完成，这个连接可以承载任意数量的双向数据流。相应地，每个数据流以消息的形式发送，而消息由一或多个帧组成，这些帧可以乱序发送，然后再根据每个帧首部的流标识符重新组装。</p>
+<p>HTTP 2.0 的所有帧都采用二进制编码，所有首部数据都会被压缩。因此，图 12-2 只是说明了数据流、消息和帧之间的关系，而非它们实际传输时的编码结果。要了解实际编码结果，请参考 12.4 节“二进制分帧简介”。</p>
+<p>• 所有通信都在一个 TCP 连接上完成。</p>
+<p>• 流是连接中的一个虚拟信道，可以承载双向的消息；每个流都有一个唯一的整数标识符（1、2…<em>N</em>）。</p>
+<p>• 消息是指逻辑上的 HTTP 消息，比如请求、响应等，由一或多个帧组成。</p>
+<p>• 帧是最小的通信单位，承载着特定类型的数据，如 HTTP 首部、负荷，等等。</p>
+<p>简言之，HTTP 2.0 把 HTTP 协议通信的基本单位缩小为一个一个的帧，这些帧对应着逻辑流中的消息。相应地，很多流可以并行地在同一个 TCP 连接上交换消息。</p>
+<h6 id="多向请求与响应"><a href="#多向请求与响应" class="headerlink" title="多向请求与响应"></a>多向请求与响应</h6><p>在 HTTP 1.x 中，如果客户端想发送多个并行的请求以及改进性能，那么必须使用多个 TCP 连接（参见 11.3 节“使用多个 TCP 连接”）。这是 HTTP 1.x 交付模型的直接结果，该模型会保证每个连接每次只交付一个响应（多个响应必须排队）。更糟糕的是，这种模型也会导致队首阻塞，从而造成底层 TCP 连接的效率低下。</p>
+<p>HTTP 2.0 中新的二进制分帧层突破了这些限制，实现了多向请求和响应：客户端和服务器可以把 HTTP 消息分解为互不依赖的帧（图 12-3），然后乱序发送，最后再在另一端把它们重新组合起来。</p>
+<p>把 HTTP 消息分解为独立的帧，交错发送，然后在另一端重新组装是 HTTP 2.0 最重要的一项增强。事实上，这个机制会在整个 Web 技术栈中引发一系列连锁反应，从而带来巨大的性能提升，因为：</p>
+<p>• 可以并行交错地发送请求，请求之间互不影响；</p>
+<p>• 可以并行交错地发送响应，响应之间互不干扰；</p>
+<p>• 只使用一个连接即可并行发送多个请求和响应；</p>
+<p>• 消除不必要的延迟，从而减少页面加载的时间；</p>
+<p>• 不必再为绕过 HTTP 1.x 限制而多做很多工作；</p>
+<p>• 更多优势。</p>
+<p>总之，HTTP 2.0 的二进制分帧机制解决了 HTTP 1.x 中存在的队首阻塞问题，也消除了并行处理和发送请求及响应时对多个连接的依赖。结果，就是应用速度更快、开发更简单、部署成本更低。</p>
+<p>支持多向请求与响应，可以省掉针对 HTTP 1.x 限制所费的那些脑筋和工作，比如拼接文件、图片精灵、域名分区（参见 13.2 节“针对 HTTP 1.x的优化建议”）。类似地，通过减少 TCP 连接的数量，HTTP 2.0 也会减少客户端和服务器的 CPU 及内存占用。</p>
+<h6 id="请求优先级"><a href="#请求优先级" class="headerlink" title="请求优先级"></a>请求优先级</h6><p>把 HTTP 消息分解为很多独立的帧之后，就可以通过优化这些帧的交错和传输顺序，进一步提升性能。为了做到这一点，每个流都可以带有一个 31 比特的优先值：</p>
+<p>• 0 表示最高优先级；</p>
+<p>• 2^31-1 表示最低优先级。</p>
+<p>有了这个优先值，客户端和服务器就可以在处理不同的流时采取不同的策略，以最优的方式发送流、消息和帧。具体来讲，服务器可以根据流的优先级，控制资源分配（CPU、内存、带宽），而在响应数据准备好之后，优先将最高优先级的帧发送给客户端</p>
+<p><strong>浏览器请求优先级与 HTTP 2.0</strong></p>
+<p>浏览器在渲染页面时，并非所有资源都具有相同的优先级：HTML 文档本身对构建 DOM 不可或缺，CSS 对构建 CSSOM 不可或缺，而 DOM 和 CSSOM 的构建都可能受到 JavaScript 资源的阻塞（参见 10.1 节的附注栏“DOM、CSSOM 和JavaScript”），其他资源（如图片）的优先级都可以降低。为加快页面加载速度，所有现代浏览器都会基于资源的类型以及它在页面中的位置排定请求的优先次序，甚至通过之前的访问来学习优先级模式——比如，之前的渲染如果被某些资源阻塞了，那么同样的资源在下一次访问时可能就会被赋予更高的优先级。在 HTTP 1.x 中，浏览器极少能利用上述优先级信息，因为协议本身并不支持多路复用，也没有办法向服务器通告请求的优先级。此时，浏览器只能依赖并行连接，且最多只能同时向一个域名发送 6 个请求。于是，在等连接可用期间，请求只能在客户端排队，从而增加了不必要的网络延迟。理论上，HTTP 管道可以解决这个问题，只是由于缺乏支持而无法付诸实践。HTTP 2.0 一举解决了所有这些低效的问题：浏览器可以在发现资源时立即分派请求，指定每个流的优先级，让服务器决定最优的响应次序。这样请求就不必排队了，既节省了时间，也最大限度地利用了每个连接。</p>
+<p>HTTP 2.0 没有规定处理优先级的具体算法，只是提供了一种赋予数据优先级的机制，而且要求客户端与服务器必须能够交换这些数据。这样一来，优先值作为提示信息，对应的次序排定策略可能因客户端或服务器的实现而不同：客户端应该明确指定优先值，服务器应该根据该值处理和交付数据。在这个规定之下，尽管你可能无法控制客户端发送的优先值，但或许你可以控制服务器。因此，在选择 HTTP 2.0 服务器时，可以多留点心！为说明这一点，考虑下面几个问题</p>
+<p>• 如果服务器对所有优先值视而不见怎么办？</p>
+<p>• 高优先值的流一定优先处理吗？</p>
+<p>• 是否存在不同优先级的流应该交错的情况？</p>
+<p>如果服务器不理睬所有优先值，那么可能会导致应用响应变慢：浏览器明明在等关键的 CSS 和 JavaScript，服务器却在发送图片，从而造成渲染阻塞。不过，规定严格的优先级次序也可能带来次优的结果，因为这可能又会引入队首阻塞问题，即某个高优先级的慢请求会不必要地阻塞其他资源的交付。</p>
+<p>服务器可以而且应该交错发送不同优先级别的帧。只要可能，高优先级流都应该先，包括分配处理资源和客户端与服务器间的带宽。不过，为了最高效地利用底层连接，不同优先级的混合也是必需的。</p>
+<h6 id="每个来源一个连接"><a href="#每个来源一个连接" class="headerlink" title="每个来源一个连接"></a>每个来源一个连接</h6><p>有了新的分帧机制后，HTTP 2.0 不再依赖多个 TCP 连接去实现多流并行了。现在，每个数据流都拆分成很多帧，而这些帧可以交错，还可以分别优先级。于是，所有HTTP 2.0 连接都是持久化的，而且客户端与服务器之间也只需要一个连接即可。</p>
+<p>实验表明，客户端使用更少的连接肯定可以降低延迟时间。HTTP 2.0 发送的总分组数量比 HTTP 差不多要少 40%。而服务器处理大量并发连接的情况也变成了可伸缩性问题，因为 HTTP 2.0 减轻了这个负担</p>
+<p>每个来源一个连接显著减少了相关的资源占用：连接路径上的套接字管理工作量少了，内存占用少了，连接吞吐量大了。此外，从上到下所有层面上也都获得了相应的好处：</p>
+<p>• 所有数据流的优先次序始终如一；</p>
+<p>• 压缩上下文单一使得压缩效果更好；</p>
+<p>• 由于 TCP 连接减少而使网络拥塞状况得以改观；</p>
+<p>• 慢启动时间减少，拥塞和丢包恢复速度更快。</p>
+<p>大多数 HTTP 连接的时间都很短，而且是突发性的，但 TCP 只在长时间连接传输大块数据时效率才最高。HTTP 2.0 通过让所有数据流共用同一个连接，可以更有效地使用 TCP 连接。</p>
+<p>HTTP 2.0 不仅能够减少网络延迟，还有助于提高吞吐量和降低运营成本！</p>
+<p><strong>丢包、高 RTT 连接和 HTTP 2.0 性能</strong></p>
+<p>• 虽然消除了 HTTP 队首阻塞现象，但 TCP 层次上仍然存在队首阻塞（参见 2.4节“队首阻塞”）；</p>
+<p>• 如果 TCP 窗口缩放被禁用，那带宽延迟积效应可能会限制连接的吞吐量；</p>
+<p>• 丢包时，TCP 拥塞窗口会缩小（参见 2.2.3 节“拥塞预防”）。</p>
+<p>上述每一点都可能对 HTTP 2.0 连接的吞吐量和延迟性能造成不利影响。然而，除了这些局限性之外，实验表明一个 TCP 连接仍然是 HTTP 2.0 基础上的最佳部署策略：</p>
+<p>目前为止的测试表明，压缩和优先级排定带来的性能提升，已经超过了</p>
+<p>队首阻塞（特别是丢包情况下）造成的负面效果。</p>
+<p>与所有性能优化过程一样，去掉一个性能瓶颈，又会带来新的瓶颈。对 HTTP 2.0 而言，TCP 很可能就是下一个性能瓶颈。这也是为什么服务器端 TCP 配置对HTTP 2.0 至关重要的一个原因。</p>
+<p>目前，针对 TCP 性能优化的研究还在进行中：TCP 快速打开、比例降速、增大的初始拥塞窗口，等等不一而足。总之，一定要知道 HTTP 2.0 与之前的版本一样，并不强制使用 TCP。UDP 等其他传输协议也并非不可以。</p>
+<h6 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h6><p>在同一个 TCP 连接上传输多个数据流，就意味着要共享带宽。标定数据流的优先级有助于按序交付，但只有优先级还不足以确定多个数据流或多个连接间的资源分配。为解决这个问题，HTTP 2.0 为数据流和连接的流量控制提供了一个简单的机制：</p>
+<p>流量控制基于每一跳进行，而非端到端的控制；</p>
+<p>• 流量控制基于窗口更新帧进行，即接收方广播自己准备接收某个数据流的多少字节，以及对整个连接要接收多少字节；</p>
+<p>• 流量控制窗口大小通过 WINDOW_UPDATE 帧更新，这个字段指定了流 ID 和窗口大小递增值；</p>
+<p>• 流量控制有方向性，即接收方可能根据自己的情况为每个流乃至整个连接设置任意窗口大小；</p>
+<p>• 流量控制可以由接收方禁用，包括针对个别的流和针对整个连接。</p>
+<p>HTTP 2.0 连接建立之后，客户端与服务器交换 SETTINGS 帧，目的是设置双向的流量控制窗口大小。除此之外，任何一端都可以选择禁用个别流或整个连接的流量控制。</p>
+<p>上面这个列表是不是让你想起了 TCP 流量控制？应该是，这两个机制实际上是一样的，参见 2.2.1 节“流量控制”。然而，由于 TCP 流量控制不能对同一条 HTTP 2.0连接内的多个流实施差异化策略，因此光有它自己是不够的。这正是 HTTP 2.0 流量控制机制出台的原因。</p>
+<p>HTTP 2.0 标准没有规定任何特定的算法、值，或者什么时候发送 WINDOW_UPDATE 帧。因此，实现可以选择自己的算法以匹配自己的应用场景，从而求得最佳性能。</p>
+<p>优先级可以决定交付次序，而流量控制则可以控制 HTTP 2.0 连接中每个流占用的资源：接收方可以针对特定的流广播较低的窗口大小，以限制它的传输速度。</p>
+<h6 id="服务器推送"><a href="#服务器推送" class="headerlink" title="服务器推送"></a>服务器推送</h6><p>HTTP 2.0 新增的一个强大的新功能，就是服务器可以对一个客户端请求发送多个响应。换句话说，除了对最初请求的响应外，服务器还可以额外向客户端推送资源（图 12-4），而无需客户端明确地请求。</p>
+<p>建立 HTTP 2.0 连接后，客户端与服务器交换 SETTINGS 帧，借此可以限定双向并发的流的最大数量。因此，客户端可以限定推送流的数量，或者通过把这个值设置为 0 而完全禁用服务器推送。</p>
+<p>为什么需要这样一个机制呢？通常的 Web 应用都由几十个资源组成，客户端需要分析服务器提供的文档才能逐个找到它们。那为什么不让服务器提前就把这些资源推送给客户端，从而减少额外的时间延迟呢？服务器已经知道客户端下一步要请求什么资源了，这时候服务器推送即可派上用场。事实上，如果你在网页里嵌入过 CSS、JavaScript，或者通过数据 URI 嵌入过其他资源（参见 11.7 节“嵌入资源”），那你就已经亲身体验过服务器推送了</p>
+<p>把资源直接插入到文档中，就是把资源直接推送给客户端，而无需客户端请求。在HTTP 2.0 中，唯一的不同就是可以把这个过程从应用中拿出来，放到 HTTP 协议本身来实现，而且还带来了如下好处：</p>
+<p>• 客户端可以缓存推送过来的资源；</p>
+<p>• 客户端可以拒绝推送过来的资源；</p>
+<p>• 推送资源可以由不同的页面共享；</p>
+<p>• 服务器可以按照优先级推送资源。</p>
+<p>所有推送的资源都遵守同源策略。换句话说，服务器不能随便将第三方资源推送给客户端，而必须是经过双方确认才行。</p>
+<p>有了服务器推送后，HTTP 1.x 时代的大多数插入或嵌入资源的做法基本上也就过时了。唯一有必要直接在网页中插入资源的情况，就是该资源只供那一个网页使用，而且编码代价不大；此处仍然可以参考 11.7 节“嵌入资源”。除此之外，所有应用都应该使用 HTTP 2.0 服务器推送。</p>
+<p><strong>PUSH_PROMISE</strong></p>
+<p>所有服务器推送流都由 PUSH_PROMISE 发端，它是除了对原始请求的响应之外，服务器向客户端发出的有意推送所述资源的信号。PUSH_PROMISE 帧中只包含要约（promise）资源的 HTTP 首部。</p>
+<p>客户端接收到 PUSH_PROMISE 帧之后，可以视自身需求选择拒绝这个流（比如，已经缓存了相应资源），而这是对 HTTP 1.x 的一个重要改进。嵌入资源作为针对HTTP 1.x 的一种流行“优化技巧”，实际上无异于“强制推送”：客户端无法取消</p>
+<p>这种“推送”，而且也不能个别地缓存嵌入的资源。最后再说一说服务器推送的几点限制。首先，服务器必须遵循请求 - 响应的循环，只能借着对请求的响应推送资源。也就是说，服务器不能随意发起推送流。其次，PUSH_PROMISE 帧必须在返回响应之前发送，以免客户端出现竞态条件。否则，就可能出现比如这种情况：客户端请求的恰好是服务器打算推送的资源。</p>
+<p><strong>实现HTTP 2.0服务器推送</strong></p>
+<p>服务器推送为优化应用的资源交付提供了很多可能。然而，服务器到底如何确定哪些资源可以或应该推送呢？与确定优先级类似，HTTP 2.0 标准也没有就此规定某种算法，所以实现者就拥有了解释权。自然地，也就有可能出现多种策略，每种策略可能会考虑一种应用或服务器使用场景。</p>
+<p>• 应用可以在自身的代码中明确发起服务器推送。这种情况要求与 HTTP 2.0 紧密耦合，但开发人员有控制权。</p>
+<p>• 应用可以通过额外的 HTTP 首部向服务器发送信号，列出它希望推送的资源。这样可以将应用与 HTTP 服务器 API 分离。比如 Apache 的 mod_spdy 能够识别X-Associated-Content 首部，这个首部中列出了希望服务器推送的资源。</p>
+<p>• 服务器可以不依赖应用而自动学习相关资源。服务器可以解析文档，推断出要推送的资源，或者可以分析流量，然后作出适当的决定。比如服务器可以根据Referer 首部收集依赖数据，然后自动向客户端推送关键资源。</p>
+<p>当然，以上只是各种可能策略中的几个，但由此也可以知道可能性是很多的：可能是手工调用低级 API，也可能是一种全自动的实现。类似地，服务器应不应该重复推送相同的资源，还是应该实现一个更智能的策略？服务器可以根据自身的模型、客户端 cookie 或其他机制，智能推断出客户端缓存中有什么资源，然后再作出推送决定。简言之，服务器推送领域将爆出各种创新。</p>
+<p>最后还有一点，就是推送的资源将直接进入客户端缓存，就像客户端请求了似的。不存在客户端 API 或 JavaScript 回调方法等通知机制，可以用于确定资源何时到达。整个过程对运行在浏览器中的 Web 应用来说好像根本不存在。</p>
+<h6 id="首部压缩"><a href="#首部压缩" class="headerlink" title="首部压缩"></a>首部压缩</h6><p>HTTP 的每一次通信都会携带一组首部，用于描述传输的资源及其属性。在 HTTP 1.x 中，这些元数据都是以纯文本形式发送的，通常会给每个请求增加 500~800 字节的负荷。如果算上 HTTP cookie，增加的负荷通常会达到上千字节（参见 11.5 节“度量和控制协议开销”）。为减少这些开销并提升性能，HTTP 2.0 会压缩首部元数据：</p>
+<p>• HTTP 2.0 在客户端和服务器端使用“首部表”来跟踪和存储之前发送的键－值对，对于相同的数据，不再通过每次请求和响应发送；</p>
+<p>• 首部表在HTTP 2.0的连接存续期内始终存在，由客户端和服务器共同渐进地更新; </p>
+<p>• 每个新的首部键－值对要么被追加到当前表的末尾，要么替换表中之前的值。</p>
+<p>通信期间几乎不会改变的通用键－值对（用户代理、可接受的媒体类型，等等）只需发送一次。事实上，如果请求中不包含首部（例如对同一资源的轮询请求），那么首部开销就是零字节。此时所有首部都自动使用之前请求发送的首部！</p>
+<p><strong>SPDY、CRIME 和 HTTP 2.0 压缩</strong></p>
+<p>SPDY 的早期版本使用 zlib 和自定义的字典压缩所有 HTTP 首部，可以减少85%<del>88% 的首部开销，从而显著减少加载页面的时间：在低速 DSL 连接中，上传速度只有 375 Kbit/s，仅压缩请求首部，即可显著减少某些（需要发送大量资源请求的）站点的页面加载时间。我们发现压缩首部可以节省 45</del>1142 ms 的页面加载时间。</p>
+<p>​                                                                                                                                                                            ——SPDY 白皮书，chromium.org</p>
+<p>然而，2012 年夏天，出现了针对 TLS 和 SPDY 压缩算法的“CRIME”安全攻击，它可以利用首部压缩拦截会话。于是，zlib 压缩算法被撤销，取而代之的是前面介绍的新索引表算法。索引表算法没有类似的安全问题，但可以实现相差无几的性能提升。要全面了解 HTTP 2.0 压缩算法，请看这里：<a target="_blank" rel="noopener" href="http://tools.ietf.org/html/draft-ietf-httpbisheader-compression%E3%80%82">http://tools.ietf.org/html/draft-ietf-httpbisheader-compression。</a></p>
+<h5 id="二进制分帧简介"><a href="#二进制分帧简介" class="headerlink" title="二进制分帧简介"></a>二进制分帧简介</h5><p>HTTP 2.0 的根本改进还是新增的长度前置的二进制分帧层。与 HTTP 1.x 使用换行符分隔纯文本不同，二进制分帧层更加简洁，通过代码处理起来更简单也更有效。建立了 HTTP 2.0 连接后，客户端与服务器会通过交换帧来通信，帧是基于这个新协议通信的最小单位。所有帧都共享一个 8 字节的首部（图 12-6），其中包含帧的长度、类型、标志，还有一个保留位和一个 31 位的流标识符。</p>
+<p>• 16 位的长度前缀意味着一帧大约可以携带 64 KB 数据，不包括 8 字节首部。</p>
+<p>• 8 位的类型字段决定如何解释帧其余部分的内容。</p>
+<p>• 8 位的标志字段允许不同的帧类型定义特定于帧的消息标志。</p>
+<p>• 1 位的保留字段始终置为 0。 </p>
+<p>• 31 位的流标识符唯一标识 HTTP 2.0 的流。</p>
+<p>知道了帧类型，解析器就知道该如何解释帧的其余内容了。HTTP 2.0 规定了如下帧类型。</p>
+<p>• DATA：用于传输 HTTP 消息体。</p>
+<p>• HEADERS：用于传输关于流的额外的首部字段。</p>
+<p>• PRIORITY：用于指定或重新指定引用资源的优先级。</p>
+<p>• RST_STREAM：用于通知流的非正常终止。</p>
+<p>• SETTINGS：用于通知两端通信方式的配置数据。</p>
+<p>• PUSH_PROMISE：用于发出创建流和服务器引用资源的要约。</p>
+<p>• PING：用于计算往返时间，执行“活性”检查。</p>
+<p>• GOAWAY：用于通知对端停止在当前连接中创建流。</p>
+<p>• WINDOW_UPDATE：用于针对个别流或个别连接实现流量控制。</p>
+<p>• CONTINUATION：用于继续一系列首部块片段。</p>
+<p>服务器可以利用 GOAWAY 类型的帧告诉客户端要处理的最后一个流的 ID，从而消除一些请求竞争，而且浏览器也可以据此智能地重试或取消“悬着的”请求。这也是保证复用连接安全的一个重要和必要的功能！</p>
+<p>前述各种类型帧的具体实现在很大程度上取决于服务器和客户端开发商，他们需要考虑流量控制、错误处理、连接终止等细节。好在，所有这些内容在官方标准中都有论述。好奇的话，可以查阅一下最新的草案。既然有了这个分帧层，即使它对我们的应用不可见，我们也应该更进一步，分析一下两种最常见的工作流：发起新流和交换应用数据。只有明白了一个请求或响应如何转换成一个一个的帧，才能理解 HTTP 2.0 对性能的提升来自哪里。</p>
+<p>固定长度与可变长度字段</p>
+<p>HTTP 2.0 只使用固定长度字段，HTTP 2.0 帧占用带宽很少（帧首部是 8 字节）。采用可变长度编码的确可以节省一点带宽和时延，但却无法抵偿由此带来的分析复杂性。即使可变长度编码能减少 50% 的带宽占用，那么在 1 Mbit/s 的连接上传输 1400 字节的分组，也只能节省 4 字节（0.3%）和每帧不到 100 纳秒的延迟时间。</p>
+<p>• 客户端通过发送 HEADERS 帧来发起新流（图 12-7），这个帧里包含带有新流 ID 的公用首部、可选的 31 位优先值，以及一组 HTTP 键－值对首部；</p>
+<p>• 服务器通过发送 PUSH_PROMISE 帧来发起推送流，这个帧与 HEADERS 帧等效，但它包含“要约流 ID”，没有优先值。</p>
+<p>这两种帧的类型字段都只用于沟通新流的元数据，净荷会在 DATA 帧中单独发送。同样，由于两端都可以发起新流，流计数器偏置：客户端发起的流具有偶数 ID，服务器发起的流具有奇数 ID。这样，两端的流 ID 不会冲突，而且各自持有一个简单的计数器，每次发起新流时递增 ID 即可。由于流的元数据与应用数据是单独发送的，因此客户端和服务器可以分别给它们设定不同的优先级。比如，“控制流量”的流优先级可以高一些，但只将其应用给 DATA 帧。</p>
+<h6 id="发送应用数据"><a href="#发送应用数据" class="headerlink" title="发送应用数据"></a>发送应用数据</h6><p>创建新流并发送 HTTP 首部之后，接下来就是利用 DATA 帧（图 12-8）发送应用数据。应用数据可以分为多个 DATA 帧，最后一帧要翻转帧首部的 END_STREAM 字段。</p>
+<p>数据净荷不会被另行编码或压缩。编码方式取决于应用或服务器，纯文本、gzip 压缩、图片或视频压缩格式都可以。既然如此，关于 DATA 帧再也没有什么新东西好说了！整个帧由公用的 8 字节首部，后跟 HTTP 净荷组成。</p>
+<p>从技术上说，DATA 帧的长度字段决定了每帧的数据净荷最多可达 216-1 （65 535）字节。可是，为减少队首阻塞，HTTP 2.0 标准要求 DATA 帧不能超过 214-1（16 383）字节。长度超过这个阀值的数据，就得分帧发送。</p>
+<h4 id="优化应用的交付"><a href="#优化应用的交付" class="headerlink" title="优化应用的交付"></a>优化应用的交付</h4><p>我们无法控制客户端与服务器之间的网络环境，也不能控制客户的硬件或者其手持设备的配置，但除此之外的一切就掌握在我们手里了，包括服务器上的 TCP 和 TLS优化，以及针对不同物理层特性、不同 HTTP 协议版本和通用最佳实践的数十项应用优化。没错，要做到滴水不漏绝非易事，但这样做绝对值得！好，下面我们就来作一番综述。</p>
+<p>通信信道的物理属性对所有应用而言都是一项硬性限制：光速及客户端与服务器之间的距离决定了信号传播的延迟，而媒介（有线或无线）决定了由每个数据分组带来的处理、传输、排队及其他延迟。事实上，影响绝大多数 Web 应用性能的并非带宽，而是延迟。网速虽然越来越快，但不幸的是，延迟似乎并没有缩短：</p>
+<p>既然我们不能让信息跑得更快，那么关键就在于对传输层和应用层采取各种可能的优化手段，消除不必要的往返、请求，把每个分组的传输距离缩到最短——比如把服务器放到离客户更近的地方。</p>
+<p>针对无线网络物理层的特有属性采取优化措施可以让任何应用受益，因为无线环境的延迟高且带宽总是那么贵。对 API 而言，有线与无线网络之间的差别特别明显，对此视而不见可不明智。只要对何时以及如何下载资源、信标进行简单的优化，就能显著改善用户感觉到的延迟、电池使用时间和应用的整体用户体验：</p>
+<p>自物理层向上，接下来就是要保证任何一台服务器都要按照最新的 TCP 和 TLS 最佳实践进行配置。针对底层协议的优化能保证每个客户端在与服务器通信时，都可以获取最佳性能——高吞吐量和低延迟：</p>
+<p>最后，就是应用层。无论从哪个角度讲，HTTP 都是出奇成功的一个协议。毕竟，它是数十亿客户端与服务器交流的“通用语言”，没有它就没有现代 Web（万维网）。可是，HTTP 也是一个不完美的协议，这就意味着我们在架构自己的应用时必须格外小心：</p>
+<p>• 我们必须想方设法地绕过 HTTP 1.x 的种种限制；</p>
+<p>• 我们必须掌握利用 HTTP 2.0 性能增强的方法；</p>
+<p>• 我们必须在应用经典的性能最佳实践时保持警惕。</p>
+<h5 id="经典的性能优化最佳实践"><a href="#经典的性能优化最佳实践" class="headerlink" title="经典的性能优化最佳实践"></a>经典的性能优化最佳实践</h5><p>无论什么网络，也不管所用网络协议是什么版本，所有应用都应该致力于消除或减少不必要的网络延迟，将需要传输的数据压缩至最少。这两条标准是经典的性能优化最佳实践，是其他数十条性能准则的出发点。</p>
+<p>• 减少DNS查找</p>
+<p>每一次主机名解析都需要一次网络往返，从而增加请求的延迟时间，同时还会阻塞后续请求。</p>
+<p>• 重用TCP连接</p>
+<p>尽可能使用持久连接，以消除 TCP 握手和慢启动延迟；参见 2.2.2 节“慢启动”。</p>
+<p>• 减少HTTP重定向</p>
+<p>HTTP 重定向极费时间，特别是不同域名之间的重定向，更加费时；这里面既有额外的 DNS 查询、TCP 握手，还有其他延迟。最佳的重定向次数为零。</p>
+<p>• 使用CDN（内容分发网络）</p>
+<p>把数据放到离用户地理位置更近的地方，可以显著减少每次 TCP 连接的网络延迟，增大吞吐量。这一条既适用于静态内容，也适用于动态内容；参见 4.7.2 节中的“不缓存的原始获取”。</p>
+<p>• 去掉不必要的资源</p>
+<p>任何请求都不如没有请求快。</p>
+<p>说到这，所有建议都无需解释。延迟是瓶颈，最快的速度莫过于什么也不传输。然而，HTTP 也提供了很多额外的机制，比如缓存和压缩，还有与其版本对应的一些性能技巧。</p>
+<p>• 在客户端缓存资源</p>
+<p>应该缓存应用资源，从而避免每次请求都发送相同的内容。</p>
+<p>• 传输压缩过的内容</p>
+<p>传输前应该压缩应用资源，把要传输的字节减至最少：确保对每种要传输的资源采用最好的压缩手段。</p>
+<p>• 消除不必要的请求开销</p>
+<p>减少请求的 HTTP 首部数据（比如 HTTP cookie），节省的时间相当于几次往返</p>
+<p>的延迟时间。</p>
+<p>• 并行处理请求和响应</p>
+<p>请求和响应的排队都会导致延迟，无论是客户端还是服务器端。这一点经常被忽视，但却会无谓地导致很长延迟。</p>
+<p>• 针对协议版本采取优化措施</p>
+<p>HTTP 1.x 支持有限的并行机制，要求打包资源、跨域分散资源，等等。相对而言，HTTP 2.0 只要建立一个连接就能实现最优性能，同时无需针对 HTTP 1.x 的那些优化方法。</p>
+<h6 id="在客户端缓存资源"><a href="#在客户端缓存资源" class="headerlink" title="在客户端缓存资源"></a>在客户端缓存资源</h6><p>要说最快的网络请求，那就是不用发送请求就能获取资源。将之前下载过的数据缓存并维护好，就可以做到这一点。对于通过 HTTP 传输的资源，要保证首部包含适当的缓存字段：</p>
+<p>• Cache-Control 首部用于指定缓存时间；</p>
+<p>• Last-Modified 和 ETag 首部提供验证机制。</p>
+<p>只要可能，就给每种资源都指定一个明确的缓存时间。这样客户端就可以直接使用本地副本，而不必每次都请求相同的内容。类似地，指定验证机制可以让客户端检查过期的资源是否有更新。没有更新，就没必要重新发送。</p>
+<p>最后，还要注意应同时指定缓存时间和验证方法！只指定其中之一是最常见的错误，于是要么导致每次都在没有更新的情况下重发相同内容（这是没有指定验证），要么导致每次使用资源时都多余地执行验证检查（这是没有指定缓存时间）。</p>
+<h6 id="压缩传输的数据"><a href="#压缩传输的数据" class="headerlink" title="压缩传输的数据"></a>压缩传输的数据</h6><p>利用本地缓存可以让客户端避免每次请求都重复取得数据。不过，还是有一些资源是必须取得的，比如原来的资源过期了，或者有新资源，再或者资源不能缓存。对于这些资源，应该保证传输的字节数最少。因此要保证对它们进行最有效的压缩。HTML、CSS 和JavaScript 等文本资源的大小经过 gzip 压缩平均可以减少 60%~80%。而图片则需要仔细考量：</p>
+<p>• 图片一般会占到一个网页需要传输的总字节数的一半；</p>
+<p>• 通过去掉不必要的元数据可以把图片文件变小；</p>
+<p>• 要调整大小就在服务器上调整，避免传输不必要的字节；</p>
+<p>• 应该根据图像选择最优的图片格式；</p>
+<p>• 尽可能使用有损压缩。</p>
+<p>不同图片格式的压缩率迥然不同，因为不同的格式是分别为不同使用场景设计的。事实上，如果选错了图片格式（比如，使用了 PNG 而非 JPG 或 WebP），多产生几百甚至上千 KB 数据是轻而易举的事。建议大家多找一些工具和自动化手段，以确定最佳图片格式。</p>
+<p>选定图片格式后，其次就是不要让图片超过它需要的大小。如果在客户端对超出需要大小的图片做调整，那么除了额外传输不必要的字节之外，还会浪费 CPU、GPU和内存资源（参见 11.6 节的“计算图片对内存的需求”）。</p>
+<p>最后，选择了正确的格式，确定了必需的大小，接下来就要研究使用哪一种有损图片格式，比如 JPEG 还是 WebP，以及压缩到哪个级别：较高压缩率可以明显减少字节数，同时图片品质不会有太大或太明显的损失，尤其是在较小（手机）的屏幕上看，不容易发现。</p>
+<p><strong>WebP：Web 上的新图片格式</strong></p>
+<p>WebP 是谷歌开发的一种新图片格式，得到了 Chrome 和 Opera 浏览器支持。这种格式的无损压缩和有损压缩效能都有所提升：</p>
+<p>• WebP 的无损压缩图片比 PNG 的小 26%； </p>
+<p>• WebP 的有损压缩图片比 JPG 的小 25%~34%； </p>
+<p>• WebP 支持无损透明压缩，但因此仅增加 22% 的字节。</p>
+<p>在现有网页平均 1 MB 大小，其中图片占一半的情况下，WebP 节省的 20%~30%，对每个页面而言就是几百 KB。这种格式需要客户端 CPU 多花点时间解码（大约相当于处理 JPG 的 1.4 倍），但字节的节省完全可以补偿处理时间的增长。此外，由于数据流量的限制和高速网络的存在，对很多用户而言，节省字节才是当务之急。事实上，Chrome Data Compression Proxy 和 Opera Turbo 等工具为用户降低带宽占用的主要手段，就是重新把每张图片编码为 WebP 格式。正常情况下，Chrome Data Compression Proxy 的数据压缩率可以达到 50%，这说明我们自己的应用也有很多可以通过压缩提升性能的空间。</p>
+<p><strong>消除不必要的请求字节</strong></p>
+<p>HTTP 是一种无状态协议，也就是说服务器不必保存每次请求的客户端的信息。然而，很多应用又依赖于状态信息以实现会话管理、个性化、分析等功能。为了实现这些功能，HTTP State Management Mechanism（RFC 2965）作为扩展，允许任何网站针对自身来源关联和更新 cookie 元数据：浏览器保存数据，而在随后发送给来源的每一个请求的 Cookie 首部中自动附加这些信息。</p>
+<p>上述标准并未规定 cookie 最大不能超过多大，但实践中大多数浏览器都将其限制为4 KB。与此同时，该标准还规定每个站点针对其来源可以有多个关联的 cookie。于是，一个来源的 cookie 就有可能多达几十 KB ！不用说，这么多元数据随请求传递，必然会给应用带来明显的性能损失：</p>
+<p>• 浏览器会在每个请求中自动附加关联的 cookie 数据；</p>
+<p>• 在 HTTP 1.x 中，包括 cookie 在内的所有 HTTP 首部都会在不压缩的状态下传输；</p>
+<p>• 在 HTTP 2.0 中，这些元数据经过压缩了，但开销依然不小；</p>
+<p>• 最坏的情况下，过大的 HTTP cookie 会超过初始的 TCP 拥塞窗口，从而导致多余的网络往返。</p>
+<p>应该认真对待和监控 cookie 的大小，确保只传输最低数量的元数据，比如安全会话令牌。同时，还应该利用服务器上共享的会话缓存，从中查询缓存的元数据。更好的结果，则是完全不用 cookie。比如，在请求图片、脚本和样式表等静态资源时，浏览器绝大多数情况下不必传输特定于客户端的元数据。</p>
+<p>在使用 HTTP 1.x 的情况下，可以指定一个专门的“无需 cookie”的来源服务器。这个服务器可以用于交付那些不区分客户端的共用资源。</p>
+<h6 id="并行处理请求和响应"><a href="#并行处理请求和响应" class="headerlink" title="并行处理请求和响应"></a>并行处理请求和响应</h6><p>为了让应用响应速度达到最快，应该尽可能第一时间就分派所有资源请求。可是，还有一点也要考虑到，那就是所有这些请求以及它们对应的响应，将会被服务器如何处理。如果我们的请求在服务器上按先来后到的顺序依次排队，那就又会导致不必要的延迟。要是想实现最佳性能，就要记住以下几点：</p>
+<p>• 使用持久连接，从 HTTP 1.0 升级到 HTTP 1.1； </p>
+<p>• 利用多个 HTTP 1.1 连接实现并行下载；</p>
+<p>• 可能的情况下利用 HTTP 1.1 管道；</p>
+<p>• 考虑升级到 HTTP 2.0 以提升性能；</p>
+<p>• 确保服务器有足够的资源并行处理请求。</p>
+<p>如果不使用持久连接，则每个 HTTP 请求都要建立一个 TCP 连接。由于 TCP 握手和慢启动，多个 TCP 会造成明显的延迟。在使用 HTTP 1.1 的情况下，最好尽可能重用已有连接。如果碰上能使用 HTTP 管道的机会，不要放过。更好的选择，则是升级到 HTTP 2.0，从而获得最佳性能</p>
+<p>识别造成客户端和服务器延迟的不必要资源既是艺术也是技术：要仔细检查客户端资源瀑布（参见 10.2.2 节“分析资源瀑布”），以及服务器日志。常见问题如下：</p>
+<p>• 服务器资源不足，造成不必要的资源处理延迟；</p>
+<p>• 代理及负载均衡器容量不足，造成向应用服务器交付请求的延迟（请求排队）；</p>
+<p>• 客户端资源阻塞导致页面构建延迟，参见 10.1 节的“DOM、CSSOM 和 JavaScript”。</p>
+<h5 id="针对HTTP-1-x的优化建议"><a href="#针对HTTP-1-x的优化建议" class="headerlink" title="针对HTTP 1.x的优化建议"></a>针对HTTP 1.x的优化建议</h5><p>针对 HTTP 1.x 的优化次序很重要：首先要配置服务器以最大限度地保证 TCP 和TLS 的性能最优，然后再谨慎地选择和采用移动及经典的应用最佳实践，之后再度量，迭代。</p>
+<p>采用了经典的应用优化措施和适当的性能度量手段，还要进一步评估是否有必要为应用采取特定于 HTTP 1.x 的优化措施（其实是权宜之计）。</p>
+<p>• 利用HTTP管道</p>
+<p>如果你的应用可以控制客户端和服务器这两端，那么使用管道可以显著减少网络延迟。</p>
+<p>• 采用域名分区</p>
+<p>如果你的应用性能受限于默认的每来源 6 个连接，可以考虑将资源分散到多个来源。</p>
+<p>• 打包资源以减少HTTP请求</p>
+<p>拼接和精灵图等技巧有助于降低协议开销，又能达成类似管道的性能提升。</p>
+<p>• 嵌入小资源</p>
+<p>考虑直接在父文档中嵌入小资源，从而减少请求数量。</p>
+<p>管道缺乏支持，而其他优化手段又各有各的利弊。事实上，这些优化措施如果过于激进或使用不当，反倒会伤害性能（这一点请参考第 11 章的深入讨论）。总之，要有务实的态度，通过度量来评估各种措施对性能的影响，在此基础上再迭代改进。天底下就没有包治百病的灵丹妙药。</p>
+<p>对了，还有最后一招儿——升级到 HTTP 2.0。仅此一招儿抵得上前面提到的大多数针对 HTTP 1.x 的优化手段！ HTTP 2.0 不光能让应用加载更快，还能让开发更简单</p>
+<h5 id="针对HTTP-2-0的优化建议"><a href="#针对HTTP-2-0的优化建议" class="headerlink" title="针对HTTP 2.0的优化建议"></a>针对HTTP 2.0的优化建议</h5><p>HTTP 2.0 的主要目标就是提升传输性能，实现客户端与服务器间较低的延迟和较高的吞吐量。显然，在 TCP 和 TLS 之上实现最佳性能，同时消除不必要的网络延迟，从来没有如此重要过。最低限度：</p>
+<p>• 服务器的初始 cwnd 应该是 10 个分组；</p>
+<p>• 服务器应该通过 ALPN（针对 SPDY 则为 NPN）协商支持 TLS； </p>
+<p>• 服务器应该支持 TLS 恢复以最小化握手延迟。</p>
+<h6 id="去掉对1-x的优化"><a href="#去掉对1-x的优化" class="headerlink" title="去掉对1.x的优化"></a>去掉对1.x的优化</h6><p>针对 HTTP 2.0 和 HTTP 1.x 的优化策略没有什么重叠。因此，不仅不必担心 HTTP 1.x 协议的种种限制，而且要撤销原先那些必要的做法。</p>
+<p>• 每个来源使用一个连接</p>
+<p>HTTP 2.0 通过将一个 TCP 连接的吞吐量最大化来提升性能。事实上，在 HTTP 2.0 之下再使用多个连接（比如域名分区）反倒成了一种反模式，因为多个连接会抵消新协议中首部压缩和请求优先级的效用。</p>
+<p>• 去掉不必要的文件合并和图片拼接</p>
+<p>打包资源的缺点很多，比如缓存失效、占用内存、延缓执行，以及增加应用复杂性。有了 HTTP 2.0，很多小资源都可以并行发送，导致打包资源的效率反而更低。</p>
+<p>• 利用服务器推送</p>
+<p>之前针对 HTTP 1.x 而嵌入的大多数资源，都可以而且应该通过服务器推送来交付。这样一来，客户端就可以分别缓存每个资源，并在页面间实现重用，而不必把它们放到每个页面里了。</p>
+<p>要获得最佳性能，应该尽可能把所有资源都集中在一个域名之下。域名分区在 HTTP 2.0 之下属于反模式，对发挥协议的性能有害：分区是开始，之后影响会逐渐扩散。打包资源不会影响 HTTP 2.0 协议本身，但对缓存性能和执行速度有负面影响。</p>
+<p>类似地，把嵌入资源改为服务器推送能提升客户端的缓存性能，又不会导致额外网络延迟（参见 12.3.7 节中的“实现 HTTP 2.0 服务器推送”）。事实上，由于 3G 和4G 网络的往返时间更长，因而服务器推送对移动应用来说效果更明显。</p>
+<p><strong>HTTP 2.0 中的打包与协议开销</strong></p>
+<p>由于 HTTP 1.x 做不到多路复用，而且每次请求的协议开销很高，这才有了连接和拼合等打包技术。在 HTTP 2.0 之下，多路复用已经不成问题，首部压缩也可以降低每次 HTTP 请求要传输的元数据量，打包技术在多数情况下都不再需要了。不过，请求开销只是减少了，并没有等于零。少数情况下，某些资源必须一块使用，而且更新也不频繁，此时使用打包技术仍然可以提升性能。但这些情况很少见，可以算作例外。具体措施可以通过性能度量确定。</p>
+<h6 id="双协议应用策略"><a href="#双协议应用策略" class="headerlink" title="双协议应用策略"></a>双协议应用策略</h6><p>遗憾的是，升级到 HTTP 2.0 不会在一夜之间完成。因此，很多应用都需要认真考虑双协议并存的部署策略，即同一个应用既能通过 HTTP 1.x 交付，也能通过 HTTP 2.0 交付，无需任何改动。然而，过于激进的 HTTP 1.x 优化可能伤害 HTTP 2.0 性能，反之亦然。</p>
+<p>如果应用可以同时控制服务器和客户端，那倒简单了，因为它可以决定使用什么协议。但大多数应用不能也无法控制客户端，只有采用一种混合或自动策略，以适应两种协议并存的现实。下面我们就分析几种可能的情况。</p>
+<p>• 相同的应用代码，双协议部署</p>
+<p>相同的应用代码可能通过 HTTP 1.x 也可能通过 HTTP 2.0 交付。可能任何一种协议之下都达不到最佳性能，但可以追求性能足够好。所谓足够好，需要通过针对每一种应用单独度量来保证。这种情况下，第一步可以先撤销域名分区以实现HTTP 2.0 交付。然后，随着更多用户迁移到 HTTP 2.0，可以继续撤销资源打包并尽可能利用服务器推送。</p>
+<p>• 分离应用代码，双协议部署</p>
+<p>根据协议不同分别交付不同版本的应用。这样会增加运维的复杂性，但实践中对很多应用倒是十分可行。比如，一台负责完成连接的边界服务器可以根据协商后的协议版本，把客户端请求引导至适当的服务器。</p>
+<p>• 动态HTTP 1.x和HTTP 2.0优化</p>
+<p>某些自动化的 Web 优化框架，以及开源及商业产品，都可以在响应请求时动态重写交付的应用代码（包括连接、拼合、分区，等等）。此时，服务器也可以考虑协商的协议版本，并动态采用适当的优化策略。</p>
+<p>• HTTP 2.0，单协议部署</p>
+<p>如果应用可以控制服务器和客户端，那没理由不只使用 HTTP 2.0。事实上，如果真有这种可能，那就应该专一使用 HTTP 2.0。</p>
+<p>选择路线时，要看当前的基础设施、应用的复杂程度，以及用户的构成。让人哭笑不得的是，那些在 HTTP 1.x 优化上投资很大的应用，反倒在这种情况下最难办。如果你能控制客户端，有自动的应用优化策略，或者没有使用任何特定于 1.x 的优化，那么就可以专注于 HTTP 2.0，而没有后顾之忧了。</p>
+<h6 id="评估服务器质量与性能"><a href="#评估服务器质量与性能" class="headerlink" title="评估服务器质量与性能"></a>评估服务器质量与性能</h6><p>HTTP 2.0 服务器实现的质量对客户端性能影响很大。HTTP 服务器的配置当然是一</p>
+<p>个重要因素，但服务器实现逻辑的质量同样与优先级、服务器推送、多路复用等性</p>
+<p>能机制的发挥紧密相关。</p>
+<p>• HTTP 2.0 服务器必须理解流优先级；</p>
+<p>• HTTP 2.0 服务器必须根据优先级处理响应和交付资源；</p>
+<p>• HTTP 2.0 服务器必须支持服务器推送；</p>
+<p>• HTTP 2.0 服务器应该提供不同推送策略的实现。</p>
+<p>HTTP 2.0 服务器的初级实现也能支持某些功能，但不能明确支持请求的优先级和服务器推送，可能导致次优性能。比如，发送大型、静态图片导致带宽饱和，而客户端又因为其他重要资源（如 CSS 或 JavaScript）被阻塞。</p>
+<h6 id="2-0与TLS"><a href="#2-0与TLS" class="headerlink" title="2.0与TLS"></a>2.0与TLS</h6><p>实践中，由于存在很多不兼容的中间代理，早期的 HTTP 2.0 部署必然依赖加密信道。这样一来，我们就面临两种可能出现 ALPN 协商和 TLS 终止的情况：</p>
+<p>• TLS 连接可能会在 HTTP 2.0 服务器上终止；</p>
+<p>• TLS 连接可能会在上游（如负载均衡器）上终止</p>
+<p>第一种情况要求 HTTP 2.0 服务器能够处理 TLS，除此之外就没有什么了。第二种情况复杂一些：TLS+ALPN 握手可能会在上游代理处终止（图 13-3），然后再从那里建立一条加密信道，或者直接将非加密的 HTTP 2.0 流发送到服务器。</p>
+<p>代理和应用服务器之间使用安全信道还是非加密信道，取决于应用：只要能控制中间设备，就可以保证未加密的帧不会被修改或丢弃。那么，虽然大多数 HTTP 2.0 服务器都应该支持 TLS+ALPN 协商，但它们同时也应该在不加密的情况下实现HTTP 2.0 通信。</p>
+<p>另外，智能负载均衡器也可以使用 TLS+ALPN 协商机制，根据协商后的协议，选择性地将不同的客户端路由到不同的服务器</p>
+<h6 id="负载均衡器、代理及应用服务器"><a href="#负载均衡器、代理及应用服务器" class="headerlink" title="负载均衡器、代理及应用服务器"></a>负载均衡器、代理及应用服务器</h6><p>一台服务器对于大型应用是不够的。大型应用必须要添加一台负载均衡器，以分流大量请求。此时，负载均衡器可以终止 TLS 连接（参见 13.3.5 节“2.0 与TLS”），也可以经过配置作为 TCP 代理并直接将加密数据发送给应用服务器。</p>
+<p>很多云提供商也会提供负载均衡器服务。然而，这些负载均衡器大多支持TLS 终止，却不支持 ALPN 协商，而这对于通过 TLS 实现 HTTP 2.0 通信是必需的。在这种情况下，应该将负载均衡器配置为 TCP 代理，即通过它们将加密数据发送给应用服务器，让应用服务器完成 TLS+ALPN 协商。</p>
+<p>实践中，要回答的最重要的一个问题，就是你的基础设施中的哪个组件负责终止TLS 连接，以及它是否能够执行必要的 ALPN 协商？</p>
+<p>• 要在 TLS 之上实现 HTTP 2.0 通信，终端服务器必须支持 ALPN； </p>
+<p>• 尽可能在接近用户的地方终止 TLS，参见 4.7.2 节“尽早完成（握手）”；</p>
+<p>• 如果无法支持 ALPN，那么选择 TCP 负载均衡模式；</p>
+<p>• 如果无法支持 ALPN 且 TCP 负载均衡也做不到，那么就退而求其次，在非加密</p>
+<p>信道上使用 HTTP 的 Upgrade 流，参见 12.3.9 节“有效的 HTTP 2.0 升级与发现”。</p>
 
                 
               </div>
@@ -823,9 +1592,9 @@ ws.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">fun
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/12/15/hello-world/" title="Hello World">
+                      <a href="/2022/12/15/decimal-js/" title="decimal.js">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Hello World</span>
+                        <span class="hidden-mobile">decimal.js</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
