@@ -223,6 +223,67 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/09/07/call%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_self">
+          call函数的实现
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/07/call%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_self">
+        <div>
+          Function.prototype.MyCall = function (thisArg, ...args) &#123;   const fn = this;   thisArg = thisArg != null ? Object(thisArg) : globalThis; //Object(thisArg)如果是基本类型将会将换成包装类，globalThis分别对应window/node
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-07 15:52" pubdate>
+              2022-09-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/javascript/" class="category-chain-item">javascript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/javascript/%E5%8E%9F%E7%90%86/" class="category-chain-item">原理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/09/07/Apply%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_self">
           Apply函数的实现
         </a>
@@ -767,39 +828,6 @@
 </span>
 
           </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/09/05/%E5%AE%9E%E7%8E%B0bind/" target="_self">
-          实现bind
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/05/%E5%AE%9E%E7%8E%B0bind/" target="_self">
-        <div>
-          Function.prototype.mybind = function (thisArg, ...args) &#123;   // 获得this的指向，就是实际的调用者   let fn = this;   // 获取thisArg,如果是基本数据类型除了null,undefined都转成包装类型，否则指向全局   thisArg = thisArg != null ? Object(this
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-09-05 09:37" pubdate>
-              2022-09-05
-            </time>
-          </div>
-        
         
         
       </div>

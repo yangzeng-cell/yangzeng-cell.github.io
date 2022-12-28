@@ -24,7 +24,7 @@
 <meta property="og:description" content="“Array” Methods_.chunk(array, [size&#x3D;1])这个方法可以将一位数组转化成二维数组，第二个参数是指每一个子数组中的元素个数 Arguments array (Array): The array to process. [size&#x3D;1] (number): The length of each chunk  Returns(Array): Returns the ne">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-26T23:11:45.000Z">
-<meta property="article:modified_time" content="2022-12-27T15:51:21.036Z">
+<meta property="article:modified_time" content="2022-12-28T15:11:11.743Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="lodash">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.3k 字
+          15k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          37 分钟
+          129 分钟
         
       </span>
     
@@ -451,6 +451,379 @@ _.<span class="hljs-title function_">differenceBy</span>([&#123; <span class="hl
 &#125;
 </code></pre></div>
 
+<h3 id="cloneDeep-value"><a href="#cloneDeep-value" class="headerlink" title="_.cloneDeep(value)"></a><code>_.cloneDeep(value)</code></h3><p>这个方法类似<a target="_blank" rel="noopener" href="https://www.lodashjs.com/docs/lodash.cloneDeep#clone"><code>_.clone</code></a>，除了它会递归拷贝 <code>value</code>。（注：也叫深拷贝）。</p>
+<h4 id="Arguments-8"><a href="#Arguments-8" class="headerlink" title="Arguments"></a>Arguments</h4><ol>
+<li><code>value</code> <em>(*)</em>: The value to recursively clone.</li>
+</ol>
+<h4 id="Returns-8"><a href="#Returns-8" class="headerlink" title="Returns"></a>Returns</h4><p><em>(*)</em>: Returns the deep cloned value.</p>
+<h4 id="Example-6"><a href="#Example-6" class="headerlink" title="Example"></a>Example</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> objects = [&#123; <span class="hljs-string">&#x27;a&#x27;</span>: <span class="hljs-number">1</span> &#125;, &#123; <span class="hljs-string">&#x27;b&#x27;</span>: <span class="hljs-number">2</span> &#125;];
+ 
+<span class="hljs-keyword">var</span> deep = _.<span class="hljs-title function_">cloneDeep</span>(objects);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(deep[<span class="hljs-number">0</span>] === objects[<span class="hljs-number">0</span>]);
+<span class="hljs-comment">// =&gt; false</span></code></pre></div>
+
+<h4 id="source-6"><a href="#source-6" class="headerlink" title="source"></a>source</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">/** Used to compose bitmasks for cloning. */</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CLONE_DEEP_FLAG</span> = <span class="hljs-number">1</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CLONE_SYMBOLS_FLAG</span> = <span class="hljs-number">4</span>
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * This method is like `clone` except that it recursively clones `value`.</span>
+<span class="hljs-comment"> * Object inheritance is preserved.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 1.0.0</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@category</span> <span class="hljs-variable">Lang</span></span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; value The value to recursively clone.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type">*</span>&#125; Returns the deep cloned value.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@see</span> <span class="hljs-variable">clone</span></span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@example</span></span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * const objects = [&#123; &#x27;a&#x27;: 1 &#125;, &#123; &#x27;b&#x27;: 2 &#125;]</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * const deep = cloneDeep(objects)</span>
+<span class="hljs-comment"> * console.log(deep[0] === objects[0])</span>
+<span class="hljs-comment"> * // =&gt; false</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">cloneDeep</span>(<span class="hljs-params">value</span>) &#123;
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">baseClone</span>(value, <span class="hljs-variable constant_">CLONE_DEEP_FLAG</span> | <span class="hljs-variable constant_">CLONE_SYMBOLS_FLAG</span>)
+&#125;</code></pre></div>
+
+<h3 id="cloneWith-value-customizer"><a href="#cloneWith-value-customizer" class="headerlink" title="_.cloneWith(value, [customizer])"></a><code>_.cloneWith(value, [customizer])</code></h3><p>这个方法和clone方法相似，他会接受一个自定义方法，返回一个clone值，如果customizer是undefuned，则会使用clone方法，customizer方法接受4个参数*(value [, index|key, object, stack])*</p>
+<h4 id="Arguments-9"><a href="#Arguments-9" class="headerlink" title="Arguments"></a>Arguments</h4><ol>
+<li><code>value</code> <em>(*)</em>: The value to clone.</li>
+<li><code>[customizer]</code> <em>(Function)</em>: The function to customize cloning.</li>
+</ol>
+<h4 id="Returns-9"><a href="#Returns-9" class="headerlink" title="Returns"></a>Returns</h4><p><em>(*)</em>: Returns the cloned value.</p>
+<h4 id="Example-7"><a href="#Example-7" class="headerlink" title="Example"></a>Example</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">customizer</span>(<span class="hljs-params">value</span>) &#123;
+  <span class="hljs-keyword">if</span> (_.<span class="hljs-title function_">isElement</span>(value)) &#123;
+    <span class="hljs-keyword">return</span> value.<span class="hljs-title function_">cloneNode</span>(<span class="hljs-literal">false</span>);
+  &#125;
+&#125;
+ 
+<span class="hljs-keyword">var</span> el = _.<span class="hljs-title function_">cloneWith</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>, customizer);
+ 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(el === <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>);
+<span class="hljs-comment">// =&gt; false</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(el.<span class="hljs-property">nodeName</span>);
+<span class="hljs-comment">// =&gt; &#x27;BODY&#x27;</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(el.<span class="hljs-property">childNodes</span>.<span class="hljs-property">length</span>);
+<span class="hljs-comment">// =&gt; 0</span></code></pre></div>
+
+<h4 id="source-7"><a href="#source-7" class="headerlink" title="source"></a>source</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CLONE_SYMBOLS_FLAG</span> = <span class="hljs-number">4</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">cloneWith</span>(<span class="hljs-params">value, customizer</span>) &#123;
+  customizer = <span class="hljs-keyword">typeof</span> customizer === <span class="hljs-string">&#x27;function&#x27;</span> ? customizer : <span class="hljs-literal">undefined</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">baseClone</span>(value, <span class="hljs-variable constant_">CLONE_SYMBOLS_FLAG</span>, customizer)
+&#125;</code></pre></div>
+
+<h3 id="cloneDeepWith-value-customizer"><a href="#cloneDeepWith-value-customizer" class="headerlink" title="_.cloneDeepWith(value, [customizer])"></a><code>_.cloneDeepWith(value, [customizer])</code></h3><p>cloneDeepWith和cloneWith类似，但是他会进行递归clone value</p>
+<h4 id="Arguments-10"><a href="#Arguments-10" class="headerlink" title="Arguments"></a>Arguments</h4><ol>
+<li><code>value</code> <em>(*)</em>: The value to recursively clone.</li>
+<li><code>[customizer]</code> <em>(Function)</em>: The function to customize cloning.</li>
+</ol>
+<h4 id="Returns-10"><a href="#Returns-10" class="headerlink" title="Returns"></a>Returns</h4><p><em>(*)</em>: Returns the deep cloned value.</p>
+<h4 id="Example-8"><a href="#Example-8" class="headerlink" title="Example"></a>Example</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">customizer</span>(<span class="hljs-params">value</span>) &#123;
+  <span class="hljs-keyword">if</span> (_.<span class="hljs-title function_">isElement</span>(value)) &#123;
+    <span class="hljs-keyword">return</span> value.<span class="hljs-title function_">cloneNode</span>(<span class="hljs-literal">true</span>);
+  &#125;
+&#125;
+ 
+<span class="hljs-keyword">var</span> el = _.<span class="hljs-title function_">cloneDeepWith</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>, customizer);
+ 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(el === <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>);
+<span class="hljs-comment">// =&gt; false</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(el.<span class="hljs-property">nodeName</span>);
+<span class="hljs-comment">// =&gt; &#x27;BODY&#x27;</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(el.<span class="hljs-property">childNodes</span>.<span class="hljs-property">length</span>);
+<span class="hljs-comment">// =&gt; 20</span></code></pre></div>
+
+<h4 id="source-8"><a href="#source-8" class="headerlink" title="source"></a>source</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">cloneDeepWith</span>(<span class="hljs-params">value, customizer</span>) &#123;
+  customizer = <span class="hljs-keyword">typeof</span> customizer === <span class="hljs-string">&#x27;function&#x27;</span> ? customizer : <span class="hljs-literal">undefined</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">baseClone</span>(value, <span class="hljs-variable constant_">CLONE_DEEP_FLAG</span> | <span class="hljs-variable constant_">CLONE_SYMBOLS_FLAG</span>, customizer)
+&#125;</code></pre></div>
+
+<h2 id="“Function”-Methods"><a href="#“Function”-Methods" class="headerlink" title="“Function” Methods"></a><code>“Function” Methods</code></h2><h3 id="debounce-func-wait-0-options"><a href="#debounce-func-wait-0-options" class="headerlink" title="_.debounce(func, [wait=0], [options={}])"></a><code>_.debounce(func, [wait=0], [options=&#123;&#125;])</code></h3><p>创建一个 debounced（防抖动）函数，该函数会从上一次被调用后，延迟 <code>wait</code> 毫秒后调用 <code>func</code> 方法。 debounced（防抖动）函数提供一个 <code>cancel</code> 方法取消延迟的函数调用以及 <code>flush</code> 方法立即调用。 可以提供一个 options（选项） 对象决定如何调用 <code>func</code> 方法，<code>options.leading</code> 与|或 <code>options.trailing</code> 决定延迟前后如何触发（注：是 先调用后等待 还是 先等待后调用）。 <code>func</code> 调用时会传入最后一次提供给 debounced（防抖动）函数 的参数。 后续调用的 debounced（防抖动）函数返回是最后一次 <code>func</code> 调用的结果。</p>
+<p><strong>注意:</strong> 如果 <code>leading</code> 和 <code>trailing</code> 选项为 <code>true</code>, 则 <code>func</code> 允许 trailing 方式调用的条件为: 在 <code>wait</code> 期间多次调用防抖方法。</p>
+<p>如果 <code>wait</code> 为 <code>0</code> 并且 <code>leading</code> 为 <code>false</code>, <code>func</code>调用将被推迟到下一个点，类似<code>setTimeout</code>为<code>0</code>的超时。</p>
+<h4 id="Arguments-11"><a href="#Arguments-11" class="headerlink" title="Arguments"></a>Arguments</h4><ol>
+<li><code>func</code> <em>(Function)</em>: 要防抖动的函数。</li>
+<li><code>[wait=0]</code> <em>(number)</em>: 需要延迟的毫秒数。</li>
+<li><code>[options=]</code> <em>(Object)</em>: 选项对象。</li>
+<li><code>[options.leading=false]</code> <em>(boolean)</em>: 指定在延迟开始前调用。</li>
+<li><code>[options.maxWait]</code> <em>(number)</em>: 设置 <code>func</code> 允许被延迟的最大值。</li>
+<li><code>[options.trailing=true]</code> <em>(boolean)</em>: 指定在延迟结束后调用。</li>
+</ol>
+<h4 id="Returns-11"><a href="#Returns-11" class="headerlink" title="Returns"></a>Returns</h4><p><em>(Function)</em>: Returns the new debounced function.</p>
+<h4 id="Example-9"><a href="#Example-9" class="headerlink" title="Example"></a>Example</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// Avoid costly calculations while the window size is in flux.</span>
+<span class="hljs-title function_">jQuery</span>(<span class="hljs-variable language_">window</span>).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;resize&#x27;</span>, _.<span class="hljs-title function_">debounce</span>(calculateLayout, <span class="hljs-number">150</span>));
+ 
+<span class="hljs-comment">// Invoke `sendMail` when clicked, debouncing subsequent calls.</span>
+<span class="hljs-title function_">jQuery</span>(element).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;click&#x27;</span>, _.<span class="hljs-title function_">debounce</span>(sendMail, <span class="hljs-number">300</span>, &#123;
+  <span class="hljs-string">&#x27;leading&#x27;</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-string">&#x27;trailing&#x27;</span>: <span class="hljs-literal">false</span>
+&#125;));
+ 
+<span class="hljs-comment">// Ensure `batchLog` is invoked once after 1 second of debounced calls.</span>
+<span class="hljs-keyword">var</span> debounced = _.<span class="hljs-title function_">debounce</span>(batchLog, <span class="hljs-number">250</span>, &#123; <span class="hljs-string">&#x27;maxWait&#x27;</span>: <span class="hljs-number">1000</span> &#125;);
+<span class="hljs-keyword">var</span> source = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EventSource</span>(<span class="hljs-string">&#x27;/stream&#x27;</span>);
+<span class="hljs-title function_">jQuery</span>(source).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;message&#x27;</span>, debounced);
+ 
+<span class="hljs-comment">// Cancel the trailing debounced invocation.</span>
+<span class="hljs-title function_">jQuery</span>(<span class="hljs-variable language_">window</span>).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;popstate&#x27;</span>, debounced.<span class="hljs-property">cancel</span>);</code></pre></div>
+
+<h4 id="source-9"><a href="#source-9" class="headerlink" title="source"></a>source</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> isObject <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./isObject.js&#x27;</span>
+<span class="hljs-keyword">import</span> root <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./.internal/root.js&#x27;</span>
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Creates a debounced function that delays invoking `func` until after `wait`</span>
+<span class="hljs-comment"> * milliseconds have elapsed since the last time the debounced function was</span>
+<span class="hljs-comment"> * invoked, or until the next browser frame is drawn. The debounced function</span>
+<span class="hljs-comment"> * comes with a `cancel` method to cancel delayed `func` invocations and a</span>
+<span class="hljs-comment"> * `flush` method to immediately invoke them. Provide `options` to indicate</span>
+<span class="hljs-comment"> * whether `func` should be invoked on the leading and/or trailing edge of the</span>
+<span class="hljs-comment"> * `wait` timeout. The `func` is invoked with the last arguments provided to the</span>
+<span class="hljs-comment"> * debounced function. Subsequent calls to the debounced function return the</span>
+<span class="hljs-comment"> * result of the last `func` invocation.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * **Note:** If `leading` and `trailing` options are `true`, `func` is</span>
+<span class="hljs-comment"> * invoked on the trailing edge of the timeout only if the debounced function</span>
+<span class="hljs-comment"> * is invoked more than once during the `wait` timeout.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred</span>
+<span class="hljs-comment"> * until the next tick, similar to `setTimeout` with a timeout of `0`.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * If `wait` is omitted in an environment with `requestAnimationFrame`, `func`</span>
+<span class="hljs-comment"> * invocation will be deferred until the next frame is drawn (typically about</span>
+<span class="hljs-comment"> * 16ms).</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * See [David Corbacho&#x27;s article](https://css-tricks.com/debouncing-throttling-explained-examples/)</span>
+<span class="hljs-comment"> * for details over the differences between `debounce` and `throttle`.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 0.1.0</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@category</span> <span class="hljs-variable">Function</span></span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Function</span>&#125; func The function to debounce.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number</span>&#125; [wait=0]</span>
+<span class="hljs-comment"> *  The number of milliseconds to delay; if omitted, `requestAnimationFrame` is</span>
+<span class="hljs-comment"> *  used (if available).</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Object</span>&#125; [options=&#123;&#125;] The options object.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">boolean</span>&#125; [options.leading=false]</span>
+<span class="hljs-comment"> *  Specify invoking on the leading edge of the timeout.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number</span>&#125; [options.maxWait]</span>
+<span class="hljs-comment"> *  The maximum time `func` is allowed to be delayed before it&#x27;s invoked.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">boolean</span>&#125; [options.trailing=true]</span>
+<span class="hljs-comment"> *  Specify invoking on the trailing edge of the timeout.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type">Function</span>&#125; Returns the new debounced function.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@example</span></span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * // Avoid costly calculations while the window size is in flux.</span>
+<span class="hljs-comment"> * jQuery(window).on(&#x27;resize&#x27;, debounce(calculateLayout, 150))</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * // Invoke `sendMail` when clicked, debouncing subsequent calls.</span>
+<span class="hljs-comment"> * jQuery(element).on(&#x27;click&#x27;, debounce(sendMail, 300, &#123;</span>
+<span class="hljs-comment"> *   &#x27;leading&#x27;: true,</span>
+<span class="hljs-comment"> *   &#x27;trailing&#x27;: false</span>
+<span class="hljs-comment"> * &#125;))</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * // Ensure `batchLog` is invoked once after 1 second of debounced calls.</span>
+<span class="hljs-comment"> * const debounced = debounce(batchLog, 250, &#123; &#x27;maxWait&#x27;: 1000 &#125;)</span>
+<span class="hljs-comment"> * const source = new EventSource(&#x27;/stream&#x27;)</span>
+<span class="hljs-comment"> * jQuery(source).on(&#x27;message&#x27;, debounced)</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * // Cancel the trailing debounced invocation.</span>
+<span class="hljs-comment"> * jQuery(window).on(&#x27;popstate&#x27;, debounced.cancel)</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * // Check for pending invocations.</span>
+<span class="hljs-comment"> * const status = debounced.pending() ? &quot;Pending...&quot; : &quot;Ready&quot;</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">debounce</span>(<span class="hljs-params">func, wait, options</span>) &#123;
+  <span class="hljs-keyword">let</span> lastArgs,
+    lastThis,
+    maxWait,
+    result,
+    timerId,
+    lastCallTime
+
+  <span class="hljs-keyword">let</span> lastInvokeTime = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">let</span> leading = <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">let</span> maxing = <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">let</span> trailing = <span class="hljs-literal">true</span>
+
+  <span class="hljs-comment">// Bypass `requestAnimationFrame` by explicitly setting `wait=0`.</span>
+  <span class="hljs-keyword">const</span> useRAF = (!wait &amp;&amp; wait !== <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-keyword">typeof</span> root.<span class="hljs-property">requestAnimationFrame</span> === <span class="hljs-string">&#x27;function&#x27;</span>)
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> func !== <span class="hljs-string">&#x27;function&#x27;</span>) &#123;
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeError</span>(<span class="hljs-string">&#x27;Expected a function&#x27;</span>)
+  &#125;
+  wait = +wait || <span class="hljs-number">0</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isObject</span>(options)) &#123;
+    <span class="hljs-comment">//转成boolean</span>
+    leading = !!options.<span class="hljs-property">leading</span>
+    maxing = <span class="hljs-string">&#x27;maxWait&#x27;</span> <span class="hljs-keyword">in</span> options
+    maxWait = maxing ? <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(+options.<span class="hljs-property">maxWait</span> || <span class="hljs-number">0</span>, wait) : maxWait
+    trailing = <span class="hljs-string">&#x27;trailing&#x27;</span> <span class="hljs-keyword">in</span> options ? !!options.<span class="hljs-property">trailing</span> : trailing
+  &#125;
+  <span class="hljs-comment">//</span>
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">invokeFunc</span>(<span class="hljs-params">time</span>) &#123;
+    <span class="hljs-keyword">const</span> args = lastArgs
+    <span class="hljs-keyword">const</span> thisArg = lastThis
+
+    lastArgs = lastThis = <span class="hljs-literal">undefined</span>
+    lastInvokeTime = time
+    result = func.<span class="hljs-title function_">apply</span>(thisArg, args)
+    <span class="hljs-keyword">return</span> result
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">startTimer</span>(<span class="hljs-params">pendingFunc, wait</span>) &#123;
+    <span class="hljs-keyword">if</span> (useRAF) &#123;
+      root.<span class="hljs-title function_">cancelAnimationFrame</span>(timerId)
+      <span class="hljs-keyword">return</span> root.<span class="hljs-title function_">requestAnimationFrame</span>(pendingFunc)
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">setTimeout</span>(pendingFunc, wait)
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">cancelTimer</span>(<span class="hljs-params">id</span>) &#123;
+    <span class="hljs-keyword">if</span> (useRAF) &#123;
+      <span class="hljs-keyword">return</span> root.<span class="hljs-title function_">cancelAnimationFrame</span>(id)
+    &#125;
+    <span class="hljs-built_in">clearTimeout</span>(id)
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">leadingEdge</span>(<span class="hljs-params">time</span>) &#123;
+    <span class="hljs-comment">// Reset any `maxWait` timer.</span>
+    lastInvokeTime = time
+    <span class="hljs-comment">// Start the timer for the trailing edge.</span>
+    timerId = <span class="hljs-title function_">startTimer</span>(timerExpired, wait)
+    <span class="hljs-comment">// Invoke the leading edge.</span>
+    <span class="hljs-keyword">return</span> leading ? <span class="hljs-title function_">invokeFunc</span>(time) : result
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">remainingWait</span>(<span class="hljs-params">time</span>) &#123;
+    <span class="hljs-keyword">const</span> timeSinceLastCall = time - lastCallTime
+    <span class="hljs-keyword">const</span> timeSinceLastInvoke = time - lastInvokeTime
+    <span class="hljs-keyword">const</span> timeWaiting = wait - timeSinceLastCall
+
+    <span class="hljs-keyword">return</span> maxing
+      ? <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(timeWaiting, maxWait - timeSinceLastInvoke)
+      : timeWaiting
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">shouldInvoke</span>(<span class="hljs-params">time</span>) &#123;
+    <span class="hljs-keyword">const</span> timeSinceLastCall = time - lastCallTime
+    <span class="hljs-keyword">const</span> timeSinceLastInvoke = time - lastInvokeTime
+
+    <span class="hljs-comment">// Either this is the first call, activity has stopped and we&#x27;re at the</span>
+    <span class="hljs-comment">// trailing edge, the system time has gone backwards and we&#x27;re treating</span>
+    <span class="hljs-comment">// it as the trailing edge, or we&#x27;ve hit the `maxWait` limit.</span>
+    <span class="hljs-keyword">return</span> (lastCallTime === <span class="hljs-literal">undefined</span> || (timeSinceLastCall &gt;= wait) ||
+      (timeSinceLastCall &lt; <span class="hljs-number">0</span>) || (maxing &amp;&amp; timeSinceLastInvoke &gt;= maxWait))
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">timerExpired</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">const</span> time = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>()
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">shouldInvoke</span>(time)) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">trailingEdge</span>(time)
+    &#125;
+    <span class="hljs-comment">// Restart the timer.</span>
+    timerId = <span class="hljs-title function_">startTimer</span>(timerExpired, <span class="hljs-title function_">remainingWait</span>(time))
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">trailingEdge</span>(<span class="hljs-params">time</span>) &#123;
+    timerId = <span class="hljs-literal">undefined</span>
+
+    <span class="hljs-comment">// Only invoke if we have `lastArgs` which means `func` has been</span>
+    <span class="hljs-comment">// debounced at least once.</span>
+    <span class="hljs-keyword">if</span> (trailing &amp;&amp; lastArgs) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">invokeFunc</span>(time)
+    &#125;
+    lastArgs = lastThis = <span class="hljs-literal">undefined</span>
+    <span class="hljs-keyword">return</span> result
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">cancel</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (timerId !== <span class="hljs-literal">undefined</span>) &#123;
+      <span class="hljs-title function_">cancelTimer</span>(timerId)
+    &#125;
+    lastInvokeTime = <span class="hljs-number">0</span>
+    lastArgs = lastCallTime = lastThis = timerId = <span class="hljs-literal">undefined</span>
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">flush</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> timerId === <span class="hljs-literal">undefined</span> ? result : <span class="hljs-title function_">trailingEdge</span>(<span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>())
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">pending</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> timerId !== <span class="hljs-literal">undefined</span>
+  &#125;
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">debounced</span>(<span class="hljs-params">...args</span>) &#123;
+    <span class="hljs-keyword">const</span> time = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>()
+    <span class="hljs-keyword">const</span> isInvoking = <span class="hljs-title function_">shouldInvoke</span>(time)
+
+    lastArgs = args
+    lastThis = <span class="hljs-variable language_">this</span>
+    lastCallTime = time
+
+    <span class="hljs-keyword">if</span> (isInvoking) &#123;
+      <span class="hljs-keyword">if</span> (timerId === <span class="hljs-literal">undefined</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_">leadingEdge</span>(lastCallTime)
+      &#125;
+      <span class="hljs-keyword">if</span> (maxing) &#123;
+        <span class="hljs-comment">// Handle invocations in a tight loop.</span>
+        timerId = <span class="hljs-title function_">startTimer</span>(timerExpired, wait)
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_">invokeFunc</span>(lastCallTime)
+      &#125;
+    &#125;
+    <span class="hljs-keyword">if</span> (timerId === <span class="hljs-literal">undefined</span>) &#123;
+      timerId = <span class="hljs-title function_">startTimer</span>(timerExpired, wait)
+    &#125;
+    <span class="hljs-keyword">return</span> result
+  &#125;
+  debounced.<span class="hljs-property">cancel</span> = cancel
+  debounced.<span class="hljs-property">flush</span> = flush
+  debounced.<span class="hljs-property">pending</span> = pending
+  <span class="hljs-keyword">return</span> debounced
+&#125;</code></pre></div>
+
+<h3 id="throttle-func-wait-0-options"><a href="#throttle-func-wait-0-options" class="headerlink" title="_.throttle(func, [wait=0], [options={}])"></a><code>_.throttle(func, [wait=0], [options=&#123;&#125;])</code></h3><p>创建一个节流函数，在 wait 秒内最多执行 <code>func</code> 一次的函数。 该函数提供一个 <code>cancel</code> 方法取消延迟的函数调用以及 <code>flush</code> 方法立即调用。 可以提供一个 options 对象决定如何调用 <code>func</code> 方法， options.leading 与|或 options.trailing 决定 wait 前后如何触发。 <code>func</code> 会传入最后一次传入的参数给这个函数。 随后调用的函数返回是最后一次 <code>func</code> 调用的结果。</p>
+<p><strong>注意:</strong> 如果 <code>leading</code> 和 <code>trailing</code> 都设定为 <code>true</code> 则 <code>func</code> 允许 trailing 方式调用的条件为: 在 <code>wait</code> 期间多次调用。</p>
+<p>如果 <code>wait</code> 为 <code>0</code> 并且 <code>leading</code> 为 <code>false</code>, <code>func</code>调用将被推迟到下一个点，类似<code>setTimeout</code>为<code>0</code>的超时。</p>
+<p>查看<a target="_blank" rel="noopener" href="https://css-tricks.com/debouncing-throttling-explained-examples/">David Corbacho’s article</a> 了解<a target="_blank" rel="noopener" href="https://www.lodashjs.com/docs/lodash.throttle#throttle"><code>_.throttle</code></a> 与<a target="_blank" rel="noopener" href="https://www.lodashjs.com/docs/lodash.throttle#debounce"><code>_.debounce</code></a> 的区别。</p>
+<h4 id="Arguments-12"><a href="#Arguments-12" class="headerlink" title="Arguments"></a>Arguments</h4><ol>
+<li><code>func</code> <em>(Function)</em>: 要节流的函数。</li>
+<li><code>[wait=0]</code> <em>(number)</em>: 需要节流的毫秒。</li>
+<li><code>[options=]</code> <em>(Object)</em>: 选项对象。</li>
+<li><code>[options.leading=true]</code> <em>(boolean)</em>: 指定调用在节流开始前。</li>
+<li><code>[options.trailing=true]</code> <em>(boolean)</em>: 指定调用在节流结束后。</li>
+</ol>
+<h4 id="Returns-12"><a href="#Returns-12" class="headerlink" title="Returns"></a>Returns</h4><p><em>(Function)</em>: Returns the new throttled function.</p>
+<h4 id="Example-10"><a href="#Example-10" class="headerlink" title="Example"></a>Example</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// Avoid excessively updating the position while scrolling.</span>
+<span class="hljs-title function_">jQuery</span>(<span class="hljs-variable language_">window</span>).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;scroll&#x27;</span>, _.<span class="hljs-title function_">throttle</span>(updatePosition, <span class="hljs-number">100</span>));
+ 
+<span class="hljs-comment">// Invoke `renewToken` when the click event is fired, but not more than once every 5 minutes.</span>
+<span class="hljs-keyword">var</span> throttled = _.<span class="hljs-title function_">throttle</span>(renewToken, <span class="hljs-number">300000</span>, &#123; <span class="hljs-string">&#x27;trailing&#x27;</span>: <span class="hljs-literal">false</span> &#125;);
+<span class="hljs-title function_">jQuery</span>(element).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;click&#x27;</span>, throttled);
+ 
+<span class="hljs-comment">// Cancel the trailing throttled invocation.</span>
+<span class="hljs-title function_">jQuery</span>(<span class="hljs-variable language_">window</span>).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;popstate&#x27;</span>, throttled.<span class="hljs-property">cancel</span>);</code></pre></div>
+
+<h4 id="source-10"><a href="#source-10" class="headerlink" title="source"></a>source</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">throttle</span>(<span class="hljs-params">func, wait, options</span>) &#123;
+  <span class="hljs-keyword">let</span> leading = <span class="hljs-literal">true</span>
+  <span class="hljs-keyword">let</span> trailing = <span class="hljs-literal">true</span>
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> func !== <span class="hljs-string">&#x27;function&#x27;</span>) &#123;
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeError</span>(<span class="hljs-string">&#x27;Expected a function&#x27;</span>)
+  &#125;
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isObject</span>(options)) &#123;
+    leading = <span class="hljs-string">&#x27;leading&#x27;</span> <span class="hljs-keyword">in</span> options ? !!options.<span class="hljs-property">leading</span> : leading
+    trailing = <span class="hljs-string">&#x27;trailing&#x27;</span> <span class="hljs-keyword">in</span> options ? !!options.<span class="hljs-property">trailing</span> : trailing
+  &#125;
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">debounce</span>(func, wait, &#123;
+    leading,
+    trailing,
+    <span class="hljs-string">&#x27;maxWait&#x27;</span>: wait
+  &#125;)
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> throttle</code></pre></div>
+
 
                 
               </div>
@@ -548,9 +921,9 @@ _.<span class="hljs-title function_">differenceBy</span>([&#123; <span class="hl
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/12/27/hello-world/" title="Hello World">
+                      <a href="/2022/12/28/baseClone-js/" title="baseClone.js">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Hello World</span>
+                        <span class="hidden-mobile">baseClone.js</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

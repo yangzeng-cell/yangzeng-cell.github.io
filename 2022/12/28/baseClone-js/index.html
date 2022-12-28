@@ -1,0 +1,939 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="import Stack from &quot;.&#x2F;Stack.js&quot;; import arrayEach from &quot;.&#x2F;arrayEach.js&quot;; import assignValue from &quot;.&#x2F;assignValue.js&quot;; import cloneBuffer from &quot;.&#x2F;cloneBuffer.js&quot;;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="baseClone.js">
+<meta property="og:url" content="http://example.com/2022/12/28/baseClone-js/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="import Stack from &quot;.&#x2F;Stack.js&quot;; import arrayEach from &quot;.&#x2F;arrayEach.js&quot;; import assignValue from &quot;.&#x2F;assignValue.js&quot;; import cloneBuffer from &quot;.&#x2F;cloneBuffer.js&quot;;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-28T08:13:22.000Z">
+<meta property="article:modified_time" content="2022-12-28T15:11:11.743Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="lodash">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>baseClone.js - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Piggy的记录版</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="baseClone.js"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-12-28 08:13" pubdate>
+          2022年12月28日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          62 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">baseClone.js</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Stack</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Stack.js&quot;</span>;
+<span class="hljs-keyword">import</span> arrayEach <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./arrayEach.js&quot;</span>;
+<span class="hljs-keyword">import</span> assignValue <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./assignValue.js&quot;</span>;
+<span class="hljs-keyword">import</span> cloneBuffer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./cloneBuffer.js&quot;</span>;
+<span class="hljs-keyword">import</span> copyArray <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./copyArray.js&quot;</span>;
+<span class="hljs-keyword">import</span> copyObject <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./copyObject.js&quot;</span>;
+<span class="hljs-keyword">import</span> cloneArrayBuffer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./cloneArrayBuffer.js&quot;</span>;
+<span class="hljs-keyword">import</span> cloneDataView <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./cloneDataView.js&quot;</span>;
+<span class="hljs-keyword">import</span> cloneRegExp <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./cloneRegExp.js&quot;</span>;
+<span class="hljs-keyword">import</span> cloneSymbol <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./cloneSymbol.js&quot;</span>;
+<span class="hljs-keyword">import</span> cloneTypedArray <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./cloneTypedArray.js&quot;</span>;
+<span class="hljs-keyword">import</span> copySymbols <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./copySymbols.js&quot;</span>;
+<span class="hljs-keyword">import</span> copySymbolsIn <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./copySymbolsIn.js&quot;</span>;
+<span class="hljs-keyword">import</span> getAllKeys <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./getAllKeys.js&quot;</span>;
+<span class="hljs-keyword">import</span> getAllKeysIn <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./getAllKeysIn.js&quot;</span>;
+<span class="hljs-keyword">import</span> getTag <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./getTag.js&quot;</span>;
+<span class="hljs-keyword">import</span> initCloneObject <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./initCloneObject.js&quot;</span>;
+<span class="hljs-keyword">import</span> isBuffer <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../isBuffer.js&quot;</span>;
+<span class="hljs-keyword">import</span> isObject <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../isObject.js&quot;</span>;
+<span class="hljs-keyword">import</span> isTypedArray <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../isTypedArray.js&quot;</span>;
+<span class="hljs-keyword">import</span> keys <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../keys.js&quot;</span>;
+<span class="hljs-keyword">import</span> keysIn <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../keysIn.js&quot;</span>;
+
+<span class="hljs-comment">/** Used to compose bitmasks for cloning. */</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CLONE_DEEP_FLAG</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CLONE_FLAT_FLAG</span> = <span class="hljs-number">2</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CLONE_SYMBOLS_FLAG</span> = <span class="hljs-number">4</span>;
+
+<span class="hljs-comment">/** `Object#toString` result references. */</span>
+<span class="hljs-keyword">const</span> argsTag = <span class="hljs-string">&quot;[object Arguments]&quot;</span>;
+<span class="hljs-keyword">const</span> arrayTag = <span class="hljs-string">&quot;[object Array]&quot;</span>;
+<span class="hljs-keyword">const</span> boolTag = <span class="hljs-string">&quot;[object Boolean]&quot;</span>;
+<span class="hljs-keyword">const</span> dateTag = <span class="hljs-string">&quot;[object Date]&quot;</span>;
+<span class="hljs-keyword">const</span> errorTag = <span class="hljs-string">&quot;[object Error]&quot;</span>;
+<span class="hljs-keyword">const</span> mapTag = <span class="hljs-string">&quot;[object Map]&quot;</span>;
+<span class="hljs-keyword">const</span> numberTag = <span class="hljs-string">&quot;[object Number]&quot;</span>;
+<span class="hljs-keyword">const</span> objectTag = <span class="hljs-string">&quot;[object Object]&quot;</span>;
+<span class="hljs-keyword">const</span> regexpTag = <span class="hljs-string">&quot;[object RegExp]&quot;</span>;
+<span class="hljs-keyword">const</span> setTag = <span class="hljs-string">&quot;[object Set]&quot;</span>;
+<span class="hljs-keyword">const</span> stringTag = <span class="hljs-string">&quot;[object String]&quot;</span>;
+<span class="hljs-keyword">const</span> symbolTag = <span class="hljs-string">&quot;[object Symbol]&quot;</span>;
+<span class="hljs-keyword">const</span> weakMapTag = <span class="hljs-string">&quot;[object WeakMap]&quot;</span>;
+
+<span class="hljs-keyword">const</span> arrayBufferTag = <span class="hljs-string">&quot;[object ArrayBuffer]&quot;</span>;
+<span class="hljs-keyword">const</span> dataViewTag = <span class="hljs-string">&quot;[object DataView]&quot;</span>;
+<span class="hljs-keyword">const</span> float32Tag = <span class="hljs-string">&quot;[object Float32Array]&quot;</span>;
+<span class="hljs-keyword">const</span> float64Tag = <span class="hljs-string">&quot;[object Float64Array]&quot;</span>;
+<span class="hljs-keyword">const</span> int8Tag = <span class="hljs-string">&quot;[object Int8Array]&quot;</span>;
+<span class="hljs-keyword">const</span> int16Tag = <span class="hljs-string">&quot;[object Int16Array]&quot;</span>;
+<span class="hljs-keyword">const</span> int32Tag = <span class="hljs-string">&quot;[object Int32Array]&quot;</span>;
+<span class="hljs-keyword">const</span> uint8Tag = <span class="hljs-string">&quot;[object Uint8Array]&quot;</span>;
+<span class="hljs-keyword">const</span> uint8ClampedTag = <span class="hljs-string">&quot;[object Uint8ClampedArray]&quot;</span>;
+<span class="hljs-keyword">const</span> uint16Tag = <span class="hljs-string">&quot;[object Uint16Array]&quot;</span>;
+<span class="hljs-keyword">const</span> uint32Tag = <span class="hljs-string">&quot;[object Uint32Array]&quot;</span>;
+
+<span class="hljs-comment">/** Used to identify `toStringTag` values supported by `clone`. */</span>
+<span class="hljs-comment">/**定义那些类型是可以拷贝那些是不可以拷贝的 */</span>
+<span class="hljs-keyword">const</span> cloneableTags = &#123;&#125;;
+cloneableTags[argsTag] =
+  cloneableTags[arrayTag] =
+  cloneableTags[arrayBufferTag] =
+  cloneableTags[dataViewTag] =
+  cloneableTags[boolTag] =
+  cloneableTags[dateTag] =
+  cloneableTags[float32Tag] =
+  cloneableTags[float64Tag] =
+  cloneableTags[int8Tag] =
+  cloneableTags[int16Tag] =
+  cloneableTags[int32Tag] =
+  cloneableTags[mapTag] =
+  cloneableTags[numberTag] =
+  cloneableTags[objectTag] =
+  cloneableTags[regexpTag] =
+  cloneableTags[setTag] =
+  cloneableTags[stringTag] =
+  cloneableTags[symbolTag] =
+  cloneableTags[uint8Tag] =
+  cloneableTags[uint8ClampedTag] =
+  cloneableTags[uint16Tag] =
+  cloneableTags[uint32Tag] =
+    <span class="hljs-literal">true</span>;
+cloneableTags[errorTag] = cloneableTags[weakMapTag] = <span class="hljs-literal">false</span>;
+
+<span class="hljs-comment">/** Used to check objects for own properties. */</span>
+<span class="hljs-comment">/**用于检测是否是实例对象本身的属性，而不是原型链上的属性 */</span>
+<span class="hljs-keyword">const</span> hasOwnProperty = <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">hasOwnProperty</span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Initializes an object clone based on its `toStringTag`.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * **Note:** This function only supports cloning values with tags of</span>
+<span class="hljs-comment"> * `Boolean`, `Date`, `Error`, `Map`, `Number`, `RegExp`, `Set`, or `String`.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@private</span></span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Object</span>&#125; object The object to clone.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">string</span>&#125; tag The `toStringTag` of the object to clone.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">boolean</span>&#125; [isDeep] Specify a deep clone.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type">Object</span>&#125; Returns the initialized clone.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-comment">/**根据数据类型初始化创建对应的类型· */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">initCloneByTag</span>(<span class="hljs-params">object, tag, isDeep</span>) &#123;
+  <span class="hljs-keyword">const</span> <span class="hljs-title class_">Ctor</span> = object.<span class="hljs-property">constructor</span>;
+  <span class="hljs-keyword">switch</span> (tag) &#123;
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">arrayBufferTag</span>:
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">cloneArrayBuffer</span>(object);
+
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">boolTag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">dateTag</span>:
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ctor</span>(+object);
+
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">dataViewTag</span>:
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">cloneDataView</span>(object, isDeep);
+
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">float32Tag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">float64Tag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">int8Tag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">int16Tag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">int32Tag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">uint8Tag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">uint8ClampedTag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">uint16Tag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">uint32Tag</span>:
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">cloneTypedArray</span>(object, isDeep);
+
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">mapTag</span>:
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ctor</span>();
+
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">numberTag</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">stringTag</span>:
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ctor</span>(object);
+
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">regexpTag</span>:
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">cloneRegExp</span>(object);
+
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">setTag</span>:
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ctor</span>();
+
+    <span class="hljs-keyword">case</span> <span class="hljs-attr">symbolTag</span>:
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">cloneSymbol</span>(object);
+  &#125;
+&#125;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Initializes an array clone.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@private</span></span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Array</span>&#125; array The array to clone.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type">Array</span>&#125; Returns the initialized clone.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">initCloneArray</span>(<span class="hljs-params">array</span>) &#123;
+  <span class="hljs-keyword">const</span> &#123; length &#125; = array;
+  <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">new</span> array.<span class="hljs-title function_">constructor</span>(<span class="hljs-params">length</span>);
+
+  <span class="hljs-comment">// Add properties assigned by `RegExp#exec`.</span>
+  <span class="hljs-keyword">if</span> (
+    length &amp;&amp;
+    <span class="hljs-keyword">typeof</span> array[<span class="hljs-number">0</span>] === <span class="hljs-string">&quot;string&quot;</span> &amp;&amp;
+    hasOwnProperty.<span class="hljs-title function_">call</span>(array, <span class="hljs-string">&quot;index&quot;</span>)
+  ) &#123;
+    result.<span class="hljs-property">index</span> = array.<span class="hljs-property">index</span>;
+    result.<span class="hljs-property">input</span> = array.<span class="hljs-property">input</span>;
+  &#125;
+  <span class="hljs-keyword">return</span> result;
+&#125;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * The base implementation of `clone` and `cloneDeep` which tracks</span>
+<span class="hljs-comment"> * traversed objects.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@private</span></span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; value The value to clone.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number</span>&#125; bitmask The bitmask flags.</span>
+<span class="hljs-comment"> *  1 - Deep clone</span>
+<span class="hljs-comment"> *  2 - Flatten inherited properties</span>
+<span class="hljs-comment"> *  4 - Clone symbols</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Function</span>&#125; [customizer] The function to customize cloning.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">string</span>&#125; [key] The key of `value`.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Object</span>&#125; [object] The parent object of `value`.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Object</span>&#125; [stack] Tracks traversed objects and their clone counterparts.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type">*</span>&#125; Returns the cloned value.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">baseClone</span>(<span class="hljs-params">value, bitmask, customizer, key, object, stack</span>) &#123;
+  <span class="hljs-keyword">let</span> result;
+  <span class="hljs-keyword">const</span> isDeep = bitmask &amp; <span class="hljs-variable constant_">CLONE_DEEP_FLAG</span>;
+  <span class="hljs-comment">//展平继承的属性</span>
+  <span class="hljs-keyword">const</span> isFlat = bitmask &amp; <span class="hljs-variable constant_">CLONE_FLAT_FLAG</span>;
+  <span class="hljs-keyword">const</span> isFull = bitmask &amp; <span class="hljs-variable constant_">CLONE_SYMBOLS_FLAG</span>;
+
+  <span class="hljs-comment">//判断是否有传入的处理函数</span>
+  <span class="hljs-keyword">if</span> (customizer) &#123;
+    result = object ? <span class="hljs-title function_">customizer</span>(value, key, object, stack) : <span class="hljs-title function_">customizer</span>(value);
+  &#125;
+  <span class="hljs-keyword">if</span> (result !== <span class="hljs-literal">undefined</span>) &#123;
+    <span class="hljs-keyword">return</span> result;
+  &#125;
+  <span class="hljs-comment">//如果不是object，直接返回</span>
+  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">isObject</span>(value)) &#123;
+    <span class="hljs-keyword">return</span> value;
+  &#125;
+  <span class="hljs-comment">//判断是否是数组</span>
+  <span class="hljs-keyword">const</span> isArr = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(value);
+  <span class="hljs-comment">//获取数据类型</span>
+  <span class="hljs-keyword">const</span> tag = <span class="hljs-title function_">getTag</span>(value);
+  <span class="hljs-comment">//如果是数组，对数组进行处理</span>
+  <span class="hljs-keyword">if</span> (isArr) &#123;
+    result = <span class="hljs-title function_">initCloneArray</span>(value);
+    <span class="hljs-keyword">if</span> (!isDeep) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">copyArray</span>(value, result);
+    &#125;
+  &#125; <span class="hljs-keyword">else</span> &#123;
+    <span class="hljs-comment">//是否是function</span>
+    <span class="hljs-keyword">const</span> isFunc = <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&quot;function&quot;</span>;
+    <span class="hljs-comment">//如果是buffer</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isBuffer</span>(value)) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-title function_">cloneBuffer</span>(value, isDeep);
+    &#125;
+    <span class="hljs-comment">//object 或者类数组对象 或者是函数</span>
+    <span class="hljs-keyword">if</span> (tag == objectTag || tag == argsTag || (isFunc &amp;&amp; !object)) &#123;
+      <span class="hljs-comment">//既不是函数也不需要展开继承属性</span>
+      result = isFlat || isFunc ? &#123;&#125; : <span class="hljs-title function_">initCloneObject</span>(value);
+      <span class="hljs-keyword">if</span> (!isDeep) &#123;
+        <span class="hljs-keyword">return</span> isFlat
+          ? <span class="hljs-title function_">copySymbolsIn</span>(value, <span class="hljs-title function_">copyObject</span>(value, <span class="hljs-title function_">keysIn</span>(value), result))
+          : <span class="hljs-title function_">copySymbols</span>(value, <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(result, value));
+      &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-comment">//如果是函数或者是不可复制内容，则返回该值或者空对象</span>
+      <span class="hljs-keyword">if</span> (isFunc || !cloneableTags[tag]) &#123;
+        <span class="hljs-keyword">return</span> object ? value : &#123;&#125;;
+      &#125;
+      result = <span class="hljs-title function_">initCloneByTag</span>(value, tag, isDeep);
+    &#125;
+  &#125;
+  <span class="hljs-comment">//检查是否有循环引用，如果有，则返回他的clone</span>
+  <span class="hljs-comment">// Check for circular references and return its corresponding clone.</span>
+  stack || (stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>());
+  <span class="hljs-keyword">const</span> stacked = stack.<span class="hljs-title function_">get</span>(value);
+  <span class="hljs-keyword">if</span> (stacked) &#123;
+    <span class="hljs-keyword">return</span> stacked;
+  &#125;
+  stack.<span class="hljs-title function_">set</span>(value, result);
+  <span class="hljs-comment">//map类型</span>
+  <span class="hljs-keyword">if</span> (tag == mapTag) &#123;
+    value.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">subValue, key</span>) =&gt;</span> &#123;
+      result.<span class="hljs-title function_">set</span>(
+        key,
+        <span class="hljs-title function_">baseClone</span>(subValue, bitmask, customizer, key, value, stack)
+      );
+    &#125;);
+    <span class="hljs-keyword">return</span> result;
+  &#125;
+  <span class="hljs-comment">//set类型</span>
+  <span class="hljs-keyword">if</span> (tag == setTag) &#123;
+    value.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">subValue</span>) =&gt;</span> &#123;
+      result.<span class="hljs-title function_">add</span>(
+        <span class="hljs-title function_">baseClone</span>(subValue, bitmask, customizer, subValue, value, stack)
+      );
+    &#125;);
+    <span class="hljs-keyword">return</span> result;
+  &#125;
+  <span class="hljs-comment">//TypedArray类型</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isTypedArray</span>(value)) &#123;
+    <span class="hljs-keyword">return</span> result;
+  &#125;
+
+  <span class="hljs-keyword">const</span> keysFunc = isFull
+    ? isFlat
+      ? getAllKeysIn
+      : getAllKeys
+    : isFlat
+    ? keysIn
+    : keys;
+
+  <span class="hljs-keyword">const</span> props = isArr ? <span class="hljs-literal">undefined</span> : <span class="hljs-title function_">keysFunc</span>(value);
+  <span class="hljs-title function_">arrayEach</span>(props || value, <span class="hljs-function">(<span class="hljs-params">subValue, key</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">if</span> (props) &#123;
+      key = subValue;
+      subValue = value[key];
+    &#125;
+    <span class="hljs-comment">// Recursively populate clone (susceptible to call stack limits).</span>
+    <span class="hljs-title function_">assignValue</span>(
+      result,
+      key,
+      <span class="hljs-title function_">baseClone</span>(subValue, bitmask, customizer, key, value, stack)
+    );
+  &#125;);
+  <span class="hljs-keyword">return</span> result;
+&#125;
+</code></pre></div>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/javascript/" class="category-chain-item">javascript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/javascript/lodash/" class="category-chain-item">lodash</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/lodash/">#lodash</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>baseClone.js</div>
+      <div>http://example.com/2022/12/28/baseClone-js/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/12/28/hello-world/" title="Hello World">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/12/26/lodash/" title="lodash">
+                        <span class="hidden-mobile">lodash</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
