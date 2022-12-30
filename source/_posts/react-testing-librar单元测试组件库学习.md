@@ -2,7 +2,7 @@
 title: react-testing-library单元测试组件库学习
 date: 2022-10-16 23:40:18
 tags:
-- [react-testing-library]
+- [react-testing-library,单元测试]
 catagories:
 - [react,react-testing-library]
 ---
@@ -144,5 +144,307 @@ export default function Fetch({url}) {
     </div>
   )
 }
+```
+
+# 和Jest一起使用
+
+### jest28
+
+```
+yarn add --dev jest-environment-jsdom
+```
+
+jsdom 也不再是默认环境。您可以通过编辑 jest.config.js 全局启用 jsdom：
+
+```js
+ module.exports = {
++  testEnvironment: 'jsdom',
+   // ... other options ...
+ }
+```
+
+或者，如果您只在某些测试中需要 jsdom，则可以在需要时使用 docblocks 启用它：
+
+```
+/**
+ * @jest-environment jsdom
+ */
+```
+
+### Jest 27
+
+jest27的配置方式
+
+```js
+ module.exports = {
++  testEnvironment: 'jest-environment-jsdom',
+   // ... other options ...
+ }
+```
+
+### Jest 24 (or lower) and defaults[](https://testing-library.com/docs/react-testing-library/setup#jest-24-or-lower-and-defaults)
+
+如果使用24或者更低的版本，需要安装，并把这个作为jest的环境
+
+```
+yarn add --dev jest-environment-jsdom-fifteen
+```
+
+```js
+ module.exports = {
++  testEnvironment: 'jest-environment-jsdom-fifteen',
+   // ... other options ...
+ }
+```
+
+# API
+
+React 测试库重新导出 DOM 测试库中的所有内容以及这些方法：
+
+## `render`
+
+render会把内容渲染都document.body容器中
+
+```ts
+function render(
+  ui: React.ReactElement<any>,//第一个参数是需要渲染的组件或者元素
+  options?: {
+    /* You won't often use this, expand below for docs on options */
+  },
+): RenderResult
+```
+
+## `render` Options
+
+render函数的第二个参数
+
+### `container`
+
+默认情况下，React 测试库将创建一个 div 并将该 div 附加到 document.body，这就是您的 React 组件将被渲染的地方。如果您通过此选项提供自己的 HTMLElement 容器，它将不会自动附加到 document.body。
+
+例如，如果你想使用table作为容器
+
+```react
+const table = document.createElement('table')
+
+const {container} = render(<TableBody {...props} />, {
+  container: document.body.appendChild(table),
+})
+```
+
+### `baseElement`
+
+### `hydrate`
+
+### `legacyRoot`
+
+### `wrapper`
+
+### `queries`
+
+## `render` Result
+
+render函数的返回值
+
+### `...queries`[](https://testing-library.com/docs/react-testing-library/api#queries-1)
+
+render 最重要的特性是来自 DOM 测试库的query会自动返回，其第一个参数绑定到 baseElement，默认为 document.body。
+
+例如
+
+```jsx
+const {getByLabelText, queryAllByTestId} = render(<Component />)
+```
+
+### `container`
+
+渲染的 React 元素的包含 DOM 节点（使用 ReactDOM.render 渲染）。这是一个div。这是一个常规 DOM 节点，因此您可以调用 container.querySelector 等来检查子节点。
+
+要获取渲染元素的根元素，请使用 container.firstChild。
+
+🚨 If you find yourself using `container` to query for rendered elements then you should reconsider! The other queries are designed to be more resilient to changes that will be made to the component you're testing. Avoid using `container` to query for elements!
+
+### `baseElement`
+
+### `debug`
+
+### `rerender`
+
+如果您测试进行 prop 更新的组件以确保正确更新 props 可能会更好。也就是说，如果您希望在测试中更新渲染组件的 props，则可以使用此函数更新渲染组件的 props。
+
+```jsx
+import {render} from '@testing-library/react'
+
+const {rerender} = render(<NumberDisplay number={1} />)
+
+// re-render the same component with different props
+rerender(<NumberDisplay number={2} />)
+```
+
+### `unmount`
+
+这将导致渲染的组件被卸载。这对于测试当您的组件从页面中移除时会发生什么情况很有用（例如测试您不会让事件处理程序闲置导致内存泄漏）。
+
+```jsx
+import {render} from '@testing-library/react'
+
+const {container, unmount} = render(<Login />)
+unmount()
+// your component has been unmounted and now: container.innerHTML === ''
+```
+
+### `asFragment`
+
+返回呈现组件的 DocumentFragment。如果您需要避免实时绑定并查看您的组件如何对事件做出反应，这将很有用。
+
+```jsx
+import React, {useState} from 'react'
+import {render, fireEvent} from '@testing-library/react'
+
+const TestComponent = () => {
+  const [count, setCounter] = useState(0)
+
+  return (
+    <button onClick={() => setCounter(count => count + 1)}>
+      Click to increase: {count}
+    </button>
+  )
+}
+
+const {getByText, asFragment} = render(<TestComponent />)
+const firstRender = asFragment()
+
+fireEvent.click(getByText(/Click to increase/))
+
+// This will snapshot only the difference between the first render, and the
+// state of the DOM after the click event.
+// See https://github.com/jest-community/snapshot-diff
+expect(firstRender).toMatchDiffSnapshot(asFragment())
+```
+
+## `cleanup`
+
+卸载使用 render 挂载的 React 树。
+
+请注意，如果您使用的测试框架支持 afterEach 全局并且它被注入到您的测试环境（如 mocha、Jest 和 Jasmine），那么这是自动完成的。如果没有，您将需要在每次测试后进行手动清理。
+
+```jsx
+import {cleanup, render} from '@testing-library/react'
+import test from 'ava'
+
+test.afterEach(cleanup)
+
+test('renders into document', () => {
+  render(<div />)
+  // ...
+})
+
+```
+
+## `act`
+
+This is a light wrapper around the [`react-dom/test-utils` `act` function](https://reactjs.org/docs/test-utils.html#act). All it does is forward all arguments to the act function if your version of react supports `act`. It is recommended to use the import from `@testing-library/react` over `react-dom/test-utils` for consistency reasons.
+
+## `renderHook`
+
+这是一个带有自定义测试组件的渲染器的便捷包装器。该 API 源自一种流行的测试模式，主要用于发布hook的库。您应该更喜欢渲染，因为自定义测试组件会导致更具可读性和健壮性的测试，因为您要测试的东西并没有隐藏在抽象之后。
+
+因该是用来测试hook
+
+```js
+function renderHook<Result, Props>(
+  render: (props: Props) => Result,
+  options?: RenderHookOptions<Props>,
+): RenderHookResult<Result, Props>
+```
+
+Example:
+
+```jsx
+import {renderHook} from '@testing-library/react'
+
+test('returns logged in user', () => {
+  const {result} = renderHook(() => useLoggedInUser())
+  expect(result.current).toEqual({name: 'Alice'})
+})
+```
+
+## `renderHook` Options
+
+### `renderHook` Options `initialProps`
+
+声明在首次调用时传递给渲染回调。如果您在没有道具的情况下调用重新渲染的props，这些将不会被传递。
+
+```jsx
+import {renderHook} from '@testing-library/react'
+
+test('returns logged in user', () => {
+  const {result, rerender} = renderHook((props = {}) => props, {
+    initialProps: {name: 'Alice'},
+  })
+  expect(result.current).toEqual({name: 'Alice'})
+  rerender()
+  expect(result.current).toEqual({name: undefined})
+})
+```
+
+将 renderHook 与 wrapper 和 initialProps 选项结合使用时，initialProps 不会传递给 wrapper 组件。要为包装器组件提供props，请考虑这样的解决方案：
+
+```jsx
+const createWrapper = (Wrapper, props) => {
+  return function CreatedWrapper({ children }) {
+    return <Wrapper {...props}>{children}</Wrapper>;
+  };
+};
+
+...
+
+{
+  wrapper: createWrapper(Wrapper, { value: 'foo' }),
+}
+```
+
+### `renderHook` Options `wrapper`
+
+See [`wrapper` option for `render`](https://testing-library.com/docs/react-testing-library/api#wrapper)
+
+## `renderHook` Result[](https://testing-library.com/docs/react-testing-library/api#renderhook-result)
+
+### `result`
+
+hooks的返回值
+
+```jsx
+import {renderHook} from '@testing-library/react'
+
+const {result} = renderHook(() => {
+  const [name, setName] = useState('')
+  React.useEffect(() => {
+    setName('Alice')
+  }, [])
+
+  return name
+})
+
+expect(result.current).toBe('Alice')
+```
+
+请注意，该值保存在 result.current 中。将 result 视为最近提交的值的引用。
+
+### `rerender`
+
+使用新props渲染先前渲染的渲染回调：就是为之前的回调函数传入新的值
+
+
+
+```JSX
+import {renderHook} from '@testing-library/react'
+
+const {rerender} = renderHook(({name = 'Alice'} = {}) => name)
+
+// re-render the same hook with different props
+rerender({name: 'Bob'})
+
+
 ```
 
