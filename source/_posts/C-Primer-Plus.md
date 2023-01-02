@@ -458,3 +458,261 @@ C++程序由一个或多个被称为函数的模块组成。程序从main( )函�
 C++提供了两个用于处理输入和输出的预定义对象（cin和cout）， 它们是istream和ostream类的实例，这两个类是在iostream文件中定义 的。为ostream类定义的插入运算符（<<）使得将数据插入到输出流成 为可能；为istream类定义的抽取运算符（\>>）能够从输入流中抽取信 息。cin和cout都是智能对象，能够根据程序上下文自动将信息从一种形 式转换为另一种形式。
 
 C++可以使用大量的C库函数。要使用库函数，应当包含提供该函 数原型的头文件。
+
+# 处理数据
+
+内置的C++类型分两组：基本类型和复合类型
+
+ 
+
+## 简单变量
+
+```c++
+int braincount;
+braincount = 5;
+```
+
+这些语句告诉程序，它正在存储整数，并使用名称braincount来表 示该整数的值（这里为5）。实际上，程序将找到一块能够存储整数的 
+
+内存，将该内存单元标记为braincount，并将5复制到该内存单元中；然 后，您可在程序中使用braincount来访问该内存单元。这些语句没有告 诉您，这个值将存储在内存的什么位置，但程序确实记录了这种信息。 实际上，可以使用&运算符来检索braincount的内存地址
+
+### 变量名
+
+C++命名规则:
+
+- 在名称中只能使用字母字符、数字和下划线（_）
+
+- 名称的第一个字符不能是数字
+
+- 区分大写字符与小写字符
+
+- 不能将C++关键字用作名称
+
+- 以两个下划线或下划线和大写字母打头的名称被保留给实现（编译 器及其使用的资源）使用。以一个下划线开头的名称被保留给实 现，用作全局标识符.
+
+- C++对于名称的长度没有限制，名称中所有的字符都有意义，但有些平台有长度限制.
+
+  最后一点使得C++与ANSI C（C99标准）有所区别，后者只保证名 称中的前63个字符有意义（在ANSI C中，前63个字符相同的名称被认 为是相同的，即使第64个字符不同）。 
+
+  
+
+如果想用两个或更多的单词组成一个名称，通常的做法是用下划线 字符将单词分开，如my_onions；或者从第二个单词开始将每个单词的 第一个字母大写，如myEyeTooth。（C程序员倾向于按C语言的方式使 用下划线，而Pascal程序员喜欢采用大写方式。）这两种形式都很容易 将单词区分开，如carDrip和cardRip或boat_sport和boats_port。 
+
+### 整型
+
+整数就是没有小数部分的数字，如2、98、-5286和0。整数有很 多，如果将无限大的整数看作很大，则不可能用有限的计算机内存来表 
+
+示所有的整数。因此，语言只能表示所有整数的一个子集。有些语言只 提供一种整型（一种类型满足所有要求！），而C++则提供好几种，这 样便能够根据程序的具体要求选择最合适的整型。
+
+不同C++整型使用不同的内存量来存储整数。使用的内存量越大， 可以表示的整数值范围也越大。另外，有的类型（符号类型）可表示正 值和负值，而有的类型（无符号类型）不能表示负值。术语宽度 （width）用于描述存储整数时使用的内存量。使用的内存越多，则越 宽。C++的基本整型（按宽度递增的顺序排列）分别是char、short、 int、long和C++11新增的long long，其中每种类型都有符号版本和无符 号版本，因此总共有10种类型可供选择.
+
+#### 整型**short**、**int**、**long**和**long long**
+
+short至少16位(bit)
+
+int至少和short一样长
+
+long至少32位，且·至少和int一样长
+
+long long至少64位，且至少和long一样长
+
+```
+位：计算机内存的基本单元是位（bit），用01表示
+字节：通常指的是8位的内存单元，字节指的就是描述计算机内 存量的度量单位，1KB等于1024字节，1MB等于1024KB。然而，C++对字节的定义与此不 同。C++字节由至少能够容纳实现的基本字符集的相邻位组成。也就是说，可能取值的数目必 须等于或超过字符数目。在美国，基本字符集通常是ASCII和EBCDIC字符集，它们都可以用8 位来容纳，所以在使用这两种字符集的系统中，C++字节通常包含8位。然而，国际编程可能 需要使用更大的字符集，如Unicode，因此有些实现可能使用16位甚至32位的字节。有些人使 用术语八位组（octet）表示8位字节
+
+```
+
+short是short int的简称
+
+long是long int 的简称
+
+long long 是long long int的简称
+
+这些都是符号类型，说明每种的正负值除符号位都是相等的要知道系统中整数的最大长度，可以在程序中使用C++工具来检查 类型的长度。首先，sizeof运算符返回类型或变量的长度，单位为字节 （运算符是内置的语言元素，对一个或多个数据进行运算，并生成一个 值。例如，加号运算符+将两个值相加）。前面说过，“字节”的含义依 赖于实现，因此在一个系统中，两字节的int可能是16位，而在另一个系 统中可能是32位。其次，头文件climits（在老式实现中为limits.h）中包 含了关于整型限制的信息。具体地说，它定义了表示各种限制的符号名 称。例如，INT_MAX为int的最大取值，CHAR_BIT为字节的位数
+
+```c++
+#include <iostream>
+#include <climits>
+
+int main()
+{
+  using namespace std;
+  int n_int = INT_MAX;
+  short n_short = SHRT_MAX;
+  long n_long = LONG_MAX;
+  long long n_llong = LLONG_MAX;
+//对类型名（如int）使用 sizeof运算符时，应将名称放在括号中；但对变量名（如n_short）使用 该运算符，括号是可选的
+  cout << "int is " << sizeof(int) << "bytes" << endl;
+  cout << "shorts is " << sizeof n_short << "bytes" << endl;
+  cout << "long is " << sizeof n_long << "bytes" << endl;
+  cout << "long long is " << sizeof n_llong << "bytes" << endl;
+
+  cout << endl;
+  cout << "maxinum value: " << endl;
+  cout << "int: " << n_int << endl;
+  cout << "short: " << n_short << endl;
+  cout << "long: " << n_long << endl;
+  cout << "long long: " << n_llong << endl
+       << endl;
+  cout << "max int value: " << INT_MIN << endl;
+  cout << "bits per bytes: " << CHAR_BIT << endl;
+
+  return 0;
+}
+/**
+ * 
+int is 4bytes
+shorts is 2bytes
+long is 8bytes
+long long is 8bytes
+
+maxinum value: 
+int: 2147483647
+short: 32767
+long: 9223372036854775807
+long long: 9223372036854775807
+
+min int value: -2147483648
+bits per bytes: 8
+*/
+```
+
+##### **climits**中的符号常量
+
+| 符号常量   | 表示                       |
+| ---------- | -------------------------- |
+| CHAR_BIT   | char的位数                 |
+| CHAR_MAX   | char的最大值               |
+| CHAR_MIN   | char的最小值               |
+| SCHAR_MAX  | signed char的最大值        |
+| SCHAR_MIN  | signed char的最小值        |
+| UCHAR_MAX  | unsigned char的最大值      |
+| SHRT_MAX   | short的最大值              |
+| SHRT_MIN   | short的最小值              |
+| USHRT_MAX  | unsigned short的最大值     |
+| INT_MAX    | int的最大值                |
+| INT_MIN    | int的最小值                |
+| UNIT_MAX   | unsigned int的最大值       |
+| LONG_MAX   | long的最大值               |
+| LONG_MIN   | long的最小值               |
+| ULONG_MAX  | unsigned long的最大值      |
+| LLONG_MAX  | long long的最大值          |
+| LLONG_MIN  | long long的最小值          |
+| ULLONG_MAX | unsigned long long的最大值 |
+
+##### 符号常量**—**预处理器方式
+
+```c++
+//在climit文件中
+#define MAX_INT 32767；
+```
+
+在C++编译过程中，首先将源代码传递给预处理器。在这里，#define和#include一样，也 是一个预处理器编译指令。该编译指令告诉预处理器：在程序中查找INT_MAX，并将所有的 INT_MAX都替换为32767。因此#define编译指令的工作方式与文本编辑器或字处理器中的全 局搜索并替换命令相似。修改后的程序将在完成这些替换后被编译。预处理器查找独立的标 记（单独的单词），跳过嵌入的单词。也就是说，预处理器不会将PINT_MAXTM替换为 P32767IM。也可以使用#define来定义自己的符号常量。然而，#define编 译指令是C语言遗留下来的。C++有一种更好的创建符号常量的方法（使用关键字const，将在 后面的一节讨论），所以不会经常使用#define。然而，有些头文件，尤其是那些被设计成可 用于C和C++中的头文件，必须使用#define。 
+
+##### 初始化 方式
+
+```c++
+int uncles=5;
+int aunts=uncles;
+int chirs=uncle+aunts+4;
+//C++还有另一种C语言没有的初始化 语法：
+int wrens(144);
+```
+
+**如果不对函数内部定义的变量进行初始化，该变量的值将是不确定的。这意味着该变量的值 将是它被创建之前，相应内存单元保存的值。**
+
+##### **C++11**初始化方式
+
+还有另一种初始化方式，这种方式用于数组和结构，但在C++98 中，也可用于单值变量：
+
+```c++
+int hamburgers={24};
+```
+
+将大括号初始化器用于单值变量的情形还不多，但C++11标准使得 这种情形更多了。首先，采用这种方式时，可以使用等号（=），也可
+
+以不使用：
+
+```c++
+int nums{7};//set nums to 7
+int rheas={12};// set rheas to 12;
+```
+
+其次，大括号内可以不包含任何东西。在这种情况下，变量将被初 始化为零： 
+
+```
+int rocs={};
+int psychis{};
+```
+
+### 无符号类型
+
+```c++
+  unsigned short change;
+  unsigned int rovert;
+  unsigned quarterback; /*默认是int型*/
+  unsigned long gone;
+  unsigned long long lang_lang;
+```
+
+注意，unsigned本身是unsigned int的缩写。
+
+```c++
+#include <iostream>
+#define ZERO 0
+#include <climits>
+
+int main()
+{
+  using namespace std;
+  short sam = SHRT_MAX;
+  unsigned short sue = sam;
+  cout << "Sam has " << sam << " dollars and sue has " << sue;
+  cout << "dollars depoutd " << endl
+       << "and $1 to each account." << endl
+       << "now";
+  sam = sam + 1;
+  sue = sue + 1;
+  cout << "Sam has " << sam << "dollars and sue has " << sue;
+  cout << " dollarrs deposited.\nPoor sam" << endl;
+  sam = ZERO;
+  sue = ZERO;
+  cout << "Sam has " << sam << " dollars and Sue has" << sue;
+  cout << "dollars depoutd " << endl;
+  cout << "Take $1 from each account" << endl
+       << "now";
+  sam = sam - 1;
+  sue = sue - 1;//无符号数0-1 会在另外一端-1
+  cout << "samhas " << sam << " dollars and Sue has " << sue;
+  cout << " dollars deposited" << endl
+       << "lucky sue " << endl;
+
+  return 0;
+}
+/**
+Sam has 32767 dollars and sue has 32767dollars depoutd
+and $1 to each account.
+nowSam has -32768dollars and sue has 32768 dollarrs deposited.
+Poor sam
+Sam has 0 dollars and Sue has0dollars depoutd
+Take $1 from each account
+nowsamhas -1 dollars and Sue has 65535 dollars deposited
+lucky sue
+*/
+```
+
+该程序将一个short变量（sam）和一个unsigned short变量（sue）分 别设置为最大的short值，在我们的系统上，是32767。然后，将这些变 量的值都加1。这对于sue来说没有什么问题，因为新值仍比无符号整数 的最大值小得多；但sam的值从32767变成了−32768！同样，对于sam， 将其设置为0并减去1，也不会有问题；但对于无符号变量sue，将其设 置为0并减去后，它变成了65535。可以看出，这些整型变量的行为就像 里程表。如果超越了限制，其值将为范围另一端的取值。C++确保了无符号类型的这种行为；但C++并不保证符号整型超 越限制（上溢和下溢）时不出错，而这正是当前实现中最为常见的行 为。
+
+#### **C++**如何确定常量的类型
+
+```c++
+cout << "year = "<< 1492 << "\n"
+```
+
+程序将把1492存储为int、long还是其他整型呢？答案是，除非有理 由存储为其他类型（如使用了特殊的后缀来表示特定的类型，或者值太 大，不能存储为int），否则C++将整型常量存储为int类型.
+
+首先来看看后缀。后缀是放在数字常量后面的字母，用于表示类 型。整数后面的l或L后缀表示该整数为long常量，u或U后缀表unsigned int常量，ul（可以采用任何一种顺序，大写小写均可）表示 unsigned long常量（由于小写l看上去像1，因此应使用大写L作后缀）。 例如，在int为16位、long为32位的系统上，数字22022被存储为int，占 16位，数字22022L被存储为long，占32位。同样，22022LU和22022UL 都被存储为unsigned long。C++11提供了用于表示类型long long的后缀ll 和LL，还提供了用于表示类型unsigned long long的后缀ull、Ull、uLL和 ULL。
+
+接下来考察长度。在C++中，对十进制整数采用的规则，与十六进 制和八进制稍微有些不同。对于不带后缀的十进制整数，将使用下面几 种类型中能够存储该数的最小类型来表示：int、long或long long。在int 为16位、long为32位的计算机系统上，20000被表示为int类型，40000被 表示为long类型，3000000000被表示为long long类型。对于不带后缀的 十六进制或八进制整数，将使用下面几种类型中能够存储该数的最小类 型来表示：int、unsigned int long、unsigned long、long long或unsigned long long。在将40000表示为long的计算机系统中，十六进制数 0x9C40（40000）将被表示为unsigned int。这是因为十六进制常用来表 示内存地址，而内存地址是没有符号的，因此，usigned int比long更适合 用来表示16位的地址
+
+### **char**类型：字符和小整数
