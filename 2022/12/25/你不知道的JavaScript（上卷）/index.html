@@ -24,7 +24,7 @@
 <meta property="og:description" content="作用域和闭包作用域是什么在传统编译语言的流程中，程序中的一段源代码在执行之前会经历三个步骤，统称为“编 译 分词&#x2F;词法分析（Tokenizing&#x2F;Lexing） 这个过程会将由字符组成的字符串分解成（对编程语言来说）有意义的代码块，这些代 码块被称为词法单元（token）。例如，考虑程序 var a &#x3D; 2;。这段程序通常会被分解成 为下面这些词法单元：var、a、&#x3D;、2 、;。空格是否会被当作词">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-25T23:01:17.000Z">
-<meta property="article:modified_time" content="2023-01-05T16:09:32.734Z">
+<meta property="article:modified_time" content="2023-01-07T07:51:27.773Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="你不知道的JavaScript">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          20k 字
+          38k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          171 分钟
+          316 分钟
         
       </span>
     
@@ -861,7 +861,647 @@ foo = <span class="hljs-keyword">function</span> (<span class="hljs-params"></sp
 
 
 <p>for 循环头部的 let 声明还会有一 个特殊的行为。这个行为指出变量在循环过程中不止被声明一次，每次迭代都会声明。随 后的每个迭代都会使用上一个迭代结束时的值来初始化这个变量</p>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">var</span> something = <span class="hljs-string">&quot;cool&quot;</span>;
+  <span class="hljs-keyword">var</span> another = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">doSomething</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(something);
+  &#125;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">doAnother</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(another.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot; ! &quot;</span>));
+  &#125;
+&#125;
+</code></pre></div>
 
+<p>正如在这段代码中所看到的，这里并没有明显的闭包，只有两个私有数据变量 something 和 another，以及 doSomething() 和 doAnother() 两个内部函数，它们的词法作用域（而这 就是闭包）也就是 foo() 的内部作用域。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">CoolModule</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">var</span> something = <span class="hljs-string">&quot;cool&quot;</span>;
+  <span class="hljs-keyword">var</span> another = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">doSomething</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(something);
+  &#125;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">doAnother</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(another.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot; ! &quot;</span>));
+  &#125;
+  <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">doSomething</span>: doSomething, <span class="hljs-attr">doAnother</span>: doAnother &#125;;
+&#125;
+<span class="hljs-keyword">var</span> foo = <span class="hljs-title class_">CoolModule</span>();
+foo.<span class="hljs-title function_">doSomething</span>(); <span class="hljs-comment">// cool</span>
+foo.<span class="hljs-title function_">doAnother</span>(); <span class="hljs-comment">// 1 ! 2 ! 3</span></code></pre></div>
+
+<p>这个模式在 JavaScript 中被称为模块。最常见的实现模块模式的方法通常被称为模块暴露， 这里展示的是其变体</p>
+<p>首先，CoolModule() 只是一个函数，必须要通过调用它来创建一个模块实例。如果不执行 外部函数，内部作用域和闭包都无法被创建。</p>
+<p>其次，CoolModule() 返回一个用对象字面量语法 { key: value, … } 来表示的对象。这 个返回的对象中含有对内部函数而不是内部数据变量的引用。我们保持内部数据变量是隐 藏且私有的状态。可以将这个对象类型的返回值看作本质上是模块的公共 API</p>
+<p>这个对象类型的返回值最终被赋值给外部的变量 foo，然后就可以通过它来访问 API 中的 属性方法，比如 foo.doSomething()。</p>
+<p>从模块中返回一个实际的对象并不是必须的，也可以直接返回一个内部函 数。jQuery 就是一个很好的例子。jQuery 和 $ 标识符就是 jQuery 模块的公 共 API，但它们本身都是函数（由于函数也是对象，它们本身也可以拥有属 性）。</p>
+<p>doSomething() 和 doAnother() 函数具有涵盖模块实例内部作用域的闭包（通过调用 CoolModule() 实现）。当通过返回一个含有属性引用的对象的方式来将函数传递到词法作 用域外部时，我们已经创造了可以观察和实践闭包的条件。 </p>
+<p>模块模式需要具备两个必要条件。</p>
+<p>必须有外部的封闭函数，该函数必须至少被调用一次（每次调用都会创建一个新的模块实例）</p>
+<p>封闭函数必须返回至少一个内部函数，这样内部函数才能在私有作用域中形成闭包，并且可以访问或者修改私有的状态。</p>
+<p>一个具有函数属性的对象本身并不是真正的模块。从方便观察的角度看，一个从函数调用 所返回的，只有数据属性而没有闭包函数的对象并不是真正的模块。</p>
+<p>上一个示例代码中有一个叫作 CoolModule() 的独立的模块创建器，可以被调用任意多次， 每次调用都会创建一个新的模块实例。当只需要一个实例时，可以对这个模式进行简单的 改进来实现单例模式：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> foo = (<span class="hljs-keyword">function</span> <span class="hljs-title function_">CoolModule</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">var</span> something = <span class="hljs-string">&quot;cool&quot;</span>;
+  <span class="hljs-keyword">var</span> another = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">doSomething</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(something);
+  &#125;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">doAnother</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(another.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot; ! &quot;</span>));
+  &#125;
+  <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">doSomething</span>: doSomething, <span class="hljs-attr">doAnother</span>: doAnother &#125;;
+&#125;)();
+foo.<span class="hljs-title function_">doSomething</span>(); <span class="hljs-comment">// cool</span>
+foo.<span class="hljs-title function_">doAnother</span>(); <span class="hljs-comment">// 1 ! 2 ! 3</span></code></pre></div>
+
+<p>我们将模块函数转换成了 IIFE（参见第 3 章），立即调用这个函数并将返回值直接赋值给 </p>
+<p>单例的模块实例标识符 foo。 </p>
+<p>模块也是普通的函数，因此可以接受参数：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">CoolModule</span>(<span class="hljs-params">id</span>) &#123;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">identify</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(id);
+  &#125;
+  <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">identify</span>: identify &#125;;
+&#125;
+<span class="hljs-keyword">var</span> foo1 = <span class="hljs-title class_">CoolModule</span>(<span class="hljs-string">&quot;foo 1&quot;</span>);
+<span class="hljs-keyword">var</span> foo2 = <span class="hljs-title class_">CoolModule</span>(<span class="hljs-string">&quot;foo 2&quot;</span>);
+foo1.<span class="hljs-title function_">identify</span>(); <span class="hljs-comment">// &quot;foo 1&quot;</span>
+foo2.<span class="hljs-title function_">identify</span>(); <span class="hljs-comment">// &quot;foo 2&quot;</span></code></pre></div>
+
+<p>模块模式另一个简单但强大的变化用法是，命名将要作为公共 API 返回的对象：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> foo = (<span class="hljs-keyword">function</span> <span class="hljs-title function_">CoolModule</span>(<span class="hljs-params">id</span>) &#123;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">change</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-comment">// 修改公共 API</span>
+    publicAPI.<span class="hljs-property">identify</span> = identify2;
+  &#125;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">identify1</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(id);
+  &#125;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">identify2</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(id.<span class="hljs-title function_">toUpperCase</span>());
+  &#125;
+  <span class="hljs-keyword">var</span> publicAPI = &#123; <span class="hljs-attr">change</span>: change, <span class="hljs-attr">identify</span>: identify1 &#125;;
+  <span class="hljs-keyword">return</span> publicAPI;
+&#125;)(<span class="hljs-string">&quot;foo module&quot;</span>);
+foo.<span class="hljs-title function_">identify</span>(); <span class="hljs-comment">// foo module</span>
+foo.<span class="hljs-title function_">change</span>();
+foo.<span class="hljs-title function_">identify</span>(); <span class="hljs-comment">// FOO MODULE</span></code></pre></div>
+
+<p>通过在模块实例的内部保留对公共 API 对象的内部引用，可以从内部对模块实例进行修改，包括添加或删除方法和属性，以及修改它们的值。 </p>
+<h4 id="现代的模块机制"><a href="#现代的模块机制" class="headerlink" title="现代的模块机制"></a>现代的模块机制</h4><p>大多数模块依赖加载器 / 管理器本质上都是将这种模块定义封装进一个友好的 API。这里 并不会研究某个具体的库，为了宏观了解我会简单地介绍一些核心概念：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">MyModules</span> = (<span class="hljs-keyword">function</span> <span class="hljs-title function_">Manager</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">var</span> modules = &#123;&#125;;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">define</span>(<span class="hljs-params">name, deps, impl</span>) &#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; deps.<span class="hljs-property">length</span>; i++) &#123;
+      deps[i] = modules[deps[i]];
+    &#125;
+    modules[name] = impl.<span class="hljs-title function_">apply</span>(impl, deps);
+  &#125;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">name</span>) &#123;
+    <span class="hljs-keyword">return</span> modules[name];
+  &#125;
+  <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">define</span>: define, <span class="hljs-attr">get</span>: get &#125;;
+&#125;)();</code></pre></div>
+
+<p>这段代码的核心是 modules[name] = impl.apply(impl, deps)。为了模块的定义引入了包装 函数（可以传入任何依赖），并且将返回值，也就是模块的 API，储存在一个根据名字来管 理的模块列表中。</p>
+<p>下面展示了如何使用它来定义模块： </p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-title class_">MyModules</span>.<span class="hljs-title function_">define</span>(<span class="hljs-string">&quot;bar&quot;</span>, [], <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">hello</span>(<span class="hljs-params">who</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Let me introduce: &quot;</span> + who;
+  &#125;
+  <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">hello</span>: hello &#125;;
+&#125;);
+<span class="hljs-title class_">MyModules</span>.<span class="hljs-title function_">define</span>(<span class="hljs-string">&quot;foo&quot;</span>, [<span class="hljs-string">&quot;bar&quot;</span>], <span class="hljs-keyword">function</span> (<span class="hljs-params">bar</span>) &#123;
+  <span class="hljs-keyword">var</span> hungry = <span class="hljs-string">&quot;hippo&quot;</span>;
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">awesome</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(bar.<span class="hljs-title function_">hello</span>(hungry).<span class="hljs-title function_">toUpperCase</span>());
+  &#125;
+  <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">awesome</span>: awesome &#125;;
+&#125;);
+<span class="hljs-keyword">var</span> bar = <span class="hljs-title class_">MyModules</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;bar&quot;</span>);
+<span class="hljs-keyword">var</span> foo = <span class="hljs-title class_">MyModules</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;foo&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(bar.<span class="hljs-title function_">hello</span>(<span class="hljs-string">&quot;hippo&quot;</span>)); <span class="hljs-comment">// Let me introduce: hippo</span>
+foo.<span class="hljs-title function_">awesome</span>(); <span class="hljs-comment">// LET ME INTRODUCE: HIPPO</span>
+</code></pre></div>
+
+<h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p>当函数可以记住并访问所在的词法作用域，即使函数是在当前词法作用域之外执行，这时 就产生了闭包。</p>
+<p>模块有两个主要特征：</p>
+<p>（1）为创建内部作用域而调用了一个包装函数；（2）包装函数的返回 值必须至少包括一个对内部函数的引用，这样就会创建涵盖整个包装函数内部作用域的闭 包。</p>
+<h1 id="块作用域的替代方案"><a href="#块作用域的替代方案" class="headerlink" title="块作用域的替代方案"></a>块作用域的替代方案</h1><div class="code-wrapper"><pre><code class="hljs js">&#123;
+  <span class="hljs-keyword">let</span> a = <span class="hljs-number">2</span>;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a); <span class="hljs-comment">// 2</span>
+&#125;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a); <span class="hljs-comment">// ReferenceError</span></code></pre></div>
+
+<p>这段代码在 ES6 环境中可以正常工作。但是在 ES6 之前的环境中如何才能实现这个效果？ 答案是使用 catch</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">try</span> &#123;
+  <span class="hljs-keyword">throw</span> <span class="hljs-number">2</span>;
+&#125; <span class="hljs-keyword">catch</span> (a) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a); <span class="hljs-comment">// 2</span>
+&#125;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a); <span class="hljs-comment">// ReferenceError</span>
+</code></pre></div>
+
+<p>catch 分句具有块作用域，因此它可以在 ES6 之前的环境中作为块作用域的替代 方案</p>
+<h1 id="this词法"><a href="#this词法" class="headerlink" title="this词法"></a><strong>this</strong>词法</h1><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> obj = &#123;
+  <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;awesome&quot;</span>,
+  <span class="hljs-attr">cool</span>: <span class="hljs-keyword">function</span> <span class="hljs-title function_">coolFn</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">id</span>);
+  &#125;,
+&#125;;
+<span class="hljs-keyword">var</span> id = <span class="hljs-string">&quot;not awesome&quot;</span>;
+obj.<span class="hljs-title function_">cool</span>(); <span class="hljs-comment">// 酷</span>
+<span class="hljs-built_in">setTimeout</span>(obj.<span class="hljs-property">cool</span>, <span class="hljs-number">100</span>); <span class="hljs-comment">// 不酷</span>
+</code></pre></div>
+
+<p>问题在于 cool() 函数丢失了同 this 之间的绑定。解决这个问题有好几种办法，但最长用 的就是</p>
+<p> var self = this方式</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> obj = &#123;
+  <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">cool</span>: <span class="hljs-keyword">function</span> <span class="hljs-title function_">coolFn</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">var</span> self = <span class="hljs-variable language_">this</span>;
+    <span class="hljs-keyword">if</span> (self.<span class="hljs-property">count</span> &lt; <span class="hljs-number">1</span>) &#123;
+      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> <span class="hljs-title function_">timer</span>(<span class="hljs-params"></span>) &#123;
+        self.<span class="hljs-property">count</span>++;
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;awesome?&quot;</span>);
+      &#125;, <span class="hljs-number">100</span>);
+    &#125;
+  &#125;,
+&#125;;
+obj.<span class="hljs-title function_">cool</span>(); <span class="hljs-comment">// 酷吧？</span></code></pre></div>
+
+<p>this词法</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> obj = &#123;
+  <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">cool</span>: <span class="hljs-keyword">function</span> <span class="hljs-title function_">coolFn</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> &lt; <span class="hljs-number">1</span>) &#123;
+      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
+        <span class="hljs-comment">// 箭头函数是什么鬼东西？</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>++;
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;awesome?&quot;</span>);
+      &#125;, <span class="hljs-number">100</span>);
+    &#125;
+  &#125;,
+&#125;;
+obj.<span class="hljs-title function_">cool</span>(); <span class="hljs-comment">// 很酷吧 ?</span></code></pre></div>
+
+<p>bind绑定</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> obj = &#123;
+  <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">cool</span>: <span class="hljs-keyword">function</span> <span class="hljs-title function_">coolFn</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span> &lt; <span class="hljs-number">1</span>) &#123;
+      <span class="hljs-built_in">setTimeout</span>(
+        <span class="hljs-keyword">function</span> <span class="hljs-title function_">timer</span>(<span class="hljs-params"></span>) &#123;
+          <span class="hljs-variable language_">this</span>.<span class="hljs-property">count</span>++; <span class="hljs-comment">// this 是安全的 // 因为 bind(..)</span>
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;more awesome&quot;</span>);
+        &#125;.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>),
+        <span class="hljs-number">100</span>
+      ); <span class="hljs-comment">// look, bind()!</span>
+    &#125;
+  &#125;,
+&#125;;
+obj.<span class="hljs-title function_">cool</span>(); <span class="hljs-comment">// 更酷了</span></code></pre></div>
+
+<h1 id="关于this"><a href="#关于this" class="headerlink" title="关于this"></a>关于<strong>this</strong></h1><p>this 关键字是 JavaScript 中最复杂的机制之一</p>
+<h2 id="为什么要用this"><a href="#为什么要用this" class="headerlink" title="为什么要用this"></a>为什么要用this</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">identify</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span>.<span class="hljs-title function_">toUpperCase</span>();
+&#125;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">speak</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">var</span> greeting = <span class="hljs-string">&quot;Hello, I&#x27;m &quot;</span> + identify.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">this</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(greeting);
+&#125;
+<span class="hljs-keyword">var</span> me = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Kyle&quot;</span> &#125;;
+<span class="hljs-keyword">var</span> you = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Reader&quot;</span> &#125;;
+identify.<span class="hljs-title function_">call</span>(me); <span class="hljs-comment">// KYLE</span>
+identify.<span class="hljs-title function_">call</span>(you); <span class="hljs-comment">// READER</span>
+speak.<span class="hljs-title function_">call</span>(me); <span class="hljs-comment">// Hello, 我是 KYLE</span>
+speak.<span class="hljs-title function_">call</span>(you); <span class="hljs-comment">// Hello, 我是 READER</span></code></pre></div>
+
+<p>这段代码可以在不同的上下文对象（me 和 you）中重复使用函数 identify() 和 speak()， 不用针对每个对象编写不同版本的函数。</p>
+<p>如果不使用 this，那就需要给 identify() 和 speak() 显式传入一个上下文对象</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">identify</span>(<span class="hljs-params">context</span>) &#123;
+  <span class="hljs-keyword">return</span> context.<span class="hljs-property">name</span>.<span class="hljs-title function_">toUpperCase</span>();
+&#125;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">speak</span>(<span class="hljs-params">context</span>) &#123;
+  <span class="hljs-keyword">var</span> greeting = <span class="hljs-string">&quot;Hello, I&#x27;m &quot;</span> + <span class="hljs-title function_">identify</span>(context);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(greeting);
+&#125;
+<span class="hljs-title function_">identify</span>(you); <span class="hljs-comment">// READER s</span>
+<span class="hljs-title function_">peak</span>(me); <span class="hljs-comment">//hello, 我是 KYLE</span>
+</code></pre></div>
+
+<p>然而，this 提供了一种更优雅的方式来隐式“传递”一个对象引用，因此可以将 API 设计 得更加简洁并且易于复用</p>
+<p>this 在任何情况下都不指向函数的词法作用域。在 JavaScript 内部，作用 域确实和对象类似，可见的标识符都是它的属性。但是作用域“对象”无法通过 JavaScript 代码访问，它存在于 JavaScript 引擎内部。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">bar</span>();
+&#125;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bar</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// ReferenceError: a is not defined</span></code></pre></div>
+
+<p>不要把this的指向和词法作用域混淆</p>
+<p><strong>this 是在运行时进行绑定的，并不是在编写时绑定，它的上下文取决于函数调 用时的各种条件。this 的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。</strong></p>
+<p>当一个函数被调用时，会创建一个活动记录（有时候也称为执行上下文）。这个记录会包 含函数在哪里被调用（调用栈）、函数的调用方法、传入的参数等信息。this 就是记录的 其中一个属性，会在函数执行的过程中用到。 </p>
+<h1 id="this全面解析"><a href="#this全面解析" class="headerlink" title="this全面解析"></a><strong>this</strong>全面解析</h1><h2 id="调用位置"><a href="#调用位置" class="headerlink" title="调用位置"></a>调用位置</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">baz</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-comment">// 当前调用栈是：baz // 因此，当前调用位置是全局作用域</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;baz&quot;</span>);
+  <span class="hljs-title function_">bar</span>(); <span class="hljs-comment">// &lt;-- bar 的调用位置</span>
+&#125;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bar</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-comment">// 当前调用栈是 baz -&gt; bar // 因此，当前调用位置在 baz 中</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;bar&quot;</span>);
+  <span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// &lt;-- foo 的调用位置</span>
+&#125;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-comment">// 当前调用栈是 baz -&gt; bar -&gt; foo // 因此，当前调用位置在 bar 中</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;foo&quot;</span>);
+&#125;
+<span class="hljs-title function_">baz</span>(); <span class="hljs-comment">// &lt;-- baz 的调用位置</span>
+</code></pre></div>
+
+<p>你可以把调用栈想象成一个函数调用链，就像我们在前面代码段的注释中所 写的一样。但是这种方法非常麻烦并且容易出错。另一个查看调用栈的方法 是使用浏览器的调试工具。绝大多数现代桌面浏览器都内置了开发者工具， 其中包含 JavaScript 调试器。就本例来说，你可以在工具中给 foo() 函数的 第一行代码设置一个断点，或者直接在第一行代码之前插入一条 debugger; 语句。运行代码时，调试器会在那个位置暂停，同时会展示当前位置的函数 调用列表，这就是你的调用栈。因此，如果你想要分析 this 的绑定，使用开 发者工具得到调用栈，然后找到栈中第二个元素，这就是真正的调用位置</p>
+<h2 id="绑定规则"><a href="#绑定规则" class="headerlink" title="绑定规则"></a>绑定规则</h2><h3 id="默认绑定"><a href="#默认绑定" class="headerlink" title="默认绑定"></a>默认绑定</h3><p>最常用的函数调用类型：独立函数调用。可以把这条规则看作是无法应用 其他规则时的默认规则。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+<span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// 2</span></code></pre></div>
+
+<p>你应该注意到的第一件事是，声明在全局作用域中的变量（比如 var a = 2）就是全局对 象的一个同名属性。它们本质上就是同一个东西，并不是通过复制得到的</p>
+<p>如果使用严格模式（strict mode），那么全局对象将无法使用默认绑定，因此 this 会绑定 到 undefined：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-string">&quot;use strict&quot;</span>;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+<span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// TypeError: this is undefined</span></code></pre></div>
+
+<p>虽然 this 的绑定规则完全取决于调用位置，但是只 有 foo() 运行在非 strict mode 下时，默认绑定才能绑定到全局对象；严格模式下与 foo() 的调用位置无关：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+  <span class="hljs-string">&quot;use strict&quot;</span>;
+  <span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// 2</span>
+&#125;)();</code></pre></div>
+
+<h3 id="隐式绑定"><a href="#隐式绑定" class="headerlink" title="隐式绑定"></a>隐式绑定</h3><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">foo</span>: foo &#125;;
+obj.<span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// 2</span>
+</code></pre></div>
+
+<p>首先需要注意的是 foo() 的声明方式，及其之后是如何被当作引用属性添加到 obj 中的。 但是无论是直接在 obj 中定义还是先定义再添加为引用属性，这个函数严格来说都不属于 obj 对象。然而，调用位置会使用 obj 上下文来引用函数，因此你可以说函数被调用时 obj 对象“拥 有”或者“包含”它。无论你如何称呼这个模式，当 foo() 被调用时，它的落脚点确实指向 obj 对象。当函数引 用有上下文对象时，隐式绑定规则会把函数调用中的 this 绑定到这个上下文对象。因为调 用 foo() 时 this 被绑定到 obj，因此 this.a 和 obj.a 是一样的</p>
+<p>对象属性引用链中只有最顶层或者说最后一层会影响调用位置</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj2 = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">42</span>, <span class="hljs-attr">foo</span>: foo &#125;;
+<span class="hljs-keyword">var</span> obj1 = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">obj2</span>: obj2 &#125;;
+obj1.<span class="hljs-property">obj2</span>.<span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// 42</span></code></pre></div>
+
+<p>一个最常见的 this 绑定问题就是被隐式绑定的函数会丢失绑定对象，也就是说它会应用默认绑定，从而把 this 绑定到全局对象或者undefined 上，取决于是否是严格模式</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">foo</span>: foo &#125;;
+<span class="hljs-keyword">var</span> bar = obj.<span class="hljs-property">foo</span>; <span class="hljs-comment">// 函数别名！</span>
+<span class="hljs-keyword">var</span> a = <span class="hljs-string">&quot;oops, global&quot;</span>; <span class="hljs-comment">// a 是全局对象的属性</span>
+<span class="hljs-title function_">bar</span>(); <span class="hljs-comment">// &quot;oops, global&quot;</span></code></pre></div>
+
+<p>虽然 bar 是 obj.foo 的一个引用，但是实际上，它引用的是 foo 函数本身，因此此时的 bar() 其实是一个不带任何修饰的函数调用，因此应用了默认绑定</p>
+<p>一种更微妙、更常见并且更出乎意料的情况发生在传入回调函数时：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">doFoo</span>(<span class="hljs-params">fn</span>) &#123;
+  <span class="hljs-comment">// fn 其实引用的是 foo</span>
+  <span class="hljs-title function_">fn</span>(); <span class="hljs-comment">// &lt;-- 调用位置！</span>
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">foo</span>: foo &#125;;
+<span class="hljs-keyword">var</span> a = <span class="hljs-string">&quot;oops, global&quot;</span>; <span class="hljs-comment">// a 是全局对象的属性</span>
+<span class="hljs-title function_">doFoo</span>(obj.<span class="hljs-property">foo</span>); <span class="hljs-comment">// &quot;oops, global&quot;</span></code></pre></div>
+
+<p>参数传递其实就是一种隐式赋值，因此我们传入函数时也会被隐式赋值，所以结果和上一 个例子一样。 </p>
+<p>如果把函数传入语言内置的函数而不是传入你自己声明的函数，会发生什么呢？结果是一 样的，没有区别：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">foo</span>: foo &#125;;
+<span class="hljs-keyword">var</span> a = <span class="hljs-string">&quot;oops, global&quot;</span>; <span class="hljs-comment">// a 是全局对象的属性</span>
+<span class="hljs-built_in">setTimeout</span>(obj.<span class="hljs-property">foo</span>, <span class="hljs-number">100</span>); <span class="hljs-comment">// &quot;oops, global&quot;</span></code></pre></div>
+
+<p>JavaScript 环境中内置的 setTimeout() 函数实现和下面的伪代码类似：</p>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span>** <span class="hljs-title">setTimeout</span>(<span class="hljs-params">fn,delay</span>) </span>&#123; 
+
+<span class="hljs-comment">// 等待 delay 毫秒 </span>
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span>(<span class="hljs-params"></span>)</span>; <span class="hljs-comment">// &lt;-- 调用位置！ </span>
+
+&#125;</code></pre></div>
+
+<h3 id="显式绑定"><a href="#显式绑定" class="headerlink" title="显式绑定"></a>显式绑定</h3><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span> &#125;;
+foo.<span class="hljs-title function_">call</span>(obj); <span class="hljs-comment">// 2</span></code></pre></div>
+
+<p>通过 foo.call(..)，我们可以在调用 foo 时强制把它的 this 绑定到 obj 上如果你传入了一个原始值（字符串类型、布尔类型或者数字类型）来当作 this 的绑定对 象，这个原始值会被转换成它的对象形式（也就是 new String(..)、new Boolean(..) 或者 new Number(..)）。这通常被称为“装箱”。</p>
+<p>显式绑定仍然无法解决我们之前提出的丢失绑定问题</p>
+<h4 id="硬绑定"><a href="#硬绑定" class="headerlink" title="硬绑定"></a>硬绑定</h4><p>但是显式绑定的一个变种可以解决这个问题</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span> &#125;;
+<span class="hljs-keyword">var</span> bar = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+  foo.<span class="hljs-title function_">call</span>(obj);
+&#125;;
+<span class="hljs-title function_">bar</span>(); <span class="hljs-comment">// 2 </span>
+<span class="hljs-built_in">setTimeout</span>(bar, <span class="hljs-number">100</span>); <span class="hljs-comment">// 2</span>
+<span class="hljs-comment">// 硬绑定的 bar 不可能再修改它的 this</span>
+bar.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">window</span>); <span class="hljs-comment">//2</span></code></pre></div>
+
+<p>我们创建了函数 bar()，并在它的内部手动调用 了 foo.call(obj)，因此强制把 foo 的 this 绑定到了 obj。无论之后如何调用函数 bar，它 </p>
+<p>总会手动在 obj 上调用 foo。这种绑定是一种显式的强制绑定，因此我们称之为硬绑定</p>
+<p>硬绑定的典型应用场景就是创建一个包裹函数，传入所有的参数并返回接收到的所有值：</p>
+<div class="code-wrapper"><pre><code class="hljs js">
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">something</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>, something);
+  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span> + something;
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span> &#125;;
+<span class="hljs-keyword">var</span> bar = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">return</span> foo.<span class="hljs-title function_">apply</span>(obj, <span class="hljs-variable language_">arguments</span>);
+&#125;;
+<span class="hljs-keyword">var</span> b = <span class="hljs-title function_">bar</span>(<span class="hljs-number">3</span>); <span class="hljs-comment">// 2 3</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(b); <span class="hljs-comment">// 5</span></code></pre></div>
+
+<p>另一种使用方法是创建一个 i可以重复使用的辅助函数：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">something</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>, something);
+  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span> + something;
+&#125; <span class="hljs-comment">// 简单的辅助绑定函数</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bind</span>(<span class="hljs-params">fn, obj</span>) &#123;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> fn.<span class="hljs-title function_">apply</span>(obj, <span class="hljs-variable language_">arguments</span>);
+  &#125;;
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span> &#125;;
+<span class="hljs-keyword">var</span> bar = <span class="hljs-title function_">bind</span>(foo, obj);
+<span class="hljs-keyword">var</span> b = <span class="hljs-title function_">bar</span>(<span class="hljs-number">3</span>); <span class="hljs-comment">// 2 3</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(b); <span class="hljs-comment">// 5</span></code></pre></div>
+
+<p>由于硬绑定是一种非常常用的模式，所以在 ES5 中提供了内置的方法 Function.prototype. bind，它的用法如下：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">something</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>, something);
+  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span> + something;
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span> &#125;;
+<span class="hljs-keyword">var</span> bar = foo.<span class="hljs-title function_">bind</span>(obj);
+<span class="hljs-keyword">var</span> b = <span class="hljs-title function_">bar</span>(<span class="hljs-number">3</span>); <span class="hljs-comment">// 2 3</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(b); <span class="hljs-comment">// 5</span></code></pre></div>
+
+<p>bind(..) 会返回一个硬编码的新函数，它会把参数设置为 this 的上下文并调用原始函数。 </p>
+<h4 id="API调用的“上下文”"><a href="#API调用的“上下文”" class="headerlink" title="API调用的“上下文”"></a>API调用的“上下文”</h4><p>第三方库的许多函数，以及 JavaScript 语言和宿主环境中许多新的内置函数，都提供了一 个可选的参数，通常被称为“上下文”（</p>
+<p>context），其作用和 bind(..) 一样，确保你的回调 函数使用指定的 this。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">el</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(el, <span class="hljs-variable language_">this</span>.<span class="hljs-property">id</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;awesome&quot;</span> &#125;; <span class="hljs-comment">// 调用 foo(..) 时把 this 绑定到 obj</span>
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>].<span class="hljs-title function_">forEach</span>(foo, obj); <span class="hljs-comment">// 1 awesome 2 awesome 3 awesome</span></code></pre></div>
+
+<p>这些函数实际上就是通过 call(..) 或者 apply(..) 实现了显式绑定，这样你可以少些一些 代码。 </p>
+<h3 id="new绑定"><a href="#new绑定" class="headerlink" title="new绑定"></a>new绑定</h3><p>在传统的面向类的语言中，“构造函数”是类中的一些特殊方法，使用 new 初始化类时会 调用类中的构造函数。通常的形式是这样的：</p>
+<div class="code-wrapper"><pre><code class="hljs abnf"><span class="hljs-attribute">something</span> <span class="hljs-operator">=</span> new MyClass(..)<span class="hljs-comment">;</span></code></pre></div>
+
+<p>JavaScript 也有一个 new 操作符，使用方法看起来也和那些面向类的语言一样，绝大多数开 发者都认为 JavaScript 中 new 的机制也和那些语言一样。然而，JavaScript 中 new 的机制实 际上和面向类的语言完全不同</p>
+<p>首先我们重新定义一下 JavaScript 中的“构造函数”。在 JavaScript 中，构造函数只是一些 使用 new 操作符时被调用的函数。它们并不会属于某个类，也不会实例化一个类。实际上， 它们甚至都不能说是一种特殊的函数类型，它们只是被 new 操作符调用的普通函数而已。</p>
+<p>举例来说，思考一下 Number(..) 作为构造函数时的行为，ES5.1 中这样描述它： 15.7.2 Number 构造函数 当 Number 在 new 表达式中被调用时，它是一个构造函数：它会初始化新创建的 对象。 所以，包括内置对象函数（比如 Number(..)，详情请查看第 3 章）在内的所有函数都可 以用 new 来调用，这种函数调用被称为构造函数调用。这里有一个重要但是非常细微的区 别：实际上并不存在所谓的“构造函数”，只有对于函数的“构造调用”。</p>
+<p>使用 new 来调用函数，或者说发生构造函数调用时，会自动执行下面的操作。 </p>
+<ol>
+<li><p>创建（或者说构造）一个全新的对象。 </p>
+</li>
+<li><p>这个新对象会被执行 [[ 原型 ]] 连接。 </p>
+</li>
+<li><p>这个新对象会绑定到函数调用的 this。 </p>
+</li>
+<li><p>如果函数没有返回其他对象，那么 new 表达式中的函数调用会自动返回这个新对象。</p>
+</li>
+</ol>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p><strong>默认绑定的优先级是四条规则中最低的</strong></p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj1 = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">foo</span>: foo &#125;;
+<span class="hljs-keyword">var</span> obj2 = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">foo</span>: foo &#125;;
+obj1.<span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// 2</span>
+obj2.<span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// 3</span>
+obj1.<span class="hljs-property">foo</span>.<span class="hljs-title function_">call</span>(obj2); <span class="hljs-comment">// 3</span>
+obj2.<span class="hljs-property">foo</span>.<span class="hljs-title function_">call</span>(obj1); <span class="hljs-comment">// 2</span>
+</code></pre></div>
+
+<p><strong>显示绑定的优先级高于隐式绑定</strong></p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">something</span>) &#123;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span> = something;
+&#125;
+<span class="hljs-keyword">var</span> obj1 = &#123; <span class="hljs-attr">foo</span>: foo &#125;;
+<span class="hljs-keyword">var</span> obj2 = &#123;&#125;;
+obj1.<span class="hljs-title function_">foo</span>(<span class="hljs-number">2</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj1.<span class="hljs-property">a</span>); <span class="hljs-comment">// 2</span>
+obj1.<span class="hljs-property">foo</span>.<span class="hljs-title function_">call</span>(obj2, <span class="hljs-number">3</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj2.<span class="hljs-property">a</span>); <span class="hljs-comment">// 3</span>
+<span class="hljs-keyword">var</span> bar = <span class="hljs-keyword">new</span> obj1.<span class="hljs-title function_">foo</span>(<span class="hljs-number">4</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj1.<span class="hljs-property">a</span>); <span class="hljs-comment">// 2</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(bar.<span class="hljs-property">a</span>); <span class="hljs-comment">// 4</span></code></pre></div>
+
+<p><strong>new 绑定比隐式绑定优先级高</strong></p>
+<p>new 和 call/apply 无法一起使用，因此无法通过 new foo.call(obj1) 来直接 进行测试。但是我们可以使用硬绑定来测试它俩的优先级</p>
+<p>在看代码之前先回忆一下硬绑定是如何工作的。Function.prototype.bind(..) 会创建一个 新的包装函数，这个函数会忽略它当前的 this 绑定（无论绑定的对象是什么），并把我们 提供的对象绑定到 this 上。</p>
+<p>这样看起来硬绑定（也是显式绑定的一种）似乎比 new 绑定的优先级更高，无法使用 new 来控制 this 绑定。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">something</span>) &#123;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span> = something;
+&#125;
+<span class="hljs-keyword">var</span> obj1 = &#123;&#125;;
+<span class="hljs-keyword">var</span> bar = foo.<span class="hljs-title function_">bind</span>(obj1);
+<span class="hljs-title function_">bar</span>(<span class="hljs-number">2</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj1.<span class="hljs-property">a</span>); <span class="hljs-comment">// 2</span>
+<span class="hljs-keyword">var</span> baz = <span class="hljs-keyword">new</span> <span class="hljs-title function_">bar</span>(<span class="hljs-number">3</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj1.<span class="hljs-property">a</span>); <span class="hljs-comment">// 2</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(baz.<span class="hljs-property">a</span>); <span class="hljs-comment">// 3</span></code></pre></div>
+
+<p>bar 被硬绑定到 obj1 上，但是 new bar(3) 并没有像我们预计的那样把 obj1.a 修改为 3。相反，new 修改了硬绑定（到 obj1 的）调用 bar(..) 中的 this。因为使用了 new 绑定，我们得到了一个名字为 baz 的新对象，并且 baz.a 的值是 3。</p>
+<p>ES5 中内置的 Function.prototype.bind(..) 更加复杂。下面是 MDN 提供的一种 bind(..) 实现，为了方便阅读我们对代码进行了排版：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">if</span> (!<span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">bind</span>) &#123;
+  <span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">bind</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">oThis</span>) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-variable language_">this</span> !== <span class="hljs-string">&quot;function&quot;</span>) &#123;
+      <span class="hljs-comment">// 与 ECMAScript 5 最接近的 // 内部 IsCallable 函数</span>
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeError</span>(
+        <span class="hljs-string">&quot;Function.prototype.bind - what is trying &quot;</span> +
+          <span class="hljs-string">&quot;to be bound is not callable&quot;</span>
+      );
+    &#125;
+    <span class="hljs-keyword">var</span> aArgs = <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">slice</span>.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">arguments</span>, <span class="hljs-number">1</span>),
+      fToBind = <span class="hljs-variable language_">this</span>,
+      fNOP = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;&#125;,
+      fBound = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+        <span class="hljs-keyword">return</span> fToBind.<span class="hljs-title function_">apply</span>(
+          <span class="hljs-variable language_">this</span> <span class="hljs-keyword">instanceof</span> fNOP &amp;&amp; oThis ? <span class="hljs-variable language_">this</span> : oThis,
+          aArgs.<span class="hljs-title function_">concat</span>(<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">slice</span>.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">arguments</span>))
+        );
+      &#125;;
+    fNOP.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>;
+    fBound.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-keyword">new</span> <span class="hljs-title function_">fNOP</span>();
+    <span class="hljs-keyword">return</span> fBound;
+  &#125;;
+&#125;</code></pre></div>
+
+<p>polyfill 代码主要用于旧浏览器的兼容，比如说在旧的浏览器中并没 有内置 bind 函数，因此可以使用 polyfill 代码在旧浏览器中实现新的功 能），对于 new 使用的硬绑定函数来说，这段 polyfill 代码和 ES5 内置的 bind(..) 函数并不完全相同（后面会介绍为什么要在 new 中使用硬绑定函 数）。由于 polyfill 并不是内置函数，所以无法创建一个不包含 .prototype 的函数，因此会具有一些副作用。如果你要在 new 中使用硬绑定函数并且依 赖 polyfill 代码的话，一定要非常小心</p>
+<p>下面是 new 修改 this 的相关代码：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">this</span> <span class="hljs-keyword">instanceof</span> fNOP &amp;&amp; oThis ? <span class="hljs-variable language_">this</span> : oThis 
+<span class="hljs-comment">// ... 以及： </span>
+fNOP.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>; fBound.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-keyword">new</span> <span class="hljs-title function_">fNOP</span>();</code></pre></div>
+
+<p>这段代码会判断硬绑定函数是否是被 new 调用，如果是的话就会使用新创建 的 this 替换硬绑定的 this。</p>
+<p>那么，为什么要在 new 中使用硬绑定函数呢？直接使用普通函数不是更简单吗？</p>
+<p>之所以要在 new 中使用硬绑定函数，主要目的是预先设置函数的一些参数，这样在使用 new 进行初始化时就可以只传入其余的参数。bind(..) 的功能之一就是可以把除了第一个 参数（第一个参数用于绑定 this）之外的其他参数都传给下层的函数（这种技术称为“部 分应用”，是“柯里化”的一种）。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">p1, p2</span>) &#123;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">val</span> = p1 + p2;
+&#125; <span class="hljs-comment">// 之所以使用 null 是因为在本例中我们并不关心硬绑定的 this 是什么 // 反正使用 new 时 this 会被修改</span>
+<span class="hljs-keyword">var</span> bar = foo.<span class="hljs-title function_">bind</span>(<span class="hljs-literal">null</span>, <span class="hljs-string">&quot;p1&quot;</span>);
+<span class="hljs-keyword">var</span> baz = <span class="hljs-keyword">new</span> <span class="hljs-title function_">bar</span>(<span class="hljs-string">&quot;p2&quot;</span>);
+baz.<span class="hljs-property">val</span>; <span class="hljs-comment">// p1p2</span></code></pre></div>
+
+<h4 id="判断this"><a href="#判断this" class="headerlink" title="判断this"></a>判断this</h4><ol>
+<li>函数是否在 new 中调用（new 绑定）？如果是的话 this 绑定的是新创建的对象。 </li>
+</ol>
+<p>var bar = new foo() </p>
+<ol start="2">
+<li>函数是否通过 call、apply（显式绑定）或者硬绑定调用？如果是的话，this 绑定的是 指定的对象。 </li>
+</ol>
+<p>var bar = foo.call(obj2) </p>
+<ol start="3">
+<li>函数是否在某个上下文对象中调用（隐式绑定）？如果是的话，this 绑定的是那个上 下文对象。 </li>
+</ol>
+<p>var bar = obj1.foo() </p>
+<ol start="4">
+<li>如果都不是的话，使用默认绑定。如果在严格模式下，就绑定到 undefined，否则绑定到 全局对象。 </li>
+</ol>
+<p>var bar = foo() </p>
+<h2 id="绑定例外"><a href="#绑定例外" class="headerlink" title="绑定例外"></a>绑定例外</h2><p>如果你把 null 或者 undefined 作为 this 的绑定对象传入 call、apply 或者 bind，这些值 在调用时会被忽略，实际应用的是默认绑定规则：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+&#125;
+<span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+foo.<span class="hljs-title function_">call</span>(<span class="hljs-literal">null</span>); <span class="hljs-comment">// 2</span></code></pre></div>
+
+<p>一种非常常见的做法是使用 apply(..) 来“展开”一个数组，并当作参数传入一个函数。 类似地，bind(..) 可以对参数进行柯里化（预先设置一些参数），这种方法有时非常有用：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">a, b</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;a:&quot;</span> + a + <span class="hljs-string">&quot;, b:&quot;</span> + b);
+&#125; <span class="hljs-comment">// 把数组“展开”成参数 foo.apply( null, [2, 3] ); // a:2, b:3</span>
+<span class="hljs-comment">// 使用 bind(..) 进行柯里化</span>
+<span class="hljs-keyword">var</span> bar = foo.<span class="hljs-title function_">bind</span>(<span class="hljs-literal">null</span>, <span class="hljs-number">2</span>);
+<span class="hljs-title function_">bar</span>(<span class="hljs-number">3</span>); <span class="hljs-comment">// a:2, b:3</span></code></pre></div>
+
+<p>可以用 … 操作符代替 apply(..) 来“展 开”数组，foo(…[1,2]) 和 foo(1,2) 是一样的，这样可以避免不必要的 this 绑定。可惜，在 ES6 中没有柯里化的相关语法，因此还是需要使用 bind(..)。 </p>
+<p>一种“更安全”的做法是传入一个特殊的对象，把 this 绑定到这个对象不会对你的程序 然而，总是使用 null 来忽略 this 绑定可能产生一些副作用。如果某个函数确实使用了 this（比如第三方库中的一个函数），那默认绑定规则会把 this 绑定到全局对象（在浏览 器中这个对象是 window），这将导致不可预计的后果（比如修改全局对象）。</p>
+<p>一种“更安全”的做法是传入一个特殊的对象，把 this 绑定到这个对象不会对你的程序 产生任何副作用</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">a, b</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;a:&quot;</span> + a + <span class="hljs-string">&quot;, b:&quot;</span> + b);
+&#125; <span class="hljs-comment">// 我们的 DMZ 空对象</span>
+<span class="hljs-keyword">var</span> ø = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">create</span>(<span class="hljs-literal">null</span>); <span class="hljs-comment">// 把数组展开成参数</span>
+foo.<span class="hljs-title function_">apply</span>(ø, [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]); <span class="hljs-comment">// a:2, b:3 // 使用 bind(..) 进行柯里化</span>
+<span class="hljs-keyword">var</span> bar = foo.<span class="hljs-title function_">bind</span>(ø, <span class="hljs-number">2</span>);
+<span class="hljs-title function_">bar</span>(<span class="hljs-number">3</span>); <span class="hljs-comment">// a:2, b:3</span></code></pre></div>
+
+<p>另一个需要注意的是，你有可能（有意或者无意地）创建一个函数的“间接引用”，在这 种情况下，调用这个函数会应用默认绑定规则。</p>
+<p>间接引用最容易在赋值时发生：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+<span class="hljs-keyword">var</span> o = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">foo</span>: foo &#125;;
+<span class="hljs-keyword">var</span> p = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">4</span> &#125;;
+o.<span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// 3</span>
+(p.<span class="hljs-property">foo</span> = o.<span class="hljs-property">foo</span>)(); <span class="hljs-comment">// 2</span></code></pre></div>
+
+<p>赋值表达式 p.foo = o.foo 的返回值是目标函数的引用，因此调用位置是 foo() 而不是 p.foo() 或者 o.foo()。根据我们之前说过的，这里会应用默认绑定。 注意：对于默认绑定来说，决定 this 绑定对象的并不是调用位置是否处于严格模式，而是 函数体是否处于严格模式。如果函数体处于严格模式，this 会被绑定到 undefined，否则 this 会被绑定到全局对象。 </p>
+<h3 id="软绑定"><a href="#软绑定" class="headerlink" title="软绑定"></a>软绑定</h3><p>之前我们已经看到过，硬绑定这种方式可以把 this 强制绑定到指定的对象（除了使用 new 时），防止函数调用应用默认绑定规则。问题在于，硬绑定会大大降低函数的灵活性，使 用硬绑定之后就无法使用隐式绑定或者显式绑定来修改 this。</p>
+<p>如果可以给默认绑定指定一个全局对象和 undefined 以外的值，那就可以实现和硬绑定相 同的效果，同时保留隐式绑定或者显式绑定修改 this 的能力。可以通过一种被称为软绑定的方法来实现我们想要的效果：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">if</span> (!<span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">softBind</span>) &#123;
+  <span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">softBind</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) &#123;
+    <span class="hljs-keyword">var</span> fn = <span class="hljs-variable language_">this</span>; <span class="hljs-comment">// 捕获所有 curried 参数</span>
+    <span class="hljs-keyword">var</span> curried = [].<span class="hljs-property">slice</span>.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">arguments</span>, <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">var</span> bound = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+      <span class="hljs-keyword">return</span> fn.<span class="hljs-title function_">apply</span>(
+        !<span class="hljs-variable language_">this</span> || <span class="hljs-variable language_">this</span> === (<span class="hljs-variable language_">window</span> || <span class="hljs-variable language_">global</span>) ? obj : <span class="hljs-variable language_">this</span>,
+        curried.<span class="hljs-property">concat</span>.<span class="hljs-title function_">apply</span>(curried, <span class="hljs-variable language_">arguments</span>)
+      );
+    &#125;;
+
+    bound.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">create</span>(fn.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>);
+    <span class="hljs-keyword">return</span> bound;
+  &#125;;
+&#125;</code></pre></div>
+
+<p>除了软绑定之外，softBind(..) 的其他原理和 ES5 内置的 bind(..) 类似。它会对指定的函 数进行封装，首先检查调用时的 this，如果 this 绑定到全局对象或者 undefined，那就把 指定的默认对象 obj 绑定到 this，否则不会修改 this。此外，这段代码还支持可选的柯里 化</p>
+<p>下面我们看看 softBind 是否实现了软绑定功能</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;name: &quot;</span> + <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;obj&quot;</span> &#125;,
+  obj2 = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;obj2&quot;</span> &#125;,
+  obj3 = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;obj3&quot;</span> &#125;;
+<span class="hljs-keyword">var</span> fooOBJ = foo.<span class="hljs-title function_">softBind</span>(obj);
+<span class="hljs-title function_">fooOBJ</span>(); <span class="hljs-comment">// name: obj</span>
+obj2.<span class="hljs-property">foo</span> = foo.<span class="hljs-title function_">softBind</span>(obj);
+obj2.<span class="hljs-title function_">foo</span>(); <span class="hljs-comment">// name: obj2 &lt;---- 看！！！</span>
+fooOBJ.<span class="hljs-title function_">call</span>(obj3); <span class="hljs-comment">// name: obj3 &lt;---- 看！</span>
+<span class="hljs-built_in">setTimeout</span>(obj2.<span class="hljs-property">foo</span>, <span class="hljs-number">10</span>); <span class="hljs-comment">// name: obj &lt;---- 应用了软绑定</span></code></pre></div>
+
+<p>可以看到，软绑定版本的 foo() 可以手动将 this 绑定到 obj2 或者 obj3 上，但如果应用默 认绑定，则会将 this 绑定到 obj。</p>
+<h3 id="this词法-1"><a href="#this词法-1" class="headerlink" title="this词法"></a>this词法</h3><p>箭头函数并不是使用 function 关键字定义的，而是使用被称为“胖箭头”的操作符 =&gt; 定 义的。箭头函数不使用 this 的四种标准规则，而是根据外层（函数或者全局）作用域来决 定 this。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-comment">// 返回一个箭头函数</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">a</span>) =&gt;</span> &#123;
+    <span class="hljs-comment">//this 继承自 foo()</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+  &#125;;
+&#125;
+<span class="hljs-keyword">var</span> obj1 = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span> &#125;;
+<span class="hljs-keyword">var</span> obj2 = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">3</span> &#125;;
+<span class="hljs-keyword">var</span> bar = foo.<span class="hljs-title function_">call</span>(obj1);
+bar.<span class="hljs-title function_">call</span>(obj2); <span class="hljs-comment">// 2, 不是 3 ！</span></code></pre></div>
+
+<p>foo() 内部创建的箭头函数会捕获调用时 foo() 的 this。由于 foo() 的 this 绑定到 obj1， bar（引用箭头函数）的 this 也会绑定到 obj1，箭头函数的绑定无法被修改。（new 也不 行！）</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-comment">// 这里的 this 在此法上继承自 foo()</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">a</span>);
+  &#125;, <span class="hljs-number">100</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span> &#125;;
+foo.<span class="hljs-title function_">call</span>(obj); <span class="hljs-comment">// 2</span></code></pre></div>
+
+<p>箭头函数可以像 bind(..) 一样确保函数的 this 被绑定到指定对象，此外，其重要性还体 现在它用更常见的词法作用域取代了传统的 this 机制。实际上，在 ES6 之前我们就已经 在使用一种几乎和箭头函数完全一样的模式。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-keyword">var</span> self = <span class="hljs-variable language_">this</span>; <span class="hljs-comment">// lexical capture of this</span>
+  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(self.<span class="hljs-property">a</span>);
+  &#125;, <span class="hljs-number">100</span>);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">2</span> &#125;;
+foo.<span class="hljs-title function_">call</span>(obj); <span class="hljs-comment">// 2</span></code></pre></div>
+
+<p>虽然 self = this 和箭头函数看起来都可以取代 bind(..)，但是从本质上来说，它们想替 代的是 this 机制</p>
+<p>如果你经常编写 this 风格的代码，但是绝大部分时候都会使用 self = this 或者箭头函数 来否定 this 机制，那你或许应当：</p>
+<ol>
+<li><p>只使用词法作用域并完全抛弃错误 this 风格的代码； </p>
+</li>
+<li><p>完全采用 this 风格，在必要时使用 bind(..)，尽量避免使用 self = this 和箭头函数。</p>
+</li>
+</ol>
+<h1 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h1>
                 
               </div>
             
