@@ -16,14 +16,17 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="02-JS基础常⻅⾯试题说出 JavaScript 中的常⻅数据类型Number -&gt; 代表数据类型是数值 整数 浮点 数组 String -&gt; 代表字符串类型 -&gt; 通常是⼀段⽂本 boolean -&gt; 布尔类型 true false NULL -&gt; 空值 undefifined -&gt; 变量未定义 Object -&gt; 对象类型 BigInt -&gt;">
+<meta property="og:type" content="article">
 <meta property="og:title" content="前端八股文-JS基础">
 <meta property="og:url" content="http://example.com/2022/09/04/%E5%89%8D%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87-JS%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="02-JS基础常⻅⾯试题说出 JavaScript 中的常⻅数据类型Number -&gt; 代表数据类型是数值 整数 浮点 数组 String -&gt; 代表字符串类型 -&gt; 通常是⼀段⽂本 boolean -&gt; 布尔类型 true false NULL -&gt; 空值 undefifined -&gt; 变量未定义 Object -&gt; 对象类型 BigInt -&gt;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-04T10:46:08.000Z">
-<meta property="article:modified_time" content="2023-01-08T14:59:23.192Z">
+<meta property="article:modified_time" content="2023-01-08T15:12:00.835Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -216,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          521 字
         
       </span>
     
@@ -227,7 +230,7 @@
         
         
         
-          1 分钟
+          5 分钟
         
       </span>
     
@@ -270,14 +273,37 @@
             
               <div class="markdown-body">
                 
-                
+                <h1 id="02-JS基础常⻅⾯试题"><a href="#02-JS基础常⻅⾯试题" class="headerlink" title="02-JS基础常⻅⾯试题"></a>02-JS基础常⻅⾯试题</h1><h2 id="说出-JavaScript-中的常⻅数据类型"><a href="#说出-JavaScript-中的常⻅数据类型" class="headerlink" title="说出 JavaScript 中的常⻅数据类型"></a>说出 JavaScript 中的常⻅数据类型</h2><p>Number -&gt; 代表数据类型是数值</p>
+<p>整数</p>
+<p>浮点</p>
+<p>数组</p>
+<p>String -&gt; 代表字符串类型 -&gt; 通常是⼀段⽂本</p>
+<p>boolean -&gt; 布尔类型</p>
+<p>true</p>
+<p>false</p>
+<p>NULL -&gt; 空值</p>
+<p>undefifined -&gt; 变量未定义</p>
+<p>Object -&gt; 对象类型</p>
+<p>BigInt -&gt; ⼤整数类型</p>
+<p>Symbol -&gt; 符号类型</p>
+<h2 id="说出count-和-count的区别"><a href="#说出count-和-count的区别" class="headerlink" title="说出count++和++count的区别?"></a>说出count++和++count的区别?</h2><p>如果它们在计算之后的值不会被使⽤ 是没有区别的</p>
+<p>如果需要⽴刻使⽤⾃增之后的值 就⽤前置型 反之后置型</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> num = <span class="hljs-number">1</span> + ++count <span class="hljs-comment">// 不推荐这么写</span>
+<span class="hljs-comment">//需要⽴刻使⽤的话</span>
+count++
+<span class="hljs-keyword">var</span> num = <span class="hljs-number">1</span> +count <span class="hljs-comment">//++count</span>
+<span class="hljs-comment">//不需要的话</span>
+<span class="hljs-keyword">var</span> num = <span class="hljs-number">1</span> + count <span class="hljs-comment">//count++</span>
+count++</code></pre></div>
 
-	<div class="row">
-    <embed src="pdf/02-JS基础.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
-
+<h2 id="说出-和-的区别"><a href="#说出-和-的区别" class="headerlink" title="说出==和===的区别?"></a>说出==和===的区别?</h2><ol>
+<li>== (普通相等)</li>
+</ol>
+<p>在类型不相同的情况下, 会将运算元先转成Number的值, 再进⾏⽐较(隐式转换)</p>
+<p>null⽐较特殊: null在进⾏⽐较的时候, 应该是会被当成⼀个对象和原⽣类型进⾏⽐较的</p>
+<p> 2.=== (严格不等)</p>
+<p>在类型不同的情况下,直接返回false</p>
+<h2 id="逻辑与-amp-amp-和逻辑或-的本质和区别？"><a href="#逻辑与-amp-amp-和逻辑或-的本质和区别？" class="headerlink" title="逻辑与**&amp;&amp;和逻辑或||的本质和区别？**"></a>逻辑与**&amp;&amp;和逻辑或||的本质和区别？**</h2>
                 
               </div>
             
@@ -306,6 +332,13 @@
 
     </div>
   
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/javascript/">#javascript</a>
+      
+    </div>
   
 </div>
 
