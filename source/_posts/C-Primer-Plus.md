@@ -716,3 +716,387 @@ cout << "year = "<< 1492 << "\n"
 接下来考察长度。在C++中，对十进制整数采用的规则，与十六进 制和八进制稍微有些不同。对于不带后缀的十进制整数，将使用下面几 种类型中能够存储该数的最小类型来表示：int、long或long long。在int 为16位、long为32位的计算机系统上，20000被表示为int类型，40000被 表示为long类型，3000000000被表示为long long类型。对于不带后缀的 十六进制或八进制整数，将使用下面几种类型中能够存储该数的最小类 型来表示：int、unsigned int long、unsigned long、long long或unsigned long long。在将40000表示为long的计算机系统中，十六进制数 0x9C40（40000）将被表示为unsigned int。这是因为十六进制常用来表 示内存地址，而内存地址是没有符号的，因此，usigned int比long更适合 用来表示16位的地址
 
 ### **char**类型：字符和小整数
+
+char类型是专为存 储字符（如字母和数字）而设计的
+
+现在，存储数字对于计算机来说算 不了什么，但存储字母则是另一回事。编程语言通过使用字母的数值编 码解决了这个问题。因此，char类型是另一种整型。它足够长，能够表 示目标计算机系统中的所有基本符号—所有的字母、数字、标点符号 等。实际上，很多系统支持的字符都不超过128个，因此用一个字节就可以表示所有的符号。因此，虽然char最常被用来处理字符，但也可以 将它用做比short更小的整型。
+
+最常用的符号集是ASCII字符集.字符集 中的字符用数值编码（ASCII码）表示
+
+```cpp
+#include <iostream>
+int main()
+{
+  using namespace std;
+  char ch;
+  cout << "enter a character: " << endl;
+  cin >> ch;
+  cout << "hila ";
+  cout << "thank you for the " << ch << " charactor";
+  return 0;
+}
+
+// enter a character: 
+// a
+// hila thank you for the a charactor
+```
+
+C++对字符用单引号，对字符串使用双引号。
+
+```c++
+#include <iostream>
+int main()
+{
+  using namespace std;
+  char ch = 'M';
+  int i = ch;
+  cout << "the ascii code for " << ch << " is " << i << endl;
+  cout << "add one to the character code:" << endl;
+  ch = ch + 1;
+  i = ch;
+  cout << "the ascii code for " << ch << " is " << i << endl;
+  cout << "displaying char ch using cout.put(ch) ";
+  cout.put(ch);
+  cout.put('!');
+  cout << endl
+       << "done" << endl;
+  return 0;
+}
+// the ascii code for M is 77
+// add one to the character code:
+// the ascii code for N is 78
+// displaying char ch using cout.put(ch) N!
+// done
+```
+
+‘M’表示字符M的数值编码，因此将char变量ch.初始化为‘M’，将把c设置为77。然后，程序将同样的值赋给int变量i， 这样ch和i的值都是77。接下来，cout把ch显示为M，而把i显示为77。由于ch实际上是一个整数，因此可以对它使用整数操作，如加1， 这将把ch的值变为78。然后，程序将i重新设置为新的值（也可以将i加 1）。cout再次将这个值的char版本显示为字符，将int版本显示为数字。C++将字符表示为整数提供了方便，使得操纵字符值很容易。不必 使用笨重的转换函数在字符和ASCII码之间来回转换。 
+
+即使通过键盘输入的数字也被视为字符。请看下面的代码
+
+```
+char ch;
+cin >> ch;
+```
+
+如果您输入5并按回车键，上述代码将读取字符“5”，并将其对应的 字符编码（ASCII编码53）存储到变量ch中。请看下面的代码： 
+
+```
+int ch;
+cin >> ch;
+```
+
+如果您也输入5并按回车键，上述代码将读取字符“5”，将其转换为 相应的数字值5，并存储到变量n中
+
+cout.put( )成员函数提供了另一种显示字符的方法，可以替代<<运 算符。
+
+在 C++的Release 2.0之前，cout将字符变量显示为字符，而将字符常量 （如‘M’和‘N’）显示为数字。问题是，C++的早期版本与C一样，也将 把字符常量存储为int类型。也就是说，‘M’的编码77将被存储在一个16 位或32位的单元中。而char变量一般占8位。下面的语句从常量‘M’中复 制8位（左边的8位）到变量ch中
+
+```
+char ch='M';
+```
+
+遗憾的是，这意味着对cout来说，‘M’和ch看上去有天壤之别，虽 然它们存储的值相同。因此，下面的语句将打印$字符的ASCII码，而不 
+
+是字符$： 
+
+```
+cout << '$'
+```
+
+但下面的语句将打印字符$：
+
+```
+cout.put('$')
+```
+
+在Release 2.0之后，C++将字符常量存储为char类型，而不是int类 型。这意味着cout现在可以正确处理字符常量了。
+
+#### **signed char**和**unsigned char**
+
+与int不同的是，char在默认情况下既不是没有符号，也不是有符 号。是否有符号由C++实现决定，这样编译器开发人员可以最大限度地 将这种类型与硬件属性匹配起来。如果char有某种特定的行为对您来说 非常重要，则可以显式地将类型设置为signed char 或unsigned char：
+
+```
+char fodo;
+unsigned char bar;
+signed char snark;
+```
+
+如果将char用作数值类型，则unsigned char和signed char之间的差异 将非常重要。unsigned char类型的表示范围通常为0～255，而signed char 的表示范围为−128到127
+
+#### **wcha_t**
+
+程序需要处理的字符集可能无法用一个8位的字节表示，如日文汉字系统。对于这种情况，C++的处理方式有两种.首先，如果大型字符 集是实现的基本字符集，则编译器厂商可以将char定义为一个16位的字 节或更长的字节。其次，一种实现可以同时支持一个小型基本字符集和 一个较大的扩展字符集。8位char可以表示基本字符集，另一种类型 wchar_t（宽字符类型）可以表示扩展字符集。wchar_t类型是型与另一种整型（底层（underlying）类型）的长度和符号属性相同。对底层类型的选择取决于实现，因此在一个系统中，它可能是unsigned short，而在另一个系统中，则可能是int。
+
+cin和cout将输入和输出看作是char流，因此不适于用来处理wchar_t 类型。iostream头文件的最新版本提供了作用相似的工具—wcin和 wcout，可用于处理wchar_t流。另外，可以通过加上前缀L来指示宽字 符常量和宽字符串。下面的代码将字母P的wchar_t版本存储到变量bob 中，并显示单词tall的wchar_t版本： 
+
+```
+wchar_t bob =L'P';
+wcout<<L"tall"<<endl;
+```
+
+在支持两字节wchar_t的系统中，上述代码将把每个字符存储在一 个两个字节的内存单元中
+
+#### **C++11**新增的类型：**char16_t**和**char32_t**
+
+随着编程人员日益熟悉Unicode，类型wchar_t显然不再能够满足需 求。事实上，在计算机系统上进行字符和字符串编码时，仅使用 Unicode码点并不够。具体地说，进行字符串编码时，如果有特定长度 和符号特征的类型，将很有帮助，而类型wchar_t的长度和符号特征随 实现而已。因此，C++11新增了类型char16_t和char32_t，其中前者是无 符号的，长16位，而后者也是无符号的，但长32位。C++11使用前缀u 表示char16_t字符常量和字符串常量，如u‘C’和u“be good”；并使用前缀 U表示char32_t常量，如U‘R’和U“dirty rat”。类型char16_t与/u00F6形式 的通用字符名匹配，而类型char32_t与/U0000222B形式的通用字符名匹 配。前缀u和U分别指出字符字面值的类型为char16_t和char32_t：
+
+```
+char16_t ch1=u'q';
+char32_t ch2=U'\U000222B'
+```
+
+与wchar_t一样，char16_t和char32_t也都有底层类型—一种内置的 整型，但底层类型可能随系统而已。 
+
+### **bool**类型
+
+ANSI/ISO C++标准添加了一种名叫bool的新类型（对C++来说是新 的）。在计算中，布尔变量的值可以是true或false。C++和C一样，也没有布尔类型。C++将 非零值解释为true，将零解释为false。然而，现在可以使用bool类型来 表示真和假了，它们分别用预定义的字面值true和false表示。也就是 说，可以这样编写语句：
+
+```
+bool is_ready=true;
+```
+
+字面值true和false都可以通过提升转换为int类型，true被转换为1， 而false被转换为0： 
+
+```
+int ans=true;
+int promise=false;
+```
+
+另外，任何数字值或指针值都可以被隐式转换（即不用显式强制转 换）为bool值。任何非零值都被转换为true，而零被转换为false： 
+
+```
+bool start=-100 //true
+bool stop=0 //false
+```
+
+### **const**限定符
+
+是使用const关键字来修改变量声明和初始化
+
+```
+const int Months=12;
+```
+
+这样，便可以在程序中使用Months，而不是12了（在程序中，12可 能表示一英尺有多少英寸或一打面包圈是多少个，而名称Months指出了 值12表示的是什么）。常量（如Months）被初始化后，其值就被固定 了，编译器将不允许再修改该常量的值。如果您这样做，g++将指出程 序试图给一个只读变量赋值。关键字const叫做限定符，因为它限定了声 明的含义
+
+一种常见的做法是将名称的首字母大写，以提醒您Months是个常 量。这决不是一种通用约定，但在阅读程序时有助于区分常量和变量。 另一种约定是将整个名称大写，使用#define创建常量时通常使用这种约 定。还有一种约定是以字母k打头，如kmonths。当然，还有其他约定。 很多组织都有特殊的编码约定，要求其程序员遵守
+
+如果以前使用过C语言，您可能觉得前面讨论的#define语句已经足 够完成这样的工作了。但const比#defien好。首先，它能够明确指定类 型。其次，可以使用C++的作用域规则将定义限制在特定的函数或文件 中（作用域规则描述了名称在各种模块中的可知程度，将在第9章讨 论）。第三，可以将const用于更复杂的类型，如第4章将介绍的数组和 结构
+
+### 浮点数
+
+#### 书写浮点数
+
+C++有两种书写浮点数的方式。第一种是使用常用的标准小数点表示法
+
+```
+12.34
+93900.32
+0.0023
+8.0
+```
+
+第二种表示浮点值的方法叫做E表示法，
+
+```
+2.52e+8
+8.33E-4
+7E5
+```
+
+E表示法确保数字以浮点格式存储，即使没有小数点。注意，既可 以使用E也可以使用e，指数可以是正数也可以是负数。然而，数字中不能有空格，因此7.2 E6是非法的
+
+#### 浮点类型
+
+和ANSI C一样，C++也有3种浮点类型：float、double和long double。这些类型是按它们可以表示的有效数位和允许的指数最小范围来描述的。有效位（significant figure）是数字中有意义的位。例如，加利福尼亚的Shasta山脉的高度为14179英尺，该数字使用了5个有效位，指出了最接近的英尺数。然而，将Shasta山脉的高度写成约14000英尺 时，有效位数为2位，因为结果经过四舍五入精确到了千位。在这种情 况下，其余的3位只不过是占位符而已。有效位数不依赖于小数点的位 置。例如，可以将高度写成14.162千英尺。这样仍有5个有效位，因为 这个值精确到了第5位.
+
+事实上，C和C++对于有效位数的要求是，float至少32位，double至 少48位，且不少于float，long double至少和double一样多。这三种类型 的有效位数可以一样多。然而，通常，float为32位，double为64位， long double为80、96或128位。另外，这3种类型的指数范围至少是−37到37。可以从头文件cfloat或float.h中找到系统的限制。（cfloat是C语言 的float.h文件的C++版本。）
+
+```js
+#include <iostream>
+int main()
+{
+  using namespace std;
+  cout.setf(ios_base::fixed, ios_base::floatfield); // fixed-point
+  float tub = 10.0 / 3.0;
+  double mint = 10.0 / 3.0;
+  const float million = 1.0e6;
+  cout << "tub = " << tub;
+  cout << ", a million tubs = " << million * tub;
+  cout << ", \n and ten million tubs = ";
+  cout << 10 * million * tub << endl;
+  cout << "min t= " << mint << " and a minillion mints = ";
+  cout << million * mint << endl;
+  return 0;
+}
+
+// tub = 3.333333, a million tubs = 3333333.250000,
+//  and ten million tubs = 33333332.000000
+// min t= 3.333333 and a minillion mints = 3333333.333333
+```
+
+通常cout会删除结尾的零。例如，将3333333.250000显示为 3333333.25。调用cout.setf( )将覆盖这种行为，至少在新的实现中是这样 的。这里要注意的是，为何float的精度比double低。tub和mint都被初始 化为10.0/3.0—3.333333333333333333……由于cout打印6位小数，因此 tub和mint都是精确的。但当程序将每个数乘以一百万后，tub在第7个3 之后就与正确的值有了误差。tub在7位有效位上还是精确的（该系统确 保float至少有6位有效位，但这是最糟糕的情况）。然而，double类型的 变量显示了13个3，因此它至少有13位是精确的。由于系统确保15位有效位，因此这就没有什么好奇怪的了。另外，将tub乘以一百万，再乘以10后，得到的结果不正确，这再一次指出了float的精度限制。
+
+ 
+
+#### 浮点常量
+
+在程序中书写浮点常量的时候，程序将把它存储为哪种浮点类型呢？在默认情况下，像8.24和2.4E8这样的浮点常量都属于double类型。 如果希望常量为float类型，请使用f或F后缀。对于long double类型，可使用l或L后缀（由于l看起来像数字1，因此L是更好的选择）。下面是 一些示例： 
+
+```
+1.234f //a float constant;
+2.45E20F //a float constant;
+2.345324E28 //a double constant;
+2.2L //a long double constant;
+```
+
+#### 浮点数的优缺点
+
+与整数相比，浮点数有两大优点。首先，它们可以表示整数之间的 值。其次，由于有缩放因子，它们可以表示的范围大得多。另一方面， 浮点运算的速度通常比整数运算慢，且精度将降低
+
+```cpp
+#include <iostream>
+int main()
+{
+  using namespace std;
+  float a = 2.34E+22f;
+  float b = a + 1.0f;
+  cout << "a = " << a << endl;
+  cout << "b - a = " << b - a << endl;
+  return 0;
+}
+```
+
+**有些基于ANSI C之前的编译器的老式C++实现不支持浮点常量后缀f。如果出现这样的问题， 可以用2.34E+22代替2.34E+22f，用(float) 1.0代替1.0f。**
+
+该程序将数字加1，然后减去原来的数字。结果应该为1。下面是在 某个系统上运行时该程序的输出：
+
+```
+a=2.34e+022
+b-a=0
+```
+
+问题在于，2.34E+22是一个小数点左边有23位的数字。加上1，就 是在第23位加1。但float类型只能表示数字中的前6位或前7位，因此修 改第23位对这个值不会有任何影响。
+
+C++对基本类型进行分类，形成了若干个族。类型signed char、short、int和long统称为符 号整型；它们的无符号版本统称为无符号整型；C++11新增了long long。bool、char、 wchar_t、符号整数和无符号整型统称为整型；C++11新增了char16_t和char32_t。float、double和long double统称为浮点型。整数和浮点型统称算术（arithmetic）类型
+
+## **C++**算术运算符 
+
+C++使用运算符来运算。它提供了几种运算符来完成5 种基本的算术计算：加法、减法、乘法、除法以及求模。每种运算符都使用两个值（操作数）来计算结果。运算符及其操作数构成了表达式。
+
+下面是5种基本的C++算术运算符。
+
+1. +运算符对操作数执行加法运算。例如，4+20等于24。 
+2. −运算符从第一个数中减去第二个数。例如，12−3等于9。 
+3. 运算符将操作数相乘。例如，*28*4等于112。 
+4. /运算符用第一个数除以第二个数。例如，1000/5等于200。如果两 个操作数都是整数，则结果为商的整数部分。例如，17/3等于5， 小数部分被丢弃。 
+5. %运算符求模。也就是说，它生成第一个数除以第二个数后的余 数。例如，19%6为1，因为19是6的3倍余1。两个操作数必须都是 整型，将该运算符用于浮点数将导致编译错误。如果其中一个是负 数，则结果的符号满足如下规则：(a/b)*b + a%b ＝ a。 
+
+```cpp
+#include <iostream>
+int main()
+{
+  using namespace std;
+  float hats, heads;
+  cout.setf(ios::fixed, ios_base::floatfield);
+  cout << "enter a number : ";
+  cin >> hats;
+  cout << "enter another number : ";
+  cin >> heads;
+
+  cout << "hats = " << hats << "; heads = " << heads << endl;
+  cout << "hats + heads = " << hats + heads << endl;
+  cout << "hats - heads = " << hats - heads << endl;
+  cout << "hats / heads = " << hats / heads << endl;
+  cout << "hats * heads = " << hats * heads << endl;
+
+  return 0;
+}
+
+// enter a number : 50.25
+// enter another number : 11.17
+// hats = 50.250000; heads = 11.170000
+// hats + heads = 61.419998
+// hats - heads = 39.080002
+// hats / heads = 4.498657
+// hats * heads = 561.292480
+```
+
+11.17加上50.25应等于61.42，但 是输出中却是61.419998。这不是运算问题；而是由于float类型表示有效位数的能力有限。记住，对于float，C++只保证6位有效位。如果将 61.419998四舍五入成6位，将得到61.4200，这是保证精度下的正确值。如果需要更高的精度，请使用double或long double。
+
+```js
+#include <iostream>
+int main()
+{
+  using namespace std;
+  cout.setf(ios_base::fixed, ios_base::floatfield);
+  cout << "interger division:9/5 = " << 9 / 5 << endl;
+  cout << "floating-point : 9.0/5.0 = " << 9.0 / 5.0 << endl;
+  cout << "mixed division: 9.0/5 = " << 9.0 / 5 << endl;
+  cout << "double constants : 1e7/9.0 = " << 1.e7 / 9.0 << endl;
+  cout << "float constants: 1e7f/9.0f = ";
+  cout << 1.e7f / 9.0f << endl;
+  return 0;
+}
+
+// interger division:9/5 = 1
+// floating-point : 9.0/5.0 = 1.800000
+// mixed division: 9.0/5 = 1.800000
+// double constants : 1e7/9.0 = 1111111.111111
+// float constants: 1e7f/9.0f = 1111111.125000
+```
+
+整数9除以5的结果为整数1。4/5的小数部分 （或0.8）被丢弃。在本章后面学习求模运算符时，将会看到这种除法的实际应用。接下来的两行表明，当至少有一个操作数是浮点数时，结 果为1.8。实际上，对不同类型进行运算时，C++将把它们全部转换为同 一类型。本章稍后将介绍这种自动转换。最后两行的相对精度表明，如 果两个操作数都是double类型，则结果为double类型；如果两个操作数 都是float类型，则结果为float类型。记住，浮点常量在默认情况下为 double类型。 
+
+除法运算符表示了3种不同的运算：int除法、float除法和double除法。 
+
+C++根据上下文（这里是操作数的类型）来确定运算符的含义。使用相同的符号进行多种操作 叫做运算符重载（operator overloading）。
+
+```cpp
+#include <iostream>
+int main()
+{
+  using namespace std;
+  const int Lbs_per_stn = 14;
+  int lbs;
+  cout << "enter your weight in pounds: ";
+  cin >> lbs;
+  int stone = lbs / Lbs_per_stn;
+  int pounds = lbs % Lbs_per_stn;
+  cout << lbs << " pound are " << stone << " stone " << pounds << "pound(s). \n";
+  return 0;
+}
+
+// enter your weight in pounds: 181
+// 181 pound are 12 stone 13pound(s).
+```
+
+#### 类型转换 
+
+C++自动执行很多类型转换：
+
+将一种算术类型的值赋给另一种算术类型的变量时，C++将对值进 行转换； 
+
+表达式中包含不同的类型时，C++将对值进行转换； 
+
+将参数传递给函数时，C++将对值进行转换
+
+C++允许将一种类型的值赋给另一种类型的变量。这样做时，值将 被转换为接收变量的类型。例如，假设so_long的类型为long，thirty的类 型为short，而程序中包含这样的语句：
+
+```
+so_long=thirty;
+```
+
+则进行赋值时，程序将thirty的值（通常是16位）扩展为long值（通 常为32位）。扩展后将得到一个新值，这个值被存储在so_long中，而 thirty的内容不变。
+
+将一个值赋给值取值范围更大的类型通常不会导致什么问题。例 如，将short值赋给long变量并不会改变这个值，只是占用的字节更多而 已。然而，将一个很大的long值（如2111222333）赋给float变量将降低 精度。因为float只有6位有效数字，因此这个值将被四舍五入为 2.11122E9。因此，有些转换是安全的，有些则会带来麻烦。表3.3列出 了一些可能出现的转换问题
+
+| 转换                                                         | 潜在问题                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 将较大的浮点类型转换为较小的 浮点类型，如将double转换为float | 精度（有效数位）降低，值可能超出目标类型的取值范围，在这种情况下，结果将是不确定的 |
+| 将浮点类型转换为整型                                         | 小数部分丢失，原来的值可能超出目标类型的取值范围，在这种情况下，结果将是不确定的 |
+| 将较大的整型转换为较小的整 型，如将long转换为short           | 原来的值可能超出目标类型的取值范围，通常只复制右边的字节     |
+
+将0赋给bool变量时，将被转换为false；而非零值将被转换为true。将浮点值赋给整型将导致两个问题。首先，将浮点值转换为整型会 
+
+将数字截短（除掉小数部分）。其次，float值对于int变量来说可能太大 了。在这种情况下，C++并没有定义结果应该是什么；这意味着不同的 实现的反应可能不同。
