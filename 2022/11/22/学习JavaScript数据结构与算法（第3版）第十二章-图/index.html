@@ -16,13 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="import Dictionary from &quot;..&#x2F;Dictinoary&#x2F;Dictionary.js&quot;; import &amp;#123; Colors, initialzecolor &amp;#125; from &quot;..&#x2F;util.js&quot;; import Queue from &quot;..&#x2F;Queue&#x2F;Queue.js&quot;; export default">
+<meta property="og:type" content="article">
 <meta property="og:title" content="学习JavaScript数据结构与算法（第3版）第十二章 图">
 <meta property="og:url" content="http://example.com/2022/11/22/%E5%AD%A6%E4%B9%A0JavaScript%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC3%E7%89%88%EF%BC%89%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E5%9B%BE/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="import Dictionary from &quot;..&#x2F;Dictinoary&#x2F;Dictionary.js&quot;; import &amp;#123; Colors, initialzecolor &amp;#125; from &quot;..&#x2F;util.js&quot;; import Queue from &quot;..&#x2F;Queue&#x2F;Queue.js&quot;; export default">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-22T07:19:59.000Z">
-<meta property="article:modified_time" content="2023-01-08T14:56:31.356Z">
+<meta property="article:modified_time" content="2023-01-08T14:59:23.192Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -217,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          4.9k 字
         
       </span>
     
@@ -228,7 +230,7 @@
         
         
         
-          1 分钟
+          42 分钟
         
       </span>
     
@@ -271,7 +273,267 @@
             
               <div class="markdown-body">
                 
-                
+                <div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Dictionary</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../Dictinoary/Dictionary.js&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Colors</span>, initialzecolor &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../util.js&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Queue</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../Queue/Queue.js&quot;</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span> &#123;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">isDirected = <span class="hljs-literal">false</span></span>) &#123;
+    <span class="hljs-comment">//判断是否是有向还是无向</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">isDirected</span> = isDirected;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span> = [];
+    <span class="hljs-comment">//用字典进行映射</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Dictionary</span>();
+  &#125;
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 用来向图中添加一个新的顶点（因为图实例化后是空的）</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">v</span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-title function_">addVertex</span>(<span class="hljs-params">v</span>) &#123;
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span>.<span class="hljs-title function_">includes</span>(v)) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span>.<span class="hljs-title function_">push</span>(v);
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">set</span>(v, []);
+    &#125;
+  &#125;
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 添加对应的边</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">v</span></span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">w</span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-title function_">addEdge</span>(<span class="hljs-params">v, w</span>) &#123;
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(v)) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addVertex</span>(v);
+    &#125;
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(w)) &#123;
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addVertex</span>(w);
+    &#125;
+    !<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(v).<span class="hljs-title function_">includes</span>(w) &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(v).<span class="hljs-title function_">push</span>(w);
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">isDirected</span>) &#123;
+      !<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(w).<span class="hljs-title function_">includes</span>(v) &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(w).<span class="hljs-title function_">push</span>(v);
+    &#125;
+  &#125;
+
+  <span class="hljs-title function_">getVertices</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span>;
+  &#125;
+
+  <span class="hljs-title function_">getAdjList</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>;
+  &#125;
+
+  <span class="hljs-title function_">toString</span>(<span class="hljs-params"></span>) &#123;
+    <span class="hljs-keyword">let</span> s = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span>.<span class="hljs-property">length</span>; i++) &#123;
+      s += <span class="hljs-string">`<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.vertices[i]&#125;</span> -&gt; `</span>;
+      <span class="hljs-keyword">const</span> neighbors = <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span>[i]);
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; neighbors.<span class="hljs-property">length</span>; j++) &#123;
+        s += <span class="hljs-string">`<span class="hljs-subst">$&#123;neighbors[j]&#125;</span> `</span>;
+      &#125;
+      s += <span class="hljs-string">&quot;\n&quot;</span>; <span class="hljs-comment">// &#123;18&#125;</span>
+    &#125;
+    <span class="hljs-keyword">return</span> s;
+  &#125;
+&#125;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 广度优先搜索</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">breadthFirstSearch</span> = (<span class="hljs-params">graph, startVertex, callback</span>) =&gt; &#123;
+  <span class="hljs-comment">//获取图的结点</span>
+  <span class="hljs-keyword">const</span> vertices = graph.<span class="hljs-title function_">getVertices</span>();
+  <span class="hljs-comment">//获取图的结点映射</span>
+  <span class="hljs-keyword">const</span> adjList = graph.<span class="hljs-title function_">getAdjList</span>();
+  <span class="hljs-comment">//初始化</span>
+  <span class="hljs-keyword">const</span> color = <span class="hljs-title function_">initialzecolor</span>(vertices);
+  <span class="hljs-comment">//初始化队列</span>
+  <span class="hljs-keyword">const</span> queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Queue</span>();
+  <span class="hljs-comment">//入队</span>
+  queue.<span class="hljs-title function_">enqueue</span>(startVertex);
+  <span class="hljs-comment">//循环队列</span>
+  <span class="hljs-keyword">while</span> (!queue.<span class="hljs-title function_">isEmpty</span>()) &#123;
+    <span class="hljs-comment">//出队</span>
+    <span class="hljs-keyword">const</span> u = queue.<span class="hljs-title function_">dequeue</span>();
+    <span class="hljs-comment">//获取结点对应的映射</span>
+    <span class="hljs-keyword">const</span> neighbors = adjList.<span class="hljs-title function_">get</span>(u);
+    <span class="hljs-comment">//设置访问过的结点</span>
+    color[u] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">GREY</span>;
+    <span class="hljs-comment">//for循环映射</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; neighbors.<span class="hljs-property">length</span>; i++) &#123;
+      <span class="hljs-keyword">const</span> w = neighbors[i];
+      <span class="hljs-comment">//如果该结点没有被访问过</span>
+      <span class="hljs-keyword">if</span> (color[w] === <span class="hljs-title class_">Colors</span>.<span class="hljs-property">WHITE</span>) &#123;
+        <span class="hljs-comment">//设置为已访问过</span>
+        color[w] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">GREY</span>;
+        <span class="hljs-comment">//入队</span>
+        queue.<span class="hljs-title function_">enqueue</span>(w);
+      &#125;
+    &#125;
+    <span class="hljs-comment">//当该相关的映射全部入对即已访问过了，则标记</span>
+    color[u] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">BLACK</span>;
+    <span class="hljs-comment">//执行回调函数</span>
+    <span class="hljs-keyword">if</span> (callback) &#123;
+      <span class="hljs-title function_">callback</span>(u);
+    &#125;
+  &#125;
+&#125;;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 使用 BFS 寻找最短路径</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 给定一个图 G 和源顶点 v，找出每个顶点 u 和 v 之间最短路径的距离（以边的数量计）。</span>
+<span class="hljs-comment">对于给定顶点 v，广度优先算法会访问所有与其距离为 1 的顶点，接着是距离为 2 的顶点，</span>
+<span class="hljs-comment">以此类推。所以，可以用广度优先算法来解这个问题。我们可以修改 breadthFirstSearch 方</span>
+<span class="hljs-comment">法以返回给我们一些信息：</span>
+<span class="hljs-comment"> 从 v 到 u 的距离 distances[u]；</span>
+<span class="hljs-comment"> 前溯点 predecessors[u]，用来推导出从 v 到其他每个顶点 u 的最短路径。</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">BFS</span> = (<span class="hljs-params">graph, startVertex</span>) =&gt; &#123;
+  <span class="hljs-comment">//获得所有的结点</span>
+  <span class="hljs-keyword">const</span> vertices = graph.<span class="hljs-title function_">getVertices</span>();
+
+  <span class="hljs-comment">//获得所有结点对应的映射</span>
+  <span class="hljs-keyword">const</span> adjList = graph.<span class="hljs-title function_">getAdjList</span>();
+
+  <span class="hljs-comment">//初始化数据</span>
+  <span class="hljs-keyword">const</span> color = <span class="hljs-title function_">initialzecolor</span>(vertices);
+  <span class="hljs-comment">//初始化队列</span>
+  <span class="hljs-keyword">const</span> queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Queue</span>();
+
+  <span class="hljs-comment">//定义起始结点到各个结点的距离</span>
+  <span class="hljs-keyword">const</span> distances = &#123;&#125;;
+  <span class="hljs-comment">//每个结点的前导结点</span>
+  <span class="hljs-keyword">const</span> predecessors = &#123;&#125;;
+  <span class="hljs-comment">//起始结点入队</span>
+  queue.<span class="hljs-title function_">enqueue</span>(startVertex);
+  <span class="hljs-comment">//初始化</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; vertices.<span class="hljs-property">length</span>; i++) &#123;
+    distances[vertices[i]] = <span class="hljs-number">0</span>;
+    predecessors[vertices[i]] = <span class="hljs-literal">null</span>;
+  &#125;
+  <span class="hljs-comment">//遍历队列</span>
+  <span class="hljs-keyword">while</span> (!queue.<span class="hljs-title function_">isEmpty</span>()) &#123;
+    <span class="hljs-keyword">const</span> u = queue.<span class="hljs-title function_">dequeue</span>();
+
+    <span class="hljs-keyword">const</span> neighbors = adjList.<span class="hljs-title function_">get</span>(u);
+
+    color[u] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">GREY</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; neighbors.<span class="hljs-property">length</span>; i++) &#123;
+      <span class="hljs-keyword">const</span> w = neighbors[i];
+      <span class="hljs-keyword">if</span> (color[w] === <span class="hljs-title class_">Colors</span>.<span class="hljs-property">WHITE</span>) &#123;
+        color[w] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">GREY</span>;
+        distances[w] = distances[u] + <span class="hljs-number">1</span>;
+        predecessors[w] = u;
+        queue.<span class="hljs-title function_">enqueue</span>(w);
+      &#125;
+    &#125;
+
+    color[u] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">BLACK</span>;
+  &#125;
+
+  <span class="hljs-keyword">return</span> &#123;
+    distances,
+    predecessors,
+  &#125;;
+&#125;;
+
+<span class="hljs-comment">//深度优先遍历算法</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">depthFirstSearch</span> = (<span class="hljs-params">graph, callback</span>) =&gt; &#123;
+  <span class="hljs-keyword">const</span> vertices = graph.<span class="hljs-title function_">getVertices</span>();
+  <span class="hljs-keyword">const</span> adjList = graph.<span class="hljs-title function_">getAdjList</span>();
+  <span class="hljs-keyword">const</span> color = <span class="hljs-title function_">initialzecolor</span>(vertices);
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; vertices.<span class="hljs-property">length</span>; i++) &#123;
+    <span class="hljs-keyword">if</span> (color[vertices[i]] === <span class="hljs-title class_">Colors</span>.<span class="hljs-property">WHITE</span>) &#123;
+      <span class="hljs-title function_">depthFirstSearchVisit</span>(vertices[i], color, adjList, callback);
+    &#125;
+  &#125;
+&#125;;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">depthFirstSearchVisit</span> = (<span class="hljs-params">u, color, adjList, callback</span>) =&gt; &#123;
+  color[u] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">GREY</span>;
+  <span class="hljs-keyword">if</span> (callback) &#123;
+    <span class="hljs-title function_">callback</span>(u);
+  &#125;
+  <span class="hljs-keyword">const</span> neighbors = adjList.<span class="hljs-title function_">get</span>(u);
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; neighbors.<span class="hljs-property">length</span>; i++) &#123;
+    <span class="hljs-keyword">const</span> w = neighbors[i];
+    <span class="hljs-keyword">if</span> (color[w] === <span class="hljs-title class_">Colors</span>.<span class="hljs-property">WHITE</span>) &#123;
+      <span class="hljs-title function_">depthFirstSearchVisit</span>(w, color, adjList, callback);
+    &#125;
+  &#125;
+  color[u] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">BLACK</span>;
+&#125;;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 我们可以用该算法做更多的事情，而不只是输出被访问顶点的顺序。对于给定的图 G，我们希望深度优先搜索算法遍历图 G 的所有节点，构建“森林”（有根树</span>
+<span class="hljs-comment">的一个集合）以及一组源顶点（根），并输出两个数组：发现时间和完成探索时间。我们可以修改 depthFirstSearch 函数来返回一些信息：</span>
+<span class="hljs-comment"> 顶点 u 的发现时间 d[u]；</span>
+<span class="hljs-comment"> 当顶点 u 被标注为黑色时，u 的完成探索时间 f[u]； </span>
+<span class="hljs-comment"> 顶点 u 的前溯点 p[u]。</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">DFS</span> = (<span class="hljs-params">graph, callback</span>) =&gt; &#123;
+  <span class="hljs-keyword">const</span> vertices = graph.<span class="hljs-title function_">getVertices</span>();
+  <span class="hljs-keyword">const</span> adjList = graph.<span class="hljs-title function_">getAdjList</span>();
+  <span class="hljs-keyword">const</span> color = <span class="hljs-title function_">initialzecolor</span>(vertices);
+
+  <span class="hljs-comment">//结点的发现时间</span>
+  <span class="hljs-keyword">const</span> d = &#123;&#125;;
+  <span class="hljs-comment">//子结点遍历玩的时间</span>
+  <span class="hljs-keyword">const</span> f = &#123;&#125;;
+  <span class="hljs-comment">//前置结点</span>
+  <span class="hljs-keyword">const</span> p = &#123;&#125;;
+  <span class="hljs-comment">//计时</span>
+  <span class="hljs-keyword">const</span> time = &#123; <span class="hljs-attr">count</span>: <span class="hljs-number">0</span> &#125;;
+  <span class="hljs-comment">//初始化每个结点</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; vertices.<span class="hljs-property">length</span>; i++) &#123;
+    d[vertices[i]] = <span class="hljs-number">0</span>;
+    f[vertices[i]] = <span class="hljs-number">0</span>;
+    p[vertices[i]] = <span class="hljs-literal">null</span>;
+  &#125;
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; vertices.<span class="hljs-property">length</span>; i++) &#123;
+    <span class="hljs-keyword">if</span> (color[vertices[i]] === <span class="hljs-title class_">Colors</span>.<span class="hljs-property">WHITE</span>) &#123;
+      <span class="hljs-title class_">DFSVisit</span>(vertices[i], color, d, f, p, time, adjList);
+    &#125;
+  &#125;
+
+  <span class="hljs-keyword">return</span> &#123;
+    <span class="hljs-attr">discovery</span>: d,
+    <span class="hljs-attr">finished</span>: f,
+    <span class="hljs-attr">predecessors</span>: p,
+  &#125;;
+&#125;;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">DFSVisit</span> = (<span class="hljs-params">u, color, d, f, p, time, adjList</span>) =&gt; &#123;
+  color[u] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">GREY</span>;
+  d[u] = ++time.<span class="hljs-property">count</span>;
+  <span class="hljs-keyword">const</span> neighbors = adjList.<span class="hljs-title function_">get</span>(u);
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; neighbors.<span class="hljs-property">length</span>; i++) &#123;
+    <span class="hljs-keyword">const</span> w = neighbors[i];
+    <span class="hljs-keyword">if</span> (color[w] === <span class="hljs-title class_">Colors</span>.<span class="hljs-property">WHITE</span>) &#123;
+      p[w] = u;
+      <span class="hljs-title class_">DFSVisit</span>(w, color, d, f, p, time, adjList);
+    &#125;
+  &#125;
+  color[u] = <span class="hljs-title class_">Colors</span>.<span class="hljs-property">BLACK</span>;
+  f[u] = ++time.<span class="hljs-property">count</span>;
+&#125;;
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 对于改进过的深度优先搜索，有两点需要我们注意</span>
+<span class="hljs-comment"> * 时间（time）变量值的范围只可能在图顶点数量的一倍到两倍（2|V|）之间；</span>
+<span class="hljs-comment"> * 对于所有的顶点 u，d[u]&lt;f[u]（意味着，发现时间的值比完成时间的值小，完成时间意思是所有顶点都已经被探索过了）</span>
+<span class="hljs-comment"> * 在这两个假设下，我们有如下的规则。1 &lt;= d [u] &lt; f [u] &lt;= 2|V|</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 拓扑排序——使用深度优先搜索</span>
+<span class="hljs-comment"> */</span></code></pre></div>
+
+
                 
               </div>
             
