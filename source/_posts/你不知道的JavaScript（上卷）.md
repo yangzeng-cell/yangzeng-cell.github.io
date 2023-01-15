@@ -1810,3 +1810,521 @@ foo.call(obj); // 2
 2. 完全采用 this 风格，在必要时使用 bind(..)，尽量避免使用 self = this 和箭头函数。
 
 # 对象
+
+## 语法
+
+对象可以通过两种形式定义：声明（文字）形式和构造形式。
+
+对象的文字语法大概是这样：
+
+```js
+var myObj = {
+  key: value, // ...
+};
+```
+
+构造形式大概是这样：
+
+```js
+var myObj = new Object();
+myObj.key = value;
+```
+
+构造形式和文字形式生成的对象是一样的。唯一的区别是，在文字声明中你可以添加多个 键 / 值对，但是在构造形式中你必须逐个添加属性。一般会采用声明形式创建函数
+
+## 类型
+
+js中常见的类型有null, undefined,boolean,number,string,symbol,object,bigint,symbol,基本数据类型不是对象，null 有时会被当作一种对象类型，但是这其实只是语言本身的一个 bug，即对 null 执行 typeof null 时会返回字符串 "object"。实际上，null 本身是基本类型
+
+不同的对象在底层都表示为二进制，在 JavaScript 中二进制前三位都为 0 的话会被判 断为 object 类型，null 的二进制表示是全 0，自然前三位也是 0，所以执行 typeof 时会返回“object”
+
+实际上，JavaScript 中有许多特殊的对象子类型，我们可以称之为复杂基本类型。函数就是对象的一个子类型（从技术角度来说就是“可调用的对象”）。JavaScript 中的函 数是“一等公民”，因为它们本质上和普通的对象一样（只是可以调用），所以可以像操作 其他对象一样操作函数（比如当作另一个函数的参数）。
+
+### 内置对象
+
+String,Number,Boolean,Object,Function,Array,Date,RegExp,Error,内置函数可以当作构造函数来使用
+
+```js
+var strPrimitive = "I am a string";
+typeof strPrimitive; // "string"
+strPrimitive instanceof String; // false
+var strObject = new String("I am a string");
+typeof strObject; // "object"
+strObject instanceof String; // true
+// 检查 sub-type 对象
+Object.prototype.toString.call(strObject); // [object String]
+```
+
+boolean,number,string,symbol,bigint,symbol这些使用声明方式创建的变量，可以直接访问字面量上的属性和方法，之所以可以这 样做，是因为引擎自动把字面量转换成 对应的对象，所以可以访问属性和方法。null 和 undefined 没有对应的构造形式，它们只有文字形式。相反，Date 只有构造，没有 文字形式
+
+### 内容
+
+```js
+var myObject = { a: 2 };
+myObject.a; // 2
+myObject["a"]; // 2
+
+```
+
+如果要访问 myObject 中 a 位置上的值，我们需要使用 . 操作符或者 [] 操作符。.a 语法通 常被称为“属性访问”，["a"] 语法通常被称为“键访问”。实际上它们访问的是同一个位 置，并且会返回相同的值 2，所以这两个术语是可以互换的
+
+这两种语法的主要区别在于 . 操作符要求属性名满足标识符的命名规范，而 [".."] 语法 可以接受任意 UTF-8/Unicode 字符串作为属性名。举例来说，如果要引用名称为 "Super-Fun!" 的属性，那就必须使用 ["Super-Fun!"] 语法访问，因为 Super-Fun! 并不是一个有效 的标识符属性名。
+
+此外，由于 [".."] 语法使用字符串来访问属性，所以可以在程序中构造这个字符串，比如说：
+
+```js
+var myObject = { a: 2 };
+var idx;
+if (wantA) {
+  idx = "a";
+} // 之后
+console.log(myObject[idx]); // 2
+```
+
+在对象中，属性名永远都是字符串。如果你使用 string（字面量）以外的其他值作为属性 名，那它首先会被转换为一个字符串。即使是数字也不例外，虽然在数组下标中使用的的 确是数字，但是在对象属性名中数字会被转换成字符串，所以当心不要搞混对象和数组中 数字的用法：
+
+```js
+var myObject = {};
+myObject[true] = "foo";
+myObject[3] = "bar";
+myObject[myObject] = "baz";
+myObject["true"]; // "foo"
+myObject["3"]; // "bar"
+myObject["[object Object]"]; // "baz"
+```
+
+#### 可计算属性名
+
+ES6 增加了可计算属性名，可以在文字形式中使用 [] 包裹一个表达式来当作属性名：
+
+```js
+var prefix = "foo";
+var myObject = { [prefix + "bar"]: "hello", [prefix + "baz"]: "world" };
+myObject["foobar"]; // hello
+myObject["foobaz"]; // world
+```
+
+可计算属性名最常用的场景可能是 ES6 的符号（Symbol）
+
+#### 属性与方法
+
+“函数”和“方法”在 JavaScript 中是可以互换的。
+
+即使你在对象的文字形式中声明一个函数表达式，这个函数也不会“属于”这个对象—— 它们只是对于相同函数对象的多个引用。
+
+```js
+var myObject = {
+  foo: function () {
+    console.log("foo");
+  },
+};
+var someFoo = myObject.foo;
+someFoo; // function foo(){..}
+myObject.foo; // function foo(){..}
+```
+
+#### 数组
+
+数组也支持 [] 访问形式，不过就像我们之前提到过的，数组有一套更加结构化的值存储机制（不过仍然不限制值的类型）。数组期望的是数值下标，也就是说值存储的位置（通 常被称为索引）是整数，比如说 0 和 42：
+
+```js
+var myArray = ["foo", 42, "bar"];
+myArray.length; // 3
+myArray[0]; // "foo"
+myArray[2]; // "bar"
+```
+
+数组也是对象，所以虽然每个下标都是整数，你仍然可以给数组添加属性：
+
+```js
+var myArray = ["foo", 42, "bar"];
+myArray.baz = "baz";
+myArray.length; // 3
+myArray.baz; // "baz"
+```
+
+可以看到虽然添加了命名属性（无论是通过 . 语法还是 [] 语法），数组的 length 值并未发 生变化。
+
+你完全可以把数组当作一个普通的键 / 值对象来使用，并且不添加任何数值索引，但是这 并不是一个好主意。数组和普通的对象都根据其对应的行为和用途进行了优化，所以最好 只用对象来存储键 / 值对，只用数组来存储数值下标 / 值对
+
+注意：如果你试图向数组添加一个属性，但是属性名“看起来”像一个数字，那它会变成 一个数值下标（因此会修改数组的内容而不是添加一个属性）：
+
+```js
+var myArray = ["foo", 42, "bar"];
+myArray["3"] = "baz";
+myArray.length; // 4
+myArray[3]; // "baz"
+```
+
+#### 复制对象
+
+```js
+function anotherFunction() {
+  /*..*/
+}
+var anotherObject = { c: true };
+var anotherArray = [];
+var myObject = {
+  a: 2,
+  b: anotherObject, // 引用，不是复本！
+  c: anotherArray, // 另一个引用！
+  d: anotherFunction,
+};
+anotherArray.push(anotherObject, myObject);
+```
+
+如何准确地表示 myObject 的复制呢？
+
+首先，我们应该判断它是浅复制还是深复制。对于浅拷贝来说，复制出的新对象中 a 的值会 复制旧对象中 a 的值，也就是 2，但是新对象中 b、c、d 三个属性其实只是三个引用，它们 和旧对象中 b、c、d 引用的对象是一样的。对于深复制来说，除了复制 myObject 以外还会复 制 anotherObject 和 anotherArray。这时问题就来了，anotherArray 引用了 anotherObject 和 myObject，所以又需要复制 myObject，这样就会由于循环引用导致死循环。
+
+对于 JSON 安全（也就是说可以被序列化为一个 JSON 字符串并且可以根据这个字符串解 析出一个结构和值完全一样的对象）的对象来说，有一种巧妙的复制方法： 
+
+var newObj = JSON.parse( JSON.stringify( someObj ) ); 
+
+当然，这种方法需要保证对象是 JSON 安全的，所以只适用于部分情况相比深复制，浅复制非常易懂并且问题要少得多，所以 ES6 定义了 Object.assign(..) 方 法来实现浅复制。Object.assign(..) 方法的第一个参数是目标对象，之后还可以跟一个 或多个源对象。它会遍历一个或多个源对象的所有可枚举（enumerable，参见下面的代码） 的自有键（owned key，很快会介绍）并把它们复制（使用 = 操作符赋值）到目标对象，最 后返回目标对象，就像这样：
+
+```js
+var newObj = Object.assign({}, myObject);
+newObj.a; // 2
+newObj.b === anotherObject; // true
+newObj.c === anotherArray; // true
+newObj.d === anotherFunction; // true
+```
+
+由于 Object.assign(..) 就是使用 = 操作符来赋值，所 以源对象属性的一些特性（比如 writable）不会被复制到目标对象
+
+#### 属性描述符
+
+```
+var myObject = { a: 2 };
+Object.getOwnPropertyDescriptor(myObject, "a");
+// { 
+// value: 2,
+// writable: true,
+// enumerable: true,
+// configurable: true
+// }
+```
+
+如你所见，这个普通的对象属性对应的属性描述符（也被称为“数据描述符”，因为它 只保存一个数据值）可不仅仅只是一个 2。它还包含另外三个特性：writable（可写）、 enumerable（可枚举）和 configurable（可配置）。
+
+在创建普通属性时属性描述符会使用默认值，我们也可以使用 Object.defineProperty(..) 来添加一个新属性或者修改一个已有属性（如果它是 configurable）并对特性进行设置。
+
+```js
+var myObject = {};
+Object.defineProperty(myObject, "a", {
+  value: 2,
+  writable: true,
+  configurable: true,
+  enumerable: true,
+});
+myObject.a; // 2
+```
+
+我们使用 defineProperty(..) 给 myObject 添加了一个普通的属性并显式指定了一些特性。 然而，一般来说你不会使用这种方式，除非你想修改属性描述符。
+
+**Writable** 
+
+writable 决定是否可以修改属性的值
+
+```js
+var myObject = {};
+Object.defineProperty(myObject, "a", {
+  value: 2,
+  writable: false, // 不可写！
+  configurable: true,
+  enumerable: true,
+});
+myObject.a = 3;
+myObject.a; // 2
+```
+
+如你所见，我们对于属性值的修改静默失败（silently failed）了。如果在严格模式下，这 种方法会出错：
+
+```js
+("use strict");
+var myObject = {};
+Object.defineProperty(myObject, "a", {
+  value: 2,
+  writable: false, // 不可写！
+  configurable: true,
+  enumerable: true,
+});
+myObject.a = 3; // TypeError
+```
+
+TypeError 错误表示我们无法修改一个不可写的属性。 
+
+之后我们会介绍 getter 和 setter，不过简单来说，你可以把 writable:false 看 作是属性不可改变，相当于你定义了一个空操作 setter。严格来说，如果要 和 writable:false 一致的话，你的 setter 被调用时应当抛出一个 TypeError 错误
+
+**Configurable** 
+
+只要属性是可配置的，就可以使用 defineProperty(..) 方法来修改属性描述符：
+
+```js
+var myObject = { a: 2 };
+myObject.a = 3;
+myObject.a; // 3
+Object.defineProperty(myObject, "a", {
+  value: 4,
+  writable: true,
+  configurable: false, // 不可配置！
+  enumerable: true,
+});
+myObject.a; // 4
+myObject.a = 5;
+myObject.a; // 5
+Object.defineProperty(myObject, "a", {
+  value: 6,
+  writable: true,
+  configurable: true,
+  enumerable: true,
+}); // TypeError
+```
+
+最后一个 defineProperty(..) 会产生一个 TypeError 错误，不管是不是处于严格模式，尝 试修改一个不可配置的属性描述符都会出错。注意：如你所见，把 configurable 修改成 false 是单向操作，无法撤销！
+
+要注意有一个小小的例外：即便属性是 configurable:false，我们还是可以 把 writable 的状态由 true 改为 false，但是无法由 false 改为 true。
+
+除了无法修改，configurable:false 还会禁止删除这个属性：
+
+```js
+var myObject = { a: 2 };
+myObject.a; // 2
+delete myObject.a;
+myObject.a; // undefined
+Object.defineProperty(myObject, "a", {
+  value: 2,
+  writable: true,
+  configurable: false,
+  enumerable: true,
+});
+myObject.a; // 2
+delete myObject.a;
+myObject.a; // 2
+```
+
+在本例中，delete 只用来直接删除对象的（可删除）属性。如果对象的某个属性是某个 对象 / 函数的最后一个引用者，对这个属性执行 delete 操作之后，这个未引用的对象 / 函数就可以被垃圾回收。但是，不要把 delete 看作一个释放内存的工具（就像 C/C++ 中那 样），它就是一个删除对象属性的操作，仅此而已。 
+
+**enumerable**
+
+从名字就可以看出，这个描述符控制的是属性是否会出现在对象的属性枚举中，比如说 for..in 循环。如果把 enumerable 设置成 false，这个属性就不会出现在枚举中，虽然仍 然可以正常访问它。相对地，设置成 true 就会让它出现在枚举中。 用户定义的所有的普通属性默认都是 enumerable，这通常就是你想要的。但是如果你不希 望某些特殊属性出现在枚举中，那就把它设置成 enumerable:false。
+
+#### 不变性
+
+有时候你会希望属性或者对象是不可改变（无论有意还是无意）的，在 ES5 中可以通过很 多种方法来实现。
+
+很重要的一点是，所有的方法创建的都是浅不变形，也就是说，它们只会影响目标对象和 它的直接属性。如果目标对象引用了其他对象（数组、对象、函数，等），其他对象的内 容不受影响，仍然是可变的： 
+
+```js
+myImmutableObject.foo; // [1,2,3] 
+myImmutableObject.foo.push( 4 ); 
+myImmutableObject.foo; // [1,2,3,4]
+```
+
+假设代码中的 myImmutableObject 已经被创建而且是不可变的，但是为了保护它的内容 myImmutableObject.foo，你还需要使用下面的方法让 foo 也不可变。
+
+##### 对象常量
+
+结合 writable:false 和 configurable:false 就可以创建一个真正的常量属性（不可修改、 重定义或者删除）：
+
+```js
+var myObject = {};
+Object.defineProperty(myObject, "FAVORITE_NUMBER", {
+  value: 42,
+  writable: false,
+  configurable: false,
+});
+```
+
+##### 禁止扩展
+
+如 果 你 想 禁 止 一 个 对 象 添 加 新 属 性 并 且 保 留 已 有 属 性， 可 以 使 用 Object.preventExtensions(..)：
+
+```js
+var myObject = { a: 2 };
+Object.preventExtensions(myObject);
+myObject.b = 3;
+myObject.b; // undefined
+```
+
+在非严格模式下，创建属性 b 会静默失败。在严格模式下，将会抛出 TypeError 错误。 
+
+##### 密封
+
+Object.seal(..) 会创建一个“密封”的对象，这个方法实际上会在一个现有对象上调用 Object.preventExtensions(..) 并把所有现有属性标记为 configurable:false。
+
+所以，密封之后不仅不能添加新属性，也不能重新配置或者删除任何现有属性（虽然可以 修改属性的值）
+
+##### 冻结
+
+Object.freeze(..) 会创建一个冻结对象，这个方法实际上会在一个现有对象上调用 Object.seal(..) 并把所有“数据访问”属性标记为 writable:false，这样就无法修改它们 的值。
+
+这个方法是你可以应用在对象上的级别最高的不可变性，它会禁止对于对象本身及其任意 直接属性的修改（不过就像我们之前说过的，这个对象引用的其他对象是不受影响的）。
+
+你可以“深度冻结”一个对象，具体方法为，首先在这个对象上调用 Object.freeze(..)， 然后遍历它引用的所有对象并在这些对象上调用 Object.freeze(..)。但是一定要小心，因为这样做有可能会在无意中冻结其他（共享）对象。
+
+#### [[Get]]
+
+```js
+var myObject = { a: 2 };
+myObject.a; // 2
+```
+
+在语言规范中，myObject.a 在 myObject 上实际上是实现了 [[Get]] 操作（有点像函数调 用：[[Get]]()）。对象默认的内置 [[Get]] 操作首先在对象中查找是否有名称相同的属性， 如果找到就会返回这个属性的值。
+
+然而，如果没有找到名称相同的属性，按照 [[Get]] 算法的定义会执行另外一种非常重要 的行为。（其实就是遍历可能存在的 [[Prototype]] 链， 也就是原型链）
+
+如果无论如何都没有找到名称相同的属性，那 [[Get]] 操作会返回值 undefined：
+
+```
+var myObject = { a:2 };myObject.b; // undefined
+```
+
+注意，这种方法和访问变量时是不一样的。如果你引用了一个当前词法作用域中不存在的 变量，并不会像对象属性一样返回 undefined，而是会抛出一个 ReferenceError 异常：
+
+#### [[Put]]
+
+既然有可以获取属性值的 [[Get]] 操作，就一定有对应的 [[Put]] 操作 
+
+你可能会认为给对象的属性赋值会触发 [[Put]] 来设置或者创建这个属性。但是实际情况并不完全是这样。[[Put]] 被触发时，实际的行为取决于许多因素，包括对象中是否已经存在这个属性（这是最重要的因素）。
+
+如果已经存在这个属性，[[Put]] 算法大致会检查下面这些内容。 
+
+1. 属性是否是访问描述符？如果是并且存在 setter 就调用 setter。 
+
+2. 属性的数据描述符中 writable 是否是 false ？如果是，在非严格模式下静默失败，在 严格模式下抛出 TypeError 异常。 
+
+3. 如果都不是，将该值设置为属性的值
+
+如果对象中不存在这个属性，[[Put]] 操作会更加复杂
+
+#### Getter和Setter
+
+对象默认的 [[Put]] 和 [[Get]] 操作分别可以控制属性值的设置和获取
+
+在 ES5 中可以使用 getter 和 setter 部分改写默认操作，但是只能应用在单个属性上，无法 应用在整个对象上。getter 是一个隐藏函数，会在获取属性值时调用。setter 也是一个隐藏 函数，会在设置属性值时调用。
+
+当你给一个属性定义 getter、setter 或者两者都有时，这个属性会被定义为“访问描述符”（和“数据描述符”相对）。对于访问描述符来说，JavaScript 会忽略它们的 value 和 writable 特性，取而代之的是关心 set 和 get（还有 configurable 和 enumerable）特性。
+
+```js
+var myObject = {
+  // 给 a 定义一个 getter
+  get a() {
+    return 2;
+  },
+};
+Object.defineProperty(
+  myObject, // 目标对象 "b",
+  // 属性名
+  {
+    // 描述符 // 给 b 设置一个 getter
+    get: function () {
+      return this.a * 2;
+    }, // 确保 b 会出现在对象的属性列表中
+    enumerable: true,
+  }
+);
+myObject.a; // 2
+myObject.b; // 4
+```
+
+不管是对象文字语法中的 get a() { .. }，还是 defineProperty(..) 中的显式定义，二者 都会在对象中创建一个不包含值的属性，对于这个属性的访问会自动调用一个隐藏函数， 它的返回值会被当作属性访问的返回值：
+
+```js
+var myObject = {
+  // 给 a 定义一个 getter
+  get a() {
+    return 2;
+  },
+};
+myObject.a = 3;
+myObject.a; // 2
+```
+
+由于我们只定义了 a 的 getter，所以对 a 的值进行设置时 set 操作会忽略赋值操作，不会抛 出错误。而且即便有合法的 setter，由于我们自定义的 getter 只会返回 2，所以 set 操作是 没有意义的
+
+为了让属性更合理，还应当定义 setter，和你期望的一样，setter 会覆盖单个属性默认的 [[Put]]（也被称为赋值）操作。通常来说 getter 和 setter 是成对出现的（只定义一个的话 通常会产生意料之外的行为）
+
+```js
+var myObject = {
+  // 给 a 定义一个 getter
+  get a() {
+    return this._a_;
+  }, // 给 a 定义一个 setter
+  set a(val) {
+    this._a_ = val * 2;
+  },
+};
+myObject.a = 2;
+myObject.a; // 4
+```
+
+#### 存在性 
+
+in 操作符会检查属性是否在对象及其 [[Prototype]] 原型链中（参见第 5 章）。相比之下， hasOwnProperty(..) 只会检查属性是否在 myObject 对象中，不会检查 [[Prototype]] 链。 
+
+所 有 的 普 通 对 象 都 可 以 通 过 对 于 Object.prototype 的 委 托（ 参 见 第 5 章 ） 来 访 问 hasOwnProperty(..)，但是有的对象可能没有连接到 Object.prototype（通过 Object. create(null) 来创建——参见第 5 章）。在这种情况下，hasOwnProperty(..) 就会失败。 
+
+这 时 可 以 使 用 一 种 更 加 强 硬 的 方 法 来 进 行 判 断：Object.prototype.hasOwnProperty.call(myObject,"a")，它借用基础的 hasOwnProperty(..) 方法并把它显式绑定
+
+看起来 in 操作符可以检查容器内是否有某个值，但是它实际上检查的是某 个属性名是否存在。对于数组来说这个区别非常重要，4 in [2, 4, 6] 的结 果并不是你期待的 True，因为 [2, 4, 6] 这个数组中包含的属性名是 0、1、 2，没有 4。
+
+可以看到，myObject.b 确实存在并且有访问值，但是却不会出现在 for..in 循环中（尽管 可以通过 in 操作符来判断是否存在）。原因是“可枚举”就相当于“可以出现在对象属性 的遍历中”。 
+
+在数组上应用 for..in 循环有时会产生出人意料的结果，因为这种枚举不 仅会包含所有数值索引，还会包含所有可枚举属性。最好只在对象上应用 for..in 循环，如果要遍历数组就使用传统的 for 循环来遍历数值索引。
+
+也可以通过另一种方式来区分属性是否可枚举：
+
+```js
+var myObject = {};
+Object.defineProperty(
+  myObject,
+  "a", // 让 a 像普通属性一样可以枚举
+  { enumerable: true, value: 2 }
+);
+Object.defineProperty(
+  myObject,
+  "b", // 让 b 不可枚举
+  { enumerable: false, value: 3 }
+);
+myObject.propertyIsEnumerable("a"); // true
+myObject.propertyIsEnumerable("b"); // false
+Object.keys(myObject); // ["a"]
+Object.getOwnPropertyNames(myObject); // ["a", "b"]
+```
+
+propertyIsEnumerable(..) 会检查给定的属性名是否直接存在于对象中（而不是在原型链 上）并且满足 enumerable:true。
+
+Object.keys(..) 会返回一个数组，包含所有可枚举属性，Object.getOwnPropertyNames(..) 会返回一个数组，包含所有属性，无论它们是否可枚举。
+
+in 和 hasOwnProperty(..) 的区别在于是否查找 [[Prototype]] 链，然而，Object.keys(..)和 Object.getOwnPropertyNames(..) 都只会查找对象直接包含的属性。
+
+（目前）并没有内置的方法可以获取 in 操作符使用的属性列表（对象本身的属性以 及 [[Prototype]] 链中的所有属性，参见第 5 章）。不过你可以递归遍历某个对象的整条 [[Prototype]] 链并保存每一层中使用 Object.keys(..) 得到的属性列表——只包含可枚举属性。
+
+### 遍历
+
+for..in 循环可以用来遍历对象的可枚举属性列表（包括 [[Prototype]] 链）。但是如何遍 历属性的值呢？
+
+对于数值索引的数组来说，可以使用标准的 for 循环来遍历值：
+
+```js
+var myArray = [1, 2, 3];
+for (var i = 0; i < myArray.length; i++) {
+  console.log(myArray[i]);
+} // 1 2 3
+```
+
+这实际上并不是在遍历值，而是遍历下标来指向值，如 myArray[i]
+
+ES5 中增加了一些数组的辅助迭代器，包括 forEach(..)、every(..) 和 some(..)。每种辅助迭代器都可以接受一个回调函数并把它应用到数组的每个元素上，唯一的区别就是它们 对于回调函数返回值的处理方式不同。
+
+forEach(..) 会遍历数组中的所有值并忽略回调函数的返回值。every(..) 会一直运行直到回调函数返回 false（或者“假”值），some(..) 会一直运行直到回调函数返回 true（或者 “真”值）。every(..) 和 some(..) 中特殊的返回值和普通 for 循环中的 break 语句类似，它们会提前 终止遍历。使用 for..in 遍历对象是无法直接获取属性值的，因为它实际上遍历的是对象中的所有可枚举属性，你需要手动获取属性值。
+
+遍历数组下标时采用的是数字顺序（for 循环或者其他迭代器），但是遍历对 象属性时的顺序是不确定的，在不同的 JavaScript 引擎中可能不一样。因此， 在不同的环境中需要保证一致性时，一定不要相信任何观察到的顺序，它们 是不可靠的。 
+
+那么如何直接遍历值而不是数组下标（或者对象属性）呢？幸好，ES6 增加了一种用来遍 历数组的 for..of 循环语法（如果对象本身定义了迭代器的话也可以遍历对象）：
+
+for..of 循环首先会向被访问对象请求一个迭代器对象，然后通过调用迭代器对象的 next() 方法来遍历所有返回值数组有内置的 @@iterator，因此 for..of 可以直接应用在数组上。我们使用内置的 @@ iterator 来手动遍历数组
+
+# 混合对象“类”
