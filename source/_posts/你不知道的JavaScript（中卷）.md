@@ -1829,4 +1829,4 @@ Alex Dorey（GitHub 用户名 @dorey）在 GitHub 上制作了一张图表，列
 
 https://dorey.github.io/JavaScript-Equality-Table/unified/
 
-![截屏2023-01-27 14.44.30](./你不知道的JavaScript（中卷）/截屏2023-01-27 14.44.30.png)
+![截屏2023-01-27 14.44.30](你不知道的JavaScript（中卷）/截屏2023-01-27 14.44.30.png)
