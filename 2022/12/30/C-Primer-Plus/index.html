@@ -24,7 +24,7 @@
 <meta property="og:description" content="开始学习C++一个cpp文件常见的部分  注释，由前缀&#x2F;&#x2F;标识。  预处理器编译指令#include。  函数头：int main( )。  编译指令using namespace。  函数体，用{和}括起。  使用C++的cout工具显示消息的语句。  结束main( )函数的return语句。   **main( )**函数#include &lt;iostream&gt; #include">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-30T23:19:45.000Z">
-<meta property="article:modified_time" content="2023-01-19T15:34:34.936Z">
+<meta property="article:modified_time" content="2023-01-27T07:12:14.879Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -340,7 +340,7 @@
 <div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span></code></pre></div>
 
 <p>该编译指令导致预处理器将iostream文件的内容添加到程序中。这 是一种典型的预处理器操作：在源代码被编译之前，替换或添加文本</p>
-<p>这提出了一个问题：为什么要将iostream文件的内容添加到程序中 呢？答案涉及程序与外部世界之间的通信。iostream中的io指的是输入 （进入程序的信息）和输出（从程序中发送出去的信息）。C++的输入输出方案涉及iostream文件中的多个定义。为了使用cout来显示消息，第 一个程序需要这些定义。#include编译指令导致iostream文件的内容随源 代码文件的内容一起被发送给编译器。实际上，iostream文件的内容将 取代程序中的代码行#include <iostream>。原始文件没有被修改，而是将源代码文件和iostream组合成一个复合文件，编译的下一阶段将使用 该文件。 </p>
+<p>这提出了一个问题：为什么要将iostream文件的内容添加到程序中 呢？答案涉及程序与外部世界之间的通信。iostream中的io指的是输入 （进入程序的信息）和输出（从程序中发送出去的信息）。C++的输入输出方案涉及iostream文件中的多个定义。为了使用cout来显示消息，第 一个程序需要这些定义。#include编译指令导致iostream文件的内容随源 代码文件的内容一起被发送给编译器。实际上，iostream文件的内容将 取代程序中的代码行#include <iostream>。原始文件没有被修改，而是将源代码文件和iostream组合成一个复合文件，编译的下一阶段将使用 该文件。 </iostream></p>
 <p><strong>使用cin和cout进行输入和输出的程序必须包含文件iostream。</strong> </p>
 <h2 id="头文件名"><a href="#头文件名" class="headerlink" title="头文件名"></a>头文件名</h2><p>像iostream这样的文件叫做包含文件（include file）—由于它们被包 含在其他文件中；也叫头文件（header file）—由于它们被包含在文件 起始处。C++编译器自带了很多头文件，每个头文件都支持一组特定的 工具。C语言的传统是，头文件使用扩展名h，将其作为一种通过名称标 识文件类型的简单方式。例如，头文件math.h支持各种C语言数学函 数，但C++的用法变了。现在，对老式C的头文件保留了扩展名 h（C++程序仍可以使用这种文件），而C++头文件则没有扩展名。有些 C头文件被转换为C++头文件，这些文件被重新命名，去掉了扩展名 h（使之成为C++风格的名称），并在文件名称前面加上前缀c（表明来 自C语言）。例如，C++版本的math.h为cmath。有时C头文件的C版本和 C++版本相同，而有时候新版本做了一些修改。对于纯粹的C++头文件 （如iostream）来说，去掉h不只是形式上的变化，没有h的头文件也可 以包含名称空间</p>
 <table>

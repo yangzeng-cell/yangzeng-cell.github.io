@@ -24,7 +24,7 @@
 <meta property="og:description" content="内置工具和类型体操类型系统其实在很多语言里面都是有的，比如Java、Swift、C++等等，但是相对来说TypeScript的类型非常灵活： 这是因为TypeScript的目的是为JavaScript添加一套类型校验系统，因为JavaScript本身的灵活性，也让TypeScript类型系统 不得不增加更附加的功能以适配JavaScript的灵活性； 所以TypeScript是一种可以支持类型编程">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-23T22:10:59.000Z">
-<meta property="article:modified_time" content="2023-01-19T15:34:34.940Z">
+<meta property="article:modified_time" content="2023-01-27T07:12:14.887Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="typescript">
 <meta name="twitter:card" content="summary_large_image">
@@ -417,7 +417,7 @@
 // <span class="hljs-symbol">&#x27;StrOrNumArr</span>&#x27; 不再是一个联合类型
 <span class="hljs-keyword">type</span> <span class="hljs-type">StrOrNumArr </span>= ToArrayNonDist&lt;string | number&gt;;//<span class="hljs-keyword">type</span> <span class="hljs-type">StrOrNumArr </span>= (string | number)[]</code></pre></div>
 
-<h3 id="Partial"><a href="#Partial" class="headerlink" title="Partial"></a>Partial<Type></h3><p><strong>用于构造一个Type下面的所有属性都设置为可选的类型</strong></p>
+<h3 id="Partial"><a href="#Partial" class="headerlink" title="Partial"></a>Partial<Type></Type></h3><p><strong>用于构造一个Type下面的所有属性都设置为可选的类型</strong></p>
 <div class="code-wrapper"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">IKun</span> &#123;
   <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>
   <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>
@@ -433,7 +433,7 @@
 <span class="hljs-comment">// IKun都变成可选的</span>
 <span class="hljs-keyword">type</span> <span class="hljs-title class_">IKunOptional</span> = <span class="hljs-title class_">HYPartial</span>&lt;<span class="hljs-title class_">IKun</span>&gt;</code></pre></div>
 
-<h3 id="Required"><a href="#Required" class="headerlink" title="Required"></a><strong>Required<Type></strong></h3><p>用于构造一个Type下面的所有属性全都设置为必填的类型，这个工具类型跟 Partial 相反。</p>
+<h3 id="Required"><a href="#Required" class="headerlink" title="Required"></a><strong>Required<Type></Type></strong></h3><p>用于构造一个Type下面的所有属性全都设置为必填的类型，这个工具类型跟 Partial 相反。</p>
 <div class="code-wrapper"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">IKun</span> &#123;
   <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>
   <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>
@@ -450,7 +450,7 @@
 <span class="hljs-keyword">type</span> <span class="hljs-title class_">IKun2</span> = <span class="hljs-title class_">Required</span>&lt;<span class="hljs-title class_">IKun</span>&gt;
 </code></pre></div>
 
-<h3 id="Readonly"><a href="#Readonly" class="headerlink" title="Readonly"></a><strong>Readonly<Type></strong></h3><p><strong>用于构造一个Type下面的所有属性全都设置为只读的类型，意味着这个类型的所有的属性全都不可以重新赋值</strong></p>
+<h3 id="Readonly"><a href="#Readonly" class="headerlink" title="Readonly"></a><strong>Readonly<Type></Type></strong></h3><p><strong>用于构造一个Type下面的所有属性全都设置为只读的类型，意味着这个类型的所有的属性全都不可以重新赋值</strong></p>
 <div class="code-wrapper"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">IKun</span> &#123;
   <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>
   <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>
@@ -565,7 +565,7 @@
 <span class="hljs-comment">// IKun都变成可选的</span>
 <span class="hljs-keyword">type</span> <span class="hljs-title class_">IKuns</span> = <span class="hljs-title class_">HYExtract</span>&lt;<span class="hljs-title class_">IKun</span>, <span class="hljs-string">&quot;rap&quot;</span>|<span class="hljs-string">&quot;dance&quot;</span>&gt;</code></pre></div>
 
-<h3 id="NonNullable"><a href="#NonNullable" class="headerlink" title="NonNullable"></a><strong>NonNullable<Type></strong></h3><p><strong>用于构造一个类型，这个类型从Type中排除了所有的null、undefined的类型</strong></p>
+<h3 id="NonNullable"><a href="#NonNullable" class="headerlink" title="NonNullable"></a><strong>NonNullable<Type></Type></strong></h3><p><strong>用于构造一个类型，这个类型从Type中排除了所有的null、undefined的类型</strong></p>
 <div class="code-wrapper"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> <span class="hljs-title class_">IKun</span> = <span class="hljs-string">&quot;sing&quot;</span> | <span class="hljs-string">&quot;dance&quot;</span> | <span class="hljs-string">&quot;rap&quot;</span> | <span class="hljs-literal">null</span> | <span class="hljs-literal">undefined</span>
 
 <span class="hljs-comment">// 确实keys一定是可以作为key的联合类型</span>
@@ -577,7 +577,7 @@
 <div class="code-wrapper"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> <span class="hljs-variable constant_">T0</span> = <span class="hljs-title class_">NonNullable</span>&lt;<span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span> | <span class="hljs-literal">undefined</span>&gt;;<span class="hljs-comment">//type T0 = string | number</span>
 <span class="hljs-keyword">type</span> <span class="hljs-variable constant_">T1</span> = <span class="hljs-title class_">NonNullable</span>&lt;<span class="hljs-built_in">string</span>[] | <span class="hljs-literal">null</span> | <span class="hljs-literal">undefined</span>&gt;;<span class="hljs-comment">//type T1 = string[]</span></code></pre></div>
 
-<h3 id="ReturnType"><a href="#ReturnType" class="headerlink" title="ReturnType"></a><strong>ReturnType<Type></strong></h3><p><strong>用于构造一个含有Type函数的返回值的类型</strong></p>
+<h3 id="ReturnType"><a href="#ReturnType" class="headerlink" title="ReturnType"></a><strong>ReturnType<Type></Type></strong></h3><p><strong>用于构造一个含有Type函数的返回值的类型</strong></p>
 <div class="code-wrapper"><pre><code class="hljs ts"><span class="hljs-keyword">declare</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">f1</span>(<span class="hljs-params"></span>): &#123; <span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">b</span>: <span class="hljs-built_in">string</span> &#125;;
  
 <span class="hljs-keyword">type</span> <span class="hljs-variable constant_">T0</span> = <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">string</span>&gt;;
@@ -608,7 +608,7 @@
 <span class="hljs-comment">//Type &#x27;string&#x27; does not satisfy the constraint &#x27;(...args: any) =&gt; any&#x27;.</span>
 </code></pre></div>
 
-<h3 id="InstanceType"><a href="#InstanceType" class="headerlink" title="InstanceType"></a><strong>InstanceType<Type></strong></h3><p><strong>用于构造一个由所有Type的构造函数的实例类型组成的类型</strong></p>
+<h3 id="InstanceType"><a href="#InstanceType" class="headerlink" title="InstanceType"></a><strong>InstanceType<Type></Type></strong></h3><p><strong>用于构造一个由所有Type的构造函数的实例类型组成的类型</strong></p>
 <div class="code-wrapper"><pre><code class="hljs ts"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;&#125;
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span> &#123;&#125;
 

@@ -24,7 +24,7 @@
 <meta property="og:description" content="##git基本使用初始化Git仓库git init  克隆仓库git clone https:&#x2F;&#x2F;github.com&#x2F;coderwhy&#x2F;hy-react-web-music.git  检测文件的状态git status  git status -s  git status --short  将所有文件添加到暂存区git add .  将暂存区的文件提交git commit -m &quot;提交">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-08T16:44:11.000Z">
-<meta property="article:modified_time" content="2023-01-19T15:34:34.944Z">
+<meta property="article:modified_time" content="2023-01-27T07:12:14.895Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary_large_image">
@@ -430,7 +430,7 @@ git rebase <span class="hljs-keyword">master</span>
 <div class="code-wrapper"><pre><code class="hljs crmsh">git rebase --onto <span class="hljs-keyword">master</span> <span class="hljs-title">server</span> client</code></pre></div>
 
 <p>以上命令的意思是：“取出 client 分支，找出它从 server 分支分歧之后的补丁， 然后把这些补丁在master 分支上重放一遍，让 client 看起来像直接基于 master 修改一样”</p>
-<p>接下来你决定将 server 分支中的修改也整合进来。 使用 git rebase <basebranch> <topicbranch> 命令可以直接将主题分支 （即本例中的 server）变基到目标分支（即 master）上。 这样做能省去你先切换到server 分支，再对其执行变基命令的多个步骤</p>
+<p>接下来你决定将 server 分支中的修改也整合进来。 使用 git rebase <basebranch> <topicbranch> 命令可以直接将主题分支 （即本例中的 server）变基到目标分支（即 master）上。 这样做能省去你先切换到server 分支，再对其执行变基命令的多个步骤</topicbranch></basebranch></p>
 <div class="code-wrapper"><pre><code class="hljs crmsh">git rebase <span class="hljs-keyword">master</span> <span class="hljs-title">server</span> 
 
 相当于
@@ -455,7 +455,7 @@ git rebase <span class="hljs-literal">master</span></code></pre></div>
 <h4 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h4><div class="code-wrapper"><pre><code class="hljs ada">对于未进行提交到暂存区域的
 git checkout <span class="hljs-comment">-- &lt;file&gt;</span></code></pre></div>
 
-<p>请务必记得 git checkout – <file> 是一个危险的命令。 你对那个文件在本地的任何修改都会消失——Git 会用最近提交的版本覆盖掉它。 除非你确实清楚不想要对那个文件的本地修改了，否则请不要使用这个命令。</p>
+<p>请务必记得 git checkout – <file> 是一个危险的命令。 你对那个文件在本地的任何修改都会消失——Git 会用最近提交的版本覆盖掉它。 除非你确实清楚不想要对那个文件的本地修改了，否则请不要使用这个命令。</file></p>
 <h4 id="Git-别名"><a href="#Git-别名" class="headerlink" title="Git 别名"></a><strong>Git</strong> 别名</h4><p>为git 命令设置别名</p>
 <div class="code-wrapper"><pre><code class="hljs verilog">git <span class="hljs-keyword">config</span> --<span class="hljs-keyword">global</span> <span class="hljs-keyword">alias</span><span class="hljs-variable">.co</span> checkout
 git <span class="hljs-keyword">config</span> --<span class="hljs-keyword">global</span> <span class="hljs-keyword">alias</span><span class="hljs-variable">.br</span> branch
