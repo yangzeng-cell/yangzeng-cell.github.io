@@ -1829,4 +1829,26 @@ Alex Dorey（GitHub 用户名 @dorey）在 GitHub 上制作了一张图表，列
 
 https://dorey.github.io/JavaScript-Equality-Table/unified/
 
-![截屏2023-01-27 14.44.30](你不知道的JavaScript（中卷）/截屏2023-01-27 14.44.30.png)
+![](https://raw.githubusercontent.com/yangzeng-cell/blog-images/master/%E6%88%AA%E5%B1%8F2023-01-27%2014.44.30.png)
+
+## 抽象关系比较
+
+a < b 中涉及的隐式强制类型转换
+
+比较双方首先调用 ToPrimitive，如果结果出现非字符串，就根据 ToNumber 规则将双方强制类型转换为数字来进行比较。
+
+```js
+var a = [ 42 ];
+var b = [ "43" ];
+a < b; // true
+b < a; // false
+```
+
+如果比较双方都是字符串，则按字母顺序来进行比较：
+
+```js
+var a = [ "42" ];
+var b = [ "043" ];
+a < b; // false
+```
+
