@@ -16,14 +16,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="计算机系统概述 什么是计算机系统 计算机系统就是硬件+软件 硬件：就是计算机的实体，主机，外设等 软件：由各类功能特殊的程序组成 ![](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;yangzeng-cell&#x2F;blog-images&#x2F;截屏2023-01-28 11.48.02.png) 第一代计算机 ![](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;yangzeng-ce">
+    <meta name="description" content="计算机系统概述 什么是计算机系统 计算机系统就是硬件+软件 硬件：就是计算机的实体，主机，外设等 软件：由各类功能特殊的程序组成  第一代计算机  第二代计算机  第三代计算机 **** 第四代计算机   计算机硬件的基本组成分为早期冯诺依曼机的结构和现代计算机的结构  早期冯诺依曼机是以运算器为中心的计算机结构    输入设备 输入设备的主要功能是将程序和数据以机器所能识别和接受的信息形式输入计">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机组成原理">
 <meta property="og:url" content="http://example.com/2022/09/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="计算机系统概述 什么是计算机系统 计算机系统就是硬件+软件 硬件：就是计算机的实体，主机，外设等 软件：由各类功能特殊的程序组成 ![](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;yangzeng-cell&#x2F;blog-images&#x2F;截屏2023-01-28 11.48.02.png) 第一代计算机 ![](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;yangzeng-ce">
+<meta property="og:description" content="计算机系统概述 什么是计算机系统 计算机系统就是硬件+软件 硬件：就是计算机的实体，主机，外设等 软件：由各类功能特殊的程序组成  第一代计算机  第二代计算机  第三代计算机 **** 第四代计算机   计算机硬件的基本组成分为早期冯诺依曼机的结构和现代计算机的结构  早期冯诺依曼机是以运算器为中心的计算机结构    输入设备 输入设备的主要功能是将程序和数据以机器所能识别和接受的信息形式输入计">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2011.40.38.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2011.48.02.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2011.51.30.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2011.55.26.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2011.57.57.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2012.00.34.png">
@@ -35,6 +37,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2013.04.48.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2015.10.36.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2015.38.50.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2015.53.40.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2015.59.03.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2016.01.06.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2016.02.28.png">
@@ -44,8 +47,10 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2016.05.51.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2016.10.02.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2016.43.45.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2017.20.56.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2017.22.01.png">
 <meta property="article:published_time" content="2022-09-14T10:28:13.000Z">
-<meta property="article:modified_time" content="2023-01-28T09:16:19.709Z">
+<meta property="article:modified_time" content="2023-01-28T09:30:47.440Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2011.40.38.png">
@@ -240,7 +245,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.7k 字
+          2.5k 字
         
       </span>
     
@@ -251,7 +256,7 @@
         
         
         
-          23 分钟
+          21 分钟
         
       </span>
     
@@ -299,9 +304,9 @@
 <p>计算机系统就是硬件+软件</p>
 <p>硬件：就是计算机的实体，主机，外设等</p>
 <p>软件：由各类功能特殊的程序组成</p>
-<p>![](<a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28">https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/截屏2023-01-28</a> 11.48.02.png)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2011.48.02.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>第一代计算机</strong></p>
-<p>![](<a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28">https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/截屏2023-01-28</a> 11.51.30.png)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2011.51.30.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>第二代计算机</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2011.55.26.png" srcset="/img/loading.gif" lazyload></p>
 <p><strong>第三代计算机</strong></p>
@@ -336,7 +341,7 @@
 <p>控制单元CU是核心</p>
 <p>PC用来存放当前欲执行指令的地址，可以自动加1以形成下一条指令的地址，他和主存的MAR之间有一条直接通路</p>
 <p>IR用来存放当前指令，其内容来自主存的MDR，指令中的操作码OP(IR)送至cpu，用于分析指令并发出各种微操作命令序列，而地址吗Ad(IR)M AR，用以取操作数</p>
-<p>![](<a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28">https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/截屏2023-01-28</a> 15.53.40.png)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2015.53.40.png" srcset="/img/loading.gif" lazyload></p>
 <p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2015.59.03.png" srcset="/img/loading.gif" lazyload></p>
 <p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2016.01.06.png" srcset="/img/loading.gif" lazyload></p>
 <p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2016.02.28.png" srcset="/img/loading.gif" lazyload></p>
@@ -385,6 +390,8 @@
 <p>​        指从用户向计算机发送一个请求，到系统对该请求作出响应并获取所需结果的等待时间，包括CPU时间(运行一个程序所花的时间)与等待时间(用于磁盘访问，存储器访问，I/O操作，操作系统开销等时间)</p>
 <p>基准程序</p>
 <p>​    基准程序是专门用来进行性能评价的一组程序，能够很好的反应机器在运行实际负载是的性能，可以通过在不同机器上运行相同的基准程序来比较在不同机器1上的运行时间，从而评测性能，对于不同的应用场所，应该选择不同的基准程序。使用基准程序进行计算机性能评测也会存在缺陷，因为基准程序的性能可能与某一小段的短代码密切相关，而硬件系统设计人员或者编译器开发者会针对这些代码片段进行特殊的优化，使得执行这段代码的速度非常快，以至于不能得到准确的性能评测结果</p>
+<h1 id="数据的表示与运算"><a href="#数据的表示与运算" class="headerlink" title="数据的表示与运算"></a>数据的表示与运算</h1><p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2017.20.56.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-01-28%2017.22.01.png" srcset="/img/loading.gif" lazyload></p>
 
                 
               </div>
