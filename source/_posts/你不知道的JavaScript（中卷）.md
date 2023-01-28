@@ -1852,3 +1852,644 @@ var b = [ "043" ];
 a < b; // false
 ```
 
+a 和 b 并没有被转换为数字，因为 ToPrimitive 返回的是字符串，所以这里比较的是 "42" 和 "043" 两个字符串，它们分别以 "4" 和 "0" 开头。因为 "0" 在字母顺序上小于 "4"，所以最后结果为 false。
+
+```js
+var a = [ 4, 2 ];
+var b = [ 0, 4, 3 ];
+a < b; // false
+```
+
+a 转换为 "4, 2"，b 转换为 "0, 4, 3"，同样是按字母顺序进行比较。
+
+```js
+var a = { b: 42 };
+var b = { b: 43 };
+a < b; // ??
+```
+
+结果还是 false，因为 a 是 [object Object]，b 也是 [object Object]，所以按照字母顺序a < b 并不成立。
+
+```js
+var a = { b: 42 };
+var b = { b: 43 };
+a < b; // false
+a == b; // false
+a > b; // false
+a <= b; // true
+a >= b; // true
+```
+
+是如果 a < b 和 a == b 结果为 false，为什么 a <= b 和 a >= b 的结果会是 true 呢？
+
+因为根据规范 a <= b 被处理为 b < a，然后将结果反转。因为 b < a 的结果是 false，所以 a <= b 的结果是 true。这可能与我们设想的大相径庭,即 <= 应该是“小于或者等于”。实际上 JavaScript 中 <= 是“不大于”的意思（即 !(a > b)，处理为 !(b < a)）。同理 a >= b 处理为 b <= a。
+
+与 == 和 === 的完整性检查一样，我们应该在必要和安全的情况下使用强制类型转换，如：42 < "43"。换句话说就是为了保证安全，应该对关系比较中的值进行显式强制类型转换：
+
+```js
+var a = [ 42 ];
+var b = "043";
+a < b; // false -- 字符串比较！
+Number( a ) < Number( b ); // true -- 数字比较！
+```
+
+# 语法
+
+## 语句和表达式
+
+很多人不知道，语句都有一个结果值（statement completion value，undefined 也算）
+
+获得结果值最直接的方法是在浏览器开发控制台中输入语句，默认情况下控制台会显示所执行的最后一条语句的结果值。
+
+ES5 规 范 12.2 节中的变量声明（VariableDeclaration）算法实际上有一个返回值（是一个包含所声明变量名称的字符串，很奇特吧？），但是这个值被变量语句（VariableStatement）算法屏蔽掉了（for..in 循环除外），最后返回结果为空（undefined）。
+
+比如代码块 { .. } 的结果值是其最后一个语句 / 表达式的结果。
+
+```
+var b;
+if (true) {
+ b = 4 + 38;
+}
+```
+
+在控制台 /REPL 中输入以上代码应该会显示 42，即最后一个语句 / 表达式 b = 4 + 38 的结果值。换句话说，代码块的结果值就如同一个隐式的返回，即返回最后一个语句的结果值。
+
+但下面这样的代码无法运行：
+
+```js
+var a, b;
+a = if (true) {
+ b = 4 + 38;
+};
+```
+
+因为语法不允许我们获得语句的结果值并将其赋值给另一个变量（至少目前不行）
+
+可以使用万恶的 eval(..)（又读作“evil”）来获得结果值：
+
+```js
+var a, b;
+a = eval( "if (true) { b = 4 + 38; }" );
+a; // 42
+```
+
+ES7 规范有一项“do 表达式”（do expression）提案，类似下面这样：
+
+```js
+var a, b;
+a = do {
+ if (true) {
+ b = 4 + 38; 
+ }
+};
+a; // 42
+```
+
+上例中，do { .. } 表达式执行一个代码块（包含一个或多个语句），并且返回其中最后一个语句的结果值，然后赋值给变量 a
+
+### 表达式的副作用
+
+最常见的有副作用（也可能没有）的表达式是函数调用：
+
+```js
+function foo() {
+ a = a + 1;
+}
+var a = 1;
+foo(); // 结果值：undefined。副作用：a的值被改变
+```
+
+其他一些表达式也有副作用，比如：
+
+```js
+var a = 42;
+a++; // 42
+a; // 43
+++a; // 44
+a; // 44
+```
+
+除了赋值之外，还会自增。自增就是副作用
+
+++a,它的副作用（将 a 递增）产生在表达式返回结果值之前，而 a++ 的副作用则产生在之后。
+
+++a++ 会产生 ReferenceError 错误，因为运算符需要将产生的副作用赋值给一个变量。以 ++a++ 为例，它首先执行 a++（根据运算符优先级，如下），返回 42，然后执行 ++42，这时会产生 ReferenceError 错误，因为 ++ 无法直接在 42 这样的值上产生副作用。
+
+常有人误以为可以用括号 ( ) 将 a++ 的副作用封装起来，例如：
+
+```js
+var a = 42;
+var b = (a++);
+a; // 43
+b; // 42
+```
+
+事实并非如此。( ) 本身并不是一个封装表达式，不会在表达式 a++ 产生副作用之后执行。即便可以，a++ 会首先返回 42，除非有表达式在 ++ 之后再次对 a 进行运算，否则还是不会得到 43，也就不能将 43 赋值给 b。
+
+但也不是没有办法，可以使用 , 语句系列逗号运算符（statement-series comma operator）将多个独立的表达式语句串联成一个语句：
+
+```js
+var a = 42, b;
+b = ( a++, a );
+a; // 43
+b; // 43
+```
+
+再如 delete 运算符。delete 用来删除对象中的属性和数组中的单元。它通
+
+常以单独一个语句的形式出现：
+
+```
+var obj = {
+
+ a: 42
+
+};
+
+obj.a; // 42
+
+delete obj.a; // true
+
+obj.a; // undefined
+```
+
+如果操作成功，delete 返回 true，否则返回 false。其副作用是属性被从对象中删除（或者单元从 array 中删除）
+
+另一个有趣的例子是 = 赋值运算符。
+
+```js
+var a;
+a = 42; // 42
+a; // 42
+```
+
+a = 42 中的 = 运算符看起来没有副作用，实际上它的结果值是 42，它的副作用是将 42 赋值给 a。
+
+### 上下文规则
+
+```
+[] + {}; // "[object Object]"
+
+{} + []; // 0
+```
+
+表面上看 + 运算符根据第一个操作数（[] 或 {}）的不同会产生不同的结果，实则不然。第一行代码中，{} 出现在 + 运算符表达式中，因此它被当作一个值（空对象）来处理。 [] 会被强制类型转换为 ""，而 {} 会被强制类型转换为 "[object Object]"。但在第二行代码中，{} 被当作一个独立的空代码块（不执行任何操作）。代码块结尾不需要分号，所以这里不存在语法上的问题。最后 + [] 将 [] 显式强制类型转换为 0。
+
+**对象解构**
+
+{ .. } 还可以用作函数命名参数（named function argument）的对象解构（object destructuring），方便隐式地用对象属性赋值：
+
+```js
+function foo({ a, b, c }) {
+ // 不再需要这样:
+ // var a = obj.a, b = obj.b, c = obj.c
+ console.log( a, b, c );
+}
+foo( {
+ c: [1,2,3],
+ a: 42,
+ b: "foo"
+} ); // 42 "foo" [1, 2, 3]
+```
+
+else if **和可选代码块**
+
+很多人误以为 JavaScript 中有 else if，因为我们可以这样来写代码：
+
+```js
+if (a) { 
+ // ..
+}
+else if (b) {
+ // .. 
+}
+else { 
+ // ..
+}
+```
+
+事实上 JavaScript 没有 else if，但 if 和 else 只包含单条语句的时候可以省略代码块的x{ }。下面的代码你一定不会陌生：
+
+```
+if (a) doSomething( a );
+```
+
+很多 JavaScript 代码检查工具建议对单条语句也应该加上 { }，如：
+
+```
+if (a) { doSomething( a ); }
+```
+
+else 也是如此，所以我们经常用到的 else if 实际上是这样的：
+
+```js
+if (a) { 
+ // ..
+} 
+else {
+ if (b) { 
+ // ..
+ } 
+ else {
+ // .. 
+ }
+```
+
+if (b) { .. } else { .. } 实际上是跟在 else 后面的一个单独的语句，所以带不带 { } 都可以。换句话说，else if 不符合前面介绍的编码规范，else 中是一个单独的 if 语句。
+
+else if 极为常见，能省掉一层代码缩进，所以很受青睐。但这只是我们自己发明的用法，切勿想当然地认为这些都属于 JavaScript 语法的范畴。
+
+## 运算符优先级
+
+mdn运算符优先级列表：
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
+
+### 短路
+
+对 && 和 || 来说，如果从左边的操作数能够得出结果，就可以忽略右边的操作数。我们将这种现象称为“短路”（即执行最短路径）。
+
+以 a && b 为例，如果 a 是一个假值，足以决定 && 的结果，就没有必要再判断 b 的值。同样对于 a || b，如果 a 是一个真值，也足以决定 || 的结果，也就没有必要再判断 b 的值。
+
+“短路”很方便，也很常用，如：
+
+```js
+function doSomething(opts) {
+ if (opts && opts.cool) {
+ // .. 
+ }
+}
+```
+
+opts && opts.cool 中的 opts 条件判断如同一道安全保护，因为如果 opts 未赋值（或者不是一个对象），表达式 opts.cool 会出错。通过使用短路特性，opts 条件判断未通过时opts.cool 就不会执行，也就不会产生错误！
+
+|| 运算符也一样：
+
+```js
+function doSomething(opts) {
+ if (opts.cache || primeCache()) {
+ // .. 
+ }
+}
+```
+
+这里首先判断 opts.cache 是否存在，如果是则无需调用 primeCache() 函数，这样可以避免执行不必要的代码。
+
+a && b || c ? c || b ? a : c && b : a=>(a && b || c) ? (c || b) ? a : (c && b) : a
+
+为 && 运算符的优先级高于 ||，而 || 的优先级又高于 ? :。
+
+## 自动分号
+
+有时 JavaScript 会自动为代码行补上缺失的分号，即自动分号插入（Automatic Semicolon Insertion，ASI）。
+
+因为如果缺失了必要的 ;，代码将无法运行，语言的容错性也会降低。ASI 能让我们忽略那些不必要的 ;。请注意，ASI 只在换行符处起作用，而不会在代码行的中间插入分号
+
+如果 JavaScript 解析器发现代码行可能因为缺失分号而导致错误，那么它就会自动补上分号。并且，只有在代码行末尾与换行符之间除了空格和注释之外没有别的内容时，它才会这样做。
+
+例如：
+
+```
+var a = 42, b 
+c;
+```
+
+如果 b 和 c 之间出现 a , 的话（即使另起一行），c 会被作为 var 语句的一部分来处理。在上例中，JavaScript 判断 b 之后应该有 ;，所以 c; 被处理为一个独立的表达式语句。
+
+```js
+var a = 42, b = "foo";
+a
+b // "foo"
+```
+
+上述代码同样合法，不会产生错误，因为 ASI 也适用于表达式语句。
+
+ASI 在某些情况下很有用，比如：
+
+```js
+var a = 42;
+do {
+ // ..
+} while (a) // <-- 这里应该有;
+a;
+```
+
+语法规定 do..while 循环后面必须带 ;，而 while 和 for 循环后则不需要。大多数开发人员都不记得这一点，此时 ASI 就会自动补上分号。
+
+```js
+var a = 42;
+while (a) {
+ // ..
+} // <-- 这里可以没有;
+a;
+```
+
+其他涉及 ASI 的情况是 break、continue、return 和 yield（ES6）等关键字：
+
+```js
+function foo(a) {
+ if (!a) return
+ a *= 2;
+ // .. 
+}
+```
+
+由于 ASI 会在 return 后面自动加上 ;，所以这里 return 语句并不包括第二行的 a *= 2。return 语句的跨度可以是多行，但是其后必须有换行符以外的代码：
+
+```js
+function foo(a) {
+ return (
+ a * 2 + 3 / 12 
+ );
+}
+```
+
+上述规则对 break、continue 和 yield 也同样适用。
+
+## 错误
+
+### 提前使用变量
+
+ES6 规范定义了一个新概念，叫作 TDZ（Temporal Dead Zone，暂时性死区）。
+
+TDZ 指的是由于代码中的变量还没有初始化而不能被引用的情况。
+
+对此，最直观的例子是 ES6 规范中的 let 块作用域：
+
+```js
+{
+ a = 2; // ReferenceError!
+ let a; 
+}
+```
+
+a = 2 试图在 let a 初始化 a 之前使用该变量（其作用域在 { .. } 内），这里就是 a 的TDZ，会产生错误。
+
+对未声明变量使用 typeof 不会产生错误，但在 TDZ 中却会报错：
+
+```js
+{
+ typeof a; // undefined
+ typeof b; // ReferenceError! (TDZ)
+ let b;
+}
+```
+
+## 函数参数
+
+另一个 TDZ 违规的例子是 ES6 中的参数默认值
+
+```js
+var b = 3;
+function foo( a = 42, b = a + b + 5 ) {
+ // ..
+}
+```
+
+b = a + b + 5 在参数 b（= 右边的 b，而不是函数外的那个）的 TDZ 中访问 b，所以会出错。而访问 a 却没有问题，因为此时刚好跨出了参数 a 的 TDZ。
+
+对 ES6 中的参数默认值而言，参数被省略或被赋值为 undefined 效果都一样，都是取该参数的默认值。然而某些情况下，它们之间还是有区别的：
+
+```js
+function foo( a = 42, b = a + 1 ) {
+ console.log(
+ arguments.length, a, b,
+ arguments[0], arguments[1]
+ );
+}
+foo(); // 0 42 43 undefined undefined
+foo( 10 ); // 1 10 11 10 undefined
+foo( 10, undefined ); // 2 10 11 10 undefined
+foo( 10, null ); // 2 10 null 10 null
+```
+
+虽然参数 a 和 b 都有默认值，但是函数不带参数时，arguments 数组为空,相反，如果向函数传递 undefined 值，则 arguments 数组中会出现一个值为 undefined 的单元，而不是默认值。
+
+ES6 参数默认值会导致 arguments 数组和相对应的命名参数之间出现偏差，ES5 也会出现这种情况：
+
+```js
+function foo(a) {
+ a = 42;
+ console.log( arguments[0] );
+}
+foo( 2 ); // 42 (linked)
+foo(); // undefined (not linked)
+```
+
+向函数传递参数时，arguments 数组中的对应单元会和命名参数建立关联（linkage）以得到相同的值。相反，不传递参数就不会建立关联。
+
+但是，在严格模式中并没有建立关联这一说：
+
+```js
+function foo(a) {
+ "use strict";
+ a = 42;
+ console.log( arguments[0] );
+}
+foo( 2 ); // 2 (not linked)
+foo(); // undefined (not linked)
+```
+
+因此，在开发中不要依赖这种关联机制。实际上，它是 JavaScript 语言引擎底层实现的一个抽象泄漏（leaky abstraction），并不是语言本身的特性。
+
+在 ES6 之前，获得函数所有参数的唯一途径就是 arguments 数组。此外，即使将命名参数和 arguments 数组混用也不会出错，只需遵守一个原则，即不要同时访问命名参数和其对应的 arguments 数组单元。
+
+```js
+function foo(a) {
+ console.log( a + arguments[1] ); // 安全! }
+foo( 10, 32 ); // 42
+```
+
+## try..finally
+
+finally 中的代码总是会在 try 之后执行，如果有 catch 的话则在 catch 之后执行。也可以将 finally 中的代码看作一个回调函数，即无论出现什么情况最后一定会被调用。
+
+如果 try 中有 return 语句会出现什么情况呢？ return 会返回一个值，那么调用该函数得到返回值的代码是在 finally 之前还是之后执行呢？
+
+```JS
+function foo() {
+ try {
+ return 42;
+ } 
+ finally {
+ console.log( "Hello" );
+ }
+ console.log( "never runs" );
+}
+console.log( foo() );
+// Hello
+// 42
+```
+
+这里 return 42 先执行，并将 foo() 函数的返回值设置为 42。然后 try 执行完毕，接着执行 finally。最后 foo() 函数执行完毕，console.log(..) 显示返回值。
+
+try 中的 throw 也是如此
+
+```js
+ function foo() {
+ try {
+ throw 42; 
+ }
+ finally {
+ console.log( "Hello" );
+ }
+ console.log( "never runs" );
+}
+console.log( foo() );
+// Hello
+// Uncaught Exception: 42
+```
+
+如果 finally 中抛出异常（无论是有意还是无意），函数就会在此处终止。如果此前 try 中已经有 return 设置了返回值，则该值会被丢弃：
+
+```js
+function foo() {
+ try {
+ return 42;
+ } 
+ finally {
+ throw "Oops!";
+ }
+ console.log( "never runs" );
+}
+console.log( foo() );
+// Uncaught Exception: Oops!
+```
+
+continue 和 break 等控制语句也是如此
+
+```js
+for (var i=0; i<10; i++) {
+ try {
+ continue; 
+ }
+ finally {
+ console.log( i );
+ }
+}
+// 0 1 2 3 4 5 6 7 8 9
+```
+
+continue 在每次循环之后，会在 i++ 执行之前执行 console.log(i)，所以结果是 0..9 而非1..10。
+
+ES6 中新加入了 yield，可以将其视为return 的中间版本。然而与 return 不同的是，yield 在 generator（ES6 的另一个新特性）重新开始时才结束，这意味着 try { .. yield .. } 并未结束，因此 finally 不会在 yield 之后立即执行。
+
+finally 中的 return 会覆盖 try 和 catch 中 return 的返回值：
+
+```js
+function foo() {
+ try {
+ return 42;
+ } 
+ finally {
+ // 没有返回语句，所以没有覆盖
+ } 
+}
+function bar() {
+ try {
+ return 42;
+ }
+ finally {
+ // 覆盖前面的 return 42
+ return; 
+ }
+}
+function baz() {
+ try {
+ return 42;
+ } 
+ finally {
+ // 覆盖前面的 return 42
+ return "Hello";
+ }
+}
+foo(); // 42
+bar(); // undefined
+baz(); // Hello
+```
+
+通常来说，在函数中省略 return 的结果和 return; 及 return undefined; 是一样的，但是在 finally 中省略 return 则会返回前面的 return 设定的返回值。
+
+事实上，还可以将 finally 和带标签的 break 混合使用
+
+```js
+function foo() {
+ bar: {
+ try {
+ return 42;
+ } 
+ finally {
+ // 跳出标签为bar的代码块
+ break bar;
+ }
+ }
+ console.log( "Crazy" );
+  return "Hello";
+}
+console.log( foo() );
+// Crazy
+// Hello
+```
+
+但切勿这样操作。利用 finally 加带标签的 break 来跳过 return 只会让代码变得晦涩难懂，即使加上注释也是如此
+
+## switch
+
+```js
+switch (a) {
+ case 2:
+ // 执行一些代码
+ break;
+ case 42:
+ // 执行另外一些代码
+ break;
+ default:
+ // 执行缺省代码
+}
+```
+
+首先，a 和 case 表达式的匹配算法与 ===相同。通常 case 语句中的 switch都是简单值
+
+有时候需要使用强制类型转换，就是需要使用==进行比较，需要特殊处理
+
+```js
+var a = "42";
+switch (true) {
+ case a == 10:
+ console.log( "10 or '10'" );
+ break;
+ case a == 42;
+ console.log( "42 or '42'" );
+ break;
+ default:
+ // 永远执行不到这里
+}
+// 42 or '42'
+```
+
+除简单值以外，case 中还可以出现各种表达式，它会将表达式的结果值和 true 进行比较。因为 a == 42 的结果为 true，所以条件成立。
+
+尽管可以使用 ==，但 switch 中 true 和 true 之间仍然是严格相等比较。即如果 case 表达式的结果为真值，但不是严格意义上的 true，则条件不成立。所以，在这里使用 || 和 && 等逻辑运算符就很容易掉进坑里：
+
+```js
+var a = "hello world";
+var b = 10;
+switch (true) {
+ case (a || b == 10):
+ // 永远执行不到这里
+ break;
+ default:
+ console.log( "Oops" );
+}
+// Oops
+```
+
+因为 (a || b == 10) 的结果是 "hello world" 而非 true，所以严格相等比较不成立。此时可以通过强制表达式返回 true 或 false，如 case !!(a || b == 10)
+
+# 异步
+
+## 分块的程序
+
+### 异步控制台
+
+并没有什么规范或一组需求指定 console.* 方法族如何工作——它们并不是 JavaScript 正式的一部分，而是由宿主环境添加到 JavaScript 中的。因此，不同的浏览器和 JavaScript 环境可以按照自己的意愿来实现，有时候这会引起混淆。
