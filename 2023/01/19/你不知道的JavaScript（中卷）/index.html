@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blog-images/master/%E6%88%AA%E5%B1%8F2023-01-27%2014.44.30.png">
 <meta property="article:published_time" content="2023-01-19T23:33:29.000Z">
-<meta property="article:modified_time" content="2023-01-29T15:13:35.145Z">
+<meta property="article:modified_time" content="2023-02-02T15:17:19.117Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="你不知道的JavaScript">
 <meta name="twitter:card" content="summary_large_image">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          43k 字
+          50k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          362 分钟
+          420 分钟
         
       </span>
     
@@ -1859,7 +1859,265 @@ a;</code></pre></div>
 
 <p>因为 (a || b == 10) 的结果是 “hello world” 而非 true，所以严格相等比较不成立。此时可以通过强制表达式返回 true 或 false，如 case !!(a || b == 10)</p>
 <h1 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h1><h2 id="分块的程序"><a href="#分块的程序" class="headerlink" title="分块的程序"></a>分块的程序</h2><h3 id="异步控制台"><a href="#异步控制台" class="headerlink" title="异步控制台"></a>异步控制台</h3><p>并没有什么规范或一组需求指定 console.* 方法族如何工作——它们并不是 JavaScript 正式的一部分，而是由宿主环境添加到 JavaScript 中的。因此，不同的浏览器和 JavaScript 环境可以按照自己的意愿来实现，有时候这会引起混淆。</p>
+<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>那么，什么是事件循环？</p>
+<p>先通过一段伪代码了解一下这个概念 :</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// eventLoop是一个用作队列的数组</span>
+<span class="hljs-comment">// （先进，先出）</span>
+<span class="hljs-keyword">var</span> eventLoop = [ ];
+<span class="hljs-keyword">var</span> event;
+<span class="hljs-comment">// “永远”执行</span>
+<span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;
+ <span class="hljs-comment">// 一次tick</span>
+ <span class="hljs-keyword">if</span> (eventLoop.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) &#123;
+ <span class="hljs-comment">// 拿到队列中的下一个事件</span>
+ event = eventLoop.<span class="hljs-title function_">shift</span>();
+ <span class="hljs-comment">// 现在，执行下一个事件</span>
+ <span class="hljs-keyword">try</span> &#123;
+ <span class="hljs-title function_">event</span>();
+ &#125;
+ <span class="hljs-keyword">catch</span> (err) &#123;
+ <span class="hljs-title function_">reportError</span>(err);
+   &#125;
+ &#125;
+&#125;</code></pre></div>
 
+<p>这当然是一段极度简化的伪代码，只用来说明概念。不过它应该足以用来帮助大家有更好的理解。</p>
+<p>你可以看到，有一个用 while 循环实现的持续运行的循环，循环的每一轮称为一个 tick。对每个 tick 而言，如果在队列中有等待事件，那么就会从队列中摘下一个事件并执行。这些事件就是你的回调函数。</p>
+<p>一定要清楚，setTimeout(..) 并没有把你的回调函数挂在事件循环队列中。它所做的是设定一个定时器。当定时器到时后，环境会把你的回调函数放在事件循环中，这样，在未来某个时刻的 tick 会摘下并执行这个回调。</p>
+<p>如果这时候事件循环中已经有 20 个项目了会怎样呢？你的回调就会等待。它得排在其他项目后面——通常没有抢占式的方式支持直接将其排到队首。这也解释了为什么setTimeout(..) 定时器的精度可能不高。大体说来，只能确保你的回调函数不会在指定的时间间隔之前运行，但可能会在那个时刻运行，也可能在那之后运行，要根据事件队列的状态而定。</p>
+<p>所以换句话说就是，程序通常分成了很多小块，在事件循环队列中一个接一个地执行。严格地说，和你的程序不直接相关的其他事件也可能会插入到队列中</p>
+<h2 id="并行线程"><a href="#并行线程" class="headerlink" title="并行线程"></a>并行线程</h2><p>术语“异步”和“并行”常常被混为一谈，但实际上它们的意义完全不同。记住，异步是关于现在和将来的时间间隙，而并行是关于能够同时发生的事情</p>
+<p>并行计算最常见的工具就是进程和线程。进程和线程独立运行，并可能同时运行：在不同的处理器，甚至不同的计算机上，但多个线程能够共享单个进程的内存。</p>
+<p>与之相对的是，事件循环把自身的工作分成一个个任务并顺序执行，不允许对共享内存的并行访问和修改。通过分立线程中彼此合作的事件循环，并行和顺序执行可以共存。</p>
+<p>并行线程的交替执行和异步事件的交替调度，其粒度是完全不同的</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">later</span>(<span class="hljs-params"></span>) &#123; 
+ answer = answer * <span class="hljs-number">2</span>; 
+ <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( <span class="hljs-string">&quot;Meaning of life:&quot;</span>, answer ); 
+&#125;</code></pre></div>
+
+<p>尽管 later() 的所有内容被看作单独的一个事件循环队列表项，但如果考虑到这段代码是运行在一个线程中，实际上可能有很多个不同的底层运算。比如，answer = answer * 2 需要先加载 answer 的当前值，然后把 2 放到某处并执行乘法，取得结果之后保存回 answer 中。</p>
+<p>在单线程环境中，线程队列中的这些项目是底层运算确实是无所谓的，因为线程本身不会被中断。但如果是在并行系统中，同一个程序中可能有两个不同的线程在运转，这时很可能就会得到不确定的结果。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-number">20</span>; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params"></span>) &#123; 
+ a = a + <span class="hljs-number">1</span>; 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bar</span>(<span class="hljs-params"></span>) &#123; 
+ a = a * <span class="hljs-number">2</span>; 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库中提供的某个Ajax函数</span>
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, foo ); 
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, bar );</code></pre></div>
+
+<p>根据 JavaScript 的单线程运行特性，如果 foo() 运行在 bar() 之前，a 的结果是 42，而如果bar() 运行在 foo() 之前的话，a 的结果就是 41。</p>
+<p>如果共享同一数据的 JavaScript 事件并行执行的话，那么问题就变得更加微妙了。考虑foo() 和 bar() 中代码运行的线程分别执行的是以下两段伪代码任务，然后思考一下如果它们恰好同时运行的话会出现什么情况。</p>
+<p>线程 1（X 和 Y 是临时内存地址）：</p>
+<div class="code-wrapper"><pre><code class="hljs tp">foo(): 
+ a. 把a的值加载到<span class="hljs-keyword">X</span> 
+ b. 把<span class="hljs-number">1</span>保存在<span class="hljs-keyword">Y</span> 
+ c. 执行<span class="hljs-keyword">X</span>加<span class="hljs-keyword">Y</span>，结果保存在<span class="hljs-keyword">X</span> 
+ d. 把<span class="hljs-keyword">X</span>的值保存在a</code></pre></div>
+
+<p>线程 2（X 和 Y 是临时内存地址）：</p>
+<div class="code-wrapper"><pre><code class="hljs tp">bar(): 
+ a. 把a的值加载到<span class="hljs-keyword">X</span> 
+ b. 把<span class="hljs-number">2</span>保存在<span class="hljs-keyword">Y</span> 
+ c. 执行<span class="hljs-keyword">X</span>乘<span class="hljs-keyword">Y</span>，结果保存在<span class="hljs-keyword">X</span> 
+ d. 把<span class="hljs-keyword">X</span>的值保存在a</code></pre></div>
+
+<p>现在，假设两个线程并行执行。你可能已经发现了这个程序的问题，是吧？它们在临时步骤中使用了共享的内存地址 X 和 Y。</p>
+<p>如果按照以下步骤执行，最终结果将会是什么样呢？</p>
+<div class="code-wrapper"><pre><code class="hljs abnf"><span class="hljs-number">1</span>a (把a的值加载到X <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">20</span>) 
+<span class="hljs-number">2</span>a (把a的值加载到X <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">20</span>) 
+<span class="hljs-number">1</span>b (把<span class="hljs-number">1</span>保存在Y <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">1</span>) 
+<span class="hljs-number">2</span>b (把<span class="hljs-number">2</span>保存在Y <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">2</span>) 
+<span class="hljs-number">1</span>c (执行X加Y，结果保存在X <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">22</span>) 
+<span class="hljs-number">1</span>d (把X的值保存在a <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">22</span>) 
+<span class="hljs-number">2</span>c (执行X乘Y，结果保存在X <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">44</span>) 
+<span class="hljs-number">2</span>d (把X的值保存在a <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">44</span>)</code></pre></div>
+
+<p>a 的结果将是 44。但如果按照以下顺序执行呢？</p>
+<div class="code-wrapper"><pre><code class="hljs abnf"><span class="hljs-number">1</span>a (把a的值加载到X <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">20</span>) 
+<span class="hljs-number">2</span>a (把a的值加载到X <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">20</span>) 
+<span class="hljs-number">2</span>b (把<span class="hljs-number">2</span>保存在Y <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">2</span>) 
+<span class="hljs-number">1</span>b (把<span class="hljs-number">1</span>保存在Y <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">1</span>) 
+<span class="hljs-number">2</span>c (执行X乘Y，结果保存在X <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">20</span>) 
+<span class="hljs-number">1</span>c (执行X加Y，结果保存在X <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">21</span>) 
+<span class="hljs-number">1</span>d (把X的值保存在a <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">21</span>) 
+<span class="hljs-number">2</span>d (把X的值保存在a <span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; <span class="hljs-number">21</span>)</code></pre></div>
+
+<p>a 的结果将是 21。</p>
+<p>所以，多线程编程是非常复杂的。因为如果不通过特殊的步骤来防止这种中断和交错运行的话，可能会得到出乎意料的、不确定的行为，通常这很让人头疼。</p>
+<p>JavaScript 从不跨线程共享数据，这意味着不需要考虑这一层次的不确定性。但是这并不意味着 JavaScript 总是确定性的。回忆一下前面提到的，foo() 和 bar() 的相对顺序改变可能会导致不同结果（41 或 42）。</p>
+<h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><p>单线程事件循环是并发的一种形式</p>
+<h3 id="非交互"><a href="#非交互" class="headerlink" title="非交互"></a>非交互</h3><p>两个或多个“进程”在同一个程序内并发地交替运行它们的步骤 / 事件时，如果这些任务彼此不相关，就不一定需要交互。如果进程间没有相互影响的话，不确定性是完全可以接受的。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> res = &#123;&#125;; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">results</span>) &#123; 
+ res.<span class="hljs-property">foo</span> = results; 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bar</span>(<span class="hljs-params">results</span>) &#123; 
+ res.<span class="hljs-property">bar</span> = results; 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库提供的某个Ajax函数</span>
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, foo ); 
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, bar );</code></pre></div>
+
+<p>foo() 和 bar() 是两个并发执行的“进程”，按照什么顺序执行是不确定的。但是，我们构建程序的方式使得无论按哪种顺序执行都无所谓，因为它们是独立运行的，不会相互影响。</p>
+<p>这并不是竞态条件 bug，因为不管顺序如何，代码总会正常工作。</p>
+<h3 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h3><p>更常见的情况是，并发的“进程”需要相互交流，通过作用域或 DOM 间接交互。正如前面介绍的，如果出现这样的交互，就需要对它们的交互进行协调以避免竞态的出现。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> res = []; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">response</span>(<span class="hljs-params">data</span>) &#123; 
+ res.<span class="hljs-title function_">push</span>( data ); 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库中提供的某个Ajax函数</span>
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, response ); 
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, response );</code></pre></div>
+
+<p>这里的并发“进程”是这两个用来处理 Ajax 响应的 response() 调用。它们可能以任意顺序运行。</p>
+<p>我们假定期望的行为是 res[0] 中放调用 “<a target="_blank" rel="noopener" href="http://some.url.1&quot;/">http://some.url.1&quot;</a> 的结果，res[1] 中放调用”<a target="_blank" rel="noopener" href="http://some.url.2&quot;/">http://some.url.2&quot;</a> 的结果。有时候可能是这样，但有时候却恰好相反，这要视哪个调用先完成而定。</p>
+<p>这种不确定性很有可能就是一个竞态条件 bug</p>
+<p>所以，可以协调交互顺序来处理这样的竞态条件：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> res = []; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">response</span>(<span class="hljs-params">data</span>) &#123; 
+ <span class="hljs-keyword">if</span> (data.<span class="hljs-property">url</span> == <span class="hljs-string">&quot;http://some.url.1&quot;</span>) &#123; 
+ res[<span class="hljs-number">0</span>] = data; 
+ &#125; 
+ <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data.<span class="hljs-property">url</span> == <span class="hljs-string">&quot;http://some.url.2&quot;</span>) &#123; 
+ res[<span class="hljs-number">1</span>] = data; 
+ &#125; 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库中提供的某个Ajax函数</span>
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, response ); 
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, response );</code></pre></div>
+
+<p>不管哪一个 Ajax 响应先返回，我们都要通过查看 data.url（当然，假定从服务器总会返回一个！）判断应该把响应数据放在 res 数组中的什么位置上。res[0] 总是包含 “<a target="_blank" rel="noopener" href="http://some.url.1&quot;/">http://some.url.1&quot;</a> 的结果，res[1] 总是包含 “<a target="_blank" rel="noopener" href="http://some.url.2&quot;/">http://some.url.2&quot;</a> 的结果。通过简单的协调，就避免了竞态条件引起的不确定性。</p>
+<p>从这个场景推出的方法也可以应用于多个并发函数调用通过共享 DOM 彼此之间交互的情况，比如一个函数调用更新某个 <div> 的内容，另外一个更新这个 <div> 的风格或属性（比如使这个 DOM 元素一有内容就显示出来）。可能你并不想在这个 DOM 元素在拿到内容之前显示出来，所以这种协调必须要保证正确的交互顺序。</p>
+<p>有些并发场景如果不做协调，就总是（并非偶尔）会出错。考虑：</p>
+<div class="code-wrapper"><pre><code class="hljs arcade"><span class="hljs-keyword">var</span> a, b; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">x</span>) &#123;
+ a = x * <span class="hljs-number">2</span>; 
+ baz(); 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bar</span>(<span class="hljs-params">y</span>) &#123; 
+ b = y * <span class="hljs-number">2</span>; 
+ baz(); 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">baz</span>(<span class="hljs-params"></span>) &#123; 
+ <span class="hljs-built_in">console</span>.<span class="hljs-built_in">log</span>(a + b); 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库中的某个Ajax函数</span>
+ajax( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, foo ); 
+ajax( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, bar );</code></pre></div>
+
+<p>在这个例子中，无论 foo() 和 bar() 哪一个先被触发，总会使 baz() 过早运行（a 或者 b 仍处于未定义状态）；但对 baz() 的第二次调用就没有问题，因为这时候 a 和 b 都已经可用了</p>
+<p>要解决这个问题有多种方法。这里给出了一种简单方法：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> a, b; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">x</span>) &#123; 
+ a = x * <span class="hljs-number">2</span>; 
+ <span class="hljs-keyword">if</span> (a &amp;&amp; b) &#123; 
+ <span class="hljs-title function_">baz</span>(); 
+ &#125; 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bar</span>(<span class="hljs-params">y</span>) &#123; 
+ b = y * <span class="hljs-number">2</span>; 
+ <span class="hljs-keyword">if</span> (a &amp;&amp; b) &#123; 
+ <span class="hljs-title function_">baz</span>(); 
+ &#125; 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">baz</span>(<span class="hljs-params"></span>) &#123; 
+ <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( a + b ); 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库中的某个Ajax函数</span>
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, foo ); 
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, bar );</code></pre></div>
+
+<p>包裹 baz() 调用的条件判断 if (a &amp;&amp; b) 传统上称为门（gate），我们虽然不能确定 a 和 b到达的顺序，但是会等到它们两个都准备好再进一步打开门（调用 baz()）。</p>
+<p>另一种可能遇到的并发交互条件有时称为竞态（race），但是更精确的叫法是门闩（latch）。它的特性可以描述为“只有第一名取胜”。在这里，不确定性是可以接受的，因为它明确指出了这一点是可以接受的：需要“竞争”到终点，且只有唯一的胜利者</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> a; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">x</span>) &#123; 
+ a = x * <span class="hljs-number">2</span>; 
+ <span class="hljs-title function_">baz</span>(); 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bar</span>(<span class="hljs-params">x</span>) &#123; 
+ a = x / <span class="hljs-number">2</span>; 
+ <span class="hljs-title function_">baz</span>(); 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">baz</span>(<span class="hljs-params"></span>) &#123; 
+ <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( a ); 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库中的某个Ajax函数</span>
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, foo ); 
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, bar );</code></pre></div>
+
+<p>不管哪一个（foo() 或 bar()）后被触发，都不仅会覆盖另外一个给 a 赋的值，也会重复调用 baz()（很可能并不是想要的结果）。</p>
+<p>所以，可以通过一个简单的门闩协调这个交互过程，只让第一个通过：</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> a; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">foo</span>(<span class="hljs-params">x</span>) &#123; 
+ <span class="hljs-keyword">if</span> (!a) &#123; 
+ a = x * <span class="hljs-number">2</span>; 
+ <span class="hljs-title function_">baz</span>(); 
+ &#125; 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bar</span>(<span class="hljs-params">x</span>) &#123; 
+ <span class="hljs-keyword">if</span> (!a) &#123; 
+ a = x / <span class="hljs-number">2</span>; 
+ <span class="hljs-title function_">baz</span>(); 
+ &#125; 
+&#125; 
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">baz</span>(<span class="hljs-params"></span>) &#123; 
+ <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( a ); 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库中的某个Ajax函数</span>
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, foo ); 
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, bar );</code></pre></div>
+
+<p>条件判断 if (!a) 使得只有 foo() 和 bar() 中的第一个可以通过，第二个（实际上是任何后续的）调用会被忽略。也就是说，第二名没有任何意义！</p>
+<h3 id="协作"><a href="#协作" class="headerlink" title="协作"></a>协作</h3><p>还有一种并发合作方式，称为并发协作（cooperative concurrency）。这里的重点不再是通过共享作用域中的值进行交互（尽管显然这也是允许的！）。这里的目标是取到一个长期运行的“进程”，并将其分割成多个步骤或多批任务，使得其他并发“进程”有机会将自己的运算插入到事件循环队列中交替运行。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> res = []; 
+<span class="hljs-comment">// response(..)从Ajax调用中取得结果数组</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">response</span>(<span class="hljs-params">data</span>) &#123; 
+ <span class="hljs-comment">// 添加到已有的res数组</span>
+ res = res.<span class="hljs-title function_">concat</span>( 
+ <span class="hljs-comment">// 创建一个新的变换数组把所有data值加倍</span>
+ data.<span class="hljs-title function_">map</span>( <span class="hljs-keyword">function</span>(<span class="hljs-params">val</span>)&#123; 
+ <span class="hljs-keyword">return</span> val * <span class="hljs-number">2</span>; 
+ &#125; ) 
+ ); 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库中提供的某个Ajax函数</span>
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, response ); 
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, response )</code></pre></div>
+
+<p>如果 “<a target="_blank" rel="noopener" href="http://some.url.1&quot;/">http://some.url.1&quot;</a> 首先取得结果，那么整个列表会立刻映射到 res 中。如果记录有几千条或更少，这不算什么。但是如果有像 1000 万条记录的话，就可能需要运行相当一段时间了（在高性能笔记本上需要几秒钟，在移动设备上需要更长时间，等等）。</p>
+<p>这样的“进程”运行时，页面上的其他代码都不能运行，包括不能有其他的 response(..)调用或 UI 刷新，甚至是像滚动、输入、按钮点击这样的用户事件。这是相当痛苦的</p>
+<p>所以，要创建一个协作性更强更友好且不会霸占事件循环队列的并发系统，你可以异步地批处理这些结果。每次处理之后返回事件循环，让其他等待事件有机会运行。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> res = []; 
+<span class="hljs-comment">// response(..)从Ajax调用中取得结果数组</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">response</span>(<span class="hljs-params">data</span>) &#123; 
+ <span class="hljs-comment">// 一次处理1000个</span>
+ <span class="hljs-keyword">var</span> chunk = data.<span class="hljs-title function_">splice</span>( <span class="hljs-number">0</span>, <span class="hljs-number">1000</span> ); 
+ <span class="hljs-comment">// 添加到已有的res组</span>
+ res = res.<span class="hljs-title function_">concat</span>( 
+ <span class="hljs-comment">// 创建一个新的数组把chunk中所有值加倍</span>
+ chunk.<span class="hljs-title function_">map</span>( <span class="hljs-keyword">function</span>(<span class="hljs-params">val</span>)&#123; 
+ <span class="hljs-keyword">return</span> val * <span class="hljs-number">2</span>; 
+ &#125; ) 
+ ); 
+ <span class="hljs-comment">// 还有剩下的需要处理吗？</span>
+ <span class="hljs-keyword">if</span> (data.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) &#123; 
+ <span class="hljs-comment">// 异步调度下一次批处理</span>
+ <span class="hljs-built_in">setTimeout</span>( <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123; 
+ <span class="hljs-title function_">response</span>( data ); 
+ &#125;, <span class="hljs-number">0</span> ); 
+ &#125; 
+&#125; 
+<span class="hljs-comment">// ajax(..)是某个库中提供的某个Ajax函数</span>
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.1&quot;</span>, response ); 
+<span class="hljs-title function_">ajax</span>( <span class="hljs-string">&quot;http://some.url.2&quot;</span>, response );</code></pre></div>
+
+<p>我们把数据集合放在最多包含 1000 条项目的块中。这样，我们就确保了“进程”运行时间会很短，即使这意味着需要更多的后续“进程”，因为事件循环队列的交替运行会提高站点 /App 的响应（性能）。</p>
+<p>这里使用 setTimeout(..0)（hack）进行异步调度，基本上它的意思就是“把这个函数插入到当前事件循环队列的结尾处”。</p>
+<p>严格说来，setTimeout(..0) 并不直接把项目插入到事件循环队列。定时器会在有机会的时候插入事件。举例来说，两个连续的 setTimeout(..0) 调用不能保证会严格按照调用顺序处理，所以各种情况都有可能出现，比如定时器漂移，在这种情况下，这些事件的顺序就不可预测。在 Node.js 中，类似的方法是 process.nextTick(..)。尽管它们使用方便（通常性能也更高），但并没有（至少到目前为止）直接的方法可以适应所有环境来确保异步事件的顺序</p>
+<h1 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h1>
                 
               </div>
             
@@ -1949,7 +2207,7 @@ a;</code></pre></div>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/01/29/hello-world/" title="Hello World">
+                      <a href="/2023/02/02/hello-world/" title="Hello World">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">上一篇</span>
