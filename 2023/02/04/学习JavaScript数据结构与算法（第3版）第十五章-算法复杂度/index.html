@@ -30,8 +30,9 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2018.09.37.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2018.10.28.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2018.11.21.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-05%2001.20.53.png">
 <meta property="article:published_time" content="2023-02-04T17:39:45.000Z">
-<meta property="article:modified_time" content="2023-02-04T10:14:22.149Z">
+<meta property="article:modified_time" content="2023-02-04T17:26:56.120Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -227,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k 字
+          4k 字
         
       </span>
     
@@ -238,7 +239,7 @@
         
         
         
-          20 分钟
+          34 分钟
         
       </span>
     
@@ -366,6 +367,31 @@
 <p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2018.10.28.png" srcset="/img/loading.gif" lazyload></p>
 <p>下表是搜索算法的时间复杂度</p>
 <p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2018.11.21.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="NP-完全理论概述"><a href="#NP-完全理论概述" class="headerlink" title="NP 完全理论概述"></a>NP 完全理论概述</h2><p>一般来说，如果一个算法的复杂度为 <em>O</em>(<em>n**k</em>)，其中 <em>k</em> 是常数，我们就认为这个算法是高效的，这就是多项式算法。</p>
+<p>对于给定的问题，如果存在多项式算法，则计为 <em>P</em>（polynomial，多项式）</p>
+<p>还有一类 NP（nondeterministic polynomial，非确定性多项式）算法。如果一个问题可以在多项式时间内验证解是否正确，则计为 <em>NP</em>。</p>
+<p>如果一个问题存在多项式算法，自然可以在多项式时间内验证其解。因此，所有的 <em>P</em> 都是<em>NP</em>。然而，<em>P</em> = <em>NP</em> 是否成立，仍然不得而知。</p>
+<p>NP 问题中最难的是 NP 完全问题。如果满足以下两个条件，则称决策问题 <em>L</em> 是 NP 完全的：</p>
+<p>(1) <em>L</em> 是 NP 问题，也就是说，可以在多项式时间内验证解，但还没有找到多项式算法；</p>
+<p>(2) 所有的 NP 问题都能在多项式时间内归约为 <em>L</em>。</p>
+<p>为了理解问题的归约，考虑两个决策问题 <em>L</em>和 <em>M</em>。假设算法 <em>A</em>可以解决问题 <em>L</em>，算法 <em>B</em>可以验证输入 <em>y</em>是否为 <em>M</em>的解。目标是找到一个把 <em>L</em>转化为 <em>M</em>的方法，使得算法 <em>B</em>可以用于构造算法 <em>A</em></p>
+<p>还有一类问题，只需满足 NP 完全问题的第二个条件，称为 NP 困难问题。因此，NP 完全问题也是 NP 困难问题的子集。</p>
+<p><em>P</em> = <em>NP</em> 是否成立，是计算机科学中最重要的难题之一。如果能找到答案，对密码学、算法研究、人工智能等诸多领域都会产生重大影响。</p>
+<p>下面是满足 <em>P</em>&lt;&gt;<em>NP</em> 时，P、NP、NP 完全和 NP 困难问题的欧拉图。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-05%2001.20.53.png" srcset="/img/loading.gif" lazyload></p>
+<p>非 NP 完全的 NP 困难问题的例子有停机问题和布尔可满足性问题（SAT）。</p>
+<p>NP 完全问题的例子有子集和问题、旅行商问题、顶点覆盖问题，等等。</p>
+<p>关于这些问题，详情请查阅 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/NP-completeness">https://en.wikipedia.org/wiki/NP-completeness</a></p>
+<h2 id="不可解问题与启发式算法"><a href="#不可解问题与启发式算法" class="headerlink" title="不可解问题与启发式算法"></a>不可解问题与启发式算法</h2><p>我们提到的有些问题是不可解的。然而，仍然有办法在符合要求的时间内找到一个近似解。启发式算法就是其中之一。启发式算法得到的未必是最优解，但足够解决问题了</p>
+<p>启发式算法的例子有局部搜索、遗传算法、启发式导航、机器学习等。详情请查阅<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Heuristic_(computer_science)">https://en.wikipedia.org/wiki/Heuristic_(computer_science)</a></p>
+<p>启发式算法可以很巧妙地解决一些问题。你可以尝试把研究启发式算法作为学士或硕士学位的论文主题。</p>
+<h1 id="用算法娱乐身心"><a href="#用算法娱乐身心" class="headerlink" title="用算法娱乐身心"></a>用算法娱乐身心</h1><p>UVa Online Judge（<a target="_blank" rel="noopener" href="http://uva.onlinejudge.org/%EF%BC%89%EF%BC%9A%E8%BF%99%E4%B8%AA%E7%BD%91%E7%AB%99%E5%8C%85%E5%90%AB%E4%BA%86%E4%B8%96%E7%95%8C%E5%90%84%E5%A4%A7%E8%B5%9B%E4%BA%8B%E7%9A%84%E9%A2%98%E7%9B%AE%EF%BC%8C%E5%8C%85%E6%8B%AC">http://uva.onlinejudge.org/）：这个网站包含了世界各大赛事的题目，包括</a> 由 IBM 赞助的 ACM 国际大学生程序竞赛（ICPC。若你依然在校，应尽量参与这项赛事，如果团队获胜，则有可能免费享受一次国际旅行）。这个网站包括了成百上千的题目，可以应用本书所学的算法。</p>
+<p>Sphere Online Judge（<a target="_blank" rel="noopener" href="http://www.spoj.com/%EF%BC%89%EF%BC%9A">http://www.spoj.com/）：</a> 这个网站和 UVa Online Judge 差不多，但支持用更多语言解题（包括 JavaScript）。</p>
+<p>Coderbyte（<a target="_blank" rel="noopener" href="http://coderbyte.com/%EF%BC%89%EF%BC%9A%E8%BF%99%E4%B8%AA%E7%BD%91%E7%AB%99%E5%8C%85%E5%90%AB%E4%BA%86%E5%8F%AF%E4%BB%A5%E7%94%A8">http://coderbyte.com/）：这个网站包含了可以用</a> JavaScript 解答的题目（简单、中等难度和非常困难）。</p>
+<p>Project Euler（<a target="_blank" rel="noopener" href="https://projecteuler.net/%EF%BC%89%EF%BC%9A%E8%BF%99%E4%B8%AA%E7%BD%91%E7%AB%99%E5%8C%85%E5%90%AB%E4%BA%86%E4%B8%80%E7%B3%BB%E5%88%97%E6%95%B0%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%BC%96%E7%A8%8B%E9%A2%98%E7%9B%AE%E3%80%82%E4%BD%A0%E6%89%80%E8%A6%81%E5%81%9A%E7%9A%84%E5%B0%B1%E6%98%AF%E8%BE%93%E5%85%A5%E9%82%A3%E4%BA%9B%E9%A2%98%E7%9B%AE%E7%9A%84%E7%AD%94%E6%A1%88%EF%BC%8C%E4%B8%8D%E8%BF%87%E6%88%91%E4%BB%AC%E5%8F%AF%E4%BB%A5%E7%94%A8%E7%AE%97%E6%B3%95%E6%9D%A5%E6%89%BE%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E8%A7%A3%E7%AD%94%E3%80%82">https://projecteuler.net/）：这个网站包含了一系列数学/计算机的编程题目。你所要做的就是输入那些题目的答案，不过我们可以用算法来找到正确的解答。</a></p>
+<p>HackerRank（<a href="https://www.hackerrank.com）：这个网站包含">https://www.hackerrank.com）：这个网站包含</a> 16 个类别的挑战（可以应用本书中的算法和更多其他算法）。它也支持 JavaScript 和其他语言。</p>
+<p>CodeChef（<a target="_blank" rel="noopener" href="http://www.codechef.com/%EF%BC%89%EF%BC%9A%E8%BF%99%E4%B8%AA%E7%BD%91%E7%AB%99%E5%8C%85%E5%90%AB%E4%B8%80%E4%BA%9B%E9%A2%98%E7%9B%AE%EF%BC%8C%E5%B9%B6%E4%BC%9A%E4%B8%BE%E5%8A%9E%E5%9C%A8%E7%BA%BF%E6%AF%94%E8%B5%9B%E3%80%82">http://www.codechef.com/）：这个网站包含一些题目，并会举办在线比赛。</a></p>
+<p>Top Coder（<a target="_blank" rel="noopener" href="http://www.topcoder.com/%EF%BC%89%EF%BC%9A%E6%AD%A4%E7%BD%91%E7%AB%99%E4%BC%9A%E4%B8%BE%E5%8A%9E%E7%AE%97%E6%B3%95%E8%81%94%E8%B5%9B%EF%BC%8C%E8%BF%99%E4%BA%9B%E8%81%94%E8%B5%9B%E9%80%9A%E5%B8%B8%E7%94%B1">http://www.topcoder.com/）：此网站会举办算法联赛，这些联赛通常由</a> NASA、Google、Yahoo!、Amazon 和 Facebook 这样的公司赞助。参加其中一些赛事，你可以获得到赞助公司工作的机会，而参与另一些赛事会赢得奖金。这个网站也提供很棒的解题和算法教程。</p>
 
                 
               </div>
