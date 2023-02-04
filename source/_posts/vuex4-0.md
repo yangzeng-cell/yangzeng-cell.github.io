@@ -2,6 +2,7 @@
 title: vuex4.0
 date: 2022-08-23 10:22:47
 tags:
+- [Vue3]
 categories:
 - [Vue, note]
 ---

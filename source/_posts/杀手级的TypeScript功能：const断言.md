@@ -2,6 +2,7 @@
 title: 杀手级的TypeScript功能：const断言
 date: 2022-10-06 18:00:50
 tags:
+- [typescript]
 categories:
 - [typescript, note]
 ---
