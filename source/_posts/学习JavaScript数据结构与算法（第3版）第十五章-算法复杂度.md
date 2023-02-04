@@ -139,3 +139,59 @@ function bubbleSort(array, compareFn = defaultCompare) {
 下表是搜索算法的时间复杂度
 
 ![](https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2018.11.21.png)
+
+## NP 完全理论概述
+
+一般来说，如果一个算法的复杂度为 *O*(*n**k*)，其中 *k* 是常数，我们就认为这个算法是高效的，这就是多项式算法。
+
+对于给定的问题，如果存在多项式算法，则计为 *P*（polynomial，多项式）
+
+还有一类 NP（nondeterministic polynomial，非确定性多项式）算法。如果一个问题可以在多项式时间内验证解是否正确，则计为 *NP*。
+
+如果一个问题存在多项式算法，自然可以在多项式时间内验证其解。因此，所有的 *P* 都是*NP*。然而，*P* = *NP* 是否成立，仍然不得而知。
+
+NP 问题中最难的是 NP 完全问题。如果满足以下两个条件，则称决策问题 *L* 是 NP 完全的：
+
+(1) *L* 是 NP 问题，也就是说，可以在多项式时间内验证解，但还没有找到多项式算法；
+
+(2) 所有的 NP 问题都能在多项式时间内归约为 *L*。
+
+为了理解问题的归约，考虑两个决策问题 *L*和 *M*。假设算法 *A*可以解决问题 *L*，算法 *B*可以验证输入 *y*是否为 *M*的解。目标是找到一个把 *L*转化为 *M*的方法，使得算法 *B*可以用于构造算法 *A*
+
+还有一类问题，只需满足 NP 完全问题的第二个条件，称为 NP 困难问题。因此，NP 完全问题也是 NP 困难问题的子集。
+
+*P* = *NP* 是否成立，是计算机科学中最重要的难题之一。如果能找到答案，对密码学、算法研究、人工智能等诸多领域都会产生重大影响。
+
+下面是满足 *P*<>*NP* 时，P、NP、NP 完全和 NP 困难问题的欧拉图。
+
+![](https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-05%2001.20.53.png)
+
+非 NP 完全的 NP 困难问题的例子有停机问题和布尔可满足性问题（SAT）。
+
+NP 完全问题的例子有子集和问题、旅行商问题、顶点覆盖问题，等等。
+
+关于这些问题，详情请查阅 https://en.wikipedia.org/wiki/NP-completeness
+
+## 不可解问题与启发式算法
+
+我们提到的有些问题是不可解的。然而，仍然有办法在符合要求的时间内找到一个近似解。启发式算法就是其中之一。启发式算法得到的未必是最优解，但足够解决问题了
+
+启发式算法的例子有局部搜索、遗传算法、启发式导航、机器学习等。详情请查阅https://en.wikipedia.org/wiki/Heuristic_(computer_science)
+
+启发式算法可以很巧妙地解决一些问题。你可以尝试把研究启发式算法作为学士或硕士学位的论文主题。
+
+# 用算法娱乐身心
+
+UVa Online Judge（http://uva.onlinejudge.org/）：这个网站包含了世界各大赛事的题目，包括 由 IBM 赞助的 ACM 国际大学生程序竞赛（ICPC。若你依然在校，应尽量参与这项赛事，如果团队获胜，则有可能免费享受一次国际旅行）。这个网站包括了成百上千的题目，可以应用本书所学的算法。
+
+Sphere Online Judge（http://www.spoj.com/）： 这个网站和 UVa Online Judge 差不多，但支持用更多语言解题（包括 JavaScript）。
+
+Coderbyte（http://coderbyte.com/）：这个网站包含了可以用 JavaScript 解答的题目（简单、中等难度和非常困难）。
+
+Project Euler（https://projecteuler.net/）：这个网站包含了一系列数学/计算机的编程题目。你所要做的就是输入那些题目的答案，不过我们可以用算法来找到正确的解答。
+
+HackerRank（https://www.hackerrank.com）：这个网站包含 16 个类别的挑战（可以应用本书中的算法和更多其他算法）。它也支持 JavaScript 和其他语言。
+
+CodeChef（http://www.codechef.com/）：这个网站包含一些题目，并会举办在线比赛。
+
+Top Coder（http://www.topcoder.com/）：此网站会举办算法联赛，这些联赛通常由 NASA、Google、Yahoo!、Amazon 和 Facebook 这样的公司赞助。参加其中一些赛事，你可以获得到赞助公司工作的机会，而参与另一些赛事会赢得奖金。这个网站也提供很棒的解题和算法教程。
