@@ -452,3 +452,500 @@ function printOptimalParenthesis(s, i, j) {
 贪心算法遵循一种近似解决问题的技术，期盼通过每个阶段的局部最优选择（当前最好的解），从而达到全局的最优（全局最优解）。它不像动态规划算法那样计算更大的格局。我们来看看如何用贪心算法解决动态规划话题中最少硬币找零问题和背包问题
 
 我们在第 12 章介绍了一些其他的贪心算法，比如 Dijkstra 算法、Prim 算法和Kruskal 算法。
+
+用贪心算法解决动态规划话题中最少硬币找零问题和背包问题
+
+## 最少硬币找零问题
+
+最少硬币找零问题也能用贪心算法解决。大部分情况下的结果是最优的，不过对有些面额而言，结果不会是最优的。
+
+```js
+function minCoinChange(coins, amount) {
+  const change = [];
+  let total = 0;
+  for (let i = coins.length; i >= 0; i--) {//{1}
+    const coin = coins[i];
+    while (total + coin <= amount) {//{2}
+      change.push(coin);//{3}
+      total += coin;//{4}
+    }
+  }
+  return change;
+}
+```
+
+不得不说贪心版本的 minCoinChange 比动态规划版本简单多了。对每个面额（行{1}——从大到小），把它的值和 total 相加后，total 需要小于 amount（行{2}）。我们会将当前面额coin 添加到结果中（行{3}），也会将它和 total 相加（行{4}）。
+
+如你所见，这个贪心解法很简单。从最大面额的硬币开始，拿尽可能多的这种硬币找零。当无法再拿更多这种价值的硬币时，开始拿第二大价值的硬币，依次继续。
+
+```
+console.log(minCoinChange([1, 5, 10, 25], 36))
+```
+
+结果依然是[25, 10, 1]，和用 DP 得到的一样
+
+然而，如果用[1, 3, 4]面额执行贪心算法，会得到结果[4, 1, 1]。如果用动态规划的解法，会得到最优的结果[3, 3]。
+
+比起动态规划算法而言，贪心算法更简单、更快。然而，如我们所见，它并不总是得到最优答案。但是综合来看，它相对执行时间来说，输出了一个可以接受的解。
+
+## 分数背包问题
+
+求解分数背包问题的算法与动态规划版本稍有不同。在 0-1 背包问题中，只能向背包里装入完整的物品，而在分数背包问题中，可以装入分数的物品。我们用前面用过的例子来比较两者的差异，如下所示。
+
+| 物品 | 重量 | 价值 |
+| ---- | ---- | ---- |
+| 1    | 2    | 3    |
+| 2    | 3    | 4    |
+| 3    | 4    | 5    |
+
+在动态规划的例子里，我们考虑背包能够携带的重量只有 5。在这个例子里，我们可以说最佳解决方案是往背包里装入物品 1 和物品 2，总重量为 5，总价值为 7。
+
+如果在分数背包问题中考虑相同的容量，得到的结果是一样的。因此，我们考虑容量为 6 的情况。
+
+在这种情况下，解决方案是装入物品 1 和物品 2，还有 25%的物品 3。这样，重量为 6 的物品总价值为 8.25
+
+```js
+function knapSack(capacity, weights, values) {
+  const n = values.length;
+  let load = 0;
+  let val = 0;
+  for (let i = 0; i < n && load < capacity; i++) { // {1}
+    if (weights[i] <= capacity - load) { // {2}
+      val += values[i];
+      load += weights[i];
+    } else {
+      const r = (capacity - load) / weights[i]; // {3}
+      val += r * values[i];
+      load += weights[i];
+    }
+  }
+  return val;
+}
+```
+
+总重量少于背包容量（不能带超过容量的东西），我们会迭代物品（行{1}）。如果物品可以完整地装入背包（行{2}——小于等于背包容量），就将其价值和重量分别计入背包已装入物品的总价值（val）和总重量（load）。如果物品不能完整地装入背包，计算能够装入部分的比例（r）（行{3}——我们可以带的分数）
+
+如果在 0-1 背包问题中考虑同样的容量 6，我们就会看到，物品 1 和物品 3 组成了解决方案。在这种情况下，对同一个问题应用不同的解决方法，会得到两种不同的结果。
+
+# 回溯算法
+
+回溯是一种渐进式寻找并构建问题解决方式的策略。我们从一个可能的动作开始并试着用这个动作解决问题。如果不能解决，就回溯并选择另一个动作直到将问题解决。根据这种行为，回溯算法会尝试所有可能的动作（如果更快找到了解决办法就尝试较少的次数）来解决问题
+
+有一些可用回溯解决的著名问题：
+
+骑士巡逻问题
+
+*N* 皇后问题
+
+迷宫老鼠问题
+
+数独解题器
+
+## 迷宫老鼠问题
+
+假设我们有一个大小为 *N* × *N* 的矩阵，矩阵的每个位置是一个方块。每个位置（或块）可以是空闲的（值为 1）或是被阻挡的（值为 0），如下图所示，其中 S 是起点，D 是终点
+
+![](https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2012.19.24.png)
+
+矩阵就是迷宫，“老鼠”的目标是从位置[0][0]开始并移动到[n-1][n-1]（终点）。老鼠可以在垂直或水平方向上任何未被阻挡的位置间移动
+
+```js
+export function ratInAMaze(maze) {
+  const solution = [];
+  for (let i = 0; i < maze.length; i++) { //{1}
+    solution[i] = [];
+    for (let j = 0; j < maze[i].length; i++) { //{2}
+      solution[i][j] = 0;
+    }
+  }
+  if (findPath(maze, 0, 0, solution) === true) { //{3}
+    return solution;
+  }
+  return "NO PATH FOUND";
+}
+```
+
+首先创建一个包含解的矩阵。将每个位置初始化为零（行{1}）。对于老鼠采取的每步行动，我们将路径标记为 1。如果算法能够找到一个解（行{2}），就返回解决矩阵，否则返回一条错误信息（行{3}）。
+
+然后，我们创建一个 findPath 方法，它会试着从位置 x 和 y 开始在给定的 maze 矩阵中找到一个解。和本章介绍的其他技巧一样，回溯技巧也使用了递归，这也是使这个算法有回溯能力的原因。
+
+```js
+function findPath(maze, x, y, solution) {
+  const n = maze.length;
+  if (x === n - 1 && y === n - 1) { //{4}
+    solution[x][y] = 1;
+    return true;
+  }
+  if (isSafe(maze, x, y) === true) { //{5}
+    solution[x][y] = 1; //{6}
+    if (findPath(maze, x + 1, y, solution)) { //{7}
+      return true;
+    }
+    if (findPath(maze, x, y + 1, solution)) { //{8}
+      return true;
+    }
+    solution[x][y] = 0; //{9}
+    return false;
+  }
+  return false; //{10}
+}
+```
+
+算法的第一步是验证老鼠是否到达了终点（行{4}）。如果到了，就将最后一个位置标记为路径的一部分并返回 true，表示移动成功结束。如果不是最后一步，要验证老鼠能否安全移动至该位置（行{5}表示根据下面声明的 isSafe 方法判断出该位置空闲）。如果是安全的，我们将这步加入路径（行{6}）并试着在 maze 矩阵中水平移动（向右）到下一个位置（行{7}）。如果水平移动不可行，我们就试着垂直向下移动到下一个位置（行{8}）。如果水平和垂直都不能移动，那么将这步从路径中移除并回溯（行{9}），表示算法会尝试另一个可能的解。在算法尝试了所有可能的动作还是找不到解时，就返回 false（行{10}），表示这个问题无解。
+
+```js
+ function isSafe(maze, x, y) {
+ const n = maze.length;
+  if (x >= 0 && y >= 0 && x < n && y < n && maze[x][y] !== 0) {
+    return true;
+  }
+  return false;
+}
+```
+
+用下面的代码进行测试。
+
+```js
+const maze = [ 
+ [1, 0, 0, 0], 
+ [1, 1, 1, 1], 
+ [0, 0, 1, 0], 
+ [0, 1, 1, 1] 
+]; 
+console.log(ratInAMaze(maze));
+```
+
+输出如下。
+
+```js
+ [1, 1, 1, 0], 
+ [0, 0, 1, 0], 
+ [0, 0, 1, 1]]
+```
+
+## 数独解题器
+
+数独是一个非常有趣的解谜游戏，也是史上最流行的游戏之一。目标是用数字 1～9 填满一个 9 × 9 的矩阵，要求每行和每列都由这九个数字构成。矩阵还包含了小方块（3 × 3 矩阵），它们同样需要分别用这九个数字填满。谜题在开始给出一个已填了部分数字的矩阵，如下图所示
+
+![](https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2016.22.47.png)
+
+数独解题器的回溯算法会尝试在每行每列中填入每个数字。和迷宫老鼠问题一样，我们从算法的主方法开始。
+
+```js
+function sudokuSolver(matrix) { 
+ if (solveSudoku(matrix) === true) { 
+ return matrix; 
+ } 
+ return '问题无解！'; 
+}
+```
+
+算法在找到解后会返回填满了缺失数字的矩阵，否则返回错误信息。现在，我们来看算法的主要逻辑。
+
+```js
+const UNASSIGNED = 0;
+function solveSudoku(matrix) {
+  let row = 0;
+  let col = 0;
+  let checkBlankSpaces = false; //是否空白
+  for (row = 0; row < matrix.length; row++) { //{1}
+    for (col = 0; col <= matrix[row].length; col++) {
+      if (matrix[row][col] === UNASSIGNED) {
+        checkBlankSpaces = true;  // {2}
+        break;
+      }
+    }
+    if (checkBlankSpaces === true) { // {3}
+      break;
+    }
+  }
+  if (checkBlankSpaces === false) {
+    return true; // {4}
+  }
+  for (let num = 1; num <= 9; num++) { // {5}
+    if (isSafe(matrix, row, col, num)) {// {6}
+      matrix[row][col] = num; // {7}
+      if (solveSudoku(matrix)) { // {8}
+        return true;
+      }
+      matrix[row][col] = UNASSIGNED; // {9}
+    }
+  }
+  return false; // {10}
+}
+```
+
+第一步是验证谜题是否已被解决（行{1}）。如果没有空白的位置（值为 0 的位置），表示谜题已被完成（行{4}）。如果有空白位置（行{2}），我们要从两个循环中跳出（行{3}）并且 row和 col 变量会表示需要用 1～9 填写空白的位置。下面，算法会试着用 1～9 填写这个位置，一次填一个（行{5}）。我们会检查添加的数字是否符合规则（行{6}），也就是这个数字在这行、这列或在小矩阵（3 × 3 矩阵）中没有出现过。如果符合，我们就将这个数字填入（行{7}）并再次执行 solveSudoku 函数来尝试填写下一个位置（行{8}）。如果一个数字填在了不正确的位置，我们就再将这个位置标记为空（行{9}），并且算法会回溯（行{10}）再尝试一个其他数字
+
+isSafe 声明如下，它包含检查填入的数字是否符合规则。
+
+```js
+function isSafe(matrix, row, col, num) {
+  return (
+    !usedInRow(matrix, row, num) &&
+    !usedInCol(matrix, col, num) &&
+    !usedInBox(matrix, row - (row % 3), col - (col % 3), num)
+  );
+}
+```
+
+具体的检查声明如下。
+
+```js
+function usedInRow(matrix, row, num) {
+  for (let col = 0; col < matrix.length; col++) { // {11}
+    if (matrix[row][col] === num) {
+      return true;
+    }
+  }
+  return false;
+}
+function usedInCol(matrix, col, num) {
+  for (let row = 0; row < matrix.length; row++) { // {12}
+    if (matrix[row][col] === num) {
+      return true;
+    }
+  }
+  return false;
+}
+function usedInBox(matrix, boxStartRow, boxStartCol, num) {
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+      if (matrix[row + boxStartRow][col + boxStartCol] === num) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+```
+
+首先，通过迭代矩阵中给定行 row 中的每个位置检查数字是否在行 row 中存在（行{11}）。然后，迭代所有的列来验证数字是否在给定的列中存在（行{12}）。最后的检查是通过迭代 3 × 3=矩阵中的所有位置来检查数字是否在小矩阵中存在（行{13}）
+
+```
+const sudokuGrid = [ 
+ [5, 3, 0, 0, 7, 0, 0, 0, 0], 
+ [6, 0, 0, 1, 9, 5, 0, 0, 0], 
+ [0, 9, 8, 0, 0, 0, 0, 6, 0], 
+ [8, 0, 0, 0, 6, 0, 0, 0, 3], 
+ [4, 0, 0, 8, 0, 3, 0, 0, 1], 
+ [7, 0, 0, 0, 2, 0, 0, 0, 6], 
+ [0, 6, 0, 0, 0, 0, 2, 8, 0], 
+ [0, 0, 0, 4, 1, 9, 0, 0, 5], 
+ [0, 0, 0, 0, 8, 0, 0, 7, 9] 
+]; 
+console.log(sudokuSolver(sudokuGrid));
+结果
+[[5, 3, 4, 6, 7, 8, 9, 1, 2], 
+ [6, 7, 2, 1, 9, 5, 3, 4, 8],
+  [1, 9, 8, 3, 4, 2, 5, 6, 7], 
+ [8, 5, 9, 7, 6, 1, 4, 2, 3], 
+ [4, 2, 6, 8, 5, 3, 7, 9, 1], 
+ [7, 1, 3, 9, 2, 4, 8, 5, 6], 
+ [9, 6, 1, 5, 3, 7, 2, 8, 4], 
+ [2, 8, 7, 4, 1, 9, 6, 3, 5], 
+ [3, 4, 5, 2, 8, 6, 1, 7, 9]]
+```
+
+# 函数式编程简介
+
+在命令式编程中，我们按部就班地编写程序代码，详细描述要完成的事情以及完成的顺序。
+
+## 函数式编程与命令式编程
+
+以函数式范式进行开发并不简单，关键在于习惯这种范式的机制。我们编写一个例子来说明差异。
+
+假设我们想打印一个数组中所有的元素。我们可以用命令式编程，声明的函数如下
+
+```js
+const printArray = function(array) { 
+ for (var i = 0; i < array.length; i++){ 
+ console.log(array[i]); 
+ } 
+}; 
+printArray([1, 2, 3, 4, 5]);
+```
+
+现在，我们试着把这个例子转换成函数式编程。在函数式编程中，函数就是摇滚明星。我们关注的重点是需要描述什么，而不是如何描述。回到这一句：“我们迭代数组，打印每一项。”那么，首先要关注的是迭代数据，然后进行操作，即打印数组项。下面的函数负责迭代数组。
+
+```js
+const forEach = function (array, action) {
+  for (var i = 0; i < array.length; i++) {
+    action(array[i]);
+  }
+};
+```
+
+接下来，要创建另一个负责把数组元素打印到控制台的函数（考虑为回调函数），如下所示
+
+```js
+const logItem = function (item) {
+  console.log(item);
+};
+```
+
+最后，像下面这样使用声明的函数。
+
+```js
+forEach([1, 2, 3, 4, 5], logItem); 
+```
+
+1. 函数式编程的主要目标是描述数据，以及要对数据应用的转换。
+2. 在函数式编程中，程序执行顺序的重要性很低；而在命令式编程中，步骤和顺序是非常重要的。
+3. 函数和数据集合是函数式编程的核心。
+4. 在函数式编程中，我们可以使用和滥用函数和递归；而在命令式编程中，则使用循环、赋值、条件和函数。
+5. 在函数式编程中，要避免副作用和可变数据，意味着我们不会修改传入函数的数据。如果需要基于输入返回一个解决方案，可以制作一个副本并返回数据修改后的副本
+
+## ES2015+和函数式编程
+
+有了 ES2015+的新功能，用 JavaScript 进行函数式编程就变得更加容易了
+
+考虑我们要找出数组中最小的值。要用命令式编程完成这个任务，只要迭代数组，检查当前的最小值是否大于数组元素；如果是，就更新最小值，代码如下。
+
+```js
+var findMinArray = function(array){ 
+ var minValue = array[0]; 
+ for (var i=1; i<array.length; i++){ 
+ if (minValue > array[i]){ 
+ minValue = array[i]; 
+ } 
+ } 
+ return minValue; 
+}; 
+console.log(findMinArray([8,6,4,5,9])); // 输出 4
+```
+
+要用函数式编程完成相同的任务，可以使用 Math.min 函数，传入所有要比较的数组元素。我们可以像下面的例子里这样，使用 ES2015 的解构运算符（...），把数组转换成单个的元素。
+
+```js
+const min_ = function(array){ 
+ return Math.min(...array) 
+}; 
+console.log(min_([8,6,4,5,9])); // 输出 4
+```
+
+使用 ES2015 的箭头函数，可以进一步简化上面的代码
+
+```js
+const min = arr => Math.min(...arr); 
+console.log(min([8, 6, 4, 5, 9]));
+```
+
+我们可以用 ES2015 语法重写第一个示例。
+
+```js
+const forEach = (array, action) => array.forEach(item => action(item)); 
+const logItem = (item) => console.log(item);
+```
+
+## JavaScript 函数式工具箱——**map**、**filter** 和 **reduce**
+
+我们可以使用 map 函数，把一个数据集合转换或映射成另一个数据集合。先看一个命令式编程的例子
+
+```js
+const daysOfWeek = [
+  { name: "Monday", value: 1 },
+  { name: "Tuesday", value: 2 },
+  { name: "Wednesday", value: 7 },
+];
+let daysOfWeekValues_ = [];
+for (let i = 0; i < daysOfWeek.length; i++) {
+  daysOfWeekValues_.push(daysOfWeek[i].value);
+}
+```
+
+再以函数式编程并使用 ES2015+语法来考虑同样的例子，代码如下
+
+```js
+const daysOfWeekValues = daysOfWeek.map(day => day.value); 
+console.log(daysOfWeekValues);
+```
+
+我们可以使用 filter 函数过滤一个集合的值。下面来看一个例子。
+
+```js
+const positiveNumbers_ = function (array) {
+  let positive = [];
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] >= 0) {
+      positive.push(array[i]);
+    }
+  }
+  return positive;
+};
+console.log(positiveNumbers_([-1, 1, 2, -2]));
+```
+
+我们可以把同样的代码写成函数式的
+
+```js
+const positiveNumbers = (array) => array.filter(num => (num >= 0)); 
+console.log(positiveNumbers([-1,1,2,-2]));
+```
+
+我们也可以使用 reduce 函数，把一个集合归约成一个特定的值。比如，对一个数组中的值求和
+
+```js
+const sumValues = function(array) { 
+ let total = array[0]; 
+ for (let i = 1; i<array.length; i++) { 
+ total += array[i]; 
+ } 
+ return total; 
+}; 
+console.log(sumValues([1, 2, 3, 4, 5]));
+```
+
+上面的代码也可以写成这样
+
+```js
+const sum_ = function(array){ 
+ return array.reduce(function(a, b){ 
+ return a + b; 
+ }) 
+}; 
+console.log(sum_([1, 2, 3, 4, 5]));
+```
+
+我们还可以把这些函数与 ES2015 的功能结合起来，比如解构运算符和箭头函数，代码如下
+
+```js
+const sum = arr => arr.reduce((a, b) => a + b); 
+console.log(sum([1, 2, 3, 4, 5]));
+```
+
+我们再看另一个例子。考虑我们需要写一个函数，把几个数组连接起来。为此，可以创建另一个数组，用于存放其他数组的元素。可以执行以下命令式的代码。
+
+```js
+const mergeArrays_ = function(arrays){ 
+ const count = arrays.length; 
+ let newArray = []; 
+ let k = 0; 
+ for (let i = 0; i < count; i++){ 
+ for (var j = 0; j < arrays[i].length; j++){ 
+ newArray[k++] = arrays[i][j]; 
+ } 
+ } 
+ return newArray; 
+}; 
+console.log(mergeArrays_([[1, 2, 3], [4, 5], [6]]));
+```
+
+注意，在这个例子中，我们声明了变量，还使用了循环。现在，我们用 JavaScript 函数式编程把上面的代码重写如下
+
+```js
+const mergeArraysConcat = function(arrays){ 
+ return arrays.reduce( function(p,n){ 
+ return p.concat(n); 
+ }); 
+}; 
+console.log(mergeArraysConcat([[1, 2, 3], [4, 5], [6]]));
+```
+
+上面的代码完成了同样的任务，但它是面向函数的。我们也可以用 ES2015 使代码更加精简，如下所示。
+
+```js
+const mergeArrays = (...arrays) => [].concat(...arrays); 
+console.log(mergeArrays([1, 2, 3], [4, 5], [6]));
+```
+
