@@ -23,11 +23,14 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="分而治之了归并和排序算法。两者的共同点在于它们都是分而治之算法。分而治之是算法设计中的一种方法。它将一个问题分成多个和原问题相似的小问题，递归解决小问题，再将解决方式合并以解决原来的问题 分而治之算法可以分成三个部分 (1) 分解原问题为多个子问题（原问题的多个小实例）。 (2) 解决子问题，用返回解决子问题的方式的递归算法。递归算法的基本情形可以用来解决子 问题。 (3) 组合这些子问题的解决方">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2012.19.24.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2016.22.47.png">
 <meta property="article:published_time" content="2022-11-25T22:44:56.000Z">
-<meta property="article:modified_time" content="2023-02-02T15:17:19.121Z">
+<meta property="article:modified_time" content="2023-02-04T10:14:22.149Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2012.19.24.png">
   
   
   
@@ -219,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.5k 字
+          18k 字
         
       </span>
     
@@ -230,7 +233,7 @@
         
         
         
-          72 分钟
+          154 分钟
         
       </span>
     
@@ -618,6 +621,385 @@ console.log(knap<span class="hljs-constructor">Sack(<span class="hljs-params">ca
 <p>执行修改后的算法，也能得到括号的最佳顺序(A<a href="A%5B2%5D(A%5B3%5DA%5B4%5D)">1</a>)，并可以转化为(A(B(CD)))。</p>
 <h1 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h1><p>贪心算法遵循一种近似解决问题的技术，期盼通过每个阶段的局部最优选择（当前最好的解），从而达到全局的最优（全局最优解）。它不像动态规划算法那样计算更大的格局。我们来看看如何用贪心算法解决动态规划话题中最少硬币找零问题和背包问题</p>
 <p>我们在第 12 章介绍了一些其他的贪心算法，比如 Dijkstra 算法、Prim 算法和Kruskal 算法。</p>
+<p>用贪心算法解决动态规划话题中最少硬币找零问题和背包问题</p>
+<h2 id="最少硬币找零问题-1"><a href="#最少硬币找零问题-1" class="headerlink" title="最少硬币找零问题"></a>最少硬币找零问题</h2><p>最少硬币找零问题也能用贪心算法解决。大部分情况下的结果是最优的，不过对有些面额而言，结果不会是最优的。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">minCoinChange</span>(<span class="hljs-params">coins, amount</span>) &#123;
+  <span class="hljs-keyword">const</span> change = [];
+  <span class="hljs-keyword">let</span> total = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = coins.<span class="hljs-property">length</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;<span class="hljs-comment">//&#123;1&#125;</span>
+    <span class="hljs-keyword">const</span> coin = coins[i];
+    <span class="hljs-keyword">while</span> (total + coin &lt;= amount) &#123;<span class="hljs-comment">//&#123;2&#125;</span>
+      change.<span class="hljs-title function_">push</span>(coin);<span class="hljs-comment">//&#123;3&#125;</span>
+      total += coin;<span class="hljs-comment">//&#123;4&#125;</span>
+    &#125;
+  &#125;
+  <span class="hljs-keyword">return</span> change;
+&#125;</code></pre></div>
+
+<p>不得不说贪心版本的 minCoinChange 比动态规划版本简单多了。对每个面额（行{1}——从大到小），把它的值和 total 相加后，total 需要小于 amount（行{2}）。我们会将当前面额coin 添加到结果中（行{3}），也会将它和 total 相加（行{4}）。</p>
+<p>如你所见，这个贪心解法很简单。从最大面额的硬币开始，拿尽可能多的这种硬币找零。当无法再拿更多这种价值的硬币时，开始拿第二大价值的硬币，依次继续。</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">console</span>.log(minCoinChange([<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">25</span>], <span class="hljs-number">36</span>))</code></pre></div>
+
+<p>结果依然是[25, 10, 1]，和用 DP 得到的一样</p>
+<p>然而，如果用[1, 3, 4]面额执行贪心算法，会得到结果[4, 1, 1]。如果用动态规划的解法，会得到最优的结果[3, 3]。</p>
+<p>比起动态规划算法而言，贪心算法更简单、更快。然而，如我们所见，它并不总是得到最优答案。但是综合来看，它相对执行时间来说，输出了一个可以接受的解。</p>
+<h2 id="分数背包问题"><a href="#分数背包问题" class="headerlink" title="分数背包问题"></a>分数背包问题</h2><p>求解分数背包问题的算法与动态规划版本稍有不同。在 0-1 背包问题中，只能向背包里装入完整的物品，而在分数背包问题中，可以装入分数的物品。我们用前面用过的例子来比较两者的差异，如下所示。</p>
+<table>
+<thead>
+<tr>
+<th>物品</th>
+<th>重量</th>
+<th>价值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+</tr>
+</tbody></table>
+<p>在动态规划的例子里，我们考虑背包能够携带的重量只有 5。在这个例子里，我们可以说最佳解决方案是往背包里装入物品 1 和物品 2，总重量为 5，总价值为 7。</p>
+<p>如果在分数背包问题中考虑相同的容量，得到的结果是一样的。因此，我们考虑容量为 6 的情况。</p>
+<p>在这种情况下，解决方案是装入物品 1 和物品 2，还有 25%的物品 3。这样，重量为 6 的物品总价值为 8.25</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">knapSack</span>(<span class="hljs-params">capacity, weights, values</span>) &#123;
+  <span class="hljs-keyword">const</span> n = values.<span class="hljs-property">length</span>;
+  <span class="hljs-keyword">let</span> load = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">let</span> val = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n &amp;&amp; load &lt; capacity; i++) &#123; <span class="hljs-comment">// &#123;1&#125;</span>
+    <span class="hljs-keyword">if</span> (weights[i] &lt;= capacity - load) &#123; <span class="hljs-comment">// &#123;2&#125;</span>
+      val += values[i];
+      load += weights[i];
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-keyword">const</span> r = (capacity - load) / weights[i]; <span class="hljs-comment">// &#123;3&#125;</span>
+      val += r * values[i];
+      load += weights[i];
+    &#125;
+  &#125;
+  <span class="hljs-keyword">return</span> val;
+&#125;</code></pre></div>
+
+<p>总重量少于背包容量（不能带超过容量的东西），我们会迭代物品（行{1}）。如果物品可以完整地装入背包（行{2}——小于等于背包容量），就将其价值和重量分别计入背包已装入物品的总价值（val）和总重量（load）。如果物品不能完整地装入背包，计算能够装入部分的比例（r）（行{3}——我们可以带的分数）</p>
+<p>如果在 0-1 背包问题中考虑同样的容量 6，我们就会看到，物品 1 和物品 3 组成了解决方案。在这种情况下，对同一个问题应用不同的解决方法，会得到两种不同的结果。</p>
+<h1 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h1><p>回溯是一种渐进式寻找并构建问题解决方式的策略。我们从一个可能的动作开始并试着用这个动作解决问题。如果不能解决，就回溯并选择另一个动作直到将问题解决。根据这种行为，回溯算法会尝试所有可能的动作（如果更快找到了解决办法就尝试较少的次数）来解决问题</p>
+<p>有一些可用回溯解决的著名问题：</p>
+<p>骑士巡逻问题</p>
+<p><em>N</em> 皇后问题</p>
+<p>迷宫老鼠问题</p>
+<p>数独解题器</p>
+<h2 id="迷宫老鼠问题"><a href="#迷宫老鼠问题" class="headerlink" title="迷宫老鼠问题"></a>迷宫老鼠问题</h2><p>假设我们有一个大小为 <em>N</em> × <em>N</em> 的矩阵，矩阵的每个位置是一个方块。每个位置（或块）可以是空闲的（值为 1）或是被阻挡的（值为 0），如下图所示，其中 S 是起点，D 是终点</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2012.19.24.png" srcset="/img/loading.gif" lazyload></p>
+<p>矩阵就是迷宫，“老鼠”的目标是从位置[0][0]开始并移动到[n-1][n-1]（终点）。老鼠可以在垂直或水平方向上任何未被阻挡的位置间移动</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">ratInAMaze</span>(<span class="hljs-params">maze</span>) &#123;
+  <span class="hljs-keyword">const</span> solution = [];
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; maze.<span class="hljs-property">length</span>; i++) &#123; <span class="hljs-comment">//&#123;1&#125;</span>
+    solution[i] = [];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; maze[i].<span class="hljs-property">length</span>; i++) &#123; <span class="hljs-comment">//&#123;2&#125;</span>
+      solution[i][j] = <span class="hljs-number">0</span>;
+    &#125;
+  &#125;
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">findPath</span>(maze, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, solution) === <span class="hljs-literal">true</span>) &#123; <span class="hljs-comment">//&#123;3&#125;</span>
+    <span class="hljs-keyword">return</span> solution;
+  &#125;
+  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;NO PATH FOUND&quot;</span>;
+&#125;</code></pre></div>
+
+<p>首先创建一个包含解的矩阵。将每个位置初始化为零（行{1}）。对于老鼠采取的每步行动，我们将路径标记为 1。如果算法能够找到一个解（行{2}），就返回解决矩阵，否则返回一条错误信息（行{3}）。</p>
+<p>然后，我们创建一个 findPath 方法，它会试着从位置 x 和 y 开始在给定的 maze 矩阵中找到一个解。和本章介绍的其他技巧一样，回溯技巧也使用了递归，这也是使这个算法有回溯能力的原因。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">findPath</span>(<span class="hljs-params">maze, x, y, solution</span>) &#123;
+  <span class="hljs-keyword">const</span> n = maze.<span class="hljs-property">length</span>;
+  <span class="hljs-keyword">if</span> (x === n - <span class="hljs-number">1</span> &amp;&amp; y === n - <span class="hljs-number">1</span>) &#123; <span class="hljs-comment">//&#123;4&#125;</span>
+    solution[x][y] = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  &#125;
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isSafe</span>(maze, x, y) === <span class="hljs-literal">true</span>) &#123; <span class="hljs-comment">//&#123;5&#125;</span>
+    solution[x][y] = <span class="hljs-number">1</span>; <span class="hljs-comment">//&#123;6&#125;</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">findPath</span>(maze, x + <span class="hljs-number">1</span>, y, solution)) &#123; <span class="hljs-comment">//&#123;7&#125;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">findPath</span>(maze, x, y + <span class="hljs-number">1</span>, solution)) &#123; <span class="hljs-comment">//&#123;8&#125;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    solution[x][y] = <span class="hljs-number">0</span>; <span class="hljs-comment">//&#123;9&#125;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  &#125;
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">//&#123;10&#125;</span>
+&#125;</code></pre></div>
+
+<p>算法的第一步是验证老鼠是否到达了终点（行{4}）。如果到了，就将最后一个位置标记为路径的一部分并返回 true，表示移动成功结束。如果不是最后一步，要验证老鼠能否安全移动至该位置（行{5}表示根据下面声明的 isSafe 方法判断出该位置空闲）。如果是安全的，我们将这步加入路径（行{6}）并试着在 maze 矩阵中水平移动（向右）到下一个位置（行{7}）。如果水平移动不可行，我们就试着垂直向下移动到下一个位置（行{8}）。如果水平和垂直都不能移动，那么将这步从路径中移除并回溯（行{9}），表示算法会尝试另一个可能的解。在算法尝试了所有可能的动作还是找不到解时，就返回 false（行{10}），表示这个问题无解。</p>
+<div class="code-wrapper"><pre><code class="hljs js"> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isSafe</span>(<span class="hljs-params">maze, x, y</span>) &#123;
+ <span class="hljs-keyword">const</span> n = maze.<span class="hljs-property">length</span>;
+  <span class="hljs-keyword">if</span> (x &gt;= <span class="hljs-number">0</span> &amp;&amp; y &gt;= <span class="hljs-number">0</span> &amp;&amp; x &lt; n &amp;&amp; y &lt; n &amp;&amp; maze[x][y] !== <span class="hljs-number">0</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  &#125;
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;</code></pre></div>
+
+<p>用下面的代码进行测试。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> maze = [ 
+ [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], 
+ [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>], 
+ [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>], 
+ [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>] 
+]; 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">ratInAMaze</span>(maze));</code></pre></div>
+
+<p>输出如下。</p>
+<div class="code-wrapper"><pre><code class="hljs js">[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>], 
+[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>], 
+[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>]]</code></pre></div>
+
+<h2 id="数独解题器"><a href="#数独解题器" class="headerlink" title="数独解题器"></a>数独解题器</h2><p>数独是一个非常有趣的解谜游戏，也是史上最流行的游戏之一。目标是用数字 1～9 填满一个 9 × 9 的矩阵，要求每行和每列都由这九个数字构成。矩阵还包含了小方块（3 × 3 矩阵），它们同样需要分别用这九个数字填满。谜题在开始给出一个已填了部分数字的矩阵，如下图所示</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-04%2016.22.47.png" srcset="/img/loading.gif" lazyload></p>
+<p>数独解题器的回溯算法会尝试在每行每列中填入每个数字。和迷宫老鼠问题一样，我们从算法的主方法开始。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">sudokuSolver</span>(<span class="hljs-params">matrix</span>) &#123; 
+ <span class="hljs-keyword">if</span> (<span class="hljs-title function_">solveSudoku</span>(matrix) === <span class="hljs-literal">true</span>) &#123; 
+ <span class="hljs-keyword">return</span> matrix; 
+ &#125; 
+ <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;问题无解！&#x27;</span>; 
+&#125;</code></pre></div>
+
+<p>算法在找到解后会返回填满了缺失数字的矩阵，否则返回错误信息。现在，我们来看算法的主要逻辑。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">UNASSIGNED</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">solveSudoku</span>(<span class="hljs-params">matrix</span>) &#123;
+  <span class="hljs-keyword">let</span> row = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">let</span> col = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">let</span> checkBlankSpaces = <span class="hljs-literal">false</span>; <span class="hljs-comment">//是否空白</span>
+  <span class="hljs-keyword">for</span> (row = <span class="hljs-number">0</span>; row &lt; matrix.<span class="hljs-property">length</span>; row++) &#123; <span class="hljs-comment">//&#123;1&#125;</span>
+    <span class="hljs-keyword">for</span> (col = <span class="hljs-number">0</span>; col &lt;= matrix[row].<span class="hljs-property">length</span>; col++) &#123;
+      <span class="hljs-keyword">if</span> (matrix[row][col] === <span class="hljs-variable constant_">UNASSIGNED</span>) &#123;
+        checkBlankSpaces = <span class="hljs-literal">true</span>;  <span class="hljs-comment">// &#123;2&#125;</span>
+        <span class="hljs-keyword">break</span>;
+      &#125;
+    &#125;
+    <span class="hljs-keyword">if</span> (checkBlankSpaces === <span class="hljs-literal">true</span>) &#123; <span class="hljs-comment">// &#123;3&#125;</span>
+      <span class="hljs-keyword">break</span>;
+    &#125;
+  &#125;
+  <span class="hljs-keyword">if</span> (checkBlankSpaces === <span class="hljs-literal">false</span>) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// &#123;4&#125;</span>
+  &#125;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> num = <span class="hljs-number">1</span>; num &lt;= <span class="hljs-number">9</span>; num++) &#123; <span class="hljs-comment">// &#123;5&#125;</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isSafe</span>(matrix, row, col, num)) &#123;<span class="hljs-comment">// &#123;6&#125;</span>
+      matrix[row][col] = num; <span class="hljs-comment">// &#123;7&#125;</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-title function_">solveSudoku</span>(matrix)) &#123; <span class="hljs-comment">// &#123;8&#125;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      &#125;
+      matrix[row][col] = <span class="hljs-variable constant_">UNASSIGNED</span>; <span class="hljs-comment">// &#123;9&#125;</span>
+    &#125;
+  &#125;
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// &#123;10&#125;</span>
+&#125;</code></pre></div>
+
+<p>第一步是验证谜题是否已被解决（行{1}）。如果没有空白的位置（值为 0 的位置），表示谜题已被完成（行{4}）。如果有空白位置（行{2}），我们要从两个循环中跳出（行{3}）并且 row和 col 变量会表示需要用 1～9 填写空白的位置。下面，算法会试着用 1～9 填写这个位置，一次填一个（行{5}）。我们会检查添加的数字是否符合规则（行{6}），也就是这个数字在这行、这列或在小矩阵（3 × 3 矩阵）中没有出现过。如果符合，我们就将这个数字填入（行{7}）并再次执行 solveSudoku 函数来尝试填写下一个位置（行{8}）。如果一个数字填在了不正确的位置，我们就再将这个位置标记为空（行{9}），并且算法会回溯（行{10}）再尝试一个其他数字</p>
+<p>isSafe 声明如下，它包含检查填入的数字是否符合规则。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">isSafe</span>(<span class="hljs-params">matrix, row, col, num</span>) &#123;
+  <span class="hljs-keyword">return</span> (
+    !<span class="hljs-title function_">usedInRow</span>(matrix, row, num) &amp;&amp;
+    !<span class="hljs-title function_">usedInCol</span>(matrix, col, num) &amp;&amp;
+    !<span class="hljs-title function_">usedInBox</span>(matrix, row - (row % <span class="hljs-number">3</span>), col - (col % <span class="hljs-number">3</span>), num)
+  );
+&#125;</code></pre></div>
+
+<p>具体的检查声明如下。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">usedInRow</span>(<span class="hljs-params">matrix, row, num</span>) &#123;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> col = <span class="hljs-number">0</span>; col &lt; matrix.<span class="hljs-property">length</span>; col++) &#123; <span class="hljs-comment">// &#123;11&#125;</span>
+    <span class="hljs-keyword">if</span> (matrix[row][col] === num) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+  &#125;
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">usedInCol</span>(<span class="hljs-params">matrix, col, num</span>) &#123;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> row = <span class="hljs-number">0</span>; row &lt; matrix.<span class="hljs-property">length</span>; row++) &#123; <span class="hljs-comment">// &#123;12&#125;</span>
+    <span class="hljs-keyword">if</span> (matrix[row][col] === num) &#123;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+  &#125;
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">usedInBox</span>(<span class="hljs-params">matrix, boxStartRow, boxStartCol, num</span>) &#123;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> row = <span class="hljs-number">0</span>; row &lt; <span class="hljs-number">3</span>; row++) &#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> col = <span class="hljs-number">0</span>; col &lt; <span class="hljs-number">3</span>; col++) &#123;
+      <span class="hljs-keyword">if</span> (matrix[row + boxStartRow][col + boxStartCol] === num) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      &#125;
+    &#125;
+  &#125;
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;</code></pre></div>
+
+<p>首先，通过迭代矩阵中给定行 row 中的每个位置检查数字是否在行 row 中存在（行{11}）。然后，迭代所有的列来验证数字是否在给定的列中存在（行{12}）。最后的检查是通过迭代 3 × 3=矩阵中的所有位置来检查数字是否在小矩阵中存在（行{13}）</p>
+<div class="code-wrapper"><pre><code class="hljs inform7">const sudokuGrid = <span class="hljs-comment">[ </span>
+<span class="hljs-comment"> <span class="hljs-comment">[5, 3, 0, 0, 7, 0, 0, 0, 0]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[6, 0, 0, 1, 9, 5, 0, 0, 0]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[0, 9, 8, 0, 0, 0, 0, 6, 0]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[8, 0, 0, 0, 6, 0, 0, 0, 3]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[4, 0, 0, 8, 0, 3, 0, 0, 1]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[7, 0, 0, 0, 2, 0, 0, 0, 6]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[0, 6, 0, 0, 0, 0, 2, 8, 0]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[0, 0, 0, 4, 1, 9, 0, 0, 5]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[0, 0, 0, 0, 8, 0, 0, 7, 9]</span> </span>
+<span class="hljs-comment">]</span>; 
+console.log(sudokuSolver(sudokuGrid));
+结果
+<span class="hljs-comment">[<span class="hljs-comment">[5, 3, 4, 6, 7, 8, 9, 1, 2]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[6, 7, 2, 1, 9, 5, 3, 4, 8]</span>,</span>
+<span class="hljs-comment">  <span class="hljs-comment">[1, 9, 8, 3, 4, 2, 5, 6, 7]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[8, 5, 9, 7, 6, 1, 4, 2, 3]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[4, 2, 6, 8, 5, 3, 7, 9, 1]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[7, 1, 3, 9, 2, 4, 8, 5, 6]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[9, 6, 1, 5, 3, 7, 2, 8, 4]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[2, 8, 7, 4, 1, 9, 6, 3, 5]</span>, </span>
+<span class="hljs-comment"> <span class="hljs-comment">[3, 4, 5, 2, 8, 6, 1, 7, 9]</span>]</span></code></pre></div>
+
+<h1 id="函数式编程简介"><a href="#函数式编程简介" class="headerlink" title="函数式编程简介"></a>函数式编程简介</h1><p>在命令式编程中，我们按部就班地编写程序代码，详细描述要完成的事情以及完成的顺序。</p>
+<h2 id="函数式编程与命令式编程"><a href="#函数式编程与命令式编程" class="headerlink" title="函数式编程与命令式编程"></a>函数式编程与命令式编程</h2><p>以函数式范式进行开发并不简单，关键在于习惯这种范式的机制。我们编写一个例子来说明差异。</p>
+<p>假设我们想打印一个数组中所有的元素。我们可以用命令式编程，声明的函数如下</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> printArray = <span class="hljs-keyword">function</span>(<span class="hljs-params">array</span>) &#123; 
+ <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; array.<span class="hljs-property">length</span>; i++)&#123; 
+ <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array[i]); 
+ &#125; 
+&#125;; 
+<span class="hljs-title function_">printArray</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]);</code></pre></div>
+
+<p>现在，我们试着把这个例子转换成函数式编程。在函数式编程中，函数就是摇滚明星。我们关注的重点是需要描述什么，而不是如何描述。回到这一句：“我们迭代数组，打印每一项。”那么，首先要关注的是迭代数据，然后进行操作，即打印数组项。下面的函数负责迭代数组。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> forEach = <span class="hljs-keyword">function</span> (<span class="hljs-params">array, action</span>) &#123;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; array.<span class="hljs-property">length</span>; i++) &#123;
+    <span class="hljs-title function_">action</span>(array[i]);
+  &#125;
+&#125;;</code></pre></div>
+
+<p>接下来，要创建另一个负责把数组元素打印到控制台的函数（考虑为回调函数），如下所示</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> logItem = <span class="hljs-keyword">function</span> (<span class="hljs-params">item</span>) &#123;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(item);
+&#125;;</code></pre></div>
+
+<p>最后，像下面这样使用声明的函数。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-title function_">forEach</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>], logItem);</code></pre></div>
+
+<ol>
+<li>函数式编程的主要目标是描述数据，以及要对数据应用的转换。</li>
+<li>在函数式编程中，程序执行顺序的重要性很低；而在命令式编程中，步骤和顺序是非常重要的。</li>
+<li>函数和数据集合是函数式编程的核心。</li>
+<li>在函数式编程中，我们可以使用和滥用函数和递归；而在命令式编程中，则使用循环、赋值、条件和函数。</li>
+<li>在函数式编程中，要避免副作用和可变数据，意味着我们不会修改传入函数的数据。如果需要基于输入返回一个解决方案，可以制作一个副本并返回数据修改后的副本</li>
+</ol>
+<h2 id="ES2015-和函数式编程"><a href="#ES2015-和函数式编程" class="headerlink" title="ES2015+和函数式编程"></a>ES2015+和函数式编程</h2><p>有了 ES2015+的新功能，用 JavaScript 进行函数式编程就变得更加容易了</p>
+<p>考虑我们要找出数组中最小的值。要用命令式编程完成这个任务，只要迭代数组，检查当前的最小值是否大于数组元素；如果是，就更新最小值，代码如下。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> findMinArray = <span class="hljs-keyword">function</span>(<span class="hljs-params">array</span>)&#123; 
+ <span class="hljs-keyword">var</span> minValue = array[<span class="hljs-number">0</span>]; 
+ <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">1</span>; i&lt;array.<span class="hljs-property">length</span>; i++)&#123; 
+ <span class="hljs-keyword">if</span> (minValue &gt; array[i])&#123; 
+ minValue = array[i]; 
+ &#125; 
+ &#125; 
+ <span class="hljs-keyword">return</span> minValue; 
+&#125;; 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">findMinArray</span>([<span class="hljs-number">8</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>])); <span class="hljs-comment">// 输出 4</span></code></pre></div>
+
+<p>要用函数式编程完成相同的任务，可以使用 Math.min 函数，传入所有要比较的数组元素。我们可以像下面的例子里这样，使用 ES2015 的解构运算符（…），把数组转换成单个的元素。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> min_ = <span class="hljs-keyword">function</span>(<span class="hljs-params">array</span>)&#123; 
+ <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(...array) 
+&#125;; 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">min_</span>([<span class="hljs-number">8</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>])); <span class="hljs-comment">// 输出 4</span></code></pre></div>
+
+<p>使用 ES2015 的箭头函数，可以进一步简化上面的代码</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">min</span> = arr =&gt; <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(...arr); 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">min</span>([<span class="hljs-number">8</span>, <span class="hljs-number">6</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>]));</code></pre></div>
+
+<p>我们可以用 ES2015 语法重写第一个示例。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">forEach</span> = (<span class="hljs-params">array, action</span>) =&gt; array.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> <span class="hljs-title function_">action</span>(item)); 
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">logItem</span> = (<span class="hljs-params">item</span>) =&gt; <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(item);</code></pre></div>
+
+<h2 id="JavaScript-函数式工具箱——map、filter-和-reduce"><a href="#JavaScript-函数式工具箱——map、filter-和-reduce" class="headerlink" title="JavaScript 函数式工具箱——map、filter 和 reduce"></a>JavaScript 函数式工具箱——<strong>map</strong>、<strong>filter</strong> 和 <strong>reduce</strong></h2><p>我们可以使用 map 函数，把一个数据集合转换或映射成另一个数据集合。先看一个命令式编程的例子</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> daysOfWeek = [
+  &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Monday&quot;</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">1</span> &#125;,
+  &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Tuesday&quot;</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">2</span> &#125;,
+  &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Wednesday&quot;</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">7</span> &#125;,
+];
+<span class="hljs-keyword">let</span> daysOfWeekValues_ = [];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; daysOfWeek.<span class="hljs-property">length</span>; i++) &#123;
+  daysOfWeekValues_.<span class="hljs-title function_">push</span>(daysOfWeek[i].<span class="hljs-property">value</span>);
+&#125;</code></pre></div>
+
+<p>再以函数式编程并使用 ES2015+语法来考虑同样的例子，代码如下</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> daysOfWeekValues = daysOfWeek.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">day</span> =&gt;</span> day.<span class="hljs-property">value</span>); 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(daysOfWeekValues);</code></pre></div>
+
+<p>我们可以使用 filter 函数过滤一个集合的值。下面来看一个例子。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> positiveNumbers_ = <span class="hljs-keyword">function</span> (<span class="hljs-params">array</span>) &#123;
+  <span class="hljs-keyword">let</span> positive = [];
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; array.<span class="hljs-property">length</span>; i++) &#123;
+    <span class="hljs-keyword">if</span> (array[i] &gt;= <span class="hljs-number">0</span>) &#123;
+      positive.<span class="hljs-title function_">push</span>(array[i]);
+    &#125;
+  &#125;
+  <span class="hljs-keyword">return</span> positive;
+&#125;;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">positiveNumbers_</span>([-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, -<span class="hljs-number">2</span>]));</code></pre></div>
+
+<p>我们可以把同样的代码写成函数式的</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">positiveNumbers</span> = (<span class="hljs-params">array</span>) =&gt; array.<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">num</span> =&gt;</span> (num &gt;= <span class="hljs-number">0</span>)); 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">positiveNumbers</span>([-<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,-<span class="hljs-number">2</span>]));</code></pre></div>
+
+<p>我们也可以使用 reduce 函数，把一个集合归约成一个特定的值。比如，对一个数组中的值求和</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> sumValues = <span class="hljs-keyword">function</span>(<span class="hljs-params">array</span>) &#123; 
+ <span class="hljs-keyword">let</span> total = array[<span class="hljs-number">0</span>]; 
+ <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i&lt;array.<span class="hljs-property">length</span>; i++) &#123; 
+ total += array[i]; 
+ &#125; 
+ <span class="hljs-keyword">return</span> total; 
+&#125;; 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">sumValues</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]));</code></pre></div>
+
+<p>上面的代码也可以写成这样</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> sum_ = <span class="hljs-keyword">function</span>(<span class="hljs-params">array</span>)&#123; 
+ <span class="hljs-keyword">return</span> array.<span class="hljs-title function_">reduce</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">a, b</span>)&#123; 
+ <span class="hljs-keyword">return</span> a + b; 
+ &#125;) 
+&#125;; 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">sum_</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]));</code></pre></div>
+
+<p>我们还可以把这些函数与 ES2015 的功能结合起来，比如解构运算符和箭头函数，代码如下</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">sum</span> = arr =&gt; arr.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a + b); 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">sum</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]));</code></pre></div>
+
+<p>我们再看另一个例子。考虑我们需要写一个函数，把几个数组连接起来。为此，可以创建另一个数组，用于存放其他数组的元素。可以执行以下命令式的代码。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> mergeArrays_ = <span class="hljs-keyword">function</span>(<span class="hljs-params">arrays</span>)&#123; 
+ <span class="hljs-keyword">const</span> count = arrays.<span class="hljs-property">length</span>; 
+ <span class="hljs-keyword">let</span> newArray = []; 
+ <span class="hljs-keyword">let</span> k = <span class="hljs-number">0</span>; 
+ <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; count; i++)&#123; 
+ <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; arrays[i].<span class="hljs-property">length</span>; j++)&#123; 
+ newArray[k++] = arrays[i][j]; 
+ &#125; 
+ &#125; 
+ <span class="hljs-keyword">return</span> newArray; 
+&#125;; 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">mergeArrays_</span>([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">6</span>]]));</code></pre></div>
+
+<p>注意，在这个例子中，我们声明了变量，还使用了循环。现在，我们用 JavaScript 函数式编程把上面的代码重写如下</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> mergeArraysConcat = <span class="hljs-keyword">function</span>(<span class="hljs-params">arrays</span>)&#123; 
+ <span class="hljs-keyword">return</span> arrays.<span class="hljs-title function_">reduce</span>( <span class="hljs-keyword">function</span>(<span class="hljs-params">p,n</span>)&#123; 
+ <span class="hljs-keyword">return</span> p.<span class="hljs-title function_">concat</span>(n); 
+ &#125;); 
+&#125;; 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">mergeArraysConcat</span>([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">6</span>]]));</code></pre></div>
+
+<p>上面的代码完成了同样的任务，但它是面向函数的。我们也可以用 ES2015 使代码更加精简，如下所示。</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">mergeArrays</span> = (<span class="hljs-params">...arrays</span>) =&gt; [].<span class="hljs-title function_">concat</span>(...arrays); 
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">mergeArrays</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">6</span>]));</code></pre></div>
+
 
                 
               </div>
