@@ -453,3 +453,99 @@ script setup 是在单⽂件组件中使⽤ Composition API 的编译时语法�
 - 当拿到组件实例后，默认是不可以访问这个实例中的⽅法和属性，因为默认没暴露任何⽅法和属性。
 - 因此在Vue3组件中可以⽤defifineExpose API来暴露⽅法和属性给外部访问。
 - defifineExpose 也是不需要导⼊，直接使⽤即可
+
+## Vue Rouer路由
+
+###  vue-router路由的两种模式
+
+vue-router中默认使⽤的是hash模式
+
+1. hash模式，带#。如：http://localhost:8080/#/page。改变hash，浏览器本身不会有任何请求服务器动作。
+
+2. history模式，不带#， 如：<http://localhost:8080/page ，路径没有#。基于HTML5的pushState、replaceState实现。
+
+| **hash**                                                     | **history**                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 有 # 号                                                      | 没有 # 号                                                    |
+| 能够兼容到IE8                                                | 只能兼容到IE10                                               |
+| 实际的url之前使⽤哈希字符，这部分url不会发送到服务器，不需要在服务器层⾯上进⾏任何处理 | 每访问⼀个⻚⾯都需要服务器进⾏路由匹配⽣成html ⽂件再发送响应给浏览器，消耗服务器⼤量资源 |
+| 刷新不会存在 404 问题                                        | 浏览器直接访问嵌套路由时，会报 404 问题。                    |
+| 不需要服务器任何配置                                         | 需要在服务器配置⼀个回调路由                                 |
+
+### 路由跳转时如何传递数据
+
+动态路由
+
+path: /user/:id
+
+获取动态路由的值的⽅式
+
+​	在template中，直接通过 $route.params获取值
+
+​	在created中，通过 this.$route.params获取值
+
+​	在setup中，使⽤ vue-router库提供的⼀个hook useRoute
+
+该Hook会返回⼀个Route对象，对象中保存着当前路由相关的值
+
+query参数:
+
+​	通过query的⽅式来传递参数
+
+​	在界⾯中通过 $route.query 来获取参数
+
+​	在created中，通过 this.$route.query获取值
+
+​	在setup，使⽤ vue-router库提供的⼀个hook useRoute 来获取
+
+### 什么是路由守卫？路由守卫有什么作⽤
+
+**什么是路由守卫**
+
+vue-router 提供的路由(导航)守卫主要⽤来通过跳转或取消的⽅式守卫导航。有很多种⽅式植⼊路由导航中：全局的，单个路由独享的，或者组件级的。
+
+全局导航钩⼦
+
+​	router.beforeEach(to,from,next)
+
+​	router.afterEach(to,from)
+
+​	….
+
+组件内的钩⼦
+
+​	beforeRouteEnter (to, from, next)
+
+​	beforeRouteUpdate (to, from, next)
+
+​	beforeRouteLeave (to, from, next)
+
+​	。。。
+
+单独路由独享组件
+
+​	beforeEnter: (to, from, next)
+
+​	afterEach(to,from)
+
+​	….
+
+**路由守卫有什么作⽤**
+
+可以在进⼊路由之前进⾏某些判断，⽐如，检查token是否存在来判断⽤户是否已经登录。
+
+可以在路由守卫中进⾏⻚⾯的权限判断，⽐如，判断某个⽤户是否拥有该⻚⾯的权限。
+
+也可以⽤来记录⻚⾯的某些信息，⽐如，记录⻚⾯的滚动信息等等。
+
+###  route和router的区别
+
+route是路由信息对象，在Vue3中通过 useRoute 来获取。
+
+​	包括了path，params，hash，query，fullPath，matched，name等路由信息参数。
+
+router是路由实例对象，在Vue3中通过 useRouter 来获取。
+
+​	包括了路由跳转⽅法、钩⼦函数等，⽐如：push、go、back、addRouter、beforeEnter等
+
+## Vuex和Pinia状态管理
