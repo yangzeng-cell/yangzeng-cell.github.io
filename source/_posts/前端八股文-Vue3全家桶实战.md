@@ -236,3 +236,220 @@ keep-alive 是 Vue 内置的⼀个组件，可以使被包含的组件保留状�
 - 在使⽤第三⽅库时，往往会通过使⽤插槽类⾃定义第三⽅组件中的某些内容。
 
 ## Component组件
+
+### ⽗⼦组件的⽣命周期顺序
+
+加载渲染过程： ⽗beforeCreate -> ⽗created -> ⽗beforeMount -> ⼦beforeCreate -> ⼦created -> ⼦beforeMount ->⼦mounted -> ⽗mounted
+
+⼦组件更新过程：⽗beforeUpdate -> ⼦beforeUpdate -> ⼦updated -> ⽗updated
+
+⽗组件更新过程：⽗beforeUpdate -> ⽗updated
+
+销毁过程：⽗beforeDestroy -> ⼦beforeDestroy -> ⼦destroyed -> ⽗destroyed
+
+### 组件通讯(传值)式有哪些
+
+- ⽗传⼦：⼦组件通过props来接收⽗组件传递的属性 xxx 的值
+- ⼦传⽗：⼦组件通过emit触发事件传递，⽗组件通过监听对应的事件来接收数据
+- Provide/Inject：⽗组件提供内容，⼦或孙组件可以注⼊⽗组件提供的内容。
+- 组件实例：通过ref来拿到组件的实例，调⽤实例的属性或⽅法进⾏传值。
+- 事件总线：可以⾃⼰编写EventBus插件来进⾏通讯，或世界使⽤第三⽅的事件总线库。
+- ⽤Vuex/Pinia: 可以使⽤全局状态管理来进⾏全局共享数据
+
+###  什么是⽣命周期函数？Vue组件的⽣命周期函数有哪些
+
+**⽣命周期函数：**
+
+⽣命周期函数是⼀些钩⼦函数（回调函数），在某个时间会被Vue源码内部进⾏回调
+
+通过对⽣命周期函数的回调，我们可以知道⽬前组件正在经历什么阶段
+
+Vue3的⽣命周期函数:
+
+beforeCreate :组件实例在创建之前
+
+created: 组件被创建完成
+
+​	可以发送⽹络请求
+
+​	可以事件监听
+
+​	this.$watch()
+
+beforeMount : 组件template准备被挂载
+
+mounted :组件template已经被挂载
+
+​	可以获取DOM,可以使⽤DOM
+
+beforeUpdate: 准备更新DOM
+
+updated: 更新DOM,根据最新数据⽣成新的VNode,⽣成新的虚拟DOM,转换为真实的DOM
+
+beforeUnmount: 卸载之前
+
+unmounted: DOM 元素被卸载完成
+
+​	回收操作(取消事件监听)
+
+## Composition API
+
+### 什么是Composition API 和 Options API
+
+Composition API:
+
+- Composition API 是⼀组 API，允许我们使⽤导⼊的函数⽽不是声明选项来编写 Vue 组件。它是⼀个涵盖以下 API 的总称：Reactivity API、Lifecycle Hooks、Dependency Injection等等
+- 使⽤Composition API编写组件时可以根据逻辑功能来组织代码。⽐如可以把⼀个功能所⽤到的API 放在⼀起，这样可以让代码⾼内聚和低耦合，进⽽提⾼了代码的逻辑的复⽤性。
+- 在 Vue 3 中，它也主要与script setup语法⼀起使⽤
+
+Options API:
+
+- 在对应的属性中编写对应的功能模块, ⽐如data定义数据、methods中定义⽅法、computed中定义计算属性、watch中监听属性改变，也包括⽣命周期钩⼦
+- 弊端: 当我们实现某⼀个功能时，这个功能对应的代码逻辑会被拆分到各个属性中,当组件变得复杂，导致对应属性的列表也会增⻓，这可能会导致组件难以阅读和理解
+
+### Composition API和之Options API有什么区别
+
+- 在逻辑组织和逻辑复⽤⽅⾯，Composition API是优于Options API。
+- Composition API⼏乎是函数，会有更好的类型推断，对于TS的⽀持更友好。
+- Composition API对 tree-shaking 友好，代码也更容易压缩。
+- Composition API中⻅不到this的使⽤，减少了this指向不明的情况。
+- Composition API⽤起来稍微复杂⼀点，⽽Options API就⾮常简单、易于使⽤
+
+### 说说Vue3中setup函数的作⽤
+
+在Vue3中， setup() 函数充当了组件编写Composition API 的⼊⼝点
+
+setup函数参数主要有两个参数：
+
+​	第⼀个参数：props , ⽗组件传递过来的属性会被放到props对象中
+
+​	第⼆个参数：context, 它⾥⾯包含三个属性
+
+​		attrs：所有的⾮prop的attribute；
+
+​		slots：⽗组件传递过来的插槽；
+
+​		emit：当我们组件内部需要发出事件时会⽤到emit（因为我们不能访问this，所以不可
+
+以通过 this.$emit发出事件）
+
+可以在setup中可以定义响应式数据、⽅法、计算属性、侦听器等等。
+
+可以通过setup的返回值来替代data选项，让数据可以直接在template中使⽤。
+
+### ref和reactive有什么区别？开发中如何选择
+
+- ref和reactive都是响应式的API，都可以⽤来定义响应式的数据。
+- ref可以包裹任意数据类型，reactive只能包裹复杂数据类型，⽐如对象、数组。
+- ref返回⼀个ref对象，在script中取值需要通过value属性，但是在模板中使⽤会进⾏解包不需要调⽤value。
+- reactive包裹的是复杂数据类型，直接取⾥⾯的属性即可。
+- ref⼏乎可以应⽤在任何场景，⽽且包含reactive适合的场景
+- reactive的应⽤场景⽐较受限，第⼀：值⽐较固定，第⼆：值与值之间是有联系的。
+- 开发中尽量选择ref
+
+### Composition API常⻅的⼏个函数与⽤法
+
+ref
+
+​	包裹任意类型的值，将包裹的值加⼊响应式
+
+reactive
+
+​	包裹复杂类型的值，将包裹的值加⼊响应式
+
+computed
+
+​	把⼀些复杂逻辑⽤computed进⾏包裹，如同Options API中的计算属性⼀样
+
+​	computed会⾃动收集相关依赖，当依赖发⽣变化时，会⾃动进⾏更新
+
+⽣命周期
+
+​	Vue3中想要在beforeCreate和created中做的事，直接在setup中做即可
+
+​	Vue3的其他的⽣命周期函数都要在前⾯加⼀个on，然后需要在vue中主动引⼊watch
+
+​	watch可以监听单个数据源，也可以监听多个数据源
+
+​	watch是懒执⾏，第⼀次是不会执⾏的，除⾮你为其提供第三个参数中的immediate属性为
+
+true
+
+​	watch只有等到监听的数据源发⽣了变化后，才会执⾏第⼆个参数（回调）
+
+​	watch可以获取监听数据源的前后变化的值
+
+​	侦听多个数据源的时候，第⼀个参数是数组类型
+
+watchEffect
+
+​	watchEffffect会⾃动收集依赖，收集的依赖是第⼀个参数，也就是回调函数中有哪些东⻄是加⼊响应式的
+
+​	如果这个值加⼊了响应式就会被收集起来，当被收集的值发⽣了变化，就会重新执⾏这个回调函数
+
+​	watchEffffect第⼀次执⾏是在DOM挂载前执⾏的，所以如果你想在第⼀次执⾏时拿到DOM元 素
+
+​	需要传⼊第⼆个参数，第⼆个参数是⼀个对象，让其flflush属性的值为post即可
+
+toRefs
+
+​	对reactive进⾏解构后就失去了响应式的效果，因为reactive返回的是⼀个Proxy对象
+
+​	对Proxy对象进⾏解构，拿到的是纯净的值，所以没有了响应式的效果
+
+​	如果想要对reactive进⾏解构，需要对其包裹⼀个toRefs
+
+​	这么做相当于为reactive中的每⼀个值包裹了⼀个ref
+
+### Vue3中的watch和watchEffffect有什么区别
+
+watch和watchEffect都⽤⽤来侦听响应式数据的变化，watch可以侦听指定的源，默认第⼀次不会执⾏，watchEffffect虽不能指定侦听的源，但是会⾃动收集依赖，并默认会先执⾏⼀次。
+
+watch
+
+- ​	watch可以监听单个数据源，也可以监听多个数据源
+- ​	watch是懒执⾏，第⼀次是不会执⾏的，除⾮你为其提供第三个参数中的immediate属性为true
+- ​	watch只有等到监听的数据源发⽣了变化后，才会执⾏第⼆个参数（回调）
+- ​	watch可以获取监听数据源的前后变化的值
+- ​	侦听多个数据源的时候，第⼀个参数是数组类型
+
+watchEffect
+
+- ​	watchEffect会⾃动收集依赖，收集的依赖是第⼀个参数，也就是回调函数中有哪些东⻄是加⼊响应式的
+- ​	如果这个值加⼊了响应式就会被收集起来，当被收集的值发⽣了变化，就会重新执⾏这个回调函数
+- ​	watchEffect第⼀次执⾏是在DOM挂载前执⾏的，所以如果你想在第⼀次执⾏时拿到DOM元素
+- ​	需要传⼊第⼆个参数，第⼆个参数是⼀个对象，让其flflush属性的值为post即可
+
+### 说说Vue3中script setup语法糖常⻅⽤法
+
+script setup 是在单⽂件组件中使⽤ Composition API 的编译时语法糖，相⽐与之前的setup函数写法，它具有更多的优势：
+
+- 更少的样板内容，更简洁的代码。
+- 能够使⽤纯 TypeScript 声明 props 和抛出事件。
+- 更好的运⾏时性能 (其模板会被编译成与其同⼀作⽤域的渲染函数，没有任何的中间代理)。
+- 更好的 IDE 类型推断性能 (减少语⾔服务器从代码中抽离类型的⼯作)。
+
+**script setup**
+
+- 当使⽤ script setup 的时候，任何在 script setup 声明的顶层绑定都能在模板中直接使⽤
+
+  ​	声明的顶层绑定：包括变量，函数声明，以及 import 引⼊的内容
+
+- 响应式数据需要通过ref、reactive来创建
+
+- 在script setup中导⼊的组件可以直接使⽤
+
+**defifineProps**
+
+在script setup语法糖中必须使⽤ defifineProps API来声明props，它具备完整的类型推断并且在<script setup> 中是直接可⽤的（不需要额外导⼊）。
+
+**defifineEmits**
+
+在script setup语法糖中必须使⽤ defifineEmits API来声明 emits，它具备完整的类型推断并且在<script setup> 中是直接可⽤的（不需要额外导⼊）。
+
+**defifineExpose**
+
+- 获取组件的实例可以通过ref来获取，接着组件挂载完成后可通过value拿到组件实例。
+- 当拿到组件实例后，默认是不可以访问这个实例中的⽅法和属性，因为默认没暴露任何⽅法和属性。
+- 因此在Vue3组件中可以⽤defifineExpose API来暴露⽅法和属性给外部访问。
+- defifineExpose 也是不需要导⼊，直接使⽤即可
