@@ -24,7 +24,7 @@
 <meta property="og:description" content="Vue常⻅⾯试题Vue基础Vue (读⾳ &#x2F;vjuː&#x2F;，类似于 view) 是⼀套⽤于构建⽤户界⾯的渐进式 JavaScript框架  全称是Vue.js或者Vuejs； 它基于标准 HTML、CSS 和 JavaScript 构建，并提供了⼀套声明式的、组件化的编程模型； 帮助你⾼效地开发⽤户界⾯，⽆论任务是简单还是复杂；  Vue.js 的特点 易⽤： Vuejs是⼀个渐进式的框架，相⽐于其它">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-04T10:54:23.000Z">
-<meta property="article:modified_time" content="2023-02-05T07:08:16.756Z">
+<meta property="article:modified_time" content="2023-02-05T14:54:54.805Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Vue3">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4k 字
+          8.1k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          33 分钟
+          68 分钟
         
       </span>
     
@@ -434,7 +434,143 @@
 <li>在封装组件时，如果组件中的某个内容是动态的或不确定的，就可以使⽤插槽来代替了。</li>
 <li>在使⽤第三⽅库时，往往会通过使⽤插槽类⾃定义第三⽅组件中的某些内容。</li>
 </ul>
-<h2 id="Component组件"><a href="#Component组件" class="headerlink" title="Component组件"></a>Component组件</h2>
+<h2 id="Component组件"><a href="#Component组件" class="headerlink" title="Component组件"></a>Component组件</h2><h3 id="⽗⼦组件的⽣命周期顺序"><a href="#⽗⼦组件的⽣命周期顺序" class="headerlink" title="⽗⼦组件的⽣命周期顺序"></a>⽗⼦组件的⽣命周期顺序</h3><p>加载渲染过程： ⽗beforeCreate -&gt; ⽗created -&gt; ⽗beforeMount -&gt; ⼦beforeCreate -&gt; ⼦created -&gt; ⼦beforeMount -&gt;⼦mounted -&gt; ⽗mounted</p>
+<p>⼦组件更新过程：⽗beforeUpdate -&gt; ⼦beforeUpdate -&gt; ⼦updated -&gt; ⽗updated</p>
+<p>⽗组件更新过程：⽗beforeUpdate -&gt; ⽗updated</p>
+<p>销毁过程：⽗beforeDestroy -&gt; ⼦beforeDestroy -&gt; ⼦destroyed -&gt; ⽗destroyed</p>
+<h3 id="组件通讯-传值-式有哪些"><a href="#组件通讯-传值-式有哪些" class="headerlink" title="组件通讯(传值)式有哪些"></a>组件通讯(传值)式有哪些</h3><ul>
+<li>⽗传⼦：⼦组件通过props来接收⽗组件传递的属性 xxx 的值</li>
+<li>⼦传⽗：⼦组件通过emit触发事件传递，⽗组件通过监听对应的事件来接收数据</li>
+<li>Provide/Inject：⽗组件提供内容，⼦或孙组件可以注⼊⽗组件提供的内容。</li>
+<li>组件实例：通过ref来拿到组件的实例，调⽤实例的属性或⽅法进⾏传值。</li>
+<li>事件总线：可以⾃⼰编写EventBus插件来进⾏通讯，或世界使⽤第三⽅的事件总线库。</li>
+<li>⽤Vuex/Pinia: 可以使⽤全局状态管理来进⾏全局共享数据</li>
+</ul>
+<h3 id="什么是⽣命周期函数？Vue组件的⽣命周期函数有哪些"><a href="#什么是⽣命周期函数？Vue组件的⽣命周期函数有哪些" class="headerlink" title="什么是⽣命周期函数？Vue组件的⽣命周期函数有哪些"></a>什么是⽣命周期函数？Vue组件的⽣命周期函数有哪些</h3><p><strong>⽣命周期函数：</strong></p>
+<p>⽣命周期函数是⼀些钩⼦函数（回调函数），在某个时间会被Vue源码内部进⾏回调</p>
+<p>通过对⽣命周期函数的回调，我们可以知道⽬前组件正在经历什么阶段</p>
+<p>Vue3的⽣命周期函数:</p>
+<p>beforeCreate :组件实例在创建之前</p>
+<p>created: 组件被创建完成</p>
+<p>​    可以发送⽹络请求</p>
+<p>​    可以事件监听</p>
+<p>​    this.$watch()</p>
+<p>beforeMount : 组件template准备被挂载</p>
+<p>mounted :组件template已经被挂载</p>
+<p>​    可以获取DOM,可以使⽤DOM</p>
+<p>beforeUpdate: 准备更新DOM</p>
+<p>updated: 更新DOM,根据最新数据⽣成新的VNode,⽣成新的虚拟DOM,转换为真实的DOM</p>
+<p>beforeUnmount: 卸载之前</p>
+<p>unmounted: DOM 元素被卸载完成</p>
+<p>​    回收操作(取消事件监听)</p>
+<h2 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h2><h3 id="什么是Composition-API-和-Options-API"><a href="#什么是Composition-API-和-Options-API" class="headerlink" title="什么是Composition API 和 Options API"></a>什么是Composition API 和 Options API</h3><p>Composition API:</p>
+<ul>
+<li>Composition API 是⼀组 API，允许我们使⽤导⼊的函数⽽不是声明选项来编写 Vue 组件。它是⼀个涵盖以下 API 的总称：Reactivity API、Lifecycle Hooks、Dependency Injection等等</li>
+<li>使⽤Composition API编写组件时可以根据逻辑功能来组织代码。⽐如可以把⼀个功能所⽤到的API 放在⼀起，这样可以让代码⾼内聚和低耦合，进⽽提⾼了代码的逻辑的复⽤性。</li>
+<li>在 Vue 3 中，它也主要与script setup语法⼀起使⽤</li>
+</ul>
+<p>Options API:</p>
+<ul>
+<li>在对应的属性中编写对应的功能模块, ⽐如data定义数据、methods中定义⽅法、computed中定义计算属性、watch中监听属性改变，也包括⽣命周期钩⼦</li>
+<li>弊端: 当我们实现某⼀个功能时，这个功能对应的代码逻辑会被拆分到各个属性中,当组件变得复杂，导致对应属性的列表也会增⻓，这可能会导致组件难以阅读和理解</li>
+</ul>
+<h3 id="Composition-API和之Options-API有什么区别"><a href="#Composition-API和之Options-API有什么区别" class="headerlink" title="Composition API和之Options API有什么区别"></a>Composition API和之Options API有什么区别</h3><ul>
+<li>在逻辑组织和逻辑复⽤⽅⾯，Composition API是优于Options API。</li>
+<li>Composition API⼏乎是函数，会有更好的类型推断，对于TS的⽀持更友好。</li>
+<li>Composition API对 tree-shaking 友好，代码也更容易压缩。</li>
+<li>Composition API中⻅不到this的使⽤，减少了this指向不明的情况。</li>
+<li>Composition API⽤起来稍微复杂⼀点，⽽Options API就⾮常简单、易于使⽤</li>
+</ul>
+<h3 id="说说Vue3中setup函数的作⽤"><a href="#说说Vue3中setup函数的作⽤" class="headerlink" title="说说Vue3中setup函数的作⽤"></a>说说Vue3中setup函数的作⽤</h3><p>在Vue3中， setup() 函数充当了组件编写Composition API 的⼊⼝点</p>
+<p>setup函数参数主要有两个参数：</p>
+<p>​    第⼀个参数：props , ⽗组件传递过来的属性会被放到props对象中</p>
+<p>​    第⼆个参数：context, 它⾥⾯包含三个属性</p>
+<p>​        attrs：所有的⾮prop的attribute；</p>
+<p>​        slots：⽗组件传递过来的插槽；</p>
+<p>​        emit：当我们组件内部需要发出事件时会⽤到emit（因为我们不能访问this，所以不可</p>
+<p>以通过 this.$emit发出事件）</p>
+<p>可以在setup中可以定义响应式数据、⽅法、计算属性、侦听器等等。</p>
+<p>可以通过setup的返回值来替代data选项，让数据可以直接在template中使⽤。</p>
+<h3 id="ref和reactive有什么区别？开发中如何选择"><a href="#ref和reactive有什么区别？开发中如何选择" class="headerlink" title="ref和reactive有什么区别？开发中如何选择"></a>ref和reactive有什么区别？开发中如何选择</h3><ul>
+<li>ref和reactive都是响应式的API，都可以⽤来定义响应式的数据。</li>
+<li>ref可以包裹任意数据类型，reactive只能包裹复杂数据类型，⽐如对象、数组。</li>
+<li>ref返回⼀个ref对象，在script中取值需要通过value属性，但是在模板中使⽤会进⾏解包不需要调⽤value。</li>
+<li>reactive包裹的是复杂数据类型，直接取⾥⾯的属性即可。</li>
+<li>ref⼏乎可以应⽤在任何场景，⽽且包含reactive适合的场景</li>
+<li>reactive的应⽤场景⽐较受限，第⼀：值⽐较固定，第⼆：值与值之间是有联系的。</li>
+<li>开发中尽量选择ref</li>
+</ul>
+<h3 id="Composition-API常⻅的⼏个函数与⽤法"><a href="#Composition-API常⻅的⼏个函数与⽤法" class="headerlink" title="Composition API常⻅的⼏个函数与⽤法"></a>Composition API常⻅的⼏个函数与⽤法</h3><p>ref</p>
+<p>​    包裹任意类型的值，将包裹的值加⼊响应式</p>
+<p>reactive</p>
+<p>​    包裹复杂类型的值，将包裹的值加⼊响应式</p>
+<p>computed</p>
+<p>​    把⼀些复杂逻辑⽤computed进⾏包裹，如同Options API中的计算属性⼀样</p>
+<p>​    computed会⾃动收集相关依赖，当依赖发⽣变化时，会⾃动进⾏更新</p>
+<p>⽣命周期</p>
+<p>​    Vue3中想要在beforeCreate和created中做的事，直接在setup中做即可</p>
+<p>​    Vue3的其他的⽣命周期函数都要在前⾯加⼀个on，然后需要在vue中主动引⼊watch</p>
+<p>​    watch可以监听单个数据源，也可以监听多个数据源</p>
+<p>​    watch是懒执⾏，第⼀次是不会执⾏的，除⾮你为其提供第三个参数中的immediate属性为</p>
+<p>true</p>
+<p>​    watch只有等到监听的数据源发⽣了变化后，才会执⾏第⼆个参数（回调）</p>
+<p>​    watch可以获取监听数据源的前后变化的值</p>
+<p>​    侦听多个数据源的时候，第⼀个参数是数组类型</p>
+<p>watchEffect</p>
+<p>​    watchEffffect会⾃动收集依赖，收集的依赖是第⼀个参数，也就是回调函数中有哪些东⻄是加⼊响应式的</p>
+<p>​    如果这个值加⼊了响应式就会被收集起来，当被收集的值发⽣了变化，就会重新执⾏这个回调函数</p>
+<p>​    watchEffffect第⼀次执⾏是在DOM挂载前执⾏的，所以如果你想在第⼀次执⾏时拿到DOM元 素</p>
+<p>​    需要传⼊第⼆个参数，第⼆个参数是⼀个对象，让其flflush属性的值为post即可</p>
+<p>toRefs</p>
+<p>​    对reactive进⾏解构后就失去了响应式的效果，因为reactive返回的是⼀个Proxy对象</p>
+<p>​    对Proxy对象进⾏解构，拿到的是纯净的值，所以没有了响应式的效果</p>
+<p>​    如果想要对reactive进⾏解构，需要对其包裹⼀个toRefs</p>
+<p>​    这么做相当于为reactive中的每⼀个值包裹了⼀个ref</p>
+<h3 id="Vue3中的watch和watchEffffect有什么区别"><a href="#Vue3中的watch和watchEffffect有什么区别" class="headerlink" title="Vue3中的watch和watchEffffect有什么区别"></a>Vue3中的watch和watchEffffect有什么区别</h3><p>watch和watchEffect都⽤⽤来侦听响应式数据的变化，watch可以侦听指定的源，默认第⼀次不会执⾏，watchEffffect虽不能指定侦听的源，但是会⾃动收集依赖，并默认会先执⾏⼀次。</p>
+<p>watch</p>
+<ul>
+<li>​    watch可以监听单个数据源，也可以监听多个数据源</li>
+<li>​    watch是懒执⾏，第⼀次是不会执⾏的，除⾮你为其提供第三个参数中的immediate属性为true</li>
+<li>​    watch只有等到监听的数据源发⽣了变化后，才会执⾏第⼆个参数（回调）</li>
+<li>​    watch可以获取监听数据源的前后变化的值</li>
+<li>​    侦听多个数据源的时候，第⼀个参数是数组类型</li>
+</ul>
+<p>watchEffect</p>
+<ul>
+<li>​    watchEffect会⾃动收集依赖，收集的依赖是第⼀个参数，也就是回调函数中有哪些东⻄是加⼊响应式的</li>
+<li>​    如果这个值加⼊了响应式就会被收集起来，当被收集的值发⽣了变化，就会重新执⾏这个回调函数</li>
+<li>​    watchEffect第⼀次执⾏是在DOM挂载前执⾏的，所以如果你想在第⼀次执⾏时拿到DOM元素</li>
+<li>​    需要传⼊第⼆个参数，第⼆个参数是⼀个对象，让其flflush属性的值为post即可</li>
+</ul>
+<h3 id="说说Vue3中script-setup语法糖常⻅⽤法"><a href="#说说Vue3中script-setup语法糖常⻅⽤法" class="headerlink" title="说说Vue3中script setup语法糖常⻅⽤法"></a>说说Vue3中script setup语法糖常⻅⽤法</h3><p>script setup 是在单⽂件组件中使⽤ Composition API 的编译时语法糖，相⽐与之前的setup函数写法，它具有更多的优势：</p>
+<ul>
+<li>更少的样板内容，更简洁的代码。</li>
+<li>能够使⽤纯 TypeScript 声明 props 和抛出事件。</li>
+<li>更好的运⾏时性能 (其模板会被编译成与其同⼀作⽤域的渲染函数，没有任何的中间代理)。</li>
+<li>更好的 IDE 类型推断性能 (减少语⾔服务器从代码中抽离类型的⼯作)。</li>
+</ul>
+<p><strong>script setup</strong></p>
+<ul>
+<li><p>当使⽤ script setup 的时候，任何在 script setup 声明的顶层绑定都能在模板中直接使⽤</p>
+<p>​    声明的顶层绑定：包括变量，函数声明，以及 import 引⼊的内容</p>
+</li>
+<li><p>响应式数据需要通过ref、reactive来创建</p>
+</li>
+<li><p>在script setup中导⼊的组件可以直接使⽤</p>
+</li>
+</ul>
+<p><strong>defifineProps</strong></p>
+<p>在script setup语法糖中必须使⽤ defifineProps API来声明props，它具备完整的类型推断并且在<script setup> 中是直接可⽤的（不需要额外导⼊）。</p>
+<p><strong>defifineEmits</strong></p>
+<p>在script setup语法糖中必须使⽤ defifineEmits API来声明 emits，它具备完整的类型推断并且在<script setup> 中是直接可⽤的（不需要额外导⼊）。</p>
+<p><strong>defifineExpose</strong></p>
+<ul>
+<li>获取组件的实例可以通过ref来获取，接着组件挂载完成后可通过value拿到组件实例。</li>
+<li>当拿到组件实例后，默认是不可以访问这个实例中的⽅法和属性，因为默认没暴露任何⽅法和属性。</li>
+<li>因此在Vue3组件中可以⽤defifineExpose API来暴露⽅法和属性给外部访问。</li>
+<li>defifineExpose 也是不需要导⼊，直接使⽤即可</li>
+</ul>
+
                 
               </div>
             
