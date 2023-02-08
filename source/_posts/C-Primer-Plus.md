@@ -1271,3 +1271,76 @@ C++的基本类型分为两组：一组由存储为整数的值组成，另一�
 C++使用运算符来提供对数字类型的算术运算：加、减、乘、除和 求模。当两个运算符对同一个操作数进行操作时，C++的优先级和结合 性规则可以确定先执行哪种操作。
 
 对变量赋值、在运算中使用不同类型、使用强制类型转换时， C++将把值从一种类型转换为另一种类型。很多类型转换都是“安全 的”，即可以在不损失和改变数据的情况下完成转换。例如，可以把int 值转换为long值，而不会出现任何问题。对于其他一些转换，如将浮点 类型转换为整型，则需要更加小心。
+
+# 复合类型 
+
+## 数组
+
+要创建数组，可使用声明语句。数组声明应指出以下三点：
+
+存储在每个元素中的值的类型； 
+
+数组名； 
+
+数组中的元素数
+
+在C++中，可以通过修改简单变量的声明，添加中括号（其中包含元素数目）来完成数组声明。例如，下面的声明创建一个名为months的 数组，该数组有12个元素，每个元素都可以存储一个short类型的值
+
+```cpp
+short months[12]
+```
+
+事实上，可以将数组中的每个元素看作是一个简单变量。 声明数组的通用格式如下
+
+```
+typeName srrayName[arraySize];
+```
+
+表达式arraySize指定元素数目，它必须是整型常数（如10）或const 值，也可以是常量表达式（如8 * sizeof（int）），即其中所有的值在编 译时都是已知的。具体地说，arraySize不能是变量，变量的值是在程序 运行时设置的。然而，可以使用new运算符来避开这种限制。
+
+数组之所以被称为复合类型，是因为它是使用其他类型来创建的（C语言使用术语“派生 类型”，但由于C++对类关系使用术语“派生”，所以它必须创建一个新术语）。不能仅仅将某 种东西声明为数组，它必须是特定类型的数组。没有通用的数组类型，但存在很多特定的数组类型，如char数组或long数组。例如，请看下面的声明： 
+
+```cpp
+float loans[20]
+```
+
+loans的类型不是“数组”，而是“float数组”。这强调了loans数组是使用float类型创建的
+
+数组的很多用途都是基于这样一个事实：可以单独访问数组元素。 方法是使用下标或索引来对元素进行编号。C++数组从0开始编号（这 没有商量的余地，必须从0开始。Pascal和BASIC用户必须调整习惯）。 C++使用带索引的方括号表示法来指定数组元素。例如，months[0]是 months数组的第一个元素，months[11]是最后一个元素。注意，最后一 个元素的索引比数组长度小1（参见图4.1）。因此，数组声明能够使用 一个声明创建大量的变量，然后便可以用索引来标识和访问各个元素。
+
+编译器不会检查使用的下标是否有效。例如，如果将一个值赋给不存在的元素 months[101]，编译器并不会指出错误。但是程序运行后，这种赋值可能引发问题，它可能破坏数据或代码，也可能导致程序异常终止。所以必须确保程序只使用有效的下标值
+
+```cpp
+#include <iostream>
+int main(){
+    using namespace std;
+    int yams[3];
+    yams[0]=7;
+    yams[1]=8;
+    yams[2]=6;
+    int arr[3]={20,30,5};
+    cout << "total yams = ";
+    cout << yams[0] + yams[1]+yams[2]<<endl;
+    cout << "the package with " << yams[1] << " yams costs";
+    cout << arr[1] << " cents per yam. \n";
+    int total=yams[0]*arr[0]+yams[1]*arr[1];
+    total=total+yams[2]*arr[2];
+    cout << "the total yam expense is " << total << " cents . \n";
+    cout << "\n Size of yams array =" <<sizeof yams;
+    cout << " bytes. \n";
+    cout << "Size of one element " << sizeof yams[0];
+    cout << " bytes . \n";
+    return 0;
+}
+
+//total yams = 21
+//the package with 8 yams costs30 cents per yam.
+//the total yam expense is 410 cents .
+//
+//Size of yams array =12 bytes.
+//Size of one element 4 bytes . 
+```
+
+sizeof运算符返回类型或数据对象的长度（单位为字节）。注意，如果将sizeof运算符用于数组名，得到的将是整个数组中的字节数。但如果将sizeof用于数组元素，则得到的将是元素的长度（单位为字节）
+
+### 数组的初始化规则 
