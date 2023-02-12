@@ -1344,3 +1344,753 @@ int main(){
 sizeof运算符返回类型或数据对象的长度（单位为字节）。注意，如果将sizeof运算符用于数组名，得到的将是整个数组中的字节数。但如果将sizeof用于数组元素，则得到的将是元素的长度（单位为字节）
 
 ### 数组的初始化规则 
+
+只有在定义数组时才能使用初始化，此后就不能使用了，也不能将 一个数组赋给另一个数组： 
+
+```cpp
+int cards[4]={3,4,5,6};//okey
+int hand[4]; //okey
+hand[4]={5,6,7,9}; //not allowed
+hand=cards; //not allowed
+```
+
+然而，可以使用下标分别给数组中的元素赋值。初始化数组时，提供的值可以少于数组的元素数目
+
+```cpp
+float hoteltips[5]={5.0,2.5};
+```
+
+如果只对数组的一部分进行初始化，则编译器将把其他元素设置为 0。因此，将数组中所有的元素都初始化为0非常简单—只要显式地将第 一个元素初始化为0，然后让编译器将其他元素都初始化为0即可
+
+```cpp
+long totals[500]={0};
+```
+
+如果初始化为{1}而不是{0}，则第一个元素被设置为1，其他元素 都被设置为0。
+
+如果初始化数组时方括号内（[ ]）为空，C++编译器将计算元素个 数。例如，对于下面的声明：
+
+```cpp
+short things[]={1,2,3,4};
+```
+
+通常，让编译器计算元素个数是种很糟的做法，因为其计数可能与您想象的不一样。例 如，您可能不小心在列表中遗漏了一个值。然而，这种方法对于将字符数组初始化为一个字 符串来说比较安全，很快您将明白这一点。如果主要关心的问题是程序，而不是自己是否知 道数组的大小，则可以这样做： 
+
+```cpp
+ short things[]={1,5,4,6};
+ int num_elements=sizeof things/ sizeof(short);
+```
+
+### C++11数组初始化方法
+
+C++11将使用大括号的初始化（列表初始化）作为一 种通用初始化方式，可用于所有类型。数组以前就可使用列表初始化， 但C++11中的列表初始化新增了一些功能。 
+
+首先，初始化数组时，可省略等号（=）： 
+
+```cpp
+double earnings[4] {1.2e4,1.3e4,1.3e6,1.6e4};
+```
+
+可不在大括号内包含任何东西，这将把所有元素都设置为零
+
+```cpp
+usinged int couts[10]={};
+float balance[100] {};
+```
+
+列表初始化禁止缩窄准换
+
+```cpp
+long printf[]={90,25,3.4}; //not allowed
+char shifts[4] {'h','i',1122011,'\0'}; //not allowed
+char tlifs[4] {'h','i',112,'\0'}; //allowed
+```
+
+在上述代码中，第一条语句不能通过编译，因为将浮点数转换为整 型是缩窄操作，即使浮点数的小数点后面为零。第二条语句也不能通过 编译，因为1122011超出了char变量的取值范围（这里假设char变量的长 度为8位）。第三条语句可通过编译，因为虽然112是一个int值，但它在 char变量的取值范围内。
+
+C++标准模板库（STL）提供了一种数组替代品—模板类vector，而C++11新增了模板类array。这些替代品比内置复合类型数组更复杂、更灵活
+
+## 字符串
+
+字符串是存储在内存的连续字节中的一系列字符。C++处理字符串 的方式有两种。第一种来自C语言，常被称为C-风格字符串（C-style string），然后介绍另一种基于string类库的方法
+
+存储在连续字节中的一系列字符意味着可以将字符串存储在char数 组中，其中每个字符都位于自己的数组元素中。字符串提供了一种存储 文本信息的便捷方式，如提供给用户的消息（“请告诉我您的瑞士银行 账号”）或来自用户的响应（“您肯定在开玩笑”）。C-风格字符串具有 一种特殊的性质：以空字符（null character）结尾，空字符被写作\0， 其ASCII码为0，用来标记字符串的结尾。例如，请看下面两个声明：
+
+```cpp
+ char dog[8]={'s','t','r','i','n','g','s','o'};//not a string
+ char cat[8]={'s','t','r','i','n','g','a','\0'};//is string
+```
+
+这两个数组都是char数组，但只有第二个数组是字符串。空字符对 C-风格字符串而言至关重要。例如，C++有很多处理字符串的函数，其 中包括cout使用的那些函数。它们都逐个地处理字符串中的字符，直到到达空字符为止。如果使用cout显示上面的cat这样的字符串，则将显示前7个字符，发现空字符后停止。但是，如果使用cout显示上面的dog数组（它不是字符串），cout将打印出数组中的8个字母，并接着将内存中随后的各个字节解释为要打印的字符，直到遇到空字符为止。由于空 字符（实际上是被设置为0的字节）在内存中很常见，因此这一过程将 很快停止。但尽管如此，还是不应将不是字符串的字符数组当作字符串来处理。
+
+将数组初始化成单个字符数字很不好写，一般不使用这种写法，一般使用字符串常量（string constant）或字符串字面值 （string literal）
+
+```cpp
+ char birds[11]="Mr. cheeps"; //必须使用双引号，不能使用单引号
+ char fish[]="fish";
+```
+
+用引号括起的字符串隐式地包括结尾的空字符，因此不用显式地包 括它。另外，各种C++输入工具通过键盘输入，将字符串 读入到char数组中时，将自动加上结尾的空字符
+
+当然，应确保数组足够大，能够存储字符串中所有字符—包括空字 符。使用字符串常量初始化字符数组是这样的一种情况，即让编译器计算元素数目更为安全。让数组比字符串长没有什么害处，只是会浪费一些空间而已。这是因为处理字符串的函数根据空字符的位置，而不是数组长度来进行处理。C++对字符串长度没有限制。 
+
+在确定存储字符串所需的最短数组时，别忘了将结尾的空字符计算在内。
+
+数组初始化字符串时，剩余的空间会用\0填补注意，字符串常量（使用双引号）不能与字符常量（使用单引号） 互换。字符常量（如'S'）是字符串编码的简写表示。在ASCII系统上，'S'只是83的另一种写法，因此，下面的语句将83赋给shirt_size：
+
+```
+char shirt_size = 'S'
+```
+
+但"S"不是字符常量，它表示的是两个字符（字符S和\0）组成的字符串,"S"实际上表示的是字符串所在的内存地址
+
+```
+char shirt_size = "S" //这样是不允许的
+```
+
+由于地址在C++中是一种独立的类型，因此C++编译器不允许这种不合理的做法
+
+### 拼接字符串常量
+
+C++允许拼接字符串字面值，即将两个用引号括起的字符串合并为一个。事实上，任何两个由空白（空格、制表符和换行符）分隔的字符串常量都将自动拼接成一个。拼接时不会在被连接的字符串之间添加空格，第二个字符串 的第一个字符将紧跟在第一个字符串的最后一个字符（不考虑\0）后 面。第一个字符串中的\0字符将被第二个字符串的第一个字符取代。
+
+### 在数组中使用字符串
+
+要将字符串存储到数组中，最常用的方法有两种—将数组初始化为 字符串常量、将键盘或文件输入读入到数组中。程序清单4.2演示了这 两种方法，它将一个数组初始化为用引号括起的字符串，并使用cin将 一个输入字符串放到另一个数组中。该程序还使用了标准C语言库函数 strlen( )来确定字符串的长度。标准头文件cstring（老式实现为string.h） 提供了该函数以及很多与字符串相关的其他函数的声明。 
+
+```cpp
+// strings.cpp -- storing strings in an array
+#include <iostream>
+#include <cstring>  // for the strlen() function
+int main()
+{
+    using namespace std;
+    const int Size = 15;
+    char name1[Size];               // empty array
+    char name2[Size] = "C++owboy";  // initialized array
+    // NOTE: some implementations may require the static keyword
+    // to initialize the array name2
+
+    cout << "Howdy! I'm " << name2;
+    cout << "! What's your name?\n";
+    cin >> name1;
+    cout << "Well, " << name1 << ", your name has ";
+    cout << strlen(name1) << " letters and is stored\n";
+    cout << "in an array of " << sizeof(name1) << " bytes.\n";
+    cout << "Your initial is " << name1[0] << ".\n";
+    name2[3] = '\0';                // set to null character
+    cout << "Here are the first 3 characters of my name: ";
+    cout << name2 << endl;
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Howdy! I'm C++owboy! What's your name?
+//basicman
+//        Well, basicman, your name has 8 letters and is stored
+//        in an array of 15 bytes.
+//Your initial is b.
+//Here are the first 3 characters of my name: C++
+```
+
+首先，sizeof运算符指出整个数组的长度：15字节，但 strlen( )函数返回的是存储在数组中的字符串的长度，而不是数组本身的长度。另外，strlen( ) 只计算可见的字符，而不把空字符计算在内。因此，对于Basicman，返回的值为8，而不是 9。如果cosmic是字符串，则要存储该字符串，数组的长度不能短于strlen（cosmic）+1。
+
+由于name1和name2是数组，所以可以用索引来访问数组中各个字符。例如，该程序使用 name1[0]找到数组的第一个字符。另外，该程序将name2[3]设置为空字符。这使得字符串在第 3个字符后即结束，虽然数组中还有其他的字符
+
+该程序使用符号常量来指定数组的长度。程序常常有多条语句使用 了数组长度。使用符号常量来表示数组长度后，当需要修改程序以使用 不同的数组长度时，工作将变得更简单—只需在定义符号常量的地方进 行修改即可。
+
+![](https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-11%2022.40.37.png)
+
+### 字符串输入
+
+```cpp
+#include <iostream>
+int main()
+{
+    using namespace std;
+    const int ArSize = 20;
+    char name[ArSize];
+    char dessert[ArSize];
+
+    cout << "Enter your name:\n";
+    cin >> name;
+    cout << "Enter your favorite dessert:\n";
+    cin >> dessert;
+    cout << "I have some delicious " << dessert;
+    cout << " for you, " << name << ".\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Enter your name:
+//Alistair breeb
+//Enter your favorite dessert:
+//I have some delicious breed for you, Alistair.
+```
+
+cin是如何确定已完成字符串输入呢？由于不能通过键盘输入空字 符，因此cin需要用别的方法来确定字符串的结尾位置。cin使用空白 （空格、制表符和换行符）来确定字符串的结束位置，这意味着cin在 获取字符数组输入时只读取一个单词。读取该单词后，cin将该字符串放到数组中，并自动在结尾添加空字符
+
+这个例子的实际结果是，cin把Alistair作为第一个字符串，并将它 放到name数组中。这把Dreeb留在输入队列中。当cin在输入队列中搜索 用户喜欢的甜点时，它发现了Dreeb，因此cin读取Dreeb，并将它放到 dessert数组中
+
+### 每次读取一行字符串输入
+
+#### 面向行的输入：**getline( )** 
+
+getline( )函数读取整行，它使用通过回车键输入的换行符来确定输 入结尾。要调用这种方法，可以使用cin.getline( )。该函数有两个参数。第一个参数是用来存储输入行的数组的名称，第二个参数是要读取的字 符数。如果这个参数为20，则函数最多读取19个字符，余下的空间用于存储自动在结尾处添加的空字符。getline( )成员函数在读取指定数目的字符或遇到换行符时停止读取。
+
+例如，假设要使用getline( )将姓名读入到一个包含20个元素的name 数组中。可以使用这样的函数调用： 
+
+```
+cin.getline(name,20);//实际只能存19个元素
+```
+
+```cpp
+#include <iostream>
+int main()
+{
+    using namespace std;
+    const int ArSize = 20;
+    char name[ArSize];
+    char dessert[ArSize];
+
+    cout << "Enter your name:\n";
+    cin.getline(name, ArSize);  // reads through newline
+    cout << "Enter your favorite dessert:\n";
+    cin.getline(dessert, ArSize);
+    cout << "I have some delicious " << dessert;
+    cout << " for you, " << name << ".\n";
+    // cin.get();
+    return 0;
+}
+//Enter your name:
+//marry willion
+//Enter your favorite dessert:
+//katy bell
+//I have some delicious katy bell for you, marry willion.
+```
+
+getline( )函 数每次读取一行。它通过换行符来确定行尾，但不保存换行符。相反,在存储字符串时，它用空字符来替换换行符
+
+#### 面向行的输入：get( )
+
+istream类有另一个名为get( )的成员函数,该函数有几种变体。其中一种变体的工作方式与getline( )类似，它们接受的参数相同，解释参数的方式也相同，并且都读取到行尾。但get并不再读取并丢弃换行符，而是将其留在输入队列中。假设我们连续两次调用get( )：
+
+```
+cin.get(name,ArSize);
+cin.get(dessert,ArSize);
+```
+
+由于第一次调用后，换行符将留在输入队列中，因此第二次调用时 看到的第一个字符便是换行符。因此get( )认为已到达行尾，而没有发现任何可读取的内容。如果不借助于帮助，get( )将不能跨过该换行符。 
+
+get( )有另一种变体。使用不带任何参数的cin.get( )调用 可读取下一个字符（即使是换行符），因此可以用它来处理换行符，为 读取下一行输入做好准备。也就是说，可以采用下面的调用序列：
+
+```
+cin.get(name,ArSize);
+cin.get();
+cin.get(dessert,ArSize);
+```
+
+另一种使用get( )的方式是将两个类成员函数拼接起来（合并），如下所示：
+
+```
+cin.get(name,ArSize).get();//get return cin 可以进行链式调用
+```
+
+之所以可以这样做，是由于cin.get（name，ArSize）返回一个cin对象，该对象随后将被用来调用get( )函数。同样，下面的语句将把输入中连续的两行分别读入到数组name1和name2 中，其效果与两次调用 cin.getline( )相同：
+
+```
+cin.getline(name1,name2).getline(name1,name2);
+```
+
+```cpp
+// instr3.cpp -- reading more than one word with get() & get()
+#include <iostream>
+int main()
+{
+    using namespace std;
+    const int ArSize = 20;
+    char name[ArSize];
+    char dessert[ArSize];
+
+    cout << "Enter your name:\n";
+    cin.get(name, ArSize).get();    // read string, newline
+    cout << "Enter your favorite dessert:\n";
+    cin.get(dessert, ArSize).get();
+    cout << "I have some delicious " << dessert;
+    cout << " for you, " << name << ".\n";
+    // cin.get();
+    return 0; 
+}
+```
+
+需要指出的一点是，C++允许函数有多个版本，条件是这些版本的 参数列表不同。如果使用的是cin.get（name，ArSize），则编译器知道 是要将一个字符串放入数组中，因而将使用适当的成员函数。如果使用 的是cin.get( )---函数重载
+
+为什么要使用get( )，而不是getline( )呢？首先，老式实现没有 getline( )。其次，get( )使输入更仔细。例如，假设用get( )将一行读入数 组中。如何知道停止读取的原因是由于已经读取了整行，而不是由于数组已填满呢？查看下一个输入字符，如果是换行符，说明已读取了整行；否则，说明该行中还有其他输入
+
+总之， getline( )使用起来简单一些，但get( )使得检查错误更简单些。可以用其中的任何一个来读取一行输入；只是应该知道，它们的行为稍有不同。
+
+#### 空行和其他问题
+
+当getline( )或get( )读取空行时，将发生什么情况？最初的做法是， 下一条输入语句将在前一条getline( )或get( )结束读取的位置开始读取； 但当前的做法是，当get( )（不是getline( )）读取空行后将设置失效位 （failbit）。这意味着接下来的输入将被阻断，但可以用下面的命令来 恢复输入：
+
+```
+cin.clear()
+```
+
+另一个潜在的问题是，输入字符串可能比分配的空间长。如果输入 行包含的字符数比指定的多，则getline( )和get( )将把余下的字符留在输 入队列中，而getline( )还会设置失效位，并关闭后面的输入
+
+### 混合输入字符串和数字
+
+混合输入数字和面向行的字符串会导致问题
+
+```cpp
+#include <iostream>
+int main()
+{
+    using namespace std;
+    cout << "What year was your house built?\n";
+    int year;
+    cin >> year;
+    // cin.get();
+    cout << "What is its street address?\n";
+    char address[80];
+    cin.getline(address, 80);
+    cout << "Year built: " << year << endl;
+    cout << "Address: " << address << endl;
+    cout << "Done!\n";
+    // cin.get();
+    return 0;
+}
+//What year was your house built?
+//1966
+//What is its street address?
+//Year built: 1966
+//Address:
+//Done!
+```
+
+用户根本没有输入地址的机会。问题在于，当cin读取年份，将回 车键生成的换行符留在了输入队列中。后面的cin.getline( )看到换行符 后，将认为是一个空行，并将一个空字符串赋给address数组。解决办法是在读取地址之前先读取并丢弃换行符.使用get()或者get(ch)
+
+```
+cin>>year;
+cin.get()//cin.get(ch)
+
+///////////////////
+(cin>>year).get()//get(ch)
+```
+
+C++程序常使用指针（而不是数组）来处理字符串
+
+```cpp
+#include <iostream>
+int main()
+{
+    using namespace std;
+    cout << "What year was your house built?\n";
+    int year;
+    cin >> year;
+    cin.get();
+    cout << "What is its street address?\n";
+    char address[80];
+    cin.getline(address, 80);
+    cout << "Year built: " << year << endl;
+    cout << "Address: " << address << endl;
+    cout << "Done!\n";
+    cin.get();
+    return 0;
+}
+//What year was your house built?
+//1966
+//What is its street address?
+//built 122
+//Year built: 1966
+//Address: built 122
+//Done!
+```
+
+## string类简介 
+
+ISO/ANSI C++98标准通过添加string类扩展了C++库，因此现在可 以string类型的变量（使用C++的话说是对象）而不是字符数组来存储字符串。您将看到，string类使用起来比数组简单，同时提供了将字符串作为一种数据类型的表示方法。 
+
+要使用string类，必须在程序中包含头文件string。string类位于名称 空间std中，因此您必须提供一条using编译指令，或者使用std::string来引用它。string类定义隐藏了字符串的数组性质，让您能够像处理普通变量那样处理字符串
+
+```cpp
+// strtype1.cpp -- using the C++ string class
+#include <iostream>
+#include <string>               // make string class available
+int main()
+{
+    using namespace std;
+    char charr1[20];            // create an empty array
+    char charr2[20] = "jaguar"; // create an initialized array
+    string str1;                // create an empty string object
+    string str2 = "panther";    // create an initialized string
+
+    cout << "Enter a kind of feline: ";
+    cin >> charr1;
+    cout << "Enter another kind of feline: ";
+    cin >> str1;                // use cin for input
+    cout << "Here are some felines:\n";
+    cout << charr1 << " " << charr2 << " "
+         << str1 << " " << str2 // use cout for output
+         << endl;
+    cout << "The third letter in " << charr2 << " is "
+         << charr2[2] << endl;
+    cout << "The third letter in " << str2 << " is "
+         << str2[2] << endl;    // use array notation
+    // cin.get();
+    // cin.get();
+
+    return 0;
+}
+//Enter a kind of feline: ocelot
+//Enter another kind of feline: tiger
+//Here are some felines:
+//ocelot jaguar tiger panther
+//The third letter in jaguar is g
+//The third letter in panther is n
+```
+
+从这个示例可知，在很多方面，使用string对象的方式与使用字符数组相同。
+
+可以使用C-风格字符串来初始化string对象。 
+
+可以使用cin来将键盘输入存储到string对象中。 
+
+可以使用cout来显示string对象。 
+
+可以使用数组表示法来访问存储在string对象中的字符。
+
+```
+string str1;
+string str2 = "panther";
+```
+
+类设计让程序能够自动处理string的大小。例如，str1的声明创建一个长度为0的string对象，但程序将输入读取到str1中时，将自动调整str1的长度：
+
+```
+cin >> str1;
+```
+
+### C++11字符串初始化
+
+C++11也允许将列表初始化用于C-风格字符串和string对象：
+
+```cpp
+char first_date[] = {"Le Chapon Dodu"};
+char second_date[] = {"The Elegant Plate"};
+string third_date = {"The Bread Bowl"};
+string fourth_date = {"hank's Fine Eats"};
+```
+
+### 赋值、拼接和附加 
+
+使用string类时，某些操作比使用数组时更简单。例如，不能将一个数组赋给另一个数组，但可以将一个string对象赋给另一个string对 象：
+
+```cpp
+char charr1[20];
+char charr2[20] = "jaguar";
+string str1;
+string str2= "panther";
+charr1 =charr2; //不允许
+str1 = str2;
+```
+
+string类简化了字符串合并操作。可以使用运算符+将两个string对象合并起来，还可以使用运算符+=将字符串附加到string对象的末尾。继续前面的代码，您可以这样做： 
+
+```
+string str3;
+str3 =str1+str2;
+str1 += str2;
+```
+
+```cpp
+// strtype2.cpp �- assigning, adding, and appending
+#include <iostream>
+#include <string>               // make string class available
+int main()
+{
+    using namespace std;
+    string s1 = "penguin";
+    string s2, s3;
+
+    cout << "You can assign one string object to another: s2 = s1\n";
+    s2 = s1;
+    cout << "s1: " << s1 << ", s2: " << s2 << endl;
+    cout << "You can assign a C-style string to a string object.\n";
+    cout << "s2 = \"buzzard\"\n";
+    s2 = "buzzard";
+    cout << "s2: " << s2 << endl;
+    cout << "You can concatenate strings: s3 = s1 + s2\n";
+    s3 = s1 + s2;
+    cout << "s3: " << s3 << endl;
+    cout << "You can append strings.\n";
+    s1 += s2;
+    cout <<"s1 += s2 yields s1 = " << s1 << endl;
+    s2 += " for a day";
+    cout <<"s2 += \" for a day\" yields s2 = " << s2 << endl;
+
+    //cin.get();
+    return 0;
+}
+//You can assign one string object to another: s2 = s1
+//s1: penguin, s2: penguin
+//You can assign a C-style string to a string object.
+//s2 = "buzzard"
+//s2: buzzard
+//You can concatenate strings: s3 = s1 + s2
+//s3: penguinbuzzard
+//You can append strings.
+//s1 += s2 yields s1 = penguinbuzzard
+//s2 += " for a day" yields s2 = buzzard for a day
+```
+
+### string类的其他操作 
+
+在C++新增string类之前，程序员也需要完成诸如给字符串赋值等工作。对于C-风格字符串，程序员使用C语言库中的函数来完成这些任 务。头文件cstring（以前为string.h）提供了这些函数。例如，可以使用函数strcpy( )将字符串复制到字符数组中，使用函数strcat( )将字符串附加到字符数组末尾：
+
+```
+strcpy(charr1,charr2);//将charr2复制到charr1
+strcat(charr1,charr2);//将charr2，拼接到charr1
+```
+
+```cpp
+// strtype3.cpp -- more string class features
+#include <iostream>
+#include <string>               // make string class available
+#include <cstring>              // C-style string library
+int main()
+{
+    using namespace std;
+    char charr1[20];
+    char charr2[20] = "jaguar";
+    string str1;
+    string str2 = "panther";
+
+    // assignment for string objects and character arrays
+    str1 = str2;                // copy str2 to str1
+    strcpy(charr1, charr2);     // copy charr2 to charr1
+
+    // appending for string objects and character arrays
+    str1 += " paste";           // add paste to end of str1
+    strcat(charr1, " juice");   // add juice to end of charr1
+
+    // finding the length of a string object and a C-style string
+    int len1 = str1.size();     // obtain length of str1
+    int len2 = strlen(charr1);  // obtain length of charr1
+
+    cout << "The string " << str1 << " contains "
+         << len1 << " characters.\n";
+    cout << "The string " << charr1 << " contains "
+         << len2 << " characters.\n";
+    // cin.get();
+
+    return 0;
+}
+//The string panther paste contains 13 characters.
+//The string jaguar juice contains 12 characters.
+```
+
+使用字符数组时，总是存在目标数组过小，无法存储指定信息的危险
+
+```
+char site[10] = "house";
+strcat(site," of pancakes");;//memory problem
+```
+
+函数strcat( )试图将全部12个字符复制到数组site中，这将覆盖相邻的内存。这可能导致程序终止，或者程序继续运行，但数据被损坏。 string类具有自动调整大小的功能，从而能够避免这种问题发生。C函数 库确实提供了与strcat( )和strcpy( )类似的函数—strncat( )和strncpy( )，它 们接受指出目标数组最大允许长度的第三个参数，因此更为安全，但使 用它们进一步增加了编写程序的复杂度
+
+下面是两种确定字符串中字符数的方法：
+
+```
+int len1=str1.size();
+int len2=strlen(charr1);
+```
+
+函数strlen( )是一个常规函数，它接受一个C-风格字符串作为参数， 并返回该字符串包含的字符数。函数size( )的功能基本上与此相同，但句法不同：str1不是被用作函数参数，而是位于函数名之前，它们之间用句点连接
+
+这种句法表明，str1是一个对象，而size( )是一个类方法。方法是一个函数，只能通过其所属类的对象进行调用。在这里，str1是一个string对象，而size( )是string类的一个方法。总之，C函数使用参数来指出要使用哪个字符串，而C++ string类对象使用对象名和句点运算符来指出要使用哪个字符串。
+
+### 4.3.4 string类I/O
+
+```cpp
+// strtype4.cpp -- line input
+#include <iostream>
+#include <string>               // make string class available
+#include <cstring>              // C-style string library
+int main()
+{
+    using namespace std;
+    char charr[20]; 
+    string str;
+
+    cout << "Length of string in charr before input: " 
+         << strlen(charr) << endl;//这里的长度是随机的，因为是未初始化，所以length是随机值
+    cout << "Length of string in str before input: "
+         << str.size() << endl;
+    cout << "Enter a line of text:\n";
+    cin.getline(charr, 20);     // indicate maximum length
+    cout << "You entered: " << charr << endl;
+    cout << "Enter another line of text:\n";
+    getline(cin, str);          // cin now an argument; no length specifier
+    cout << "You entered: " << str << endl;
+    cout << "Length of string in charr after input: " 
+         << strlen(charr) << endl;
+    cout << "Length of string in str after input: "
+         << str.size() << endl;
+    // cin.get();
+
+    return 0; 
+}
+//Length of string in charr before input: 1
+//Length of string in str before input: 0
+//Enter a line of text:
+//peanut butter
+//You entered: peanut butter
+//Enter another line of text:
+//blueberry jam
+//You entered: blueberry jam
+//Length of string in charr after input: 13
+//Length of string in str after input: 13
+```
+
+该数组的长度要大。这里要两点需要说明。首先，为初始化的数组的内容是未定义的；其次，函数strlen( )从数组的第一个元素开始计算字节 数，直到遇到空字符。在这个例子中，在数组末尾的几个字节后才遇到空字符。对于未被初始化的数据，第一个空字符的出现位置是随机的，因此您在运行该程序时，得到的数组长度很可能与此不同。另外，用户输入之前，str中的字符串长度为0。这是因为未被初始 化的string对象的长度被自动设置为0。
+
+下面是将一行输入读取到数组中的代码：
+
+```
+cin.getline(charr,20);
+```
+
+这种句点表示法表明，函数getline( )是istream类的一个类方法（还记得吗，cin是一个istream对象）。正如前面指出的，第一个参数是目标数组；第二个参数数组长度，getline( )使用它来避免超越数组的边界。
+
+下面是将一行输入读取到string对象中的代码：
+
+```
+getline(cin,str);
+```
+
+这里没有使用句点表示法，这表明这个getline( )不是类方法。它将cin作为参数，指出到哪里去查找输入。另外，也没有指出字符串长度 的参数，因为string对象将根据字符串的长度自动调整自己的大小。
+
+那么，为何一个getline( )是istream的类方法，而另一个不是呢？在引入string类之前很久，C++就有istream类。因此istream的设计考虑到了诸如double和int等基本C++数据类型，但没有考虑string类型，所以 istream类中，有处理double、int和其他基本类型的类方法，但没有处理string对象的类方法。
+
+除char类型外，C++还有类型wchar_t；而C++11新增了类型char16_t和char32_t。可创建这些类型的数组和这些类型的字符串字面值。对于这些类型的字符串字面值，C++分别使用前缀L、u和U表示，下面是一个如何使用这些前缀的例子： 
+
+```
+wchar_t title[] = L"Chief Asreogator";
+char16_t name[] = u"Felonia Ripova";
+char32_t car[] = U"humber super sniper";
+```
+
+C++11还支持Unicode字符编码方案UTF-8。在这种方案中，根据编码的数字值，字符可能存储为1～4个八位组。C++使用前缀u8来表示这种类型的字符串字面值。
+
+C++11新增的另一种类型是原始（raw）字符串。在原始字符串中，字符表示的就是自己，例如，序列\n不表示换行符，而表示两个常 规字符—斜杠和n，因此在屏幕上显示时，将显示这两个字符。另一个 例子是，可在字符串中使用"，而无需使用繁琐的 "。当然，既然可在字符串字面量包含"，就不能再使用它来表示字符串 的开头和末尾。因此，原始字符串将"(和)"用作定界符，并使用前缀R来 标识原始字符串：
+
+```cpp
+cout << R "(jim "king" Tutt uses "\n" instead of endl.)" << "\n"
+```
+
+## 结构简介
+
+结构是 一种比数组更灵活的数据格式，因为同一个结构可以存储多种类型的数据，这使得能够将有关篮球运动员的信息放在一个结构中，从而将数据的表示合并到一起
+
+结构是用户定义的类型，而结构声明定义了这种类型的数据属性。 定义了类型后，便可以创建这种类型的变量。因此创建结构包括两步。 首先，定义结构描述—它描述并标记了能够存储在结构中的各种数据类型。然后按描述创建结构变量（结构数据对象）。
+
+```
+struct inflatable {
+	char name[20];
+	float volume;
+	double price;
+}
+```
+
+关键字struct表明，这些代码定义的是一个结构的布局。标识符 inflatable是这种数据格式的名称，因此新类型的名称为inflatable。这 样，便可以像创建char或int类型的变量那样创建inflatable类型的变量 了。接下来的大括号中包含的是结构存储的数据类型的列表，其中每个列表项都是一条声明语句。这个例子使用了一个适合用于存储字符串的 char数组、一个float和一个double。列表中的每一项都被称为结构成员，因此infatable结构有3个成员（参见图4.6）。总之，结构定义指出了新类型（这里是inflatable）的特征。 
+
+定义结构后，便可以创建这种类型的变量了：
+
+```
+inflatable hat;
+inflatable woopie_cushion;
+inflatable mainframe;
+```
+
+如果您熟悉C语言中的结构，则可能已经注意到了，C++允许在声明结构变量时省略关键字struct：
+
+```
+struct inflatable goose;  //keyword struct required in C
+inflatable vincent; //keyword struct not require c++;
+```
+
+由于hat的类型为inflatable，因此可以使用成员运算符（.）来访问各个成员。例如，hat.volume指的是结构的volume成员，hat.price指的是 price成员。同样，vincent.price是vincent变量的price成员。总之，通过成员名能够访问结构的成员，就像通过索引能够访问数组的元素一样。由于price成员被声明为double类型，因此hat.price和vincent.price相当于是double类型的变量，可以像使用常规double变量那样来使用它们。总之，hat是一个结构，而hat.price是一个double变量。顺便说一句，访问类成员函数（如cin.getline( )）的方式是从访问结构成员变量（如vincent.price）的方式衍生而来的。
+
+### 在程序中使用结构
+
+```CPP
+// structur.cpp -- a simple structure
+#include <iostream>
+struct inflatable   // structure declaration
+{
+    char name[20];
+    float volume;
+    double price;
+};
+
+int main()
+{
+    using namespace std;
+    inflatable guest =
+            {
+                    "Glorious Gloria",  // name value
+                    1.88,               // volume value
+                    29.99               // price value
+            };  // guest is a structure variable of type inflatable
+// It's initialized to the indicated values
+    inflatable pal =
+            {
+                    "Audacious Arthur",
+                    3.12,
+                    32.99
+            };  // pal is a second variable of type inflatable
+// NOTE: some implementations require using
+// static inflatable guest =
+
+    cout << "Expand your guest list with " << guest.name;
+    cout << " and " << pal.name << "!\n";
+// pal.name is the name member of the pal variable
+    cout << "You can have both for $";
+    cout << guest.price + pal.price << "!\n";
+    // cin.get();
+    return 0;
+}
+//Expand your guest list with Glorious Gloria and Audacious Arthur!
+//You can have both for $62.98!
+```
+
+结构有两种申明方式：可以 将声明放在main( )函数中，紧跟在开始括号的后面。另一种选择是将声 明放到main( )的前面，这里采用的便是这种方式，位于函数外面的声明 被称为外部声明。对于这个程序来说，两种选择之间没有实际区别。但 是对于那些包含两个或更多函数的程序来说，差别很大。外部声明可以 被其后面的任何函数使用，而内部声明只能被该声明所属的函数使用。 通常应使用外部声明，这样所有函数都可以使用这种类型的结构。c++提倡使用外部结构声明
+
+### C++11结构初始化 
+
+与数组一样，C++11也支持将列表初始化用于结构，且等号（=） 是可选的：
+
+```
+inflatable duck {"Daphne",0.12,9.98}
+```
+
+其次，如果大括号内未包含任何东西，各个成员都将被设置为零。最后，不允许缩窄转换。
+
+ 
+
+### 结构可以将**string**类作为成员吗
+
+```cpp
+#include <string>
+struct inflatable {
+	std::string name;
+	float volume;
+	double price;
+}
+```
+
+一定要让结构定义能够访问名称空间std。为此，可以将编译指令 using移到结构定义之前；也可以像前面那样，将name的类型声明为 std::string。
+
+### 其他结构属性
