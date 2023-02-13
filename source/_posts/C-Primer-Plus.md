@@ -2094,3 +2094,113 @@ struct inflatable {
 一定要让结构定义能够访问名称空间std。为此，可以将编译指令 using移到结构定义之前；也可以像前面那样，将name的类型声明为 std::string。
 
 ### 其他结构属性
+
+可以同时完成定义结构和创建结构变量的工作。为此，只需将变量名放在结束括号的后面即可： 
+
+```cpp
+Struct perks {
+	int key_number;
+	char car[12]
+} mr_smith,ms_jones;
+```
+
+甚至可以初始化以这种方式创建的变量
+
+```
+struct perks {
+	int key_number;
+	char car[2];
+} mr_glitz = {
+	7,
+	"Packard"
+}
+```
+
+然而，将结构定义和变量声明分开，可以使程序更易于阅读和理解
+
+还可以声明没有名称的结构类型，方法是省略名称，同时定义一种结构类型和一个这种类型的变量：
+
+```
+struct {
+	int x;
+	int y;
+} position
+```
+
+这样将创建一个名为position的结构变量。可以使用成员运算符来访问它的成员（如position.x），但这种类型没有名称，因此以后无法创建这种类型的变量
+
+### 结构数组
+
+```cpp
+// arrstruc.cpp -- an array of structures
+#include <iostream>
+struct inflatable
+{
+    char name[20];
+    float volume;
+    double price;
+};
+int main()
+{
+    using namespace std;
+    inflatable guests[2] =          // initializing an array of structs
+    {
+        {"Bambi", 0.5, 21.99},      // first structure in array
+        {"Godzilla", 2000, 565.99}  // next structure in array
+    };
+
+    cout << "The guests " << guests[0].name << " and " << guests[1].name
+         << "\nhave a combined volume of "
+         << guests[0].volume + guests[1].volume << " cubic feet.\n";
+    // cin.get();
+    return 0; 
+}
+```
+
+### 结构中的位字段
+
+与C语言一样，C++也允许指定占用特定位数的结构成员，这使得创建与某个硬件设备上的寄存器对应的数据结构非常方便。字段的类型 应为整型或枚举，接下来是冒号，冒号后面是一个数字，它指定了使用的位数。可以使用没有名称的字段来提供间距。每个 成员都被称为位字段（bit field）。下面是一个例子：
+
+```
+struct torgle_register {
+	unsigned int SN : 4 //4 bits for SN value
+	unsigned int : 4 // 4 bits unused
+	bool goodIn : 1; //valid input (1bit)
+	bool goodTorgle : 1; // successful torgling
+}
+```
+
+可以像通常那样初始化这些字段，还可以使用标准的结构表示法来访问位字段：
+
+```cpp
+torgle_register tr {14,true,false};
+if(tr.goodIn){
+  ....
+}
+```
+
+位字段通常用在低级编程中。
+
+### 共用体
+
+共用体（union）是一种数据格式，它能够存储不同的数据类型，但只能同时存储其中的一种类型。也就是说，结构可以同时存储int、 long和double，共用体只能存储int、long或double。共用体的句法与结构相似，但含义不同。例如，请看下面的声明：
+
+```
+union one4all {
+	int int_val;
+	long long_val;
+	double double_val;
+}
+```
+
+可以使用one4all变量来存储int、long或double，条件是在不同的时间进行：
+
+```
+one4all pail;
+pail.int_val = 15;
+cout<< pail.int_val;
+pail.double_val =1.38;
+cout << pail.double_val;
+```
+
+因此，pail有时可以是int变量，而有时又可以是double变量。成员 名称标识了变量的容量。由于共用体每次只能存储一个值，因此它必须有足够的空间来存储最大的成员，所以，共用体的长度为其最大成员的长度。共用体的用途之一是，当数据项使用两种或更多种格式（但不会同时使用）时，可节省空间。例如，假设管理一个小商品目录，其中有一些商品的ID为整数，而另一些的ID为字符串。在这种情况下，可以这样做：
