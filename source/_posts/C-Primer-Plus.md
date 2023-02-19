@@ -2181,7 +2181,7 @@ if(tr.goodIn){
 
 位字段通常用在低级编程中。
 
-### 共用体
+## 共用体
 
 共用体（union）是一种数据格式，它能够存储不同的数据类型，但只能同时存储其中的一种类型。也就是说，结构可以同时存储int、 long和double，共用体只能存储int、long或double。共用体的句法与结构相似，但含义不同。例如，请看下面的声明：
 
@@ -2204,3 +2204,716 @@ cout << pail.double_val;
 ```
 
 因此，pail有时可以是int变量，而有时又可以是double变量。成员 名称标识了变量的容量。由于共用体每次只能存储一个值，因此它必须有足够的空间来存储最大的成员，所以，共用体的长度为其最大成员的长度。共用体的用途之一是，当数据项使用两种或更多种格式（但不会同时使用）时，可节省空间。例如，假设管理一个小商品目录，其中有一些商品的ID为整数，而另一些的ID为字符串。在这种情况下，可以这样做：
+
+```
+struct widget{
+	char brand[20];
+	int type;
+	union id
+	{
+		long id_num;
+		char id_char[20];
+	} id_val;
+};
+```
+
+匿名共用体（anonymous union）没有名称，其成员将成为位于相同地址处的变量。显然，每次只有一个成员是当前的成员：
+
+```cpp
+struct widget {
+	char brand[20];
+	int type;
+	union
+	{
+		long id_num;
+		char id_char[20];
+	}
+}
+
+if(price.type==1)
+	cin >> price.id_num;
+else
+	cin >> price.id_char;
+```
+
+由于共用体是匿名的，因此id_num和id_char被视为prize的两个成员，它们的地址相同，所以不需要中间标识符id_val。程序员负责确定 当前哪个成员是活动的。
+
+共用体常用于（但并非只能用于）节省内存。当前，系统的内存多达数GB甚至数TB，好像没有必要节省内存，但并非所有的C++程序都 是为这样的系统编写的。C++还用于嵌入式系统编程，如控制烤箱、 MP3播放器或火星漫步者的处理器。对这些应用程序来说，内存可能非常宝贵。另外，共用体常用于操作系统数据结构或硬件数据结构
+
+## 枚举
+
+C++的enum工具提供了另一种创建符号常量的方式，这种方式可以代替const。它还允许定义新类型，但必须按严格的限制进行。使用 enum的句法与使用结构相似。例如，请看下面的语句： 
+
+```cpp
+enum spectum {red,orange,yellow,green,blue,violet,indigo,ultraviolet};
+```
+
+这条语句完成两项工作。 
+
+让spectrum成为新类型的名称；spectrum被称为枚举（enumeration），就像struct变量被称为结构一样。将red、orange、yellow等作为符号常量，它们对应整数值0～7。这些常量叫作枚举量（enumerator）。
+
+在默认情况下，将整数值赋给枚举量，第一个枚举量的值为0，第二个枚举量的值为1，依次类推。可以通过显式地指定整数值来覆盖默 认值
+
+可以用枚举名来声明这种类型的变量
+
+```
+spectrum band;
+```
+
+在不进行强制类型转换的情况下，只能将定义枚举时使用的枚举量赋给这种枚举的变量
+
+```
+band=blue;
+```
+
+因此，spectrum变量受到限制，只有8个可能的值。如果试图将一个非法值赋给它，则有些编译器将出现编译器错误，而另一些则发出警 告。为获得最大限度的可移植性，应将把非enum值赋给enum变量视为错误
+
+```
+band =orange; //valid
+++band;   //not valid ,
+band = orange + red; //not valid
+```
+
+然而，有些实现并没有这种限制，这有可能导致违反类型限制。例 如，如果band的值为ultraviolet（7），则++band（如果有效的话）将把band增加到8，而对于spectrum类型来说，8是无效的。另外，为获得最大限度的可移植性，应采纳较严格的限制
+
+枚举量是整型，可被提升为int类型，但int类型不能自动转换为枚举类型：
+
+```
+int color =blue //valid
+band =3//valid but 	 int not convert to spectrum
+color = 3+red;
+```
+
+虽然在这个例子中，3对应的枚举量是green，但将3赋给band将导致类型错误。不过将green赋给band是可以的，因为它们都是spectrum类型。同样，有些实现方法没有这种限制。表达式3 + red中的加法并非为枚举量定义，但red被转换为int类型，因此结果的类型也是int。由于在这种情况下，枚举将被转换为int，因此可以在算术表达式中同时使用枚举和常规整数，尽管并没有为枚举本身定义算术运算.
+
+```
+band =orange + red;
+```
+
+非法的原因有些复杂。确实没有为枚举定义运算符+，但用于算术表达式中时，枚举将被转换为整数，因此表达式orange + red将被转换为1 + 0。这是一个合法的表达式，但其类型为int，不能将其赋给类型为spectrum的变量band。 
+
+如果int值是有效的，则可以通过强制类型转换，将它赋给枚举变量：
+
+```
+band = spectrum(3);  //typecast 3 to type spectrum
+band = spectrum(40003);  //undefined 不要对不确定的值进行强制转换
+```
+
+### 设置枚举量的值
+
+可以使用赋值运算符来显式地设置枚举量的值
+
+```
+enum bits{one =1,two=2,four=4,eight=8};
+```
+
+指定的值必须是整数。也可以只显式地定义其中一些枚举量的值
+
+```
+enum bigstep{first,second=100,third};
+```
+
+这里，first在默认值是0，后面没有被初始化的枚举量的值将比其前面的枚举量大1。因此，third的值为101。最后，可以创建多个值相同的枚举量： 
+
+```
+enum {zero,null = 0,one,numero_uno = 1};
+```
+
+其中，zero和null都为0，one和umero_uno都为1。在C++早期的版本中，只能将int值（或提升为int的值）赋给枚举量，但这种限制取消了，因此可以使用long甚至long long类型的值
+
+### 枚举的取值范围
+
+最初，对于枚举来说，只有声明中指出的那些值是有效的。然而，C++现在通过强制类型转换，增加了可赋给枚举变量的合法值。每个枚 举都有取值范围（range），通过强制类型转换，可以将取值范围中的任何整数值赋给枚举变量，即使这个值不是枚举值
+
+```
+enum bits{one = 1,two = 2,four = 4,eight = 8};
+myflag=bits(6)  //在这个范围内都是有效的 6不是枚举值，但它位于枚举定义的取值范围内
+```
+
+取值范围的定义如下。首先，要找出上限，需要知道枚举量的最大值。找到大于这个最大值的、最小的2的幂，将它减去1，得到的便是取 值范围的上限。例如，前面定义的bigstep的最大值枚举值是101。在2的幂中，比这个数大的最小值为128，因此取值范围的上限为127。要计算下限，需要知道枚举量的最小值。如果它不小于0，则取值范围的下限为0；否则，采用与寻找上限方式相同的方式，但加上负号。例如，如果最小的枚举量为−6，而比它小的、最大的2的幂是−8（加上负号），因此下限为−7。
+
+选择用多少空间来存储枚举由编译器决定。对于取值范围较小的枚 举，使用一个字节或更少的空间；而对于包含long类型值的枚举，则使用4个字节。
+
+C++11扩展了枚举，增加了作用域内枚举
+
+## 指针和自由存储空间
+
+在第3章的开头，提到了计算机程序在存储数据时必须跟踪的3种基 本属性
+
+信息存储在何处；
+
+存储的值为多少；
+
+存储的信息是什么类型；
+
+您使用过一种策略来达到上述目的：定义一个简单变量。声明语句指出了值的类型和符号名，还让程序为值分配内存，并在内部跟踪该内 存单元。
+
+下面来看一看另一种策略，它在开发C++类时非常重要。这种策略以指针为基础，指针是一个变量，其存储的是值的地址，而不是值本 身。在讨论指针之前，我们先看一看如何找到常规变量的地址。只需对变量应用地址运算符（&），就可以获得它的位置；例如，如果home是一个变量，则&home是它的地址。
+
+```cpp
+// address.cpp -- using the & operator to find addresses
+#include <iostream>
+int main()
+{
+    using namespace std;
+    int donuts = 6;
+    double cups = 4.5;
+
+    cout << "donuts value = " << donuts;
+    cout << " and donuts address = " << &donuts << endl;
+// NOTE: you may need to use unsigned (&donuts)
+// and unsigned (&cups)
+    cout << "cups value = " << cups;
+    cout << " and cups address = " << &cups << endl;
+    // cin.get();
+    return 0;
+}
+//donuts value = 6 and donuts address = 0x16fadf738
+//cups value = 4.5 and cups address = 0x16fadf730
+```
+
+显示地址时，该实现的cout使用十六进制表示法，因为这是常用于描述内存的表示法（有些实现可能使用十进制表示法）。在该实现中， donuts的存储位置比cups要低。两个地址的差为0x0065fd44 –0x0065fd40（即4）。这是有意义的，因为donuts的类型为int，而这种类 型使用4个字节。当然，不同系统给定的地址值可能不同。有些系统可能先存储cups，再存储donuts，这样两个地址值的差将为8个字节，因为 cups的类型为double。另外，在有些系统中，可能不会将这两个变量存储在相邻的内存单元中。 
+
+使用常规变量时，值是指定的量，而地址为派生量
+
+面向对象编程与传统的过程性编程的区别在于，OOP强调的是在运行阶段（而不是编译阶段）进行决策。运行阶段指的是程序正在运行时，编译阶段指的是编译器将程序组合起来时。运行阶段决策就好比度假时，选择参观哪些景点取决于天气和当时的心情；而编译阶段 决策更像不管在什么条件下，都坚持预先设定的日程安排。 
+
+运行阶段决策提供了灵活性，可以根据当时的情况进行调整。例如，考虑为数组分配内 存的情况。传统的方法是声明一个数组。要在C++中声明数组，必须指定数组的长度。因此，数组长度在程序编译时就设定好了；这就是编译阶段决策。您可能认为，在80%的情况下，一 个包含20个元素的数组足够了，但程序有时需要处理200个元素。为了安全起见，使用了一个 包含200个元素的数组。这样，程序在大多数情况下都浪费了内存。OOP通过将这样的决策推 迟到运行阶段进行，使程序更灵活。在程序运行后，可以这次告诉它只需要20个元素，而还可以下次告诉它需要205个元素
+
+总之，使用OOP时，您可能在运行阶段确定数组的长度。为使用这种方法，语言必须允许在程序运行时创建数组。稍后您看会到，C++采用的方法是，使用关键字new请求正确数量的内存以及使用指针来跟踪新分配的内存的位置。 
+
+在运行阶段做决策并非OOP独有的，但使用C++编写这样的代码比使用C语言简单处理存储数据的新策略刚好相反，将地址视为指定的量，而将值视为派生量。一种特殊类型的变量—指针用于存储值的地址。因此，指针名表示的是地址。*运算符被称为间接值（indirect velue）或解除引用 （dereferencing）运算符，将其应用于指针，可以得到该地址处存储的 值（这和乘法使用的符号相同；C++根据上下文来确定所指的是乘法还是解除引用）。例如，假设manly是一个指针，则manly表示的是一个地址，而*manly表示存储在该地址处的值。*manly与常规int变量等效
+
+```cpp
+#include <iostream>
+int main()
+{
+    using namespace std;
+    int updates = 6;        // declare a variable
+    int * p_updates;        // declare pointer to an int
+
+    p_updates = &updates;   // assign address of int to pointer
+
+// express values two ways
+    cout << "Values: updates = " << updates;
+    cout << ", *p_updates = " << *p_updates << endl;
+
+// express address two ways
+    cout << "Addresses: &updates = " << &updates;
+    cout << ", p_updates = " << p_updates << endl;
+
+// use pointer to change value
+    *p_updates = *p_updates + 1;
+    cout << "Now updates = " << updates << endl;
+    // cin.get();
+    return 0;
+}
+//Values: updates = 6, *p_updates = 6
+//Addresses: &updates = 0x16dd2b738, p_updates = 0x16dd2b738
+//Now updates = 7
+```
+
+从中可知，int变量updates和指针变量p_updates只不过是同一枚硬币的两面。变量updates表示值，并使用&运算符来获得地址；而变量p_updates表示地址，并使用*运算符来获得值。由于 p_updates指向updates，因此*p_updates和updates完全等价。可以像使用 int变量那样使用*p_updates。正如程序清单4.15表明的，甚至可以将值赋给*p_updates。这样做将修改指向的值，即updates。
+
+### 声明和初始化指针
+
+指针声明必须指定指针指向的数据的类型
+
+```cpp
+int * p_updates;
+```
+
+这表明，* p_updates的类型为int。由于*运算符被用于指针，因此p_updates变量本身必须是指针。我们说p_updates指向int类型，我们还说p_updates的类型是指向int的指针，或int*。可以这样说，p_updates是指针（地址），而*p_updates是int，而不是指针
+
+顺便说一句，*运算符两边的空格是可选的。传统上，C程序员使用这种格式：
+
+```
+int *ptr
+```
+
+这强调*ptr是一个int类型的值。而很多C++程序员使用这种格式：
+
+```
+inr* ptr;
+```
+
+这强调的是：int*是一种类型—指向int的指针。在哪里添加空格对于编译器来说没有任何区别，您甚至可以这样做：
+
+```
+int*ptr;
+```
+
+但要知道的是，下面的声明创建一个指针（p1）和一个int变量（p2）：
+
+```
+int* p1, p2;
+```
+
+对每个指针变量名，都需要使用一个*。
+
+**在C++中，int *是一种复合类型，是指向int的指针**
+
+可以用同样的句法来声明指向其他类型的指针：
+
+```
+double * tax_ptr;
+char * str;
+```
+
+由于已将tax_ptr声明为一个指向double的指针，因此编译器知道 tax_ptr是一个double类型的值。也就是说，它知道*tax_ptr是一个以浮 点格式存储的值，这个值（在大多数系统上）占据8个字节。指针变量 不仅仅是指针，而且是指向特定类型的指针。tax_ptr的类型是指向 double的指针（或double *类型），str是指向char的指针类型（或char *）。尽管它们都是指针，却是不同类型的指针。和数组一样，指针都 是基于其他类型的。 
+
+虽然tax_ptr和str指向两种长度不同的数据类型，但这两个变量本身的长度通常是相同的。也就是说，char的地址与double的地址的长度相 同，地址的长度或值既不能指示关于变量的长度或类型的任何信息，也不能指示该地址上有什么建筑物。一般来说，地址需要2个还是4 个字节，取决于计算机系统
+
+可以在声明语句中初始化指针。在这种情况下，被初始化的是指针，而不是它指向的值。也就是说，下面的语句将pt（而不是*pt）的值 设置为&higgens：
+
+```
+int higgens = 5;
+int * pt=&higgens;
+```
+
+```cpp
+// init_ptr.cpp -- initialize a pointer
+#include <iostream>
+int main()
+{
+    using namespace std;
+    int higgens = 5;
+    int * pt = &higgens;
+
+    cout << "Value of higgens = " << higgens
+         << "; Address of higgens = " << &higgens << endl;
+    cout << "Value of *pt = " << *pt
+         << "; Value of pt = " << pt << endl;
+    // cin.get();
+    return 0;
+}
+//Value of higgens = 5; Address of higgens = 0x16fc77738
+//Value of *pt = 5; Value of pt = 0x16fc77738	
+```
+
+ 
+
+### 指针的危险
+
+在C++中创建指针时，计算机将分配用来存储地址的内存，但不会分配用来存储指针所指向的数据的内存
+
+```
+long * fellow;
+*fellow = 23333;
+```
+
+fellow确实是一个指针，但它指向哪里呢？上述代码没有将地址赋 给fellow。那么223323将被放在哪里呢？我们不知道。由于fellow没有被 初始化，它可能有任何值。不管值是什么，程序都将它解释为存储 223323的地址。如果fellow的值碰巧为1200，计算机将把数据放在地址 1200上，即使这恰巧是程序代码的地址。fellow指向的地方很可能并不 是所要存储223323的地方。这种错误可能会导致一些最隐匿、最难以跟 踪的bug
+
+一定要在对指针应用解除引用运算符（*）之前，将指针初始化为一个确定的、适当的地址。这是关于使用指针的金科玉律。
+
+ 
+
+### 指针和数字
+
+指针不是整型，虽然计算机通常把地址当作整数来处理。从概念上 看，指针与整数是截然不同的类型。整数是可以执行加、减、除等运算 的数字，而指针描述的是位置，将两个地址相乘没有任何意义。从可以 对整数和指针执行的操作上看，它们也是彼此不同的。因此，不能简单 地将整数赋给指针
+
+```
+int * pt;
+pt = 0xB800000;//左边是指向int型指针，但是右边是一个整数
+pt = （int *）0xB800000;//要强制转成int * 才可以；这样两边都是int 指针类型
+```
+
+### 使用new来分配内存 
+
+前面我们都将指针初始化为变量的地址；变量是在编译时分配的有名称的内存，而指针只是为可以通过名称直接访问的内存提供了 一个别名。指针真正的用武之地在于，在运行阶段分配未命名的内存以存储值。在这种情况下，只能通过指针来访问内存。在C语言中，可以 用库函数malloc( )来分配内存；在C++中仍然可以这样做，但C++还有更好的方法—new运算符。 
+
+程序员要告诉new，需要为哪种数据类型分配内存；new将找到一个长度正确的内存块，并返回该内存块的地址。程序员的责任是将该地址赋给一个指针
+
+```cpp
+int * pn =new int；
+```
+
+new int告诉程序，需要适合存储int的内存。new运算符根据类型来 确定需要多少字节的内存。然后，它找到这样的内存，并返回其地址。接下来，将地址赋给pn，pn是被声明为指向int的指针。现在，pn是地址，而*pn是存储在那里的值。将这种方法与将变量的地址赋给指针进行比较：
+
+```cpp
+int higgens;
+int * pt = &higgens;
+```
+
+在这两种情况（pn和pt）下，都是将一个int变量的地址赋给了指针。在第二种情况下，可以通过名称higgens来访问该int，在第一种情况 下，则只能通过该指针进行访问。这引出了一个问题：pn指向的内存没有名称，如何称呼它呢？我们说pn指向一个数据对象，这里的“对象”不是“面向对象编程”中的对象，而是一样“东西”。术语“数据对象”比“变 量”更通用，它指的是为数据项分配的内存块。因此，变量也是数据对象，但pn指向的内存不是变量。乍一看，处理数据对象的指针方法可能不太好用，但它使程序在管理内存方面有更大的控制权。
+
+为一个数据对象（可以是结构，也可以是基本类型）获得并指定分配内存的通用格式如下
+
+```cpp
+typeName * pointer_name = new typeName;
+```
+
+需要在两个地方指定数据类型：用来指定需要什么样的内存和用来声明合适的指针。当然，如果已经声明了相应类型的指针，则可以使用 该指针，而不用再声明一个新的指针
+
+```cpp
+// use_new.cpp -- using the new operator
+#include <iostream>
+int main()
+{
+    using namespace std;
+    int nights = 1001;
+    int * pt = new int;         // allocate space for an int
+    *pt = 1001;                 // store a value there
+
+    cout << "nights value = ";
+    cout << nights << ": location " << &nights << endl;
+    cout << "int ";
+    cout << "value = " << *pt << ": location = " << pt << endl;
+
+    double * pd = new double;   // allocate space for a double
+    *pd = 10000001.0;           // store a double there
+
+    cout << "double ";
+    cout << "value = " << *pd << ": location = " << pd << endl;
+    cout << "location of pointer pd: " << &pd << endl;
+    cout << "size of pt = " << sizeof(pt);
+    cout << ": size of *pt = " << sizeof(*pt) << endl;
+    cout << "size of pd = " << sizeof pd;
+    cout << ": size of *pd = " << sizeof(*pd) << endl;
+    // cin.get();
+    return 0;
+}
+//nights value = 1001: location 0x16b21f738
+//int value = 1001: location = 0x600003ed0030
+//double value = 1e+07: location = 0x600003ed0040
+//location of pointer pd: 0x16b21f728
+//size of pt = 8: size of *pt = 4
+//size of pd = 8: size of *pd = 8
+```
+
+对于指针，需要指出的另一点是，new分配的内存块通常与常规变量声明分配的内存块不同。变量nights和pd的值都存储在被称为栈 （stack）的内存区域中，而new从被称为堆heap）或自由存储区（free store）的内存区域分配内存。
+
+### 使用delete释放内存 
+
+当需要内存时，可以使用new来请求，这只是C++内存管理数据包中有魅力的一个方面。另一个方面是delete运算符，它使得在使用完内 存后，能够将其归还给内存池，这是通向最有效地使用内存的关键一步。归还或释放（free）的内存可供程序的其他部分使用。使用delete时，后面要加上指向内存块的指针（这些内存块最初是用new分配的）：
+
+```
+int *ps=new int;
+delete ps;
+```
+
+这将释放ps指向的内存，但不会删除指针ps本身。例如，可以将ps重新指向另一个新分配的内存块。一定要配对地使用new和delete；否则将发生内存泄漏（memory leak），也就是说，被分配的内存再也无法使用了。如果内存泄漏严重，则程序将由于不断寻找更多内存而终止。 
+
+不要尝试释放已经释放的内存块，C++标准指出，这样做的结果将是不确定的，这意味着什么情况都可能发生。另外，不能使用delete来 释放声明变量所获得的内存：
+
+```cpp
+int * ps = new int; //ok
+delete ps; //ok
+delete ps; //not ok 不要尝试释放已经释放的内存块
+int jud = 5; //ok
+int * pi =&jud; //ok
+delete pi //not allowed new和delete需要配合使用，不能使用delete删除非new创建的指针赋值
+```
+
+**只能用delete来释放使用new分配的内存。然而，对空指针使用delete是安全的**
+
+注意，使用delete的关键在于，将它用于new分配的内存。这并不意味着要使用用于new的指针，而是用于new的地址：
+
+```cpp
+int * ps = new int; //allocate memory
+int * pq = ps; //set same pointer to same block
+delete pq; //delete second block	
+```
+
+一般来说，不要创建两个指向同一个内存块的指针，因为这将增加错误地删除同一个内存块两次的可能性。但稍后您会看到，对于返回指 针的函数，使用另一个指针确实有道理
+
+### 使用new来创建动态数组
+
+在编译时给数组分配内存被称 为静态联编（static binding），意味着数组是在编译时加入到程序中的。但使用new时，如果在运行阶段需要数组，则创建它；如果不需要，则不创建。还可以在程序运行时选择数组的长度。这被称为动态联 编（dynamic binding），意味着数组是在程序运行时创建的。这种数组 叫作动态数组（dynamic array）。使用静态联编时，必须在编写程序时指定数组的长度；使用动态联编时，程序将在运行时确定数组的长度。
+
+#### 使用new创建动态数组
+
+在C++中，创建动态数组很容易；只要将数组的元素类型和元素数目告诉new即可。必须在类型名后加上方括号，其中包含元素数目。例 如，要创建一个包含10个int元素的数组，可以这样做：
+
+```cpp
+int * arr =new int[10];//new运算符返回第一个元素的地址
+```
+
+当程序使用完new分配的内存块时，应使用delete释放它们。然而，对于使用new创建的数组，应使用另一种格式的delete来释放： 
+
+```cpp
+delete [] arr;
+```
+
+方括号告诉程序，应释放整个数组，而不仅仅是指针指向的元素。 请注意delete和指针之间的方括号。如果使用new时，不带方括号，则使 用delete时，也不应带方括号。如果使用new时带方括号，则使用delete 时也应带方括号。C++的早期版本无法识别方括号表示法。然而，对于ANSI/ISO标准来说，new与delete的格式不匹配导致的后果是不确定的，这意味着程序员不能依赖于某种特定的行为。
+
+总之，使用new和delete时，应遵守以下规则:
+
+- 不要使用delete来释放不是new分配的内存。 
+- 不要使用delete释放同一个内存块两次。 
+- 如果使用new [ ]为数组分配内存，则应使用delete [ ]来释放。 
+- 如果使用new 为一个实体分配内存，则应使用delete（没有方括号）来释放
+- 对空指针应用delete是安全的。
+
+Arr是指向一个int（数组第一个元素）的指针。您的责任是跟踪内存块中的元素个数。也就是说，由于编译器不能对psome是指向10个整数中的第1个这种情况进行跟踪，因此编写程序时，必须让程序跟踪元素的数目。
+
+实际上，程序确实跟踪了分配的内存量，以便以后使用delete [ ]运算符时能够正确地释放这些内存。但这种信息不是公用的，例如，不能 使用sizeof运算符来确定动态分配的数组包含的字节数
+
+为数组分配内存的通用格式如下： 
+
+```
+typename * pointer_name = new typename[num_elements];
+```
+
+使用new运算符可以确保内存块足以存储num_elements个类型为type_name的元素，而pointer_name将指向第1个元素。下面将会看到，可以以使用数组名的方式来使用pointer_name。 
+
+#### 使用动态数组
+
+```
+int * psome = new int[10];
+```
+
+```cpp
+// arraynew.cpp -- using the new operator for arrays
+#include <iostream>
+int main()
+{
+    using namespace std;
+    double * p3 = new double [3]; // space for 3 doubles
+    p3[0] = 0.2;                  // treat p3 like an array name
+    p3[1] = 0.5;
+    p3[2] = 0.8;
+    cout << "p3[1] is " << p3[1] << ".\n";
+    p3 = p3 + 1;                  // increment the pointer
+    cout << "Now p3[0] is " << p3[0] << " and ";
+    cout << "p3[1] is " << p3[1] << ".\n";
+    p3 = p3 - 1;                  // point back to beginning
+    delete [] p3;                 // free the memory
+    // cin.get();
+    return 0;
+}
+//p3[1] is 0.5.
+//Now p3[0] is 0.5 and p3[1] is 0.8.
+```
+
+## 指针、数组和指针算术
+
+指针和数组基本等价的原因在于指针算术（pointer arithmetic）和C++内部处理数组的方式。
+
+首先，我们来看一看算术。将整数变量加1后，其值将增加1；但将指针变量加1后，增加的量等于它指向的类型的字节数。将指向double的指针加1后，如果系统对double使用8个字节存储，则数值将增加8；将指向short的指针加1后，如果系统对short使用2个字节存储，则指针值将增加2
+
+```cpp
+// addpntrs.cpp -- pointer addition
+#include <iostream>
+int main()
+{
+    using namespace std;
+    double wages[3] = {10000.0, 20000.0, 30000.0};
+    short stacks[3] = {3, 2, 1};
+
+// Here are two ways to get the address of an array
+    double * pw = wages;     // name of an array = address
+    short * ps = &stacks[0]; // or use address operator
+// with array element
+    cout << "pw = " << pw << ", *pw = " << *pw << endl;
+    pw = pw + 1;
+    cout << "add 1 to the pw pointer:\n";
+    cout << "pw = " << pw << ", *pw = " << *pw << "\n\n";
+
+    cout << "ps = " << ps << ", *ps = " << *ps << endl;
+    ps = ps + 1;
+    cout << "add 1 to the ps pointer:\n";
+    cout << "ps = " << ps << ", *ps = " << *ps << "\n\n";
+
+    cout << "access two elements with array notation\n";
+    cout << "stacks[0] = " << stacks[0]
+         << ", stacks[1] = " << stacks[1] << endl;
+    cout << "access two elements with pointer notation\n";
+    cout << "*stacks = " << *stacks
+         << ", *(stacks + 1) =  " << *(stacks + 1) << endl;
+
+    cout << sizeof(wages) << " = size of wages array\n";
+    cout << sizeof(pw) << " = size of pw pointer\n";
+    // cin.get();
+    return 0;
+}
+//pw = 0x16cf37720, *pw = 10000
+//add 1 to the pw pointer:
+//pw = 0x16cf37728, *pw = 20000
+//
+//ps = 0x16cf37714, *ps = 3
+//add 1 to the ps pointer:
+//ps = 0x16cf37716, *ps = 2
+//
+//access two elements with array notation
+//stacks[0] = 3, stacks[1] = 2
+//access two elements with pointer notation
+//*stacks = 3, *(stacks + 1) =  2
+//24 = size of wages array
+//8 = size of pw pointer
+```
+
+### 程序说明 
+
+将指针变量加1后，其增加的值等于指向的类型占用的字节数。
+
+![](https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-18%2015.38.18.png)
+
+此后，程序对ps执行相同的操作。这一次由于ps指向的是shor t类型，而short占用2个字节，因此将指针加1时，其值将增加2。结果是， 指针也指向数组中下一个元素。
+
+数组表达式stacks[1]。C++编译器将该表达式看作是 *（stacks + 1），这意味着先计算数组第2个元素的地址，然后找到存储 在那里的值。最后的结果便是stacks [1]的含义（运算符优先级要求使用括号，如果不使用括号，将给*stacks加1，而不是给stacks加1）。
+
+从该程序的输出可知，*（stacks + 1）和stacks[1]是等价的。同样， *（stacks + 2）和stacks[2]也是等价的。通常，使用数组表示法时， C++都执行下面的转换
+
+```
+arrayname[i] become *(arrayname+1)
+```
+
+如果使用的是指针，而不是数组名，则C++也将执行同样的转换： 
+
+```
+pointername[i] become *(pintername+i)
+```
+
+因此，在很多情况下，可以相同的方式使用指针名和数组名。对于 它们，可以使用数组方括号表示法，也可以使用解除引用运算符 
+
+（*）。在多数表达式中，它们都表示地址。区别之一是，可以修改指 针的值，而数组名是常量：
+
+```
+pintername =pointername+1; //valid
+arratname = arrayname +1 //no valid
+```
+
+另一个区别是，对数组应用sizeof运算符得到的是数组的长度，而 对指针应用sizeof得到的是指针的长度
+
+数组名被解释为其第一个元素的地址，而对数组名应用地址运算符时，得到的是整个数组的地址： 
+
+```
+short tell[10];
+cout << tell << endl;//display tell[0]
+cout << &tell << endl; //	display address of the whole array
+```
+
+从数字上说，这两个地址相同；但从概念上说，&tell[0]（即tell）是一个2字节内存块的地址，而&tell是一个20字节内存块的地址。因此，表达式tell + 1将地址值加2，而表达式&tell 2将地址加20。换句话说，tell是一个short指针（\* short），而&tell是一个这样的指针，即指 向包含20个元素的short数组（short (*) [20]）。
+
+```
+short (*pas)[20] = &tell;
+```
+
+如果省略括号，优先级规则将使得pas先与[20]结合，导致pas是一个short指针数组，它包含20个元素，因此括号是必不可少的。其次，如果要描述变量的类型，可将声明中的变量名删除。因此，pas的类型为short (*) [20]。另外，由于pas被设置为&tell，因此*pas与tell等价，所以(*pas) [0]为tell数组的第一个元素。 
+
+**总之，使用new来创建数组以及使用指针来访问不同的元素很简 单。只要把指针当作数组名对待即可。然而，要理解为何可以这样做， 将是一种挑战。要想真正了解数组和指针，应认真复习它们的相互关 系**
+
+### 指针小结 
+
+#### 声明指针
+
+​	要声明指向特定类型的指针，请使用下面的格式
+
+```
+typename * pintername
+```
+
+#### 给指针赋值
+
+应将内存地址赋给指针。可以对变量名应用&运算符，来获得被命名的内存的地址，new运算符返回未命名的内存的地址。
+
+```
+double * pn;
+double * pa;
+char * pc;
+double bubble = 3.2;
+pn = &bubble;
+pc = new char;
+pa = new double[20];
+```
+
+#### 对指针解除引用
+
+对指针解除引用意味着获得指针指向的值。对指针应用解除引用或间接值运算符（*）来解除引用
+
+#### 区分指针和指针所指向的值
+
+如果pt是指向int的指针，则*pt不是指向int的指针，而是完全等同于一个int类型的变量。pt才是指针。 
+
+```
+int *pt = new int;//assign an address to the pointer pt
+*pt = 5; //store 	the value 5 at the address
+```
+
+#### 数组名
+
+在多数情况下，C++将数组名视为数组的第一个元素的地址。
+
+```
+int tacos[10]; //now tacos is the same as &tacos[0]
+```
+
+一种例外情况是，将sizeof运算符用于数组名用时，此时将返回整个数组的长度（单位为字节）。
+
+#### 指针算术
+
+C++允许将指针和整数相加。加1的结果等于原来的地址值加上指向的对象占用的总字节数。还可以将一个指针减去另一个指针，获得两 个指针的差。后一种运算将得到一个整数，仅当两个指针指向同一个数组（也可以指向超出结尾的一个位置）时，这种运算才有意义；这将得到两个元素的间隔。 
+
+```cpp
+int tacos[10] = {1,2,3,4,5,6,7,8,9};
+int * pt =tacos;
+pt = pt+1;
+int *pe = &tacos[9];
+pe = pe -1;
+int diff  = pe - pt;
+```
+
+#### 数组的动态联编和静态联编
+
+使用数组声明来创建数组时，将采用静态联编，即数组的长度在编译时设置：
+
+```
+int tacos[10];
+```
+
+使用new[ ]运算符创建数组时，将采用动态联编（动态数组），即 将在运行时为数组分配空间，其长度也将在运行时设置。使用完这种数 组后，应使用delete [ ]释放其占用的内存：
+
+```
+int size ;
+int *pz = new int[size];
+delete [] pz;
+```
+
+#### 数组表示法和指针表示法
+
+使用方括号数组表示法等同于对指针解除引用
+
+```
+tacos[0] means *tacos means the value at address tacos
+tacos[3] means *(tacos+3) means the value at address + 3 address
+```
+
+数组名和指针变量都是如此，因此对于指针和数组名，既可以使用指针表示法，也可以使用数组表示法。
+
+```cpp
+int *p = new int[10];
+*pt = 5;
+pt[0]=6;
+pt[9]=44;
+int coast[10];
+*(coast + 4) = 12;
+```
+
+### 指针和字符串 
+
+### 使用**new**创建动态结构
+
+在运行时创建数组优于在编译时创建数组，对于结构也是如此。需 要在程序运行时为结构分配所需的空间，这也可以使用new运算符来完 成。通过使用new，可以创建动态结构。同样，“动态”意味着内存是在运行时，而不是编译时分配的
+
+将new用于结构由两步组成：创建结构和访问其成员。要创建结构，需要同时使用结构类型和new。例如，要创建一个未命名的 inflatable类型，并将其地址赋给一个指针，可以这样做：
+
+```
+inflatable * ps = new inflatable;
+```
+
+这将把足以存储inflatable结构的一块可用内存的地址赋给ps。这种句法和C++的内置类型完全相同。 比较棘手的一步是访问成员。创建动态结构时，不能将成员运算符 句点用于结构名，因为这种结构没有名称，只是知道它的地址。C++专 门为这种情况提供了一个运符：箭头成员运算符（−>）。该运算符由 连字符和大于号组成，可用于指向结构的指针，就像点运算符可用于结 构名一样。例如，如果ps指向一个inflatable结构，则ps−>price是被指向 的结构的price成员
+
+```cpp
+struct thing {
+	int good;
+	int bad;
+}
+things grubnose = {3,435};
+things * pt = &grubnose;
+grubnose.good;
+grubnose.bad;
+pt->good;
+pt->bad;
+```
+
