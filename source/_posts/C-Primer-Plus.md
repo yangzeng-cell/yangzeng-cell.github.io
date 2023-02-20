@@ -2917,3 +2917,268 @@ pt->good;
 pt->bad;
 ```
 
+如果结构标识符是结构名，则使用句点运算符；如果标识符是指向结构的指针，则使用箭头运算符。
+
+另一种访问结构成员的方法是，如果ps是指向结构的指针，则*ps就是被指向的值—结构本身。由于*ps是一个结构，因此（*ps）.price是 该结构的price成员。C++的运算符优先规则要求使用括号。 
+
+```js
+
+#include <iostream>
+struct inflatable   // structure definition
+{
+    char name[20];
+    float volume;
+    double price;
+};
+int main()
+{
+    using namespace std;
+    inflatable * ps = new inflatable; // allot memory for structure
+    cout << "Enter name of inflatable item: ";
+    cin.get(ps->name, 20);            // method 1 for member access
+    cout << "Enter volume in cubic feet: ";
+    cin >> (*ps).volume;              // method 2 for member access
+    cout << "Enter price: $";
+    cin >> ps->price;
+    cout << "Name: " << (*ps).name << endl;              // method 2
+    cout << "Volume: " << ps->volume << " cubic feet\n"; // method 1
+    cout << "Price: $" << ps->price << endl;             // method 1
+    delete ps;                        // free memory used by structure
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Enter name of inflatable item: Fabulous Frodo
+//Enter volume in cubic feet: 1.4
+//Enter price: $27.99
+//Name: Fabulous Frodo
+//Volume: 1.4 cubic feet
+//Price: $27.99
+```
+
+一个使用new和delete的示例
+
+下面介绍一个使用new和delete来存储通过键盘输入的字符串的示例。程序清单4.22定义了一个函数getname( )，该函数返回一个指向输入字符串的指针。该函数将输入读入到一个大型的临时数组中，然后使用new [ ]创建一个刚好能够存储该输入字符串的内存块，并返回一个指向该内存块的指针。对于读取大量字符串的程序，这种方法可以节省大量内存（实际编写程序时，使用string类将更容易，因为这样可以使用内置的new和delete）。 
+
+假设程序要读取1000个字符串，其中最大的字符串包含79个字符，而大多数字符串都短得多。如果用char数组来存储这些字符串，则需要 1000个数组，其中每个数组的长度为80个字符。这总共需要80000个字节，而其中的很多内存没有被使用。另一种方法是，创建一个数组，它包含1000个指向char的指针，然后使用new根据每个字符串的需要分配相应数量的内存。这将节省几万个字节。是根据输入来分配内存，而不是为每个字符串使用一个大型数组。另外，还可以使用new根据需要的指针数量来分配空间。就目前而言，这有点不切实际，即使是使用1000个指针的数组也是这样，不过程序清单4.22还是演示了一些技巧。另外，为演示delete是如何工作的，该程序还用它来释放内存以便能够重新使用。
+
+```cpp
+// delete.cpp -- using the delete operator
+#include <iostream>
+#include <cstring>      // or string.h
+using namespace std;
+char * getname(void);   // function prototype
+int main()
+{
+    char * name;        // create pointer but no storage
+
+    name = getname();   // assign address of string to name
+    cout << name << " at " << (int *) name << "\n";
+    delete [] name;     // memory freed
+
+    name = getname();   // reuse freed memory
+    cout << name << " at " << (int *) name << "\n";
+    delete [] name;     // memory freed again
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+char * getname()        // return pointer to new string
+{
+    char temp[80];      // temporary storage
+    cout << "Enter last name: ";
+    cin >> temp;
+    char * pn = new char[strlen(temp) + 1];
+    strcpy(pn, temp);   // copy string into smaller space
+
+    return pn;          // temp lost when function ends
+}
+//Enter last name: Fredelddumpkin
+//Fredelddumpkin at 0x600000f70000
+//Enter last name: Pook
+//Pook at 0x600000f70000
+```
+
+来看一下程序清单4.22中的函数getname( )。它使用cin将输入的单词放到temp数组中，然后使用new分配新内存，以存储该单词。程序需要strle（temp）+ 1个字符（包括空字符）来存储该字符串，因此将这个值提供给new。获得空间后，getname( )使用标准库函数strcpy( )将temp中的字符串复制到新的内存块中。该函数并不检查内存块是否能够容纳字符串，但getname( )通过使用new请求合适的字节数来完成了这样的工作。最后，函数返回pn，这是字符串副本的地址。 
+
+在main( )中，返回值（地址）被赋给指针name。该指针是在main( )中定义的，但它指向getname( )函数中分配的内存块。然后，程序打印该字符串及其地址。接下来，在释放name指向的内存块后，main( )再次调用getname()。C++不保证新释放的内存就是下一次使用new时选择的内存，从程序运行结果可知，确实不是。 
+
+在这个例子中，getname( )分配内存，而main( )释放内存。将new和delete放在不同的函数中通常并不是个好办法，因为这样很容易忘记使用delete。不过这个例子确实把new和delete分开放置了，只是为了说明这样做也是可以的。 
+
+### 自动存储、静态存储和动态存储
+
+根据用于分配内存的方法，C++有3种管理数据内存的方式：自动存储、静态存储和动态存储（有时也叫作自由存储空间或堆）。在存在 时间的长短方面，以这3种方式分配的数据对象各不相同.（C++11新增了第四种类型—线程存储
+
+#### 自动存储 
+
+在函数内部定义的常规变量使用自动存储空间，被称为自动变量 （automatic variable），这意味着它们在所属的函数被调用时自动产 生，在该函数结束时消亡。例如，程序清单4.22中的temp数组仅当getname( )函数活动时存在。当程序控制权回到main( )时，temp使用的内存将自动被释放。如果getname( )返回temp的地址，则main( )中的name指针指向的内存将很快得到重新使用。这就是在getname( )中使用new的原因之一。
+
+实际上，自动变量是一个局部变量，其作用域为包含它的代码块。代码块是被包含在花括号中的一段代码。到目前为止，我们使用的所有 代码块都是整个函数。然而，在下一章将会看到，函数内也可以有代码块。如果在其中的某个代码块定义了一个变量，则该变量仅在程序执行该代码块中的代码时存在。 
+
+自动变量通常存储在栈中。这意味着执行代码块时，其中的变量将依次加入到栈中，而在离开代码块时，将按相反的顺序释放这些变量， 这被称为后进先出（LIFO）。因此，在程序执行过程中，栈将不断地增大和缩小。 
+
+#### 静态存储 
+
+静态存储是整个程序执行期间都存在的存储方式。使变量成为静态的方式有两种：一种是在函数外面定义它；另一种是在声明变量时使用 关键字static：
+
+```
+static double fee = 56.50;
+```
+
+在K&R C中，只能初始化静态数组和静态结构，而C++ Release2.0（及后续版本）和ANSI C中，也可以初始化自动数组和自动结构。 然而，一些您可能已经发现，有些C++实现还不支持对自动数组和自动 结构的初始化。
+
+自动存储和静态存储的关键在于：这些方法严格地限制了变量的寿命。变量可能存在于程序的整个生命周期（静态变量），也可能只是在特定函数被执行时存在（自动变量）。
+
+#### 动态存储
+
+new和delete运算符提供了一种比自动变量和静态变量更灵活的方法。它们管理了一个内存池，这在C++中被称为自由存储空间（free store）或堆（heap）。该内存池同用于静态变量和自动变量的内存是分开的.new和delete让您能够在一个函数中分配内存，而在另一个函数中释放它。因此，数据的生命周期不完全受程序或函数的生存时间控制。与使用常规变量相比，使用new和delete让程序员对程序如何使用内存有更大的控制权。然而，内存管理也更复杂了。在栈中，自动添加和删除机制使得占用的内存总是连续的，但new和delete 的相互影响可能导致占用的自由存储区不连续，这使得跟踪新分配内存的位置更困难
+
+#### 栈、堆和内存泄漏
+
+如果使用new运算符在自由存储空间（或堆）上创建变量后，没有调用delete，将发生什么情况呢？如果没有调用delete，则即使包含指针的内存由于作用域规则和对象生命周期的原因而被释放，在自由存储空间上动态分配的变量或结构也将继续存在。实际上，将会无法访 问自由存储空间中的结构，因为指向这些内存的指针无效。这将导致内存泄漏。被泄漏的内存将在程序的整个生命周期内都不可使用；这些内存被分配出去，但无法收回。极端情况（不过不常见）是，内存泄漏可能会非常严重，以致于应用程序可用的内存被耗尽，出现内 存耗尽错误，导致程序崩溃。另外，这种泄漏还会给一些操作系统或在相同的内存空间中运行的应用程序带来负面影响，导致它们崩溃,即使是最好的程序员和软件公司，也可能导致内存泄漏。要避免内存泄漏，最好是养成这样一种习惯，即同时使用new和delete运算符，在自由存储空间上动态分配内存，随后便释放它。C++智能指针有助于自动完成这种任务
+
+## 类型组合
+
+```cpp
+struct antarctica_years_end {
+	int year;
+}
+```
+
+创建结构变量
+
+```cpp
+antarctica_years_end s01,s02,s03;
+```
+
+成员运算符访问成员
+
+```
+s01.year=1998;
+```
+
+可创建指向这种结构的指针
+
+```
+antarctica_years_end * pa =&s02;
+```
+
+将该指针设置为有效地址后，就可使用间接成员运算符来访问成员
+
+```
+pa -> year =1999;
+```
+
+可创建结构数组:
+
+```
+antarctica_years_end trio[3];
+```
+
+可以使用成员运算符访问元素的成员
+
+```
+trio[0].year = 2003;
+(trio+1)->year = 2004;//same as trio[1].year =2004
+```
+
+创建指针数组
+
+```
+const antarctica_years_end *arp[3] = {&s01,&s02,&s03};
+```
+
+可创建指向上述数组的指针
+
+```
+const antarctica_years_end	**ppa =arp //arp指向数组的第一个值的指针，然后他的值又是指针，所以要获取真正的值需要** 
+```
+
+C++11版本的auto提供的方便。编译器知道arp的类型，能够正确地推断出ppb的类型：
+
+```
+auto ppb = arp；
+```
+
+如何使用ppa来访问数据呢？由于ppa是一个指向结构指针的指针， 因此*ppa是一个结构指针，可将间接成员运算符应用于它： 
+
+```
+std ：：cout << (*ppa)->year << std::endl;
+std ：：cout << (*ppa+1)->year << std::endl;
+```
+
+由于ppa指向arp的第一个元素，因此*ppa为第一个元素，即&s01。所以，(*ppa)->year为s01的year成员。在第二条语句中，ppb+1指向下一 个元素arp[1]，即&s02。其中的括号必不可少，这样才能正确地结合。
+
+```cpp
+// mixtypes.cpp --some type combinations
+#include <iostream>
+
+struct antarctica_years_end
+{
+    int year;
+    /* some really interesting data, etc. */
+};
+
+int main()
+{
+    antarctica_years_end s01, s02, s03;
+    s01.year = 1998;
+    antarctica_years_end * pa = &s02;
+    pa->year = 1999;
+    antarctica_years_end trio[3]; // array of 3 structures
+    trio[0].year = 2003;
+    std::cout << trio->year << std::endl;
+    const antarctica_years_end * arp[3] = {&s01, &s02, &s03};
+    std::cout << arp[1]->year << std::endl;
+    const antarctica_years_end ** ppa = arp;
+    auto ppb = arp; // C++0x automatic type deduction
+// or else use const antarctica_years_end ** ppb = arp;
+    std::cout << (*ppa)->year << std::endl;
+    std::cout << (*(ppb+1))->year << std::endl;
+    // std::cin.get();
+    return 0;
+}
+//2003
+//1999
+//1998
+//1999
+```
+
+## 数组的替代品
+
+模板类vector和array是数组的替代品
+
+### 模板类vector
+
+模板类vector类似于string类，也是一种动态数组。您可以在运行阶段设置vector对象的长度，可在末尾附加新数据，还可在中间插入新数据。基本上，它是使用new创建动态数组的替代品。实际上，vector类确实使用new和delete来管理内存，但这种工作是自动完成的
+
+这里不深入探讨模板类意味着什么，而只介绍一些基本的实用知识。首先，要使用vector对象，必须包含头文件vector。其次，vector包 含在名称空间std中，因此您可使用using编译指令、using声明或 std::vector。第三，模板使用不同的语法来指出它存储的数据类型。第 四，vector类使用不同的语法来指定元素数
+
+```
+vector<typename> vt(n_elem);
+```
+
+其中参数n_elem可以是整型常量，也可以是整型变量。
+
+### 模板类array（C++11）
+
+vector类的功能比数组强大，但付出的代价是效率稍低。如果您需要的是长度固定的数组，使用数组是更佳的选择，但代价是不那么方便 和安全。有鉴于此，C++11新增了模板类array，它也位于名称空间std中。与数组一样，array对象的长度也是固定的，也使用栈（静态内存分配），而不是自由存储区，因此其效率与数组相同，但更方便，更安全。要创建array对象，需要包含头文件array。array对象的创建语法与 vector稍有不同： 
+
+```cpp
+#include <array>
+...
+using namespace std;
+array<int 5> ai;
+array<double,4> ad = {1.2,2.1,3.43,4.3}
+```
+
+推而广之，下面的声明创建一个名为arr的array对象，它包含n_elem个类型为typename的元素：
+
+```
+array<typename,n_elem> arr;
+```
+
+与创建vector对象不同的是，n_elem不能是变量。在C++11中，可将列表初始化用于vector和array对象，但在C++98 中，不能对vector对象这样做。 
+
+### 比较数组、vector对象和array对象
