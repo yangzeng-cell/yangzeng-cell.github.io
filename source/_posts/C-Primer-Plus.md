@@ -3182,3 +3182,166 @@ array<typename,n_elem> arr;
 与创建vector对象不同的是，n_elem不能是变量。在C++11中，可将列表初始化用于vector和array对象，但在C++98 中，不能对vector对象这样做。 
 
 ### 比较数组、vector对象和array对象
+
+```cpp
+// choices.cpp -- array variations
+#include <iostream>
+#include <vector>   // STL C++98
+#include <array>    // C++0x
+int main()
+{
+    using namespace std;
+// C, original C++
+    double a1[4] = {1.2, 2.4, 3.6, 4.8};
+// C++98 STL
+    vector<double> a2(4);   // create vector with 4 elements
+// no simple way to initialize in C98
+    a2[0] = 1.0/3.0;
+    a2[1] = 1.0/5.0;
+    a2[2] = 1.0/7.0;
+    a2[3] = 1.0/9.0;
+// C++0x -- create and initialize array object
+    array<double, 4> a3 = {3.14, 2.72, 1.62, 1.41};
+    array<double, 4> a4;
+    a4 = a3;     // valid for array objects of same size
+// use array notation
+    cout << "a1[2]: " << a1[2] << " at " << &a1[2] << endl;
+    cout << "a2[2]: " << a2[2] << " at " << &a2[2] << endl;
+    cout << "a3[2]: " << a3[2] << " at " << &a3[2] << endl;
+    cout << "a4[2]: " << a4[2] << " at " << &a4[2] << endl;
+// misdeed
+    a1[-2] = 20.2;
+    cout << "a1[-2]: " << a1[-2] <<" at " << &a1[-2] << endl;
+    cout << "a3[2]: " << a3[2] << " at " << &a3[2] << endl;
+    cout << "a4[2]: " << a4[2] << " at " << &a4[2] << endl;
+    //  cin.get();
+    return 0;
+}
+//a1[2]: 3.6 at 0x16ae27710
+//a2[2]: 0.142857 at 0x600001b35110
+//a3[2]: 1.62 at 0x16ae276d0
+//a4[2]: 1.62 at 0x16ae276b0
+//a1[-2]: 20.2 at 0x16ae276f0
+//a3[2]: 1.62 at 0x16ae276d0
+//a4[2]: 1.62 at 0x16ae276b0
+```
+
+首先，注意到无论是数组、vector对象还是array对象，都可使用标准数组表示法来访问各个元素。其次，从地址可知，array对象和数组存储在相同的内存区域（即栈）中，而vector对象存储在另一个区域（自由存储区或堆）中。第三，注意到可以将一个array对象赋给另一个array对象；而对于数组，必须逐元素复制数据。
+
+```
+a1[-2] = 20.2;//=>*(a1-2)
+```
+
+其含义如下：找到a1指向的地方，向前移两个double元素，并将20.2存储到目的地。也就是说，将信息存储到数组的外面。与C语言一 样，C++也不检查这种超界错误
+
+也可以这样做
+
+```
+a2.at(1) = 2.3;
+```
+
+中括号表示法和成员函数at()的差别在于，使用at()时，将在运行期间捕获非法索引，而程序默认将中断。这种额外检查的代价是运行时间 更长，这就是C++让允许您使用任何一种表示法的原因所在。另外，这些类还让您能够降低意外超界错误的概率。例如，它们包含成员函数begin()和end()，让您能够确定边界，以免无意间超界
+
+## 总结
+
+数组、结构和指针是C++的3种复合类型。数组可以在一个数据对象中存储多个同种类型的值。通过使用索引或下标，可以访问数组中各 个元素。
+
+结构可以将多个不同类型的值存储在同一个数据对象中，可以使用成员关系运算符（.）来访问其中的成员。使用结构的第一步是创建结 构模板，它定义结构存储了哪些成员。模板的名称将成为新类型的标识符，然后就可以声明这种类型的结构变量
+
+共用体可以存储一个值，但是这个值可以是不同的类型，成员名指出了使用的模式。
+
+指针是被设计用来存储地址的变量。我们说，指针指向它存储的地址。指针声明指出了指针指向的对象的类型。对指针应用解除引用运算 符，将得到指针指向的位置中的值。
+
+字符串是以空字符为结尾的一系列字符。字符串可用引号括起的字符串常量表示，其中隐式包含了结尾的空字符。可以将字符串存储在 char数组中，可以用被初始化为指向字符串的char指针表示字符串。函数strlen( )返回字符串的长度，其中不包括空字符。函数strcpy( )将字符串从一个位置复制到另一个位置。在使用这些函数时，应当包含头文件cstring或string.h。
+
+头文件string支持的C++ string类提供了另一种对用户更友好的字符串处理方法。具体地说，string对象将根据要存储的字符串自动调整其 大小，用户可以使用赋值运算符来复制字符串。
+
+new运算符允许在程序运行时为数据对象请求内存。该运算符返回获得内存的地址，可以将这个地址赋给一个指针，程序将只能使用该指 针来访问这块内存。如果数据对象是简单变量，则可以使用解除引用运算符（*）来获得其值；如果数据对象是数组，则可以像使用数组名那样使用指针来访问元素；如果数据对象是结构，则可以用指针解除引用运算符（->）来访问其成员。
+
+指针和数组紧密相关。如果ar是数组名，则表达式ar[i]被解释为 *（ar + i），其中数组名被解释为数组第一个元素的地址。这样，数组名的作用和指针相同。反过来，可以使用数组表示法，通过指针名来访 问new分配的数组中的元素。
+
+运算符new和delete允许显式控制何时给数据对象分配内存，何时将内存归还给内存池。自动变量是在函数中声明的变量，而静态变量在 函数外部或者使用关键字static声明的变量，这两种变量都不太灵活。自动变量在程序执行到其所属的代码块（通常是函数定义）时产生，在离开该代码块时终止。静态变量在整个程序周期内都存在。
+
+C++98新增的标准模板库（STL）提供了模板类vector，它是动态数组的替代品。C++11提供了模板类array，它是定长数组的替代品。
+
+# 循环和关系表达式
+
+## for循环
+
+```cpp
+// forloop.cpp -- introducing the for loop
+#include <iostream>
+int main()
+{
+    using namespace std;
+    int i;  // create a counter
+//   initialize; test ; update
+    for (i = 0; i < 5; i++)
+        cout << "C++ knows loops.\n";
+    cout << "C++ knows when to stop.\n";
+    // cin.get();
+    return 0;
+}
+//C++ knows loops.
+//C++ knows loops.
+//C++ knows loops.
+//C++ knows loops.
+//C++ knows loops.
+//C++ knows when to stop.
+```
+
+### for循环的组成部分 
+
+for循环的组成部分完成下面这些步骤。
+
+1．设置初始值。 
+
+2．执行测试，看看循环是否应当继续进行。 
+
+3．执行循环操作。 
+
+4．更新用于测试的值。
+
+C++循环设计中包括了这些要素，很容易识别。初始化、测试和更新操作构成了控制部分，这些操作由括号括起。其中每部分都是一个表 达式，彼此由分号隔开。控制部分后面的语句叫作循环体，只要测试表 达式为true，它便被执行：
+
+```
+for(initialization;test-expression;update-expression)
+	body
+```
+
+C++语法将整个for看作一条语句—虽然循环体可以包含一条或多条语句。（包含多条语句时，需要使用复合语句或代码块，这将在本章后 面进行讨论。）
+
+循环只执行一次初始化。通常，程序使用该表达式将变量设置为起始值，然后用该变量计算循环周期。
+
+test-expression（测试表达式）决定循环体是否被执行。通常，这个表达式是关系表达式，即对两个值进行比较。这个例子将i的值同5进行比较，看i是否小于5。如果比较结果为真，则程序将执行循环体。实际上，C++并没有将test-expression的值限制为只能为真或假。可以使用任意表达式，C++将把结果强制转换为bool类型。因此，值为0的表达式将被转换为bool值false，导致循环结束。如果表达式的值为非零，则被强制转换为bool值true，循环将继续进行
+
+```cpp
+// num_test.cpp -- use numeric test in for loop
+#include <iostream>
+int main()
+{
+    using namespace std;
+    cout << "Enter the starting countdown value: ";
+    int limit;
+    cin >> limit;
+    int i;
+    for (i = limit; i; i--)     // quits when i is 0
+        cout << "i = " << i << "\n";
+    cout << "Done now that i = " << i << "\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Enter the starting countdown value: 4
+//i = 4
+//i = 3
+//i = 2
+//i = 1
+//Done now that i = 0
+```
+
+注意，循环在i变为0后结束
+
+关系表达式（如i<5）是如何得到循环终止值0的呢？在引入bool类型之前，如果关系表达式为true，则被判定为1；如果为false，则被判定为0。因此，表达式3<5的值为1，而5<5的值为0。然而，C++添加了bool类型后，关系表达式就判定为bool字面值true和false，而不是1和0了。这种变化不会导致不兼容的问题，因为C++程序在需要整数值的地方将把true和false分别转换为1和0，而在需要bool值的地方将把0转换为false，非0转换为true。 
+
+for循环是入口条件（entry-condition）循环。这意味着在每轮循环之前，都将计算测试表达式的值，当测试表达式为false时，将不会执行循环体
