@@ -3345,3 +3345,292 @@ int main()
 关系表达式（如i<5）是如何得到循环终止值0的呢？在引入bool类型之前，如果关系表达式为true，则被判定为1；如果为false，则被判定为0。因此，表达式3<5的值为1，而5<5的值为0。然而，C++添加了bool类型后，关系表达式就判定为bool字面值true和false，而不是1和0了。这种变化不会导致不兼容的问题，因为C++程序在需要整数值的地方将把true和false分别转换为1和0，而在需要bool值的地方将把0转换为false，非0转换为true。 
 
 for循环是入口条件（entry-condition）循环。这意味着在每轮循环之前，都将计算测试表达式的值，当测试表达式为false时，将不会执行循环体
+
+```cpp
+// express.cpp -- values of expressions
+#include <iostream>
+int main()
+{
+    using namespace std;
+    int x;
+
+    cout << "The expression x = 100 has the value ";
+    cout << (x = 100) << endl;
+    cout << "Now x = " << x << endl;
+    cout << "The expression x < 3 has the value ";
+    cout << (x < 3) << endl;
+    cout << "The expression x > 3 has the value ";
+    cout << (x > 3) << endl;
+    cout.setf(ios_base::boolalpha);   //a newer C++ feature
+    cout << "The expression x < 3 has the value ";
+    cout << (x < 3) << endl;
+    cout << "The expression x > 3 has the value ";
+    cout << (x > 3) << endl;
+    /// cin.get();
+    return 0;
+}
+//the expression x = 100 has the value 100
+//Now x = 100
+//The expression x < 3 has the value 0
+//The expression x > 3 has the value 1
+//The expression x < 3 has the value false
+//The expression x > 3 has the value true
+```
+
+通常，cout在显示bool值之前将它们转换为int，但cout.setf（ios：：boolalpha）函数调用设置了一个标记，该标记命令cout显示true和false，而不是1和0。
+
+```
+age = 100
+```
+
+从表达式到语句的转变很容易，只要加分号即可;
+
+```
+age = 100;
+```
+
+for结构的控制部分由3个表达式组成，它们由分号分隔。然而，C++循环允许像下面这样做：
+
+```
+for(int i = 0; i<5 ; i++)
+```
+
+也就是说，可以在for循环的初始化部分中声明变量。这很方便，但并不适用于原来的句法，因为声明不是表达式。这种一度是非法的行为最初是通过定义一种新的表达式—声明语句表达式（declaration- statement expression）—来合法化的，声明语句表达式不带分号声明，只能出现在for语句中。然而，这种调整已经被取消了，代之以将for语句的句法修改成下面这样：
+
+```
+for (for-init-statement condition;expression)
+	statement
+```
+
+因为这里只有一个分号（而不是两个分号）。但是这是允许的，因为for-init-statement被视为一条语句，而语句有自己的分号。对于for-init-statement来说，它既可以是表达式语句，也可以是声明。这种句法规则用语句替换了后面跟分号的表达式，语句本身有自己的分号
+
+在for-init-statement中声明变量还有其实用的一面，这也是应该知道的。这种变量只存在于for语句中，也就是说，当程序离开循环后，这种变量将消失： 
+
+```
+for(int i = 0;i<5;i++)
+	cout<<"c++ knows loop \n";
+```
+
+### 回到for循环 
+
+```cpp
+// formore.cpp -- more looping with for
+#include <iostream>
+const int ArSize = 16;      // example of external declaration
+int main()
+{
+    long long factorials[ArSize];
+    factorials[1] = factorials[0] = 1LL;
+    for (int i = 2; i < ArSize; i++)
+        factorials[i] = i * factorials[i-1];
+    for (int i = 0; i < ArSize; i++)
+        std::cout << i << "! = " << factorials[i] << std::endl;
+    // std::cin.get();
+    return 0;
+}
+//0! = 1
+//1! = 1
+//2! = 2
+//3! = 6
+//4! = 24
+//5! = 120
+//6! = 720
+//7! = 5040
+//8! = 40320
+//9! = 362880
+//10! = 3628800
+//11! = 39916800
+//12! = 479001600
+//13! = 6227020800
+//14! = 87178291200
+//15! = 1307674368000
+```
+
+### 修改步长
+
+```cpp
+// bigstep.cpp -- count as directed
+#include <iostream>
+int main()
+{
+    using std::cout;    // a using declaration
+    using std::cin;
+    using std::endl;;
+    cout << "Enter an integer: ";
+    int by;
+    cin >> by;
+    cout << "Counting by " << by << "s:\n";
+    for (int i = 0; i < 100; i = i + by)
+        cout << i << endl;
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Enter an integer: 17
+//Counting by 17s:
+//0
+//17
+//34
+//51
+//68
+//85
+```
+
+### 使用for循环访问字符串
+
+```cpp
+// forstr1.cpp -- using for with a string
+#include <iostream>
+#include <string>
+int main()
+{
+    using namespace std;
+    cout << "Enter a word: ";
+    string word;
+    cin >> word;
+
+    // display letters in reverse order
+    for (int i = word.size() - 1; i >= 0; i--)//size可以获得字符串的个数
+        cout << word[i];
+    cout << "\nBye.\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Enter a word: animal
+//lamina
+//Bye.
+```
+
+如果所用的实现没有添加新的头文件，则必须使用string.h，而不是cstring。
+
+### 副作用和顺序点 
+
+副作用（side effect）指的是在计算表达式时对某些东西（如存储在变量中的值）进行了修改；顺序点 （sequence point）是程序执行过程中的一个点，在这里，进入下一步之 前将确保对所有的副作用都进行了评估。在C++中，语句中的分号就是一个顺序点，这意味着程序处理下一条语句之前，赋值运算符、递增运 =算符和递减运算符执行的所有修改都必须完成。另外，任何完整的表达式末尾都是一个顺序点
+
+何为完整表达式呢？它是这样一个表达式：不是另一个更大表达式的子表达式。完整表达式的例子有：表达式语句中的表达式部分以及用 作while循环中检测条件的表达式。
+
+顺序点有助于阐明后缀递增何时进行
+
+```cpp
+while(gust++<10)
+        cout<<gust<<endl;
+```
+
+
+
+```
+y=(4+x++)+(6+x++)
+```
+
+表达式4 + x++不是一个完整表达式，因此，C++不保证x的值在计算子表达式4 + x++后立刻增加1。在这个例子中，整条赋值语句是一个 完整表达式，而分号标示了顺序点，因此C++只保证程序执行到下一条语句之前，x的值将被递增两次。C++没有规定是在计算每个子表达式之后将x的值递增，还是在整个表达式计算完毕后才将x的值递增，有鉴于此，您应避免使用这样的表达式。
+
+### 前缀格式和后缀格式 
+
+```
+for(n=1im;n>0;n--)
+
+for(n-lim;n>0;--n)
+
+在这里，这两种没有区别
+但是在这种情况下，用户这样定义前缀函数：将值加1，然后返回结果；但 后缀版本首先复制一个副本，将其加1，然后将复制的副本返回。因 此，对于类而言，前缀版本的效率比后缀版本高
+```
+
+总之，对于内置类型，采用哪种格式不会有差别；但对于用户定义的类型，如果有用户定义的递增和递减运算符，则前缀格式的效率更 高
+
+### 递增**/**递减运算符和指针
+
+可以将递增运算符用于指针和基本变量。本书前面介绍过，将递增运算符用于指针时，将把指针的值增加其指向的数据类型占用的字节 数，这种规则适用于对指针递增和递减：
+
+```
+double arr[5] = {21.1,32.8,23.4,45.2,37.4};
+double *pt = arr;
+++pt;
+```
+
+也可以结合使用这些运算符和*运算符来修改指针指向的值。将*和++同时用于指针时提出了这样的问题：将什么解除引用，将什么递增。 这取决于运算符的位置和优先级。前缀递增、前缀递减和解除引用运算符的优先级相同，以从右到左的方式进行结合。后缀递增和后缀递减的优先级相同，但比前缀运算符的优先级高，这两个运算符以从左到右的方式进行结合
+
+前缀运算符的从右到到结合规则意味着\*++pt的含义如下：现将++应用于pt（因为++位于\*的右边），然后将*应用于被递增后的pt：
+
+```
+double x = *++pt;
+```
+
+另一方面，++*pt意味着先取得pt指向的值，然后将这个值加1：
+
+```
+++*pt;
+```
+
+在这种情况下，pt仍然指向arr[2]。 
+
+```
+(*pt)++;
+```
+
+圆括号指出，首先对指针解除引用，得到24.4。然后，运算符++将这个值递增到25.4，pt仍然指向arr[2]。
+
+```
+*pt++;
+```
+
+后缀运算符++的优先级更高，这意味着将运算符用于pt，而不是 *pt，因此对指针递增。然而后缀运算符意味着将对原来的地址 （&arr[2]）而不是递增后的新地址解除引用，因此*pt++的值为arr[2]， 即25.4，但该语句执行完毕后，pt的值将为arr[3]的地址。
+
+### 组合赋值运算符
+
+| 操作符 | 作用L为左操作符，R为右操作符 |
+| ------ | ---------------------------- |
+| +=     | L=L+R                        |
+| -=     | L=L-R                        |
+| *=     | L=L*R                        |
+| /=     | L=L/R                        |
+| %=     | L=L%R                        |
+
+### 复合语句（语句块）
+
+在for循环体中有多条语句时，需要使用花括号
+
+```cpp
+// block.cpp -- use a block statement
+#include <iostream>
+int main()
+{
+    using namespace std;
+    cout << "The Amazing Accounto will sum and average ";
+    cout << "five numbers for you.\n";
+    cout << "Please enter five values:\n";
+    double number;
+    double sum = 0.0;
+    for (int i = 1; i <= 5; i++)
+    {                                   // block starts here
+        cout << "Value " << i << ": ";//如果没有花括号，只会执行第一条作为循环语句
+        cin >> number;
+        sum += number;
+    }                                   // block ends here
+    cout << "Five exquisite choices indeed! ";
+    cout << "They sum to " << sum << endl;
+    cout << "and average to " << sum / 5 << ".\n";
+    cout << "The Amazing Accounto bids you adieu!\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//The Amazing Accounto will sum and average five numbers for you.
+//Please enter five values:
+//Value 1: 1942
+//Value 2: 1948
+//Value 3: 1957
+//Value 4: 1974
+//Value 5: 1980
+//Five exquisite choices indeed! They sum to 9801
+//and average to 1960.2.
+//The Amazing Accounto bids you adieu!
+```
+
+复合语句还有一种有趣的特性。如果在语句块中定义一个新的变量，则仅当程序执行该语句块中的语句时，该变量才存在。执行完该语 句块后，变量将被释放。这表明此变量仅在该语句块中才是可用的：
+
+注意，在外部语句块中定义的变量在内部语句块中也是被定义了的。
+
+如果在一个语句块中声明一个变量，而外部语句块中也有一个这种名称的变量，在块中内部变量会覆盖外部变量
+
+### 其他语法技巧**—**逗号运算符 
