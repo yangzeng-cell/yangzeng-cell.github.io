@@ -3634,3 +3634,1556 @@ int main()
 如果在一个语句块中声明一个变量，而外部语句块中也有一个这种名称的变量，在块中内部变量会覆盖外部变量
 
 ### 其他语法技巧**—**逗号运算符 
+
+```cpp
+// forstr2.cpp -- reversing an array
+#include <iostream>
+#include <string>
+int main()
+{
+    using namespace std;
+    cout << "Enter a word: ";
+    string word;
+    cin >> word;
+
+    // physically modify string object
+    char temp;
+    int i, j;
+    for (j = 0, i = word.size() - 1; j < i; --i, ++j)
+    {                       // start block
+        temp = word[i];
+        word[i] = word[j];
+        word[j] = temp;
+    }                       // end block
+    cout << word << "\nDone\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Enter a word: stressed
+//desserts
+//Done
+```
+
+到目前为止，逗号运算符最常见的用途是将两个或更多的表达式放到一个for循环表达式中。不过C++还为这个运算符提供了另外两个特 性。首先，它确保先计算第一个表达式，然后计算第二个表达式（换句话说，逗号运算符是一个顺序点）。如下所示的表达式是安全的：
+
+```cpp
+i = 20,j=i*20;
+```
+
+其次，C++规定，逗号表达式的值是第二部分的值。例如，上述表达式的值为40，因为j = 2 * i的值为40。
+
+在所有运算符中，逗号运算符的优先级是最低的。例如，下面的语句：
+
+```
+cats = 17,240;//被解释为（cats=17），240
+```
+
+也就是说，将cats设置为17，240不起作用。然而，由于括号的优先级最高，下面的表达式将把cats设置为240—逗号右侧的表达式值： 
+
+```
+cats = (17,240);
+```
+
+### 关系表达式
+
+| 操作符 | 含义     |
+| ------ | -------- |
+| <      | 小于     |
+| <=     | 小于等于 |
+| ==     | 等于     |
+| >      | 大于     |
+| >=     | 大于等于 |
+| !=     | 不等于   |
+
+关系运算符的优先级比算术运算符低
+
+```
+x+3>y-2//=>(x+3)>(y-2)
+```
+
+### **C-**风格字符串的比较
+
+假设要知道字符数组中的字符串是不是mate。如果word是数组名，下面的测试可能并不能像我们预想的那样工作
+
+```
+word = "mate"
+```
+
+请记住，数组名是数组的地址。同样，用引号括起的字符串常量也是其地址。因此，上面的关系表达式不是判断两个字符串是否相同，而 是查看它们是否存储在相同的地址上。两个字符串的地址是否相同呢？ 答案是否定的，虽然它们包含相同的字符。
+
+由于C++将C-风格字符串视为地址，因此如果使用关系运算符来比较它们，将无法得到满意的结果。相反，应使用C-风格字符串库中的 strcmp( )函数来比较。该函数接受两个字符串地址作为参数。这意味着参数可以是指针、字符串常量或字符数组名。如果两个字符串相同，该 函数将返回零；如果第一个字符串按字母顺序排在第二个字符串之前，则strcmp( )将返回一个负数值；如果第一个字符串按字母顺序排在第二个字符串之后，则strcpm( )将返回一个正数值。实际上，“按系统排列顺序”比“按字母顺序”更准确。这意味着字符是根据字符的系统编码来进行比较的。例如，使用ASCII码时，所有大写字母的编码都比小写字母小，所以按排列顺序，大写字母将位于小写字母之前。因此，字符串“Zoo”在字符串“aviary”之前。根据编码进行比较还意味着大写字母和小写字母是不同的，因此字符串“FOO”和字符串“foo”不同。
+
+在有些语言（如BASIC和标准Pascal）中，存储在不同长度的数组中的字符串彼此不相等。但是C-风格字符串是通过结尾的空值字符定义 的，而不是由其所在数组的长度定义的。这意味着两个字符串即使被存储在长度不同的数组中，也可能是相同的
+
+顺便说一句，虽然不能用关系运算符来比较字符串，但却可以用它们来比较字符，因为字符实际上是整型
+
+```
+for(ch = 'a';ch <= 'z';ch++)
+	cout << ch;
+```
+
+```cpp
+// compstr1.cpp -- comparing strings using arrays
+#include <iostream>
+#include <cstring>     // prototype for strcmp()
+int main()
+{
+    using namespace std;
+    char word[5] = "?ate";
+
+    for (char ch = 'a'; strcmp(word, "mate"); ch++)
+    {
+        cout << word << endl;
+        word[0] = ch;
+    }
+    cout << "After loop ends, word is " << word << endl;
+    // cin.get();
+    return 0;
+}
+//?ate
+//aate
+//bate
+//cate
+//date
+//eate
+//fate
+//gate
+//hate
+//iate
+//jate
+//kate
+//late
+//After loop ends, word is mate
+```
+
+可以对字符变量使用递增运算符和递减运算符，因为char类型实际上是整型，因此这种操作实际上将修改存储在变量中的整数编码。
+
+### 比较string类字符串
+
+如果使用string类字符串而不是C-风格字符串，比较起来将简单些，因为类设计让您能够使用关系运算符进行比较。这之所以可行，是因为类函数重载（重新定义）了这些运算符
+
+```cpp
+// compstr2.cpp -- comparing strings using arrays
+#include <iostream>
+#include <string>     // string class
+int main()
+{
+    using namespace std;
+    string word = "?ate";
+
+    for (char ch = 'a'; word != "mate"; ch++)
+    {
+        cout << word << endl;
+        word[0] = ch;
+    }
+    cout << "After loop ends, word is " << word << endl;
+    // cin.get();
+    return 0;
+}
+//?ate
+//aate
+//bate
+//cate
+//date
+//eate
+//fate
+//gate
+//hate
+//iate
+//jate
+//kate
+//late
+//After loop ends, word is mate
+```
+
+string类重载运算符!=的方式让您能够在下述条件下使用它：至少有 一个操作数为string对象，另一个操作数可以是string对象，也可以是C- 风格字符串。 
+
+```
+word != "mate";
+```
+
+string类的设计让您能够将string对象作为一个实体（在关系型测试表达式中），也可以将其作为一个聚合对象，从而使用数组表示法来提取其中的字符。 
+
+正如您看到的，使用C-风格字符串和string对象可获得相同的结果，但使用string对象更简单、更直观。 
+
+最后，和前面大多数for循环不同，此循环不是计数循环。也就是说，它并不对语句块执行指定的次数。相反，此循环将根据情况（word 为“mate”）来确定是否停止。对于这种测试，C++程序通常使用while循环
+
+## while循环 
+
+while循环是没有初始化和更新部分的for循环，它只有测试条件和循环体：
+
+```
+while(test-condition)
+	body
+```
+
+```cpp
+// while.cpp -- introducing the while loop
+#include <iostream>
+const int ArSize = 20;
+int main()
+{
+    using namespace std;
+    char name[ArSize];
+
+    cout << "Your first name, please: ";
+    cin >> name;
+    cout << "Here is your name, verticalized and ASCIIized:\n";
+    int i = 0;                  // start at beginning of string
+    while (name[i] != '\0')     // process to end of string 以逐字符遍历 字符串直到遇到空值字符的技术是C++处理C-风格字符串的标准方法。 由于字符串中包含了结尾标记，因此程序通常不需要知道字符串的长度
+    {
+        cout << name[i] << ": " << int(name[i]) << endl;
+        i++;                    // don't forget this step
+    }
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Here is your name, verticalized and ASCIIized:
+//M: 77
+//u: 117
+//f: 102
+//f: 102
+//y: 121
+```
+
+`while (name[i] != '\0')`
+
+它可以测试数组中特定的字符是不是空值字符。为使该测试最终能够成功，循环体必须修改i的值，这是通过在循环体结尾将i加1来实现 的。省略这一步将导致循环停留在同一个数组元素上，打印该字符及其 编码，直到强行终止该程序。导致死循环是循环最常见的问题之一。通 常，在循环体中忘记更新某个值时，便会出现这种情况
+
+可以这样修改while行
+
+```
+while(name[i])
+```
+
+经过这种修改后，程序的工作方式将不变。这是由于name[i]是常规 字符，其值为该字符的编码—非零值或true。然而，当name[i]为空值字符时，其编码将为0或false。这种表示法更为简洁（也更常用），但没有程序清单5.13中的表示法清晰。对于后一种情况，“笨拙”的编译器生成的代码的速度将更快，“聪明”的编译器对于这两个版本生成的代码将相同
+
+要打印字符的ASCII码，必须通过强制类型转换将name[i]转换为整型。这样，cout将把值打印成整数，而不是将它解释为字符编码不同于C-风格字符串，string对象不使用空字符来标记字符串末 尾，因此要将上述程序转换为使用string类的版本，只需用string对 象替换char数组即可。第16章将讨论可用于标识string对象中最后一个字符的技术。 
+
+### for与while 
+
+for循环格式允许将所有相关的信息—初始值、终止值和更新计数器的方法—放在同一个地方。在无法预先知道循环将执行的次数时，程序员常使用while循环
+
+在设计循环时，请记住下面几条指导原则。 
+
+- 指定循环终止的条件。 
+- 在首次测试之前初始化条件。 
+- 在条件被再次测试之前更新条件。 
+
+for循环的一个优点是，其结构提供了一个可实现上述3条指导原则的地方，因此有助于程序员记住应该这样做。但这些指导原则也适用于while循环。
+
+for和while当包含多个语句块的时候需要使用花括号，语句块是由花括号定义的，不是由缩进定义的。
+
+### 等待一段时间：编写延时循环
+
+ANSI C和C++库中，clock( )，返回程序开始执行后所用的系统时间。这有两个复杂的问题：首先，clock( )返回时间的单位不一定是秒；其次，该函数的返回类型在某些系统上可能是long，在另一些系统上可能是unsigned long或其他类型。
+
+但头文件ctime（较早的实现中为time.h）提供了这些问题的解决方案。首先，它定义了一个符号常量—CLOCKS_PER_SEC，该常量等于 每秒钟包含的系统时间单位数。因此，将系统时间除以这个值，可以得到秒数。或者将秒数乘以CLOCK_PER_SEC，可以得到以系统时间单位为单位的时间。其次，ctime将clock_t作为clock( )返回类型的别名（参见本章后面的注释“类型别名”），这意味着可以将变量声明为clock_t类型，编译器将把它转换为long、unsigned int或适合系统的其他类型。
+
+```cpp
+// waiting.cpp -- using clock() in a time-delay loop
+#include <iostream>
+#include <ctime> // describes clock() function, clock_t type
+int main()
+{
+    using namespace std;
+    cout << "Enter the delay time, in seconds: ";
+    float secs;
+    cin >> secs;
+    clock_t delay = secs * CLOCKS_PER_SEC;  // convert to clock ticks
+    cout << "starting\a\n";
+    clock_t start = clock();
+    while (clock() - start < delay )        // wait until time elapses
+        ;                                   // note the semicolon
+    cout << "done \a\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+```
+
+该程序以系统时间单位为单位（而不是以秒为单位）计算延迟时间，避免了在每轮循环中将系统时间转换为秒。
+
+#### 类型别名 
+
+C++为类型建立别名的方式有两种。一种是使用预处理器： 
+
+```
+#define BYTE char //preprocessor replace BYTE with char
+```
+
+这样，预处理器将在编译程序时用char替换所有的BYTE，从而使BYTE成为char的别名。
+
+第二种方法是使用C++（和C）的关键字typedef来创建别名。例如，要将byte作为char的别名，可以这样做： 
+
+```
+typedef char byte;
+```
+
+通用格式
+
+```
+typedef typeName aliasName；
+```
+
+换句话说，如果要将aliasName作为某种类型的别名，可以声明aliasName，如同将aliasName声明为这种类型的变量那样，然后在声明的前面加上关键字typedef。例如，要让byte_pointer成为char指针的别名，可将byte_pointer声明为char指针，然后在前面加上typedef：
+
+```
+typedef char * byte_pointer
+```
+
+也可以使用#define，不过声明一系列变量时，这种方法不适用。例如，请看下面的代码：
+
+```
+#define FLOAT_POINTER float *FLOAT_PONITER pa,pb;
+```
+
+预处理器置换将该声明转换为这样： 
+
+```
+float * pa,pt;
+```
+
+typedef方法不会有这样的问题。它能够处理更复杂的类型别名，这使得与使用#define相比，使用typedef是一种更佳的选择—有时候，这也是唯一的选择。 
+
+注意，typedef不会创建新类型，而只是为已有的类型建立一个新名称。如果将word作为int的别名，则cout将把word类型的值视为int类型。
+
+## do while循环
+
+```cpp
+#include <iostream>
+int main()
+{
+    using namespace std;
+    int n;
+
+    cout << "Enter numbers in the range 1-10 to find ";
+    cout << "my favorite number\n";
+    do
+    {
+        cin >> n;       // execute body
+    } while (n != 7);   // then test
+    cout << "Yes, 7 is my favorite.\n" ;
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+```
+
+## 基于范围的for循环（C++11） 
+
+C++11新增了一种循环：基于范围（range-based）的for循环。这简 化了一种常见的循环任务：对数组（或容器类，如vector和array）的每 个元素执行相同的操作，如下例所示： 
+
+```
+double price[5] = {1,1,1,2,1,3,1.4}
+for(double x:price){
+	cout<<x<<std::endl;
+}
+```
+
+其中，x最初表示数组prices的第一个元素。显示第一个元素后，不断执行循环，而x依次表示数组的其他元素。因此，上述代码显示全部5个元素，每个元素占据一行。总之，该循环显示数组中的每个值。
+
+要修改数组的元素，需要使用不同的循环变量语法：
+
+```
+for(double &x : price){
+	x=x*0.8;
+}
+```
+
+符号&表明x是一个引用变量，这个主题将在第8章讨论。就这里而言，这种声明让接下来的代码能够修改数组的内容，而第一种语法不 能。
+
+## 循环和文本输入 
+
+ 
+
+### 使用原始的**cin**进行输入
+
+如果程序要使用循环来读取来自键盘的文本输入，则必须有办法知道何时停止读取。如何知道这一点呢？一种方法是选择某个特殊字符— 有时被称为哨兵字符（sentinel character）,将其作为停止标记。
+
+```cpp
+// textin1.cpp -- reading chars with a while loop
+#include <iostream>
+int main()
+{
+    using namespace std;
+    char ch;
+    int count = 0;      // use basic input
+    cout << "Enter characters; enter # to quit:\n";
+    cin >> ch;          // get a character
+    while (ch != '#')   // test the character
+    {
+        cout << ch;     // echo the character
+        ++count;        // count the character
+        cin >> ch;      // get the next character
+    }
+    cout << endl << count << " characters read\n";
+// get rid of rest of line
+    // while (cin.get() != '\n')
+    // ;
+//cin.get();
+    return 0;
+}
+```
+
+请注意该程序的结构。该程序在循环之前读取第一个输入字符，这样循环可以测试第一个字符。这很重要，因为第一个字符可能是#。由于textin1.cpp使用的是入口条件循环，因此在这种情况下，能够正确地跳过整个循环。由于前面已经将变量count设置为0，因此count的值也是正确的。
+
+如果读取的第一个字符不是#，则程序进入该循环，显示字符，增加计数，然后读取下一个字符。最后一步是极为重要的，没有这一步， 循环将反复处理第一个输入字符，一直进行下去。有了这一步后，程序 就可以处理到下一个字符。
+
+注意，该循环设计遵循了前面指出的几条指导原则。结束循环的条件是最后读取的一个字符是#。该条件是通过在循环之前读取一个字符 进行初始化的，而通过循环体结尾读取下一个字符进行更新。 
+
+上面的做法合情合理。但为什么程序在输出时省略了空格呢？原因在cin。读取char值时，与读取其他基本类型一样，cin将忽略空格和换行符。因此输入中的空格没有被回显，也没有被包括在计数内。 
+
+更为复杂的是，发送给cin的输入被缓冲。这意味着只有在用户按下回车键后，他输入的内容才会被发送给程序。这就是在运行该程序 时，可以在#后面输入字符的原因。按下回车键后，整个字符序列将被发送给程序，但程序在遇到#字符后将结束对输入的处理。 
+
+### 使用cin.get(char)进行补救
+
+通常，逐个字符读取输入的程序需要检查每个字符，包括空格、制表符和换行符。cin所属的istream类（在iostream中定义）中包含一个能够满足这种要求的成员函数。具体地说，成员函数cin.get(ch)读取输入中的下一个字符（即使它是空格），并将其赋给变量ch。使用这个函数调用替换cin>>ch，可以修补上述问题的问题
+
+```cpp
+#include <iostream>
+int main()
+{
+    using namespace std;
+    char ch;
+    int count = 0;
+
+    cout << "Enter characters; enter # to quit:\n";
+    cin.get(ch);        // use the cin.get(ch) function
+    while (ch != '#')
+    {
+        cout << ch;
+        ++count;
+        cin.get(ch);    // use it again
+    }
+    cout << endl << count << " characters read\n";
+// get rid of rest of line
+    // while (cin.get() != '\n')
+    //    ;
+    //cin.get();
+    return 0;
+```
+
+现在，该程序回显了每个字符，并将全部字符计算在内，其中包括 空格。输入仍被缓冲，因此输入的字符个数仍可能比最终到达程序的要多。
+
+如果熟悉C语言，可能以为这个程序存在严重的错误！cin.get(ch)调用将一个值放在ch变量中，这意味着将修改该变量的值。在C语言中， 要修改变量的值，必须将变量的地址传递给函数。但程序清单5.17调用 cin.get( )时，传递的是ch，而不是&ch。在C语言中，这样的代码无效，但在C++中有效，只要函数将参数声明为引用即可。引用是C++在C语言的基础上新增的一种类型。头文件iostream将cin.get(ch)的参数声明为引用类型，因此该函数可以修改其参数的值。我们将在第8章中详细介绍。同时，C语言行家可以松一口气了—通常，在C++中传递的参数的工作方式与在C语言中相同。然而，cin.get(ch)不是这样。
+
+### 使用哪一个cin.get( )
+
+```
+char name[ArSize];
+...
+cout<< "Enter your name:\n";
+cin.get(name,Arsize).get()
+```
+
+最后一行相当于两个连续的函数调用： 
+
+```
+cin.get(name,Arsize);
+cin.get();
+```
+
+cin.get( )的一个版本接受两个参数：数组名（字符串char*类型）的地址）和ArSize（int类型的整数）。（记住，数组名是其第一个元素 的地址，因此字符数组名的类型为char*。）接下来，程序使用了不接受任何参数的cin.get( )。而最近，我们这样使用过cin.get( )： 
+
+```
+char ch;
+cin.get(ch);
+```
+
+这里cin.get接受一个cha r参数在C语言中，如果函数接受char指针和int参数，则使用该函数时，不能只传递一个参数（类型不同）。但在C++中，可以这样做，因为该语言支持被称为函数重载的OOP特性。函数重载允许创建多个同名函数，条件是它们 的参数列表不同。例如，如果在C++中使用cin.get（name，ArSize）， 则编译器将找到使用char*和int作为参数的cin.get( )版本；如果使用 cin.get（ch），则编译器将使用接受一个char参数的版本；如果没有提供参数，则编译器将使用不接受任何参数的cin.get( )版本。函数重载允 许对多个相关的函数使用相同的名称，这些函数以不同方式或针对不同 类型执行相同的基本任务。第8章将讨论该主题。另外，通过使用 istream类中的get( )示例，读者将逐渐习惯函数重载。为区分不同的函数 版本，我们在引用它们时提供参数列表。因此，cin.get( )指的是不接受 任何参数的版本，而cin.get(char)则指的是接受一个参数的版本。
+
+### 文件尾条件
+
+很多操作系统（包括Unix、Linux和Windows命令提示符模式）都支持重定向，允许用文件替换键盘输入。例如，假设在Windows中有一个名为gofish.exe的可执行程序和一个名为fishtale的文本文件，则可以在命令提示符模式下输入下面的命令
+
+```
+gofish < fishable
+```
+
+这样，程序将从fishtale文件（而不是键盘）获取输入。<符号是Unix和Windows命令提示符模式的重定向运算符。
+
+其次，很多操作系统都允许通过键盘来模拟文件尾条件。在Unix中，可以在行首按下Ctrl+D来实现；在Windows命令提示符模式下，可 以在任意位置按Ctrl+Z和Enter。有些C++实现支持类似的行为，即使底层操作系统并不支持。键盘输入的EOF概念实际上是命令行环境遗留下来的。然而，用于Mac的Symantec C++模拟了UNIX，将Ctrl+D视为仿真的EOF。Metrowerks Codewarrior能够在Macintosh和Windows环境下识别Ctrl+Z。用于PC的Microsoft Visual C++、Borland C++ 5.5和GNU C++ 都 能够识别行首的Ctrl + Z，但用户必须随后按下回车键。总之，很多PC编程环境都将Ctrl+Z视为模拟的EOF，但具体细节（必须在行首还是可以在任何位置，是否必须按下回车键等）各不相同。
+
+检测到EOF后，cin将两位（eofbit和failbit）都设置为1。可以通过成员函数eof( )来查看eofbit是否被设置；如果检测到EOF，则cin.eof( )将返回bool值true，否则返回false。同样，如果eofbit或failbit被设置为1，则fail( )成员函数返回true，否则返回false。注意，eof( )和fail( )方法报告 最近读取的结果；也就是说，它们在事后报告，而不是预先报告。因此 应将cin.eof( )或cin.fail( )测试放在读取后
+
+```
+// textin3.cpp -- reading chars to end of file
+#include <iostream>
+int main()
+{
+    using namespace std;
+    char ch;
+    int count = 0;
+    cin.get(ch);        // attempt to read a char
+    while (cin.fail() == false)  // test for EOF
+    {
+        cout << ch;     // echo character
+        ++count;
+        cin.get(ch);    // attempt to read another char
+    }
+    cout << endl << count << " characters read\n";
+    return 0;
+}
+```
+
+前面指出过，cin方法检测到EOF时，将设置cin对象中一个指示 EOF条件的标记。设置这个标记后，cin将不读取输入，再次调用cin也 不管用。对于文件输入，这是有道理的，因为程序不应读取超出文件尾 的内容。然而，对于键盘输入，有可能使用模拟EOF来结束循环，但稍 后要读取其他输入。cin.clear( )方法可能清除EOF标记，使输入继续进 行。这将在第17章详细介绍。不过要记住的是，在有些系统中，按 Ctrl+Z实际上将结束输入和输出，而cin.clear( )将无法恢复输入和输出。
+
+每次读取一个字符，直到遇到EOF的输入循环的基本设计如下：
+
+```
+while (cin.fail() == false)  // test for EOF
+    {
+        cout << ch;     // echo character
+        ++count;
+        cin.get(ch);    // attempt to read another char
+    }
+```
+
+!运算符可以 将true切换为false或将false切换为true。可以使用此运算符将上述while测 试改写成这样：
+
+```
+while (!cin.fail())
+```
+
+方法cin.get(char)的返回值是一个cin对象。然而，istream类提供了一个可以将istream对象（如cin）转换为bool值的函数；当cin出现在需要bool值的地方（如在while循环的测试条件中）时，该转换函数将被调用。另外，如果最后一次读取成功了，则转换得到的bool值为true；否则为false。这意味着可以将上述while测试改写为这样：
+
+```
+while(cin)
+```
+
+这比! cin.fail( )或!cin.eof( )更通用，因为它可以检测到其他失败原因，如磁盘故障。 
+
+最后，由于cin.get(char)的返回值为cin，因此可以将循环精简成这种格式：
+
+```
+while(cin.get(ch)){
+	.....
+}
+```
+
+这样，cin.get(char)只被调用一次，而不是两次：循环前一次、循环结束后一次。为判断循环测试条件，程序必须首先调用cin.get(ch)。如果成功，则将值放入ch中。然后，程序获得函数调用的返回值，即cin。接下来，程序对cin进行bool转换，如果输入成功，则结果为true，否则为false。三条指导原则（确定结束条件、对条件进行初始化以及更新条件）全部被放在循环测试条件中。
+
+### 另一个cin.get( )版本
+
+“怀旧”的C语言用户可能喜欢C语言中的字符I/O函数—getchar( )和putchar( )，它们仍然适用，只要像在C语言中那样包含头文件 stdio.h（或新的cstdio）即可。也可以使用istream和ostream类中类似功能 的成员函数，来看看这种方式。
+
+不接受任何参数的cin.get( )成员函数返回输入中的下一个字符。也就是说，可以这样使用它：
+
+```
+ch=cin.get();
+```
+
+该函数的工作方式与C语言中的getchar( )相似，将字符编码作为int值返回；而cin.get(ch)返回一个对象，而不是读取的字符。同样，可以 使用cout.put( )函数（参见第3章）来显示字符： 
+
+```
+cout.put(ch);
+```
+
+该函数的工作方式类似C语言中的putchar( )，只不过其参数类型为char，而不是int。
+
+最初，put( )成员只有一个原型—put(char)。可以传递一个int参数给它，该参数将被强制转换为char。C++标准还要求只有一个原型。然而，有些C++实现都提供了3个原型：put(char)、put(signed char)和put(unsigned char)。在这些实现中，给put( )传递一个int参数将导致错误消息，因为转换int的方式不止一种。使用显式强制类型转换的原型（如cin.put(char(ch))）可使用int参数
+
+为成功地使用cin.get( )，需要知道其如何处理EOF条件。当该函数到达EOF时，将没有可返回的字符。相反，cin.get( )将返回一个用符号 常量EOF表示的特殊值。该常量是在头文件iostream中定义的。EOF值必须不同于任何有效的字符值，以便程序不会将EOF与常规字符混淆。通常，EOF被定义为值−1，因为没有ASCII码为−1的字符，但并不需要知道实际的值，而只需在程序中使用EOF即可。例如，程序清单5.18的核心是这样： 
+
+```
+char ch;
+cin.get(ch);
+while(cin.fail()==false){
+	cout<<ch;
+	++cout;
+	cin.get(ch)
+}
+```
+
+可以使用int ch，并用cin.get( )代替cin.get(char)，用cout.put( )代替cout，用EOF测试代替cin.fail( )测试：
+
+```
+int ch;
+ch=cin.get();
+while(ch!=EOF){
+cout.put(ch)
+++cout;
+ch=cin.get();
+}
+```
+
+如果ch是一个字符，则循环将显示它。如果ch为EOF，则循环将结束。
+
+除了当前所做的修改外，关于使用cin.get( )还有一个微妙而重要的问题。由于EOF表示的不是有效字符编码，因此可能不与char类型兼 容。例如，在有些系统中，char类型是没有符号的，因此char变量不可能为EOF值（−1）。由于这种原因，如果使用cin.get( )（没有参数）并测试EOF，则必须将返回值赋给int变量，而不是char变量。另外，如果 将ch的类型声明为int，而不是char，则必须在显示ch时将其强制转换为char类型。 
+
+```cpp
+// textin4.cpp -- reading chars with cin.get()
+#include <iostream>
+int main(void)
+{
+    using namespace std;
+    int ch;                         // should be int, not char
+    int count = 0;
+
+    while ((ch = cin.get()) != EOF) // test for end-of-file
+    {
+        cout.put(char(ch));
+        ++count;
+    }
+    cout << endl << count << " characters read\n";
+	return 0; 
+}
+```
+
+**cin.get(char)和cin.get( )之间的差别。** 
+
+| 属性                        | Cin.get(ch)                           | ch=cin.get()        |
+| --------------------------- | ------------------------------------- | ------------------- |
+| 传递输入字符的方式          | 赋给参数ch                            | 将函数返回值赋给 ch |
+| 用于字符输入时函数的返 回值 | istream对象（执行bool转换后为 true）  | int类型的字符编码   |
+| 到达EOF时函数的返回值       | istream对象（执行bool转换后为 false） | EOF                 |
+
+那么应使用cin.get( )还是cin.get(char)呢？使用字符参数的版本更符合对象方式，因为其返回值是istream对象。这意味着可以将它们拼接起来。例如，下面的代码将输入中的下一个字符读入到ch1中，并将接下来的一个字符读入到ch2中： 
+
+```
+cin.get(ch1).get(ch2);
+```
+
+这是可行的，因为函数调用cin.get(ch1)返回一个cin对象，然后便可以通过该对象调用get(ch2)。
+
+get( )的主要用途是能够将stdio.h的getchar( )和putchar( )函数转换为iostream的cin.get( )和cout.put( )方法。只要用头文件iostream替换stdio.h，并用作用相似的方法替换所有的getchar( )和putchar( )即可（如果旧的代码使用int变量进行输入，而所用的实现包含put( )的多个原型，则必须做进一步的调整。） 
+
+## 总结
+
+C++提供了3种循环：for循环、while循环和do while循环。如果循环 测试条件为true或非零，则循环将重复执行一组指令；如果测试条件为 false或0，则结束循环。for循环和while循环都是入口条件循环，这意味 着程序将在执行循环体中的语句之前检查测试条件。do while循环是出 口条件循环，这意味着其将在执行循环体中的语句之后检查条件。
+
+每种循环的句法都要求循环体由一条语句组成。然而，这条语句可以是复合语句，也可以是语句块（由花括号括起的多条语句）。关系表达式对两个值进行比较，常被用作循环测试条件。关系表达式是通过使用6种关系运算符之一构成的：<、<=、= =、>=、>或! =。 关系表达式的结果为bool类型，值为true或false。
+
+许多程序都逐字节地读取文本输入或文本文件，istream类提供了多种可完成这种工作的方法。如果ch是一个char变量，则下面的语句将输 入中的下一个字符读入到ch中：
+
+```
+cin>>ch;
+```
+
+然而，它将忽略空格、换行符和制表符。下面的成员函数调用读取 输入中的下一个字符（而不管该字符是什么）并将其存储到ch中：
+
+```
+cin.get(ch);
+```
+
+成员函数调用cin.get( )返回下一个输入字符—包括空格、换行符和制表符，因此，可以这样使用它：
+
+```
+ch=cin.get();
+```
+
+cin.get（char）成员函数调用通过返回转换为false的bool值来指出已到达EOF，而cin.get( )成员函数调用则通过返回EOF值来指出已到达 EOF，EOF是在文件iostream中定义的
+
+# 分支语句和逻辑运算符 
+
+## if语句 
+
+```
+if(test-condition)
+	statement
+```
+
+### if else语句 
+
+```
+if(test-condition)
+	statement1
+else
+	statement2
+```
+
+### 格式化if else语句
+
+if else中的两种操作都必须是一条语句。如果需要多条语句，需要用大括号将它们括起来，组成一个块语句。和有些语言（如BASIC和 FORTRAN）不同的是，由于C++不会自动将if和else之间的所有代码视为一个代码块，因此必须使用大括号将这些语句组合成一个语句块。
+
+### if else if else结构
+
+```
+if()
+	...
+else
+	if()
+		...
+	else	
+```
+
+也可以写成
+
+```
+if()
+	...
+else if()
+	...
+else
+	../.
+```
+
+```cpp
+// ifelseif.cpp -- using if else if else
+#include <iostream>
+const int Fave = 27;
+int main()
+{
+    using namespace std;
+    int n;
+
+    cout << "Enter a number in the range 1-100 to find ";
+    cout << "my favorite number: ";
+    do
+    {
+        cin >> n;
+        if (n < Fave)
+            cout << "Too low -- guess again: ";
+        else if (n > Fave)
+            cout << "Too high -- guess again: ";
+        else
+            cout << Fave << " is right!\n";
+    } while (n != Fave);
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Enter a number in the range 1-100 to find my favorite number: 50
+//Too high -- guess again: 25
+//Too low -- guess again: 37
+//Too high -- guess again: 31
+//Too high -- guess again: 28
+//Too high -- guess again: 27
+//27 is right!
+```
+
+## 逻辑表达式
+
+### 逻辑OR运算符：|| 
+
+C++可以采用逻辑OR运算符（||），将两个表达式组合在一起。如果原来表达式中的任何一个或全部都为true（或非零），则得到的表达式的值为true；否则，表达式的值为false。
+
+C++规定，||运算符是个顺序点（sequence point）。也是说，先修改左侧的值，再对右侧的值进行判定（C++11的说法是，运算符左边的子表达式先于右边的子表达式）。例如，请看下面的表达式： 
+
+```
+i++ &lt; 6||i== j
+```
+
+假设i原来的值为10，则在对i和j进行比较时，i的值将为11。另外，如果左侧的表达式为true，则C++将不会去判定右侧的表达式，因为只 要一个表达式为true，则整个逻辑表达式为true（读者可能还记得，冒号和逗号运算符也是顺序点）。 
+
+### 逻辑AND运算符：&&
+
+逻辑AND运算符（&&），也是将两个表达式组合成一个表达式。仅当原来的两个表达式都为true时，得到的表达式的值才为true
+
+&&运算符也是顺序点，因此将首先判定左侧， 并且在右侧被判定之前产生所有的副作用。如果左侧为false，则整个逻辑表达式必定为false，在这种情况下，C++将不会再对右侧进行判定
+
+### 用&&来设置取值范围
+
+```cpp
+// more_and.cpp -- using the logical AND operator
+#include <iostream>
+const char * qualify[4] =       // an array of pointers*/
+{                               // to strings
+    "10,000-meter race.\n",
+    "mud tug-of-war.\n",
+    "masters canoe jousting.\n",
+    "pie-throwing festival.\n"
+};
+int main()
+{
+    using namespace std;
+    int age;
+    cout << "Enter your age in years: ";
+    cin >> age;
+    int index;
+
+    if (age > 17 && age < 35)
+        index = 0;
+    else if (age >= 35 && age < 50)
+        index = 1;
+    else if (age >= 50 && age < 65)
+        index = 2;
+    else
+        index = 3;
+
+    cout << "You qualify for the " << qualify[index]; 
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+```
+
+### 逻辑NOT运算符：!
+
+!运算符将它后面的表达式的真值取反。也是说，如果expression为true，则!expression是false；如果expression为false，则!expression是true。更准确地说，如果expression为true或非零，则!expression为false。
+
+通常，不使用这个运算符可以更清楚地表示关系：
+
+```
+if(!(x>5))//if(x<=5)
+```
+
+然而，!运算符对于返回true-false值或可以被解释为true-false值的函数来说很有用。例如，如果C-风格字符串s1和s2不同，则strcmp(s1, s2)将返回非零（true）值，否则返回0。这意味着如果这两个字符串相同，则!strcmp(s1, s2)为true。 
+
+程序清单6.7使用这种技术（将!运算符用于函数返回值）来筛选可赋给int变量的数字输入。如果用户定义的函数is_int( )（稍后将详细介 绍）的参数位于int类型的取值范围内，则它将返回true。然后，程序使用while(!is-int(num))测试来拒绝不在该取值范围内的值。 
+
+程序清单**6.7 not.cpp**
+
+```cpp
+// not.cpp -- using the not operator
+#include <iostream>
+#include <climits>
+bool is_int(double);
+int main()
+{
+    using namespace std;
+    double num;
+
+    cout << "Yo, dude! Enter an integer value: ";
+    cin >> num;
+    while (!is_int(num))    // continue while num is not int-able
+    {
+        cout << "Out of range -- please try again: ";
+        cin >> num;
+    }
+    int val = int (num);    // type cast
+    cout << "You've entered the integer " << val << "\nBye\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+bool is_int(double x)
+{
+    if (x <= INT_MAX && x >= INT_MIN)   // use climits values
+        return true;
+    else
+        return false;
+}
+```
+
+如果给读取int值的程序输入一个过大的值，很多C++实现只是将这个值 截短为合适的大小，并不会通知丢失了数据。程序清单6.7中的程序避免了这样的问题，它首先将可能的int值作为double值来读取。double类型的精度足以存储典型的int值，且取值范围更大。另一种选择是，使用long long来存储输入的值，因为其取值范围比int大。布尔函数is_int( )使用了climits文件（第3章讨论过）中定义的两个 符号常量（INT_MAX和INT_MIN）来确定其参数是否位于适当的范围 内。如果是，该函数将返回true，否则返回false。 main( )程序使用while循环来拒绝无效输入，直到用户输入有效的值为止。可以在输入超出取值范围时显示int的界限，这样程序将更为友好。确认输入有效后，程序将其赋给一个int变量。 
+
+### 逻辑运算符细节
+
+C++逻辑OR和逻辑AND运算符的优先级都低于关系运算符
+
+!运算符的优先级高于所有的关系运算符和算术运算 符
+
+逻辑AND运算符的优先级高于逻辑OR运算符
+
+虽然C++运算符的优先级规则常可能不使用括号便可以编写复合比较的语句，但最简单的方法还是用括号将测试进行分组，而不管是否需 要括号。这样代码容易阅读，避免读者查看不常使用的优先级规则，并 减少由于没有准确记住所使用的规则而出错的可能性。
+
+### 其他表示方式
+
+并不是所有的键盘都提供了用作逻辑运算符的符号，因此C++标准提供了另一种表示方式
+
+如表6.3所示。标识符and、or和not都是C++保留字，这意味着不能将它们用作变量名等。它们不是关键字，因为它们都是已有语言特性的另一种表示方式。另外，它们并不是C语言中的保留字，但C语言程序可以将它们用作运算符，只要在程序中包含了头文件iso646.h。C++不要求使用头文件。
+
+| 运算符 | 另一种表达式 |
+| ------ | ------------ |
+| &&     | and          |
+| \|\|   | or           |
+| !      | Not          |
+
+## 字符函数库cctype 
+
+C++从C语言继承了一个与字符相关的、非常方便的函数软件包， 可以简化诸如确定字符是否为大写字母、数字、标点符号等工作，这些函数的原型是在头文件cctype（老式的风格中为ctype.h）中定义的。例如，如果ch是一个字母，则isalpha（ch）函数返回一个非零值，否则返回0。同样，如果ch是标点符号（如逗号或句号），函数ispunct（ch）将返回true。（这些函数的返回类型为int，而不是bool， 但通常bool转换让您能够将它们视为bool类型。） 
+
+```cpp
+// cctypes.cpp -- using the ctype.h library
+#include <iostream>
+#include <cctype>              // prototypes for character functions
+int main()
+{
+    using namespace std;
+    cout << "Enter text for analysis, and type @"
+            " to terminate input.\n";
+    char ch;  
+    int whitespace = 0;
+    int digits = 0;
+    int chars = 0;
+    int punct = 0;
+    int others = 0;
+
+    cin.get(ch);                // get first character
+    while (ch != '@')            // test for sentinel
+    {
+        if(isalpha(ch))         // is it an alphabetic character?
+            chars++;
+        else if(isspace(ch))    // is it a whitespace character?
+            whitespace++;
+        else if(isdigit(ch))    // is it a digit?
+            digits++;
+        else if(ispunct(ch))    // is it punctuation?
+            punct++;
+        else
+            others++;
+        cin.get(ch);            // get next character
+    }
+    cout << chars << " letters, "
+         << whitespace << " whitespace, "
+         << digits << " digits, "
+         << punct << " punctuations, "
+         << others << " others.\n";
+    // cin.get();
+    // cin.get();
+    return 0; 
+}
+```
+
+**cctype**中的字符函数
+
+| 函数名称   | 返回值                                                       |
+| ---------- | ------------------------------------------------------------ |
+| isalnum()  | 如果参数是字母数字，即字母或数字，该函数返回true             |
+| isalpha()  | 如果参数是字母，该函数返回true                               |
+| iscntrl()  | 如果参数是控制字符，该函数返回true                           |
+| isdigit()  | 如果参数是数字（0～9），该函数返回true                       |
+| isgraph()  | 如果参数是除空格之外的打印字符，该函数返回true               |
+| islower()  | 如果参数是小写字母，该函数返回true                           |
+| isprint()  | 如果参数是打印字符（包括空格），该函数返回true               |
+| ispunct()  | 如果参数是标点符号，该函数返回true                           |
+| isspace()  | 如果参数是标准空白字符，如空格、进纸、换行符、回车、水平制表符或 者垂直制表符，该函数返回true |
+| isupper()  | 如果参数是大写字母，该函数返回true                           |
+| isxdigit() | 如果参数是十六进制数字，即0～9、a～f或A～F，该函数返回true   |
+| tolower()  | 如果参数是大写字符，则返回其小写，否则返回该参数             |
+| toupper()  | 如果参数是小写字符，则返回其大写，否则返回该参数             |
+
+## ?:运算符
+
+C++有一个常被用来代替if else语句的运算符，这个运算符被称为条件运算符（?:），它是C++中唯一一个需要3个操作数的运算符。该运 算符的通用格式如下
+
+```
+expression1?expression2:expression3; 
+```
+
+## switch语句
+
+有些硬件/操作系统组合不会将转义序列\a解释为振铃。 
+
+```cpp
+// switch.cpp -- using the switch statement
+#include <iostream>
+using namespace std;
+void showmenu();   // function prototypes
+void report();
+void comfort();
+int main()
+{
+    showmenu();
+    int choice;
+    cin >> choice;
+    while (choice != 5)
+    {
+        switch(choice)
+        {
+            case 1  :   cout << "\a\n";
+                break;
+            case 2  :   report();
+                break;
+            case 3  :   cout << "The boss was in all day.\n";
+                break;
+            case 4  :   comfort();
+                break;
+            default :   cout << "That's not a choice.\n";
+        }
+        showmenu();
+        cin >> choice;
+    }
+    cout << "Bye!\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+void showmenu()
+{
+    cout << "Please enter 1, 2, 3, 4, or 5:\n"
+            "1) alarm           2) report\n"
+            "3) alibi           4) comfort\n"
+            "5) quit\n";
+}
+void report()
+{
+    cout << "It's been an excellent week for business.\n"
+            "Sales are up 120%. Expenses are down 35%.\n";
+}
+void comfort()
+{
+    cout << "Your employees think you are the finest CEO\n"
+            "in the industry. The board of directors think\n"
+            "you are the finest CEO in the industry.\n";
+}
+```
+
+ 
+
+### 将枚举量用作标签
+
+```cpp
+// enum.cpp -- using enum
+#include <iostream>
+// create named constants for 0 - 6
+enum {red, orange, yellow, green, blue, violet, indigo};
+
+int main()
+{
+    using namespace std;
+    cout << "Enter color code (0-6): ";
+    int code;
+    cin >> code;
+    while (code >= red && code <= indigo)
+    {
+        switch (code)
+        {
+            case red     : cout << "Her lips were red.\n"; break;
+            case orange  : cout << "Her hair was orange.\n"; break;
+            case yellow  : cout << "Her shoes were yellow.\n"; break;
+            case green   : cout << "Her nails were green.\n"; break;
+            case blue    : cout << "Her sweatsuit was blue.\n"; break;
+            case violet  : cout << "Her eyes were violet.\n"; break;
+            case indigo  : cout << "Her mood was indigo.\n"; break;
+        }
+        cout << "Enter color code (0-6): ";
+        cin >> code;
+    }
+    cout << "Bye\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+```
+
+程序清单6.11使用enum定义了一组相关的常量，然后在switch语句中使用这些常量。通常，cin无法识别枚举类型（它不知道程序员是如 何定义它们的），因此该程序要求用户选择选项时输入一个整数。当switch语句将int值和枚举量标签进行比较时，将枚举量提升为int。另外，在while循环测试条件中，也会将枚举量提升为int类型。
+
+### switch和if else
+
+switch语句中的每一个case标签都必须是一个单独的值。另外，这个值必须是整数（包括char），因此switch无法处理浮点测试。另外case标签值还必须是常量。如果选项涉及取值范围、浮点测试或两个变量的比较，则应使用if else语句。
+
+然而，如果所有的选项都可以使用整数常量来标识，则可以使用switch语句或if else语句。由于switch语句是专门为这种情况设计的，因 此，如果选项超过两个，则就代码长度和执行速度而言，switch语句的效率更高
+
+## break和continue语句 
+
+break和continue语句都使程序能够跳过部分代码。可以在switch语句或任何循环中使用break语句，使程序跳到switch或循环后面的语句处 执行。continue语句用于循环中，让程序跳过循环体中余下的代码，并 开始新一轮循环
+
+<img src="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-26%2012.08.38.png" style="zoom:50%;" />
+
+程序清单6.12演示了这两条语句是如何工作的。该程序让用户输入一行文本。循环将回显每个字符，如果该字符为句点，则使用break结 束循环。这表明，可以在某种条件为true时，使用break来结束循环。接下来，程序计算空格数，但不计算其他字符。当字符不为空格时，循环使用continue语句跳过计数部分。
+
+```cpp
+// jump.cpp -- using continue and break
+#include <iostream>
+const int ArSize = 80;
+int main()
+{
+    using namespace std;
+    char line[ArSize];
+    int spaces = 0;
+
+    cout << "Enter a line of text:\n";
+    cin.get(line, ArSize);
+    cout << "Complete line:\n" << line << endl;
+    cout << "Line through first period:\n";
+    for (int i = 0; line[i] != '\0'; i++)
+    {
+        cout << line[i];    // display character
+        if (line[i] == '.') // quit if it's a period
+            break;
+        if (line[i] != ' ') // skip rest of loop
+            continue;
+        spaces++;
+    }
+    cout << "\n" << spaces << " spaces\n";
+    cout << "Done.\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+```
+
+和C语言一样，C++也有goto语句
+
+```
+char ch;
+cin >> ch;
+if(ch == 'P'){
+	goto paris;
+}
+cout << ...
+paris:cout << .....
+```
+
+在大多数情况下（有些人认为，在任何情况下），使用goto语句不好，而应使用结构化控制语句（如if else、switch、continue等）来控制程序的流程。 
+
+## 读取数字的循环
+
+假设要编写一个将一系列数字读入到数组中的程序，并允许用户在数组填满之前结束输入。一种方法是利用cin。请看下面的代码： 
+
+```
+int n;
+cin >> n;
+```
+
+如果用户输入一个单词，而不是一个数字，情况将如何呢？发生这种类型不匹配的情况时，将发生4种情况： 
+
+- n的值保持不变； 
+- 不匹配的输入将被留在输入队列中； 
+- cin对象中的一个错误标记被设置； 
+- 对cin方法的调用将返回false（如果被转换为bool类型）。
+
+方法返回false意味着可以用非数字输入来结束读取数字的循环。非数字输入设置错误标记意味着必须重置该标记，程序才能继续读取输 入。clear( )方法重置错误输入标记，同时也重置文件尾（EOF条件),输入错误和EOF都将导致cin返回false，
+
+假设要编写一个程序，来计算平均每天捕获的鱼的重量。这里假设每天最多捕获5条鱼，因此一个包含5个元素的数组将足以存储所有的数 据，但也可能没有捕获这么多鱼。在程序清单6.13中，如果数组被填满或者输入了非数字输入，循环将结束。 
+
+程序清单**6.13 cinfish.cpp**
+
+```cpp
+// cinfish.cpp -- non-numeric input terminates loop
+#include <iostream>
+const int Max = 5;
+int main()
+{
+    using namespace std;
+// get data
+    double fish[Max];
+    cout << "Please enter the weights of your fish.\n";
+    cout << "You may enter up to " << Max
+         << " fish <q to terminate>.\n";
+    cout << "fish #1: ";
+    int i = 0;
+    while (i < Max && cin >> fish[i]) {
+        if (++i < Max)
+            cout << "fish #" << i+1 << ": ";
+    }
+// calculate average
+    double total = 0.0;
+    for (int j = 0; j < i; j++)
+        total += fish[j];
+// report results
+    if (i == 0)
+        cout << "No fish\n";
+    else
+        cout << total / i << " = average weight of "
+             << i << " fish\n";
+    cout << "Done.\n";
+// code to keep VC execution window open if q is entered
+// if (!cin)  // input terminated by non-numeric response
+// {
+//     cin.clear();  // reset input
+//     cin.get();    // read q
+// }
+// cin.get();    // read end of line after last input
+// cin.get();    // wait for user to press <Enter>
+    return 0;
+}
+//Please enter the weights of your fish.
+//You may enter up to 5 fish <q to terminate>.
+//fish #1: 10
+//fish #2: 20
+//fish #3: 30
+//fish #4: 50
+//fish #5: q
+//27.5 = average weight of 4 fish
+//        Done.
+```
+
+程序清单6.13中的表达式cin>>fish [i]实际上一个是cin方法函数调用，该函数返回cin。如果cin位于测试条件中，则将被转换为bool类 型。如果输入成功，则转换后的值为true，否则为false
+
+当用户输入的不是数字时，该程序将不再读取输入。下面来看一个继续读取的例子。假设程序要求用户提供5个高尔夫得分，以计算平均 成绩。如果用户输入非数字输入，程序将拒绝，并要求用户继续输入数字。可以看到，可以使用cin输入表达式的值来检测输入是不是数字。	程序发现用户输入了错误内容时，应采取3个步骤。 
+
+1．重置cin以接受新的输入。 
+
+2．删除错误输入。 
+
+3．提示用户再输入。
+
+请注意，程序必须先重置cin，然后才能删除错误输入
+
+```cpp
+// cingolf.cpp -- non-numeric input skipped
+#include <iostream>
+const int Max = 5;
+int main()
+{
+    using namespace std;
+// get data
+    int golf[Max];
+    cout << "Please enter your golf scores.\n";
+    cout << "You must enter " << Max << " rounds.\n";
+    int i;
+    for (i = 0; i < Max; i++)
+    {
+        cout << "round #" << i+1 << ": ";
+        while (!(cin >> golf[i])) {
+            cin.clear();     // reset input
+            while (cin.get() != '\n')
+                continue;    // get rid of bad input
+            cout << "Please enter a number: ";
+        }
+    }
+// calculate average
+    double total = 0.0;
+    for (i = 0; i < Max; i++)
+        total += golf[i];
+// report results
+    cout << total / Max << " = average score "
+         << Max << " rounds\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Please enter your golf scores.
+//You must enter 5 rounds.
+//round #1: 88
+//round #2: a
+//Please enter a number: 33
+//round #3: 55
+//round #4: 66
+//round #5: 22
+//52.8 = average score 5 rounds
+```
+
+## 简单文件输入**/**输出
+
+### 写入到文本文件中
+
+对于文件输入，C++使用类似于cout的东西。下面来复习一些有关将cout用于控制台输出的基本事实，为文件输出做准备。
+
+1. 必须包含头文件iostream。 
+2. 头文件iostream定义了一个用处理输出的ostream类。 
+3. 头文件iostream声明了一个名为cout的ostream变量（对象）。 
+4. 必须指明名称空间std；例如，为引用元素cout和endl，必须使用编 
+5. 译指令using或前缀std::。 
+6. 可以结合使用cout和运算符<<来显示各种类型的数据。 
+
+文件输出与此极其相似。 
+
+1. 必须包含头文件fstream。 
+2. 头文件fstream定义了一个用于处理输出的ofstream类。 
+3. 需要声明一个或多个ofstream变量（对象），并以自己喜欢的方式对其进行命名，条件是遵守常用的命名规则。 
+4. 必须指明名称空间std；例如，为引用元素ofstream，必须使用编译指令using或前缀std::。 
+5. 需要将ofstream对象与文件关联起来。为此，方法之一是使用open( )方法。 
+6. 使用完文件后，应使用方法close( )将其关闭。 
+7. 可结合使用ofstream对象和运算符<<来输出各种类型的数据。
+
+注意，虽然头文件iostream提供了一个预先定义好的名为cout的ostream对象，但您必须声明自己的ofstream对象，为其命名，并将其同文件关联起来。下面演示了如何声明这种对象： 
+
+```
+ofstream outFile;
+ofstream fout;
+```
+
+下面演示了如何将这种对象与特定的文件关联起来：
+
+```
+outFile.open("fish.txt");
+char filename[50];
+cin >> filename;
+fout.oprn(filename);
+```
+
+下面演示了如何使用这种对象：
+
+```
+double wt = 125.8;
+outFile << wt;
+char line[81] = "22222";
+fout << line <<endl;
+```
+
+重要的是，声明一个ofstream对象并将其同文件关联起来后，便可以像使用cout那样使用它。所有可用于cout的操作和方法（如<<、endl和setf( )）都可用于ofstream对象（如前述示例中的outFile和fout）。
+
+总之，使用文件输出的主要步骤如下。 
+
+```cpp
+// outfile.cpp -- writing to a file
+#include <iostream>
+#include <fstream>                  // for file I/O
+
+int main()
+{
+    using namespace std;
+
+    char automobile[50];
+    int year;
+    double a_price;
+    double d_price;
+
+    ofstream outFile;               // create object for output
+    outFile.open("carinfo.txt");    // associate with a file
+
+    cout << "Enter the make and model of automobile: ";
+    cin.getline(automobile, 50);
+    cout << "Enter the model year: ";
+    cin >> year;
+    cout << "Enter the original asking price: ";
+    cin >> a_price;
+    d_price = 0.913 * a_price;
+
+// display information on screen with cout
+
+    cout << fixed;
+    cout.precision(2);
+    cout.setf(ios_base::showpoint);
+    cout << "Make and model: " << automobile << endl;
+    cout << "Year: " << year << endl;
+    cout << "Was asking $" << a_price << endl;
+    cout << "Now asking $" << d_price << endl;
+
+// now do exact same things using outFile instead of cout
+
+    outFile << fixed;
+    outFile.precision(2);
+    outFile.setf(ios_base::showpoint);
+    outFile << "Make and model: " << automobile << endl;
+    outFile << "Year: " << year << endl;
+    outFile << "Was asking $" << a_price << endl;
+    outFile << "Now asking $" << d_price << endl;
+
+    outFile.close();                // done with file
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+//Enter the make and model of automobile: 111111111111
+//Enter the model year: 2023
+//Enter the original asking price: 20
+//Make and model: 111111111111
+//Year: 2023
+//Was asking $20.00
+//Now asking $18.26
+```
+
+屏幕输出是使用cout的结果。如果您查看该程序的可执行文件所在的目录，将看到一个名为carinfo.txt的新文件（根据编译器的配置，该文件也可能位于其他文件夹），其中包含使用outFile生成的输出。如果使用文本编辑器打开该文件，将发现其内容如下：
+
+```
+Make and model: 111111111111
+Year: 2023
+Was asking $20.00
+Now asking $18.26
+```
+
+正如读者看到的，outFile将cout显示到屏幕上的内容写入到了文件carinfo.txt中。 
+
+程序说明 在程序清单6.15的程序中，声明一个ofstream对象后，便可以使用方法open( )将该对象特定文件关联起来： 
+
+```
+ ofstream outFile;               // create object for output
+ outFile.open("carinfo.txt");    // associate with a file
+```
+
+程序使用完该文件后，应该将其关闭：
+
+```
+outFile.close()
+```
+
+注意，方法close( )不需要使用文件名作为参数，这是因为outFile已经同特定的文件关联起来。如果您忘记关闭文件，程序正常终止时将自动关闭它。 
+
+outFile可使用cout可使用的任何方法。它不但能够使用运算符<<，还可以使用各种格式化方法，如setf( )和precision( )。这些方法只影响调用它们的对象。例如，对于不同的对象，可以提供不同的值：
+
+```
+cout.precision(2);
+outFile.precision(4);
+```
+
+读者需要记住的重点是，创建好ofstream对象（如outFile）后，便可以像使用cout那样使用它。 
+
+回到open( )方法： 
+
+```
+openFile.open("carinfo.txt");
+```
+
+在这里，该程序运行之前，文件carinfo.txt并不存在。在这种情况下，方法open( )将新建一个名为carinfo.txt的文件。如果在此运行该程 序，文件carinfo.txt将存在，此时情况将如何呢？默认情况下，open( )将首先截断该文件，即将其长度截短到零——丢其原有的内容，然后将新的输出加入到该文件中
+
+打开已有的文件，以接受输出时，默认将它其长度截短为零，因此原来的内容将丢失。 
+
+打开文件用于接受输入时可能失败。例如，指定的文件可能已经存在，但禁止对其进行访问。因此细心的程序员将检查打开文件的操作是 否成功，这将在下一个例子中介绍。
+
+### 读取文本文件 
+
+接下来介绍文本文件输入，它是基于控制台输入的。控制台输入涉及多个方面，下面首先总结这些方面。 
+
+- 必须包含头文件iostream。 
+- 头文件iostream定义了一个用处理输入的istream类。 
+- 头文件iostream声明了一个名为cin的istream变量（对象）。 
+- 必须指明名称空间std；例如，为引用元素cin，必须使用编译指令using或前缀std::。 
+- 可以结合使用cin和运算符>>来读取各种类型的数据。 
+- 可以使用cin和get( )方法来读取一个字符，使用cin和getline( )来读取一行字符。 
+- 可以结合使用cin和eof( )、fail( )方法来判断输入是否成功。 
+- 对象cin本身被用作测试条件时，如果最后一个读取操作成功，它将被转换为布尔值true，否则被转换为false。 
+
+文件输出与此极其相似： 
+
+- 必须包含头文件fstream。 
+- 头文件fstream定义了一个用于处理输入的ifstream类。 
+- 需要声明一个或多个ifstream变量（对象），并以自己喜欢的方式对其进行命名，条件是遵守常用的命名规则。 
+- 必须指明名称空间std；例如，为引用元素ifstream，必须使用编译指令using或前缀std::。 
+- 需要将ifstream对象与文件关联起来。为此，方法之一是使用open( )方法。
+- 使用完文件后，应使用close( )方法将其关闭。 
+- 可结合使用ifstream对象和运算符>>来读取各种类型的数据。 
+- 可以使用ifstream对象和get( )方法来读取一个字符，使用ifstream对象和getline( )来读取一行字符。 
+- 可以结合使用ifstream和eof( )、fail( )等方法来判断输入是否成功。 
+- ifstream对象本身被用作测试条件时，如果最后一个读取操作成功，它将被转换为布尔值true，否则被转换为false。 
+
+注意，虽然头文件iostream提供了一个预先定义好的名为cin的istream对象，但您必须声明自己的ifstream对象，为其命名，并将其同文件关联起来。下面演示了如何声明这种对象：
+
+```
+ifstream inFile;
+ifstream fin;
+```
+
+下面演示了如何将这种对象与特定的文件关联起来：
+
+```
+inFile.open("blowing.txt");
+char filename[50];
+cin >> filename;
+fin.open(filename);
+```
+
+注意，方法open( )接受一个C-风格字符串作为参数，这可以是一个字面字符串，也可以是存储在数组中的字符串。 
+
+下面演示了如何使用这种对象：
+
+```
+double wt;
+inFile >> wt;
+char line[81];
+fin.getline(line,81)
+```
+
+重要的是，声明一个ifstream对象并将其同文件关联起来后，便可以像使用cin那样使用它。所有可用于cin的操作和方法都可用于ifstream对象（如前述示例中的inFile和fin）。
+
+如果试图打开一个不存在的文件用于输入，情况将如何呢？这种错误将导致后面使用ifstream对象进行输入时失败。检查文件是否被成功
+
+打开的首先方法是使用方法is_open( )，为此，可以使用类似于下面的代码：
+
+```
+inFile.open("blowing.txt");
+if(!inFile.is_open()){
+	exit(EXIT_FAILURE);
+}
+```
+
+如果文件被成功地打开，方法is_open( )将返回true；因此如果文件没有被打开，表达式!inFile.isopen( )将为true。函数exit( )的原型是在头文件cstdlib中定义的，在该头文件中，还定义了一个用于同操作系统通信的参数值EXIT_FAILURE。函数exit( )终止程序。 
+
+方法is_open( )是C++中相对较新的内容。如果读者的编译器不支持它，可使用较老的方法good( )来代替。正如第17章将讨论的，方法 good( )在检查可能存在的问题方面，没有is_open( )那么广泛。
+
+```cpp
+// sumafile.cpp -- functions with an array argument
+#include <iostream>
+#include <fstream>          // file I/O support
+#include <cstdlib>          // support for exit()
+const int SIZE = 60;
+int main()
+{
+    using namespace std;
+    char filename[SIZE];
+    ifstream inFile;        // object for handling file input
+
+    cout << "Enter name of data file: ";
+    cin.getline(filename, SIZE);
+    inFile.open(filename);  // associate inFile with a file
+    if (!inFile.is_open())  // failed to open file
+    {
+        cout << "Could not open the file " << filename << endl;
+        cout << "Program terminating.\n";
+        // cin.get();    // keep window open
+        exit(EXIT_FAILURE);
+    }
+    double value;
+    double sum = 0.0;
+    int count = 0;          // number of items read
+
+    inFile >> value;        // get first value
+    while (inFile.good())   // while input good and not at EOF
+    {
+        ++count;            // one more item read
+        sum += value;       // calculate running total
+        inFile >> value;    // get next value
+    }
+    if (inFile.eof())
+        cout << "End of file reached.\n";
+    else if (inFile.fail())
+        cout << "Input terminated by data mismatch.\n";
+    else
+        cout << "Input terminated for unknown reason.\n";
+    if (count == 0)
+        cout << "No data processed.\n";
+    else
+    {
+        cout << "Items read: " << count << endl;
+        cout << "Sum: " << sum << endl;
+        cout << "Average: " << sum / count << endl;
+    }
+    inFile.close();         // finished with the file
+    // cin.get();
+    return 0;
+}
+```
+
+程序还必须能够找到这个文件。通常，除非在输入的文件名中包含路径，否则程序将在可执行文件所属的文件夹中查找。 
+
+Windows文本文件的每行都以回车字符和换行符结尾；通常情况下，C++在读取文件时将这两个字符转换为换行符，并在写入文件时执行相反的转换。有些文本编辑器（如MetrowerksCodeWarrior IDE编辑器），不会自动在最后一行末尾加上换行符。因此，如果读者使用的是这种编辑器，请在输入最后的文本后按下回车键，然后再保存文件。 
+
+## 总结
+
+使用引导程序选择不同操作的语句后，程序和编程将更有趣（这是 否也能引起程序员们的兴趣，我没有做过研究）。C++提供了if语句、if else语句和switch语句来管理选项。if语句使程序有条件地执行语句或语句块，也就是说，如果满足特定的条件，程序将执行特定的语句或语句块。if else语句程序选择执行两个语句或语句块之一。可以在这条语句后再加上if else，以提供一系列的选项。switch语句引导程序执行一系列选项之一。
+
+C++还提供了帮助决策的运算符。第5章讨论了关系表达式，这种表达式对两个值进行比较。if和if else语句通常使用关系表达式作为测试 条件。通过使用逻辑运算符（&&、||和!），可以组合或修改关系表达 式，创建更细致的测试。条件运算符?:）提供了一种选择两个值之一的简洁方式。
+
+cctype字符函数库提供了一组方便的、功能强大的工具，可用于分析字符输入。
+
+对于文件I/O来说，循环和选择语句是很有用的工具；文件I/O与控制台I/O极其相似。声明ifstream和ofstream对象，并将它们同文件关联起来后，便可以像使用cin和cout那样使用这些对象。
+
+使用循环和决策语句，便可以编写有趣的、智能的、功能强大的程序
+
+# 函数——C++的编程模块
+
+## 复习函数的基本知识
+
+要使用C++函数，必须完成如下工作
+
+- 提供函数定义； 
+- 提供函数原型； 
+- 调用函数。
+
+```cpp
+// calling.cpp -- defining, prototyping, and calling a function
+#include <iostream>
+
+void simple();    // function prototype
+
+int main()
+{
+    using namespace std;
+    cout << "main() will call the simple() function:\n";
+    simple();     // function call
+    cout << "main() is finished with the simple() function.\n";
+    // cin.get();
+    return 0;
+}
+
+// function definition
+void simple()
+{
+    using namespace std;
+    cout << "I'm but a simple function.\n";
+}
+```
+
+执行函数simple()时，将暂停执行main( )中的代码；等函数simple()执行完毕后，继续执行main()中的代码。在每个函数定义中，都使用了一条using编译指令，因为每个函数都使用了cout。另一种方法是，在函数定义之前放置一条using编译指令或在函数中使用std::cout。
+
+### 定义函数
+
+可以将函数分成两类：没有返回值的函数和有返回值的函数。没有返回值的函数被称为void函数，其通用格式如下：
+
+```
+void functionName(parameterList){
+	statement(s);
+	return;  //optional
+}
+```
+
+其中，parameterList指定了传递给函数的参数类型和数量，本章后面将更详细地介绍该列表。可选的返回语句标记了函数的结尾；否则，函数将在右花括号处结束。void函数相当于Pascal中的过程、FORTRAN中的子程序和现代BASIC中的子程序过程。通常，可以用void函数来执行某种操作。例如，将Cheers!打印指定次数（n）的函数如下：
