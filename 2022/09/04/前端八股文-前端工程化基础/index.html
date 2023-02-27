@@ -24,7 +24,7 @@
 <meta property="og:description" content="前端⼯程化-常⻅⾯试题Node基础说说Node是什么？和浏览器有什么区别和关系？Node.js是⼀个基于V8 JavaScript引擎的JavaScript运⾏时环境  V8可以嵌⼊到任何C ++应⽤程序中，⽆论是Chrome还是Node.js，事实上都是嵌⼊了V8引擎来执⾏JavaScript代码； 但是在Chrome浏览器中，还需要解析、渲染HTML、CSS等相关渲染引擎，另外还需要提供⽀持浏">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-04T10:52:38.000Z">
-<meta property="article:modified_time" content="2023-02-26T15:45:58.892Z">
+<meta property="article:modified_time" content="2023-02-27T13:26:02.047Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.2k 字
+          5.8k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          35 分钟
+          49 分钟
         
       </span>
     
@@ -394,6 +394,88 @@
 <li>因为每⼀次的克隆操作，实际上都是⼀次对代码仓库的完整备份</li>
 </ul>
 <p>Git和SVN的区别</p>
+<table>
+<thead>
+<tr>
+<th>Git</th>
+<th>SVN</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Git是⼀个分布式的版本控制⼯具</td>
+<td>SVN 是集中版本控制⼯具</td>
+</tr>
+<tr>
+<td>它属于第3代版本控制⼯具</td>
+<td>它属于第2代版本控制⼯具</td>
+</tr>
+<tr>
+<td>客户端可以在其本地系统上克隆整个存储库</td>
+<td>版本历史记录存储在服务器端存储库中</td>
+</tr>
+<tr>
+<td>.即使离线也可以提交</td>
+<td>只允许在线提交</td>
+</tr>
+<tr>
+<td>Push/pull 操作更快</td>
+<td>Push/pull 操作较慢</td>
+</tr>
+<tr>
+<td>⼯程可以⽤ commit ⾃动共享</td>
+<td>没有任何东⻄⾃动共享</td>
+</tr>
+</tbody></table>
+<h3 id="⼯作中常⻅的Git命令有哪些"><a href="#⼯作中常⻅的Git命令有哪些" class="headerlink" title="⼯作中常⻅的Git命令有哪些"></a>⼯作中常⻅的Git命令有哪些</h3><div class="code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">创建版本库:</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git <span class="hljs-built_in">clone</span> &lt;url&gt; <span class="hljs-comment">#克隆远程版本库</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git init <span class="hljs-comment">#初始化本地版本库</span></span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">修改和提交:</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git status <span class="hljs-comment">#查看状态</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git add &lt;file&gt; <span class="hljs-comment">#跟踪指定的⽂件</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git add . <span class="hljs-comment">#将⽂件添加到暂存区中</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git commit -m <span class="hljs-comment">#将暂存区的⽂件进⾏提交更新</span></span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">查看提交历史:</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git <span class="hljs-built_in">log</span> <span class="hljs-comment">#查看提交的历史</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git <span class="hljs-built_in">log</span> -p &lt;file&gt; <span class="hljs-comment">#查看指定⽂件的提交历史</span></span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">对分⽀和标签的操作: <span class="hljs-comment">#分⽀:</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git branch <span class="hljs-comment">#查看本地所有分⽀</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git checkout &lt;branch&gt; <span class="hljs-comment">#切换到指定的分⽀</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git branch &lt;new-branch&gt; <span class="hljs-comment">#创建新的分⽀</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git branch -d &lt;branch&gt; <span class="hljs-comment">#删除本地分⽀</span></span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">标签:</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git tag &lt;newtag&gt; <span class="hljs-comment">#基于最新提交创建标签</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git tag <span class="hljs-comment">#查看所有的本地标签</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git tag -d &lt;tagname&gt; <span class="hljs-comment">#删除指定的标签</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git push --tags <span class="hljs-comment">#上传所有标签到远程仓库</span></span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">分⽀合并:</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git merge &lt;branch&gt; <span class="hljs-comment">#合并指定分⽀到当前分⽀</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git rebase &lt;branch&gt; <span class="hljs-comment">#衍合指定分⽀到当前分⽀</span></span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">远程操作:</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git remote add &lt;remote&gt; &lt;url&gt; <span class="hljs-comment">#关联远程仓库</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git remote -v <span class="hljs-comment">#查看所关联的远程版本库信息</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git fetch &lt;remote&gt; <span class="hljs-comment">#从指定的远程仓库中获取代码、信息</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git pull &lt;remote&gt; &lt;branch&gt; <span class="hljs-comment">#获取远程仓库的代码并且合并</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git push &lt;remote&gt; &lt;branch&gt; <span class="hljs-comment">#上传本地库的代码⾄远程仓库并且合并</span></span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">远程分⽀的操作: <span class="hljs-comment">#分享⼀个分⽀，并且将其推送到有写⼊权限的仓库上:</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git push &lt;remote&gt; &lt;branch&gt;</span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">跟踪远程分⽀: <span class="hljs-comment">#克隆⼀个仓库时，默认会创建⼀个跟踪origin/master的分⽀</span></span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">⾃⼰设置跟踪其他分⽀:</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git checkout --track &lt;remote&gt;/&lt;branch&gt;</span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">删除远程分⽀:</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git push origin --delete &lt;branch&gt;</span>
+<span class="hljs-meta prompt_">#</span><span class="language-bash">获取别⼈更新的远程分⽀信息:</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">git fetch &lt;remote&gt; &lt;branch&gt;</span></code></pre></div>
+
+<h3 id="Git分⽀管理（Git-Flow）"><a href="#Git分⽀管理（Git-Flow）" class="headerlink" title="Git分⽀管理（Git Flow）"></a>Git分⽀管理（Git Flow）</h3><p>Production分⽀</p>
+<p>也就是我们经常使⽤的Master分⽀，这个分⽀包含最近发布到⽣产环境的代码，最近发布的Release， 这个分⽀只能从其他分⽀合并，不能在这个分⽀直接修改</p>
+<p>Develop分⽀</p>
+<p>这个分⽀是我们的主开发分⽀，包含所有要发布到下⼀个Release的代码，这个主要合并于其他分⽀，⽐如Feature分⽀</p>
+<p>Feature分⽀</p>
+<p>这个分⽀主要是⽤来开发⼀个新的功能，⼀旦开发完成，我们合并回Develop分⽀，并进⼊下⼀个Release</p>
+<p>Release分⽀</p>
+<p>当你需要发布⼀个新Release的时候，我们基于Develop分⽀创建⼀个Release分⽀，完成Release后，我们合并到Master和Develop分⽀</p>
+<p>Hotfifix分⽀</p>
+<p>当我们在Production发现新的Bug时候，我们需要创建⼀个Hotfifix, 完成Hotfifix后，我们合并回Master和Develop分⽀，所以Hotfifix的改动会进⼊下⼀个Release</p>
 
                 
               </div>
