@@ -26,8 +26,9 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-11%2022.40.37.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-18%2015.38.18.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-26%2012.08.38.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-02-28%2021.56.47.png">
 <meta property="article:published_time" content="2022-12-30T23:19:45.000Z">
-<meta property="article:modified_time" content="2023-02-27T15:31:05.649Z">
+<meta property="article:modified_time" content="2023-02-28T15:35:17.348Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          126k 字
+          132k 字
         
       </span>
     
@@ -234,7 +235,7 @@
         
         
         
-          1052 分钟
+          1103 分钟
         
       </span>
     
@@ -4088,7 +4089,205 @@ fin<span class="hljs-selector-class">.getline</span>(line,<span class="hljs-numb
 &#125;</code></pre></div>
 
 <p>对于有返回值的函数，必须使用返回语句，以便将值返回给调用函数。值本身可以是常量、变量，也可以是表达式，只是其结果的类型必 须为typeName类型或可以被转换为typeName（例如，如果声明的返回 类型为double，而函数返回一个int表达式，则该int值将被强制转换为 double类型）。然后，函数将最终的值返回给调用函数。C++对于返回 值的类型有一定的限制：不能是数组，但可以是其他任何类型——整 数、浮点数、指针，甚至可以是结构和对象！（有趣的是，虽然C++函 数不能直接返回数组，但可以将数组作为结构或对象组成部分来返 回。）</p>
-<h3 id="函数原型和函数调用"><a href="#函数原型和函数调用" class="headerlink" title="函数原型和函数调用"></a>函数原型和函数调用</h3>
+<h3 id="函数原型和函数调用"><a href="#函数原型和函数调用" class="headerlink" title="函数原型和函数调用"></a>函数原型和函数调用</h3><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">cheers</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span>;       <span class="hljs-comment">// prototype: no return value</span>
+<span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">cube</span><span class="hljs-params">(<span class="hljs-type">double</span> x)</span></span>;  <span class="hljs-comment">// prototype: returns a double</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-built_in">cheers</span>(<span class="hljs-number">5</span>);          <span class="hljs-comment">// function call</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;Give me a number: &quot;</span>;
+    <span class="hljs-type">double</span> side;
+    cin &gt;&gt; side;
+    <span class="hljs-type">double</span> volume = <span class="hljs-built_in">cube</span>(side);    <span class="hljs-comment">// function call</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;A &quot;</span> &lt;&lt; side &lt;&lt;<span class="hljs-string">&quot;-foot cube has a volume of &quot;</span>;
+    cout &lt;&lt; volume &lt;&lt; <span class="hljs-string">&quot; cubic feet.\n&quot;</span>;
+    <span class="hljs-built_in">cheers</span>(<span class="hljs-built_in">cube</span>(<span class="hljs-number">2</span>));    <span class="hljs-comment">// prototype protection at work</span>
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">cheers</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+        cout &lt;&lt; <span class="hljs-string">&quot;Cheers! &quot;</span>;
+    cout &lt;&lt; endl;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">cube</span><span class="hljs-params">(<span class="hljs-type">double</span> x)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> x * x * x;
+&#125;
+<span class="hljs-comment">//Cheers! Cheers! Cheers! Cheers! Cheers!</span>
+<span class="hljs-comment">//Give me a number: 5</span>
+<span class="hljs-comment">//A 5-foot cube has a volume of 125 cubic feet.</span>
+<span class="hljs-comment">//Cheers! Cheers! Cheers! Cheers! Cheers! Cheers! Cheers! Cheers!</span></code></pre></div>
+
+<h4 id="为什么需要原型"><a href="#为什么需要原型" class="headerlink" title="为什么需要原型"></a>为什么需要原型</h4><p>原型描述了函数到编译器的接口，也就是说，它将函数返回值的类型（如果有的话）以及参数的类型和数量告诉编译器。例如，请看原型 将如何影响程序清单7.2中下述函数调用：</p>
+<div class="code-wrapper"><pre><code class="hljs abnf">double volume <span class="hljs-operator">=</span> cube(side)<span class="hljs-comment">;</span></code></pre></div>
+
+<p>首先，原型告诉编译器，cube( )有一个double参数。如果程序没有提供这样的参数，原型将让编译器能够捕获这种错误。其次，cube( )函数完成计算后，将把返回值放置在指定的位置——可能是CPU寄存器，也可能是内存中。然后调用函数（这里为main( )）将从这个位置取得返回值。由于原型指出了cube( )的类型为double，因此编译器知道应检索多少个字节以及如何解释它们。如果没有这些信息，编译器将只能进行猜测，而编译器是不会这样做的。</p>
+<p>为何编译器需要原型，难道它就不能在文件中进一步查找，以了解函数是如何定义的吗？这种方法的一个问题是效率不高。编译器在搜索文件的剩余部分时将必须停止对main( )的编译。一个更严重的问题是，函数甚至可能并不在文件中。C++允许将一个程序放在多个文件中，单独编译这些文件，然后再将它们组合起来。在这种情况下，编译器在编译main( )时，可能无权访问函数代码。如果函数位于库中，情况也将如此。避免使用函数原型的唯一方法是，在首次使用函数之前定义它，但这并不总是可行的。另外，C++的编程风格是将main()放在最前面，因为它通常提供了程序的整体结构。</p>
+<h4 id="原型的语法"><a href="#原型的语法" class="headerlink" title="原型的语法"></a>原型的语法</h4><p>函数原型是一条语句，因此必须以分号结束。获得原型最简单的方法是，复制函数定义中的函数头，并添加分号。对于cube( )，程序清单 7.2中的程序正是这样做的：</p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">cube</span><span class="hljs-params">(<span class="hljs-type">double</span> x)</span></span>;</code></pre></div>
+
+<p>然而，函数原型不要求提供变量名，有类型列表就足够了。对于cheer( )的原型，该程序只提供了参数类型：</p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">cheer</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span>;</code></pre></div>
+
+<p>通常，在原型的参数列表中，可以包括变量名，也可以不包括。原型中的变量名相当于占位符，因此不必与函数定义中的变量名相同。 </p>
+<h4 id="原型的功能"><a href="#原型的功能" class="headerlink" title="原型的功能"></a>原型的功能</h4><ul>
+<li>编译器正确处理函数返回值； </li>
+<li>编译器检查使用的参数数目是否正确； </li>
+<li>编译器检查使用的参数类型是否正确。如果不正确，则转换为正确的类型（如果可能的话）。 </li>
+</ul>
+<p>自动类型转换并不能避免所有可能的错误。例如，如果将8.33E27传递给期望一个int值的函数，则这样大的值将不能被正确转换为int值。 当较大的类型被自动转换为较小的类型时，有些编译器将发出警告，指出这可能会丢失数据。</p>
+<p>仅当有意义时，原型化才会导致类型转换。例如，原型不会将整数转换为结构或指针。 </p>
+<p>在编译阶段进行的原型化被称为静态类型检查（static type checking）。可以看出，静态类型检查可捕获许多在运行阶段非常难以捕获的错误。</p>
+<h2 id="函数参数和按值传递"><a href="#函数参数和按值传递" class="headerlink" title="函数参数和按值传递"></a>函数参数和按值传递</h2><p>C++通常按值传递参数，这意味着将数值参数传递给函数，而后者将其赋给一个新的变量</p>
+<div class="code-wrapper"><pre><code class="hljs abnf">double volume <span class="hljs-operator">=</span> cube(side)<span class="hljs-comment">;</span></code></pre></div>
+
+<p>其中，side是一个变量，在前面的程序运行中，其值为5。cube( )的函数头如下：</p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">cube</span><span class="hljs-params">(<span class="hljs-type">double</span> x)</span></span>;</code></pre></div>
+
+<p>被调用时，该函数将创建一个新的名为x的double变量，并将其初始化为5。这样，cube( )执行的操作将不会影响main( )中的数据，因为 cube( )使用的是side的副本，而不是原来的数据</p>
+<p>用于接收传递值的变量被称为形参。传递给函数的值被称为实参。出于简化的目的，C++标准使用参数（argument）来表示 实参，使用参量（parameter）来表示形参，因此参数传递将参量赋给参数</p>
+<img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-02-28%2021.56.47.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+
+<p>在函数中声明的变量（包括参数）是该函数私有的。在函数被调用时，计算机将为这些变量分配内存；在函数结束时，计算机将释放这些 变量使用的内存（有些C++文献将分配和释放内存称为创建和毁坏变量，这样似乎更激动人心）。这样的变量被称为局部变量，因为它们被限制在函数中。前面提到过，这样做有助于确保数据的完整性。这还意味着，如果在main( )中声明了一个名为x的变量，同时在另一个函数中也声明了一个名为x的变量，则它们将是两个完全不同的、毫无关系的变量。这样的变量也被称为自动变量，因为它们是在程序执行过程中自动被分配和释放的。</p>
+<h3 id="多个参数"><a href="#多个参数" class="headerlink" title="多个参数"></a>多个参数</h3><p>函数可以有多个参数。在调用函数时，只需使用逗号将这些参数分开即可：</p>
+<div class="code-wrapper"><pre><code class="hljs lisp">n_chars(&#x27;R&#x27;,<span class="hljs-number">25</span>)<span class="hljs-comment">;</span></code></pre></div>
+
+<p>同样，在定义函数时，也在函数头中使用由逗号分隔的参数声明列表</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml">void n<span class="hljs-constructor">_chars(<span class="hljs-params">char</span> <span class="hljs-params">c</span>,<span class="hljs-params">int</span> <span class="hljs-params">n</span>)</span>;</code></pre></div>
+
+<p>该函数头指出，函数n_char( )接受一个char参数和一个int参数。传递给函数的值被赋给参数c和n。如果函数的两个参数的类型相同，则必须分别指定每个参数的类型，而不能像声明常规变量那样，将声明组合在一起：</p>
+<div class="code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">fif</span><span class="hljs-params">(<span class="hljs-type">float</span> a ,<span class="hljs-type">float</span> b)</span>;<span class="hljs-comment">//ok</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">fif</span><span class="hljs-params">(<span class="hljs-type">float</span> a,b)</span><span class="hljs-comment">//no</span></code></pre></div>
+
+<p>和其他函数一样，只需添加分号就可以得到该函数的原型</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml">void n<span class="hljs-constructor">_chars(<span class="hljs-params">char</span> <span class="hljs-params">c</span>,<span class="hljs-params">int</span> <span class="hljs-params">i</span>)</span>;</code></pre></div>
+
+<p>和一个参数的情况一样，原型中的变量名不必与定义中的变量名相同，而且可以省略： </p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">n_chars</span><span class="hljs-params">(<span class="hljs-type">char</span>,<span class="hljs-type">int</span>)</span></span>;</code></pre></div>
+
+<p>然而，提供变量名将使原型更容易理解，尤其是两个参数的类型相 同时。这样，变量名可以提醒参量和参数间的对应关系：</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml">double memo<span class="hljs-constructor">_density(<span class="hljs-params">double</span> <span class="hljs-params">weight</span>,<span class="hljs-params">double</span> <span class="hljs-params">volume</span>)</span></code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// twoarg.cpp -- a function with 2 arguments</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">n_chars</span><span class="hljs-params">(<span class="hljs-type">char</span>, <span class="hljs-type">int</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">int</span> times;
+    <span class="hljs-type">char</span> ch;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Enter a character: &quot;</span>;
+    cin &gt;&gt; ch;
+    <span class="hljs-keyword">while</span> (ch != <span class="hljs-string">&#x27;q&#x27;</span>)        <span class="hljs-comment">// q to quit</span>
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Enter an integer: &quot;</span>;
+        cin &gt;&gt; times;
+        <span class="hljs-built_in">n_chars</span>(ch, times); <span class="hljs-comment">// function with two arguments</span>
+        cout &lt;&lt; <span class="hljs-string">&quot;\nEnter another character or press the&quot;</span>
+                <span class="hljs-string">&quot; q-key to quit: &quot;</span>;
+        cin &gt;&gt; ch;
+    &#125;
+    cout &lt;&lt; <span class="hljs-string">&quot;The value of times is &quot;</span> &lt;&lt; times &lt;&lt; <span class="hljs-string">&quot;.\n&quot;</span>;
+    cout &lt;&lt; <span class="hljs-string">&quot;Bye\n&quot;</span>;
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">n_chars</span><span class="hljs-params">(<span class="hljs-type">char</span> c, <span class="hljs-type">int</span> n)</span> <span class="hljs-comment">// displays c n times</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span> (n-- &gt; <span class="hljs-number">0</span>)         <span class="hljs-comment">// continue until n reaches 0</span>
+        cout &lt;&lt; c;
+&#125;</code></pre></div>
+
+<h3 id="另外一个接受两个参数的函数"><a href="#另外一个接受两个参数的函数" class="headerlink" title="另外一个接受两个参数的函数"></a>另外一个接受两个参数的函数</h3><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">//lotto.cpp -- probability of winning</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-comment">// Note: some implementations require double instead of long double</span>
+<span class="hljs-function"><span class="hljs-type">long</span> <span class="hljs-type">double</span> <span class="hljs-title">probability</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> numbers, <span class="hljs-type">unsigned</span> picks)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">double</span> total, choices;
+    cout &lt;&lt; <span class="hljs-string">&quot;Enter the total number of choices on the game card and\n&quot;</span>
+            <span class="hljs-string">&quot;the number of picks allowed:\n&quot;</span>;
+    <span class="hljs-keyword">while</span> ((cin &gt;&gt; total &gt;&gt; choices) &amp;&amp; choices &lt;= total)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;You have one chance in &quot;</span>;
+        cout &lt;&lt; <span class="hljs-built_in">probability</span>(total, choices);      <span class="hljs-comment">// compute the odds</span>
+        cout &lt;&lt; <span class="hljs-string">&quot; of winning.\n&quot;</span>;
+        cout &lt;&lt; <span class="hljs-string">&quot;Next two numbers (q to quit): &quot;</span>;
+    &#125;
+    cout &lt;&lt; <span class="hljs-string">&quot;bye\n&quot;</span>;
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-comment">// the following function calculates the probability of picking picks</span>
+<span class="hljs-comment">// numbers correctly from numbers choices</span>
+<span class="hljs-function"><span class="hljs-type">long</span> <span class="hljs-type">double</span> <span class="hljs-title">probability</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> numbers, <span class="hljs-type">unsigned</span> picks)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">long</span> <span class="hljs-type">double</span> result = <span class="hljs-number">1.0</span>;  <span class="hljs-comment">// here come some local variables</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">double</span> n;
+    <span class="hljs-type">unsigned</span> p;
+
+    <span class="hljs-keyword">for</span> (n = numbers, p = picks; p &gt; <span class="hljs-number">0</span>; n--, p--)
+        result = result * n / p ;
+    <span class="hljs-keyword">return</span> result;
+&#125;</code></pre></div>
+
+<p>形参可以从函数调用中，从函数调用的时候从外部获取值，局部参数则是定义在函数内部，从函数内部获取值</p>
+<h2 id="函数和数组"><a href="#函数和数组" class="headerlink" title="函数和数组"></a>函数和数组</h2><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// arrfun1.cpp -- functions with an array argument</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> ArSize = <span class="hljs-number">8</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sum_arr</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[], <span class="hljs-type">int</span> n)</span></span>;        <span class="hljs-comment">// prototype 数组会被当作指针</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">int</span> cookies[ArSize] = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>,<span class="hljs-number">16</span>,<span class="hljs-number">32</span>,<span class="hljs-number">64</span>,<span class="hljs-number">128</span>&#125;;
+<span class="hljs-comment">// some systems require preceding int with static to</span>
+<span class="hljs-comment">// enable array initialization</span>
+
+    <span class="hljs-type">int</span> sum = <span class="hljs-built_in">sum_arr</span>(cookies, ArSize);
+    cout &lt;&lt; <span class="hljs-string">&quot;Total cookies eaten: &quot;</span> &lt;&lt; sum &lt;&lt;  <span class="hljs-string">&quot;\n&quot;</span>;
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-comment">// return the sum of an integer array</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sum_arr</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">int</span> total = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+        total = total + arr[i];
+    <span class="hljs-keyword">return</span> total;
+&#125;</code></pre></div>
+
+<h3 id="函数如何使用指针来处理数组"><a href="#函数如何使用指针来处理数组" class="headerlink" title="函数如何使用指针来处理数组"></a>函数如何使用指针来处理数组</h3><p>在大多数情况下，C++和C语言一样，也将数组名视为指针。第4章介绍过，C++将数组名解释为其第一个元素的地址：</p>
+<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">cookies</span> == &amp;cookies[<span class="hljs-number">0</span>]<span class="hljs-comment">;</span></code></pre></div>
+
+<p>该规则有一些例外。首先，数组声明使用数组名来标记存储位置；其次，对数组名使用sizeof将得到整个数组的长度（以字节为单位）； 第三，正如第4章指出的，将地址运算符&amp;用于数组名时，将返回整个 数组的地址，例如&amp;cookies将返回一个32字节内存块的地址（如果int长4字节）。</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> sum = sum<span class="hljs-constructor">_arr(<span class="hljs-params">cookies</span>, ArSize)</span>;</code></pre></div>
+
+<p>其中，cookies是数组名，而根据C++规则，cookies是其第一个元素的地址，因此函数传递的是地址。由于数组的元素的类型为int，因此 cookies的类型必须是int指针，即int *。这表明，正确的函数头应该是这样的：</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> sum<span class="hljs-constructor">_arr(<span class="hljs-params">int</span> <span class="hljs-operator">*</span> <span class="hljs-params">arr</span>, <span class="hljs-params">int</span> <span class="hljs-params">n</span>)</span>;</code></pre></div>
+
+<p>其中用int * arr替换了int arr [ ]。这证明这两个函数头都是正确的，因为在C++中，当（且仅当）用于函数头或函数原型中，int *arr和int arr[ ]的含义才是相同的。它们都意味着arr是一个int指针。然而，数组表示 法（int arr[ ]）提醒用户，arr不仅指向int，还指向int数组的第一个int。 当指针指向数组的第一个元素时，本书使用数组表示法；而当指针指向 一个独立的值时，使用指针表示法。别忘了，在其他的上下文中，int * arr和int arr [ ]的含义并不相同。例如，不能在函数体中使用int tip[ ]来声明指针</p>
+<p>鉴于变量arr实际上就是一个指针，函数的其余部分是合理的。第4章在介绍动态数组时指出过，同数组名或指针一样，也可以用方括号数 组表示法来访问数组元素。无论arr是指针还是数组名，表达式arr [3]都指的是数组的第4个元素。就目前而言，提请读者记住下面两个恒等式，将不会有任何坏处：</p>
+<div class="code-wrapper"><pre><code class="hljs inform7">arr<span class="hljs-comment">[i]</span> == *(arr+i);
+&amp;arr<span class="hljs-comment">[i]</span> == arr+i</code></pre></div>
+
+<p>记住，将指针（包括数组名）加1，实际上是加上了一个与指针指向的类型的长度（以字节为单位）相等的值。对于遍历数组而言，使用 指针加法和数组下标时等效的。 </p>
+<h3 id="将数组作为参数意味着什么"><a href="#将数组作为参数意味着什么" class="headerlink" title="将数组作为参数意味着什么"></a>将数组作为参数意味着什么</h3>
                 
               </div>
             
