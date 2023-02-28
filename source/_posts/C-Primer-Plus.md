@@ -5211,3 +5211,283 @@ typeName functionName(parameterList){
 对于有返回值的函数，必须使用返回语句，以便将值返回给调用函数。值本身可以是常量、变量，也可以是表达式，只是其结果的类型必 须为typeName类型或可以被转换为typeName（例如，如果声明的返回 类型为double，而函数返回一个int表达式，则该int值将被强制转换为 double类型）。然后，函数将最终的值返回给调用函数。C++对于返回 值的类型有一定的限制：不能是数组，但可以是其他任何类型——整 数、浮点数、指针，甚至可以是结构和对象！（有趣的是，虽然C++函 数不能直接返回数组，但可以将数组作为结构或对象组成部分来返 回。）
 
 ### 函数原型和函数调用 
+
+```cpp
+#include <iostream>
+void cheers(int);       // prototype: no return value
+double cube(double x);  // prototype: returns a double
+int main()
+{
+    using namespace std;
+    cheers(5);          // function call
+    cout << "Give me a number: ";
+    double side;
+    cin >> side;
+    double volume = cube(side);    // function call
+    cout << "A " << side <<"-foot cube has a volume of ";
+    cout << volume << " cubic feet.\n";
+    cheers(cube(2));    // prototype protection at work
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+void cheers(int n)
+{
+    using namespace std;
+    for (int i = 0; i < n; i++)
+        cout << "Cheers! ";
+    cout << endl;
+}
+
+double cube(double x)
+{
+    return x * x * x;
+}
+//Cheers! Cheers! Cheers! Cheers! Cheers!
+//Give me a number: 5
+//A 5-foot cube has a volume of 125 cubic feet.
+//Cheers! Cheers! Cheers! Cheers! Cheers! Cheers! Cheers! Cheers!
+```
+
+#### 为什么需要原型
+
+原型描述了函数到编译器的接口，也就是说，它将函数返回值的类型（如果有的话）以及参数的类型和数量告诉编译器。例如，请看原型 将如何影响程序清单7.2中下述函数调用：
+
+```
+double volume = cube(side);
+```
+
+首先，原型告诉编译器，cube( )有一个double参数。如果程序没有提供这样的参数，原型将让编译器能够捕获这种错误。其次，cube( )函数完成计算后，将把返回值放置在指定的位置——可能是CPU寄存器，也可能是内存中。然后调用函数（这里为main( )）将从这个位置取得返回值。由于原型指出了cube( )的类型为double，因此编译器知道应检索多少个字节以及如何解释它们。如果没有这些信息，编译器将只能进行猜测，而编译器是不会这样做的。
+
+为何编译器需要原型，难道它就不能在文件中进一步查找，以了解函数是如何定义的吗？这种方法的一个问题是效率不高。编译器在搜索文件的剩余部分时将必须停止对main( )的编译。一个更严重的问题是，函数甚至可能并不在文件中。C++允许将一个程序放在多个文件中，单独编译这些文件，然后再将它们组合起来。在这种情况下，编译器在编译main( )时，可能无权访问函数代码。如果函数位于库中，情况也将如此。避免使用函数原型的唯一方法是，在首次使用函数之前定义它，但这并不总是可行的。另外，C++的编程风格是将main()放在最前面，因为它通常提供了程序的整体结构。
+
+#### 原型的语法
+
+函数原型是一条语句，因此必须以分号结束。获得原型最简单的方法是，复制函数定义中的函数头，并添加分号。对于cube( )，程序清单 7.2中的程序正是这样做的：
+
+```
+double cube(double x);
+```
+
+然而，函数原型不要求提供变量名，有类型列表就足够了。对于cheer( )的原型，该程序只提供了参数类型：
+
+```
+void cheer(int);
+```
+
+通常，在原型的参数列表中，可以包括变量名，也可以不包括。原型中的变量名相当于占位符，因此不必与函数定义中的变量名相同。 
+
+#### 原型的功能
+
+- 编译器正确处理函数返回值； 
+- 编译器检查使用的参数数目是否正确； 
+- 编译器检查使用的参数类型是否正确。如果不正确，则转换为正确的类型（如果可能的话）。 
+
+自动类型转换并不能避免所有可能的错误。例如，如果将8.33E27传递给期望一个int值的函数，则这样大的值将不能被正确转换为int值。 当较大的类型被自动转换为较小的类型时，有些编译器将发出警告，指出这可能会丢失数据。
+
+仅当有意义时，原型化才会导致类型转换。例如，原型不会将整数转换为结构或指针。 
+
+在编译阶段进行的原型化被称为静态类型检查（static type checking）。可以看出，静态类型检查可捕获许多在运行阶段非常难以捕获的错误。
+
+## 函数参数和按值传递
+
+C++通常按值传递参数，这意味着将数值参数传递给函数，而后者将其赋给一个新的变量
+
+```
+double volume = cube(side);
+```
+
+其中，side是一个变量，在前面的程序运行中，其值为5。cube( )的函数头如下：
+
+```
+double cube(double x);
+```
+
+被调用时，该函数将创建一个新的名为x的double变量，并将其初始化为5。这样，cube( )执行的操作将不会影响main( )中的数据，因为 cube( )使用的是side的副本，而不是原来的数据
+
+用于接收传递值的变量被称为形参。传递给函数的值被称为实参。出于简化的目的，C++标准使用参数（argument）来表示 实参，使用参量（parameter）来表示形参，因此参数传递将参量赋给参数
+
+<img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-02-28%2021.56.47.png" style="zoom:50%;" />
+
+在函数中声明的变量（包括参数）是该函数私有的。在函数被调用时，计算机将为这些变量分配内存；在函数结束时，计算机将释放这些 变量使用的内存（有些C++文献将分配和释放内存称为创建和毁坏变量，这样似乎更激动人心）。这样的变量被称为局部变量，因为它们被限制在函数中。前面提到过，这样做有助于确保数据的完整性。这还意味着，如果在main( )中声明了一个名为x的变量，同时在另一个函数中也声明了一个名为x的变量，则它们将是两个完全不同的、毫无关系的变量。这样的变量也被称为自动变量，因为它们是在程序执行过程中自动被分配和释放的。
+
+### 多个参数
+
+函数可以有多个参数。在调用函数时，只需使用逗号将这些参数分开即可：
+
+```
+n_chars('R',25);
+```
+
+同样，在定义函数时，也在函数头中使用由逗号分隔的参数声明列表
+
+```
+void n_chars(char c,int n);
+```
+
+该函数头指出，函数n_char( )接受一个char参数和一个int参数。传递给函数的值被赋给参数c和n。如果函数的两个参数的类型相同，则必须分别指定每个参数的类型，而不能像声明常规变量那样，将声明组合在一起：
+
+```
+void fif(float a ,float b);//ok
+void fif(float a,b)//no
+```
+
+和其他函数一样，只需添加分号就可以得到该函数的原型
+
+```
+void n_chars(char c,int i);
+```
+
+和一个参数的情况一样，原型中的变量名不必与定义中的变量名相同，而且可以省略： 
+
+```
+void n_chars(char,int);
+```
+
+然而，提供变量名将使原型更容易理解，尤其是两个参数的类型相 同时。这样，变量名可以提醒参量和参数间的对应关系：
+
+```
+double memo_density(double weight,double volume)
+```
+
+```cpp
+// twoarg.cpp -- a function with 2 arguments
+#include <iostream>
+using namespace std;
+void n_chars(char, int);
+int main()
+{
+    int times;
+    char ch;
+
+    cout << "Enter a character: ";
+    cin >> ch;
+    while (ch != 'q')        // q to quit
+    {
+        cout << "Enter an integer: ";
+        cin >> times;
+        n_chars(ch, times); // function with two arguments
+        cout << "\nEnter another character or press the"
+                " q-key to quit: ";
+        cin >> ch;
+    }
+    cout << "The value of times is " << times << ".\n";
+    cout << "Bye\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+void n_chars(char c, int n) // displays c n times
+{
+    while (n-- > 0)         // continue until n reaches 0
+        cout << c;
+} 
+```
+
+### 另外一个接受两个参数的函数
+
+```cpp
+//lotto.cpp -- probability of winning
+#include <iostream>
+// Note: some implementations require double instead of long double
+long double probability(unsigned numbers, unsigned picks);
+int main()
+{
+    using namespace std;
+    double total, choices;
+    cout << "Enter the total number of choices on the game card and\n"
+            "the number of picks allowed:\n";
+    while ((cin >> total >> choices) && choices <= total)
+    {
+        cout << "You have one chance in ";
+        cout << probability(total, choices);      // compute the odds
+        cout << " of winning.\n";
+        cout << "Next two numbers (q to quit): ";
+    }
+    cout << "bye\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+// the following function calculates the probability of picking picks
+// numbers correctly from numbers choices
+long double probability(unsigned numbers, unsigned picks)
+{
+    long double result = 1.0;  // here come some local variables
+    long double n;
+    unsigned p;
+
+    for (n = numbers, p = picks; p > 0; n--, p--)
+        result = result * n / p ;
+    return result;
+}
+```
+
+形参可以从函数调用中，从函数调用的时候从外部获取值，局部参数则是定义在函数内部，从函数内部获取值
+
+## 函数和数组
+
+```cpp
+// arrfun1.cpp -- functions with an array argument
+#include <iostream>
+const int ArSize = 8;
+int sum_arr(int arr[], int n);        // prototype 数组会被当作指针
+int main()
+{
+    using namespace std;
+    int cookies[ArSize] = {1,2,4,8,16,32,64,128};
+// some systems require preceding int with static to
+// enable array initialization
+
+    int sum = sum_arr(cookies, ArSize);
+    cout << "Total cookies eaten: " << sum <<  "\n";
+    // cin.get();
+    return 0;
+}
+
+// return the sum of an integer array
+int sum_arr(int arr[], int n)
+{
+    int total = 0;
+
+    for (int i = 0; i < n; i++)
+        total = total + arr[i];
+    return total;
+}
+```
+
+### 函数如何使用指针来处理数组
+
+在大多数情况下，C++和C语言一样，也将数组名视为指针。第4章介绍过，C++将数组名解释为其第一个元素的地址：
+
+```
+cookies == &cookies[0];
+```
+
+该规则有一些例外。首先，数组声明使用数组名来标记存储位置；其次，对数组名使用sizeof将得到整个数组的长度（以字节为单位）； 第三，正如第4章指出的，将地址运算符&用于数组名时，将返回整个 数组的地址，例如&cookies将返回一个32字节内存块的地址（如果int长4字节）。
+
+```
+int sum = sum_arr(cookies, ArSize);
+```
+
+其中，cookies是数组名，而根据C++规则，cookies是其第一个元素的地址，因此函数传递的是地址。由于数组的元素的类型为int，因此 cookies的类型必须是int指针，即int *。这表明，正确的函数头应该是这样的：
+
+```
+int sum_arr(int * arr, int n);
+```
+
+其中用int * arr替换了int arr [ ]。这证明这两个函数头都是正确的，因为在C++中，当（且仅当）用于函数头或函数原型中，int *arr和int arr[ ]的含义才是相同的。它们都意味着arr是一个int指针。然而，数组表示 法（int arr[ ]）提醒用户，arr不仅指向int，还指向int数组的第一个int。 当指针指向数组的第一个元素时，本书使用数组表示法；而当指针指向 一个独立的值时，使用指针表示法。别忘了，在其他的上下文中，int * arr和int arr [ ]的含义并不相同。例如，不能在函数体中使用int tip[ ]来声明指针
+
+鉴于变量arr实际上就是一个指针，函数的其余部分是合理的。第4章在介绍动态数组时指出过，同数组名或指针一样，也可以用方括号数 组表示法来访问数组元素。无论arr是指针还是数组名，表达式arr [3]都指的是数组的第4个元素。就目前而言，提请读者记住下面两个恒等式，将不会有任何坏处：
+
+```
+arr[i] == *(arr+i);
+&arr[i] == arr+i
+```
+
+记住，将指针（包括数组名）加1，实际上是加上了一个与指针指向的类型的长度（以字节为单位）相等的值。对于遍历数组而言，使用 指针加法和数组下标时等效的。 
+
+### 将数组作为参数意味着什么
