@@ -5491,3 +5491,413 @@ arr[i] == *(arr+i);
 记住，将指针（包括数组名）加1，实际上是加上了一个与指针指向的类型的长度（以字节为单位）相等的值。对于遍历数组而言，使用 指针加法和数组下标时等效的。 
 
 ### 将数组作为参数意味着什么
+
+<img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-01%2021.49.14.png" style="zoom:50%;" />
+
+数组名与指针对应是好事吗？确实是一件好事。将数组地址作为参数可以节省复制整个数组所需的时间和内存。如果数组很大，则使用拷 贝的系统开销将非常大；程序不仅需要更多的计算机内存，还需要花费时间来复制大块的数据。另一方面，使用原始数据增加了破坏数据的风险。在经典的C语言中，这确实是一个问题，但ANSI C和C++中的const限定符提供了解决这种问题的办法。
+
+```cpp
+// arrfun2.cpp -- functions with an array argument
+#include <iostream>
+const int ArSize = 8;
+int sum_arr(int arr[], int n);
+// use std:: instead of using directive
+int main()
+{
+    int cookies[ArSize] = {1,2,4,8,16,32,64,128};
+//  some systems require preceding int with static to
+//  enable array initialization
+
+    std::cout << cookies << " = array address, ";
+//  some systems require a type cast: unsigned (cookies)
+
+    std::cout << sizeof cookies << " = sizeof cookies\n";
+    int sum = sum_arr(cookies, ArSize);
+    std::cout << "Total cookies eaten: " << sum <<  std::endl;
+    sum = sum_arr(cookies, 3);        // a lie
+    std::cout << "First three eaters ate " << sum << " cookies.\n";
+    sum = sum_arr(cookies + 4, 4);    // another lie
+    std::cout << "Last four eaters ate " << sum << " cookies.\n";
+    // std::cin.get();
+    return 0;
+}
+
+// return the sum of an integer array
+int sum_arr(int arr[], int n)
+{
+    int total = 0;
+    std::cout << arr << " = arr, ";
+// some systems require a type cast: unsigned (arr)
+
+    std::cout << sizeof arr << " = sizeof arr\n";
+    for (int i = 0; i < n; i++)
+        total = total + arr[i];
+    return total;
+}
+//0x16b5cf710 = array address, 32 = sizeof cookies
+//0x16b5cf710 = arr, 8 = sizeof arr
+//Total cookies eaten: 255
+//0x16b5cf710 = arr, 8 = sizeof arr
+//First three eaters ate 7 cookies.
+//0x16b5cf720 = arr, 8 = sizeof arr
+//Last four eaters ate 240 cookies.
+```
+
+注意，地址值和数组的长度随系统而异。另外，有些C++实现以十进制而不是十六进制格式显示地址，还有些编译器以十六进制显示地址 时，会加上前缀0x。 
+
+程序清单7.6说明了数组函数的一些有趣的地方。首先，cookies和arr指向同一个地址。但sizeof cookies的值为32，而sizeof arr为4。这是由于sizeof cookies是整个数组的长度，而sizeof arr只是指针变量的长度 （上述程序运行结果是从一个使用4字节地址的系统中获得的）。顺便 说一句，这也是必须显式传递数组长度，而不能在sum_arr( )中使用sizeof arr的原因；指针本身并没有指出数组的长度
+
+由于sum_arr( )只能通过第二个参数获知数组中的元素数量，因此可以对函数“说谎”。例如，程序第二次使用该函数时，这样调用它：
+
+```
+sum = sum_arr(cookies, 3);    // another lie
+```
+
+通过告诉该函数cookies有3个元素，可以让它计算前3个元素的总和
+
+为什么在这里停下了呢？还可以提供假的数组起始位置：
+
+```
+sum = sum_arr(cookies+4, 4);
+```
+
+由于cookies是第一个元素的地址，因此cookies + 4是第5个元素的地址。这条语句将计算数组第5、6、7、8个元素的总和。请注意输出中第三次函数调用选择将不同于前两个调用的地址赋给arr的。是的，可以将&cookies[4]，而不是cookies + 4作为参数；它们的含义是相同的
+
+为将数组类型和元素数量告诉数组处理函数，请通过两个不同的参数来传递它们：
+
+```
+void fillArray(int arr[],int size);
+```
+
+而不要试图使用方括号表示法来传递数组长度： 
+
+```
+void fillArray(int arr[size]);
+```
+
+### 更多数组函数示例
+
+来看一个简单的案例。假设要使用一个数组来记录房地产的价值（假设拥有房地产）。在这种情况下，程序员必须确定要使用哪种类 型。当然，double的取值范围比int和long大，并且提供了足够多的有效位数来精确地表示这些值。接下来必须决定数组元素的数目。（对于使用new创建的动态数组来说，可以稍后再决定，但我们希望使事情简单一点）。如果房地产数目不超过5个，则可以使用一个包含5个元素的double数组。 
+
+现在，考虑要对房地产数组执行的操作。两个基本的操作分别是，将值读入到数组中和显示数组内容。我们再添加另一个操作：重新评估 每种房地产的值。为简单起见，假设所有房地产都以相同的比率增加或 者减少。（别忘了，这是一本关于C++的书，而不是关于房地产管理的书。）接下来，为每项操作编写一个函数，然后编写相应的代码。下面首先介绍这些步骤，然后将其用于一个完整的示例中。
+
+#### 填充数组
+
+由于接受数组名参数的函数访问的是原始数组，而不是其副本，因此可以通过调用该函数将值赋给数组元素。该函数的一个参数是要填充的数组的名称。通常，程序可以管理多个人的投资，因此需要多个数组，因此不能在函数中设置数组长度，而要将数组长度作为第二个参数传递，就像前一个示例那样。另外，用户也可能希望在数组被填满之前停止读取数据，因此需要在函数中建立这种特性。由于用户输入的元素数目可能少于数组的长度，因此函数应返回实际输入的元素数目。因此，该函数的原型如下：
+
+```
+int fill_array(double arr[],int limit);
+```
+
+该函数接受两个参数，一个是数组名，另一个指定了要读取的最大元素数；该函数返回实际读取的元素数。例如，如果使用该函数来处理 一个包含5个元素的数组，则将5作为第二个参数。如果只输入3个值，则该函数将返回3。 
+
+可以使用循环连续地将值读入到数组中，但如何提早结束循环呢？ 一种方法是，使用一个特殊值来指出输入结束。由于所有的属性都不为负，因此可以使用负数来指出输入结束。另外，该函数应对错误输入作出反应，如停止输入等。这样，该函数的代码如下所示：
+
+```cpp
+int fill_array(double ar[], int limit)
+{
+    using namespace std;
+    double temp;
+    int i;
+    for (i = 0; i < limit; i++)
+    {
+        cout << "Enter value #" << (i + 1) << ": ";
+        cin >> temp;
+        if (!cin)    // bad input
+        {
+            cin.clear();
+            while (cin.get() != '\n')
+                continue;
+           cout << "Bad input; input process terminated.\n";
+           break;
+        }
+        else if (temp < 0)     // signal to terminate
+            break;
+        ar[i] = temp;
+    }
+    return i;
+}
+```
+
+注意，代码中包含了对用户的提示。如果用户输入的是非负值，则这个值将被赋给数组，否则循环结束。如果用户输入的都是有效值，则 循环将在读取最大数目的值后结束。循环完成的最后一项工作是将i加1，因此循环结束后，i将比最后一个数组索引大1，即等于填充的元素数目。然后，函数返回这个值。
+
+#### 显示数组及用const保护数组
+
+创建显示数组内容的函数很简单。只需将数组名和填充的元素数目传递给函数，然后该函数使用循环来显示每个元素。然而，还有另一个 问题——确保显示函数不修改原始数组。除非函数的目的就是修改传递给它的数据，否则应避免发生这种情况。使用普通参数时，这种保护将自动实现，这是由于C++按值传递数据，而且函数使用数据的副本。然而，接受数组名的函数将使用原始数据，这正是fill_array( )函数能够完成其工作的原因。为防止函数无意中修改数组的内容，可在声明形参时使用关键字const（参见第3章）： 
+
+```
+void show_array(const double ar[], int n);  // don't change data
+```
+
+该声明表明，指针ar指向的是常量数据。这意味着不能使用ar修改该数据，也就是说，可以使用像ar[0]这样的值，但不能修改。注意，这 并不是意味着原始数组必须是常量，而只是意味着不能在show_array( )函数中使用ar来修改这些数据。因此，show_array( )将数组视为只读数据。假设无意间在show_array( )函数中执行了下面的操作，从而违反了这种限制：
+
+```
+arr[0]+=10;
+```
+
+编译器将禁止这样做。
+
+下面是show_array( )函数的代码：
+
+```cpp
+void show_array(const double ar[], int n)
+{
+    using namespace std;
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Property #" << (i + 1) << ": $";
+        cout << ar[i] << endl;
+    }
+}
+
+```
+
+#### 修改数组 
+
+```cpp
+void revalue(double r, double ar[], int n)
+{
+    for (int i = 0; i < n; i++)
+        ar[i] *= r;
+}
+```
+
+由于这个函数将修改数组的值，因此在声明ar时，不能使用const。
+
+#### 将上述代码组合起来
+
+```cpp
+// arrfun3.cpp -- array functions and const
+#include <iostream>
+const int Max = 5;
+
+// function prototypes
+int fill_array(double ar[], int limit);
+void show_array(const double ar[], int n);  // don't change data
+void revalue(double r, double ar[], int n);
+
+int main()
+{
+    using namespace std;
+    double properties[Max];
+
+    int size = fill_array(properties, Max);
+    show_array(properties, size);
+    if (size > 0)
+    {
+        cout << "Enter revaluation factor: ";
+        double factor;
+        while (!(cin >> factor))    // bad input
+        {
+            cin.clear();
+            while (cin.get() != '\n')
+                continue;
+            cout << "Bad input; Please enter a number: ";
+        }
+        revalue(factor, properties, size);
+        show_array(properties, size);
+    }
+    cout << "Done.\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+int fill_array(double ar[], int limit)
+{
+    using namespace std;
+    double temp;
+    int i;
+    for (i = 0; i < limit; i++)
+    {
+        cout << "Enter value #" << (i + 1) << ": ";
+        cin >> temp;
+        if (!cin)    // bad input
+        {
+            cin.clear();
+            while (cin.get() != '\n')
+                continue;
+            cout << "Bad input; input process terminated.\n";
+            break;
+        }
+        else if (temp < 0)     // signal to terminate
+            break;
+        ar[i] = temp;
+    }
+    return i;
+}
+
+// the following function can use, but not alter,
+// the array whose address is ar
+void show_array(const double ar[], int n)
+{
+    using namespace std;
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Property #" << (i + 1) << ": $";
+        cout << ar[i] << endl;
+    }
+}
+
+// multiplies each element of ar[] by r
+void revalue(double r, double ar[], int n)
+{
+    for (int i = 0; i < n; i++)
+        ar[i] *= r;
+}
+//Enter value #1: 100000
+//Enter value #2: 80000
+//Enter value #3: 222000
+//Enter value #4: 240000
+//Enter value #5: 118000
+//Property #1: $100000
+//Property #2: $80000
+//Property #3: $222000
+//Property #4: $240000
+//Property #5: $118000
+//Enter revaluation factor: 0.8
+//Property #1: $80000
+//Property #2: $64000
+//Property #3: $177600
+//Property #4: $192000
+//Property #5: $94400
+//Done.
+```
+
+#### 程序说明
+
+前面已经讨论了与该示例相关的重要编程细节，因此这里回顾一下 整个过程。我们首先考虑的是通过数据类型和设计适当的函数来处理数 据，然后将这些函数组合成一个程序。有时也称为自下而上的程序设计 （bottom-up programming），因为设计过程从组件到整体进行。这种方法非常适合于OOP——它首先强调的是数据表示和操纵。而传统的过程性编程倾向于从上而下的程序设计（top-down programming），首先指定模块化设计方案，然后再研究细节。这两种方法都很有用，最终的产品都是模块化程序。
+
+#### 数组处理函数的常用编写方式 
+
+假设要编写一个处理double数组的函数。如果该函数要修改数组， 其原型可能类似于下面这样：
+
+```
+void f_modify(double ar[],int n);
+```
+
+如果函数不修改数组，其原型可能类似于下面这样： 
+
+```
+void f_modify(const double ar[],int n);
+```
+
+当然，在函数原型中可以省略变量名，也可将返回类型指定为类型。这里的要点是，ar实际上是一个指针，指向传入的数组的第一个元 素；另外，由于通过参数传递了元素数，这两个函数都可使用任何长度的数组，只要数组的类型为double：
+
+```
+double rewards[1000];
+double default[50];
+
+f_modify(rewards,1000)
+```
+
+这种做法是通过传递两个数字（数组地址和元素数）实现的。正如您看到的，函数缺少一些有关原始数组的知识；例如，它不能使用 sizeof来获悉原始数组的长度，而必须依赖于程序员传入正确的元素数
+
+### 使用数组区间的函数 
+
+对于处理数组的C++函数，必须将数组中的数据种类、数组的起始位置和数组中元素数量提交给它；传统的C/C++方法是，将指向数组起始处的指针作为一个参数，将数组长度作为第二个参数（指针指出数组的位置和数据类型），这样便给函数提供了找到所有数据所需的信息。
+
+还有另一种给函数提供所需信息的方法，即指定元素区间 （range），这可以通过传递两个指针来完成：一个指针标识数组的开头，另一个指针标识数组的尾部。例如，C++标准模板库（STL，将在第16章介绍）将区间方法广义化了。STL方法使用“超尾”概念来指定区间。也就是说，对于数组而言，标识数组结尾的参数将是指向最后一个元素后面的指针。例如，假设有这样的声明： 
+
+```
+double elbuod[20]
+```
+
+则指针elboud和elboud + 20定义了区间。首先，数组名elboub指向第一个元素。表达式elboud + 19指向最后一个元素（即elboud[19]），因此，elboud + 20指向数组结尾后面的一个位置。将区间传递给函数将告诉函数应处理哪些元素。
+
+```cpp
+// arrfun4.cpp -- functions with an array range
+#include <iostream>
+const int ArSize = 8;
+int sum_arr(const int * begin, const int * end);
+int main()
+{
+    using namespace std;
+    int cookies[ArSize] = {1,2,4,8,16,32,64,128};
+//  some systems require preceding int with static to
+//  enable array initialization
+
+    int sum = sum_arr(cookies, cookies + ArSize);
+    cout << "Total cookies eaten: " << sum <<  endl;
+    sum = sum_arr(cookies, cookies + 3);        // first 3 elements
+    cout << "First three eaters ate " << sum << " cookies.\n";
+    sum = sum_arr(cookies + 4, cookies + 8);    // last 4 elements
+    cout << "Last four eaters ate " << sum << " cookies.\n";
+    // cin.get();
+    return 0;
+}
+
+// return the sum of an integer array
+int sum_arr(const int * begin, const int * end)
+{
+    const int * pt;
+    int total = 0;
+
+    for (pt = begin; pt != end; pt++)
+        total = total + *pt;
+    return total;
+}
+//Total cookies eaten: 255
+//First three eaters ate 7 cookies.
+//Last four eaters ate 240 cookies.
+```
+
+```
+ for (pt = begin; pt != end; pt++)
+        total = total + *pt;
+```
+
+它将pt设置为指向要处理的第一个元素（begin指向的元素）的指针，并将*pt（元素的值）加入到total中。然后，循环通过递增操作来更 新pt，使之指向下一个元素。只要pt不等于end，这一过程就将继续下去。当pt等于end时，它将指向区间中最后一个元素后面的一个位置，此时循环将结束。 
+
+其次，请注意不同的函数调用是如何指定数组中不同的区间的：
+
+```
+ int sum = sum_arr(cookies, cookies + ArSize);
+
+ sum = sum_arr(cookies, cookies + 3);        // first 3 elements
+
+ sum = sum_arr(cookies + 4, cookies + 8);    // last 4 elements
+```
+
+指针cookies + ArSize指向最后一个元素后面的一个位置（数组有ArSize个元素，因此cookies[ArSize − 1]是最后一个元素，其地址为 cookies + ArSize – 1）。因此，区间[cookies，cookies + ArSize]指定的是整个数组。同样，cookies，cookies + 3指定了前3个元素，依此类推。 
+
+请注意，根据指针减法规则，在sum_arr( )中，表达式end – begin是一个整数值，等于数组的元素数目。
+
+### 指针和const 
+
+可以用两种不同的方式将const关键字用于指针。第一种方法是让指针指向一个常量对象，这样可以防止使用该指针来修改所指向的值，第二种方法是将指针本身声明为常量，这样可以防止改变指针指向的位置
+
+首先，声明一个指向常量的指针pt：
+
+```
+int age = 39;
+const int * pt = &age;
+```
+
+该声明指出，pt指向一个const int（这里为39），因此不能使用pt来修改这个值。换句话来说，*pt的值为const，不能被修改：
+
+```
+*pt+=1;//invalid
+cin>>*pt//invalid
+```
+
+现在来看一个微妙的问题。pt的声明并不意味着它指向的值实际上就是一个常量，而只是意味着对pt而言，这个值是常量。例如，pt指向age，而age不是const。可以直接通过age变量来修改age的值，但不能使用pt指针来修改它： 
+
+```
+*pt = 20; //invalid
+age = 20; //valid
+```
+
+以前我们将常规变量的地址赋给常规指针，而这里将常规变量的地址赋给指向const的指针。因此还有两种可能：将const变量的地址赋给 指向const的指针、将const的地址赋给常规指针。这两种操作都可行吗？第一种可行，但第二种不可行： 
+
+```
+const float g_earth = 9.80;
+const float * pe = &g_earth; //valid
+
+const float g_moon = 1.63;
+float * pm = &g_moon;//invalid
+```
+
+对于第一种情况来说，既不能使用g_earth来修改值9.80，也不能使用pe来修改。C++禁止第二种情况的原因很简单——如果将g_moon的地址赋给pm，则可以使用pm来修改g_moon的值，这使得g_moon的const状态很荒谬，因此C++禁止将const的地址赋给非const指针。如果读者非要这样做，可以使用强制类型转换来突破这种限制，
+
+如果将指针指向指针，则情况将更复杂。前面讲过，假如涉及的是一级间接关系，则将非const指针赋给const指针是可以的：
