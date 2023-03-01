@@ -27,8 +27,9 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-18%2015.38.18.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/yangzeng-cell/blog-images/%E6%88%AA%E5%B1%8F2023-02-26%2012.08.38.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-02-28%2021.56.47.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-01%2021.49.14.png">
 <meta property="article:published_time" content="2022-12-30T23:19:45.000Z">
-<meta property="article:modified_time" content="2023-02-28T15:35:17.348Z">
+<meta property="article:modified_time" content="2023-03-01T15:48:14.922Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -224,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          132k 字
+          142k 字
         
       </span>
     
@@ -235,7 +236,7 @@
         
         
         
-          1103 分钟
+          1185 分钟
         
       </span>
     
@@ -4287,7 +4288,314 @@ fin<span class="hljs-selector-class">.getline</span>(line,<span class="hljs-numb
 &amp;arr<span class="hljs-comment">[i]</span> == arr+i</code></pre></div>
 
 <p>记住，将指针（包括数组名）加1，实际上是加上了一个与指针指向的类型的长度（以字节为单位）相等的值。对于遍历数组而言，使用 指针加法和数组下标时等效的。 </p>
-<h3 id="将数组作为参数意味着什么"><a href="#将数组作为参数意味着什么" class="headerlink" title="将数组作为参数意味着什么"></a>将数组作为参数意味着什么</h3>
+<h3 id="将数组作为参数意味着什么"><a href="#将数组作为参数意味着什么" class="headerlink" title="将数组作为参数意味着什么"></a>将数组作为参数意味着什么</h3><img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-01%2021.49.14.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+
+<p>数组名与指针对应是好事吗？确实是一件好事。将数组地址作为参数可以节省复制整个数组所需的时间和内存。如果数组很大，则使用拷 贝的系统开销将非常大；程序不仅需要更多的计算机内存，还需要花费时间来复制大块的数据。另一方面，使用原始数据增加了破坏数据的风险。在经典的C语言中，这确实是一个问题，但ANSI C和C++中的const限定符提供了解决这种问题的办法。</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// arrfun2.cpp -- functions with an array argument</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> ArSize = <span class="hljs-number">8</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sum_arr</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[], <span class="hljs-type">int</span> n)</span></span>;
+<span class="hljs-comment">// use std:: instead of using directive</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">int</span> cookies[ArSize] = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>,<span class="hljs-number">16</span>,<span class="hljs-number">32</span>,<span class="hljs-number">64</span>,<span class="hljs-number">128</span>&#125;;
+<span class="hljs-comment">//  some systems require preceding int with static to</span>
+<span class="hljs-comment">//  enable array initialization</span>
+
+    std::cout &lt;&lt; cookies &lt;&lt; <span class="hljs-string">&quot; = array address, &quot;</span>;
+<span class="hljs-comment">//  some systems require a type cast: unsigned (cookies)</span>
+
+    std::cout &lt;&lt; <span class="hljs-keyword">sizeof</span> cookies &lt;&lt; <span class="hljs-string">&quot; = sizeof cookies\n&quot;</span>;
+    <span class="hljs-type">int</span> sum = <span class="hljs-built_in">sum_arr</span>(cookies, ArSize);
+    std::cout &lt;&lt; <span class="hljs-string">&quot;Total cookies eaten: &quot;</span> &lt;&lt; sum &lt;&lt;  std::endl;
+    sum = <span class="hljs-built_in">sum_arr</span>(cookies, <span class="hljs-number">3</span>);        <span class="hljs-comment">// a lie</span>
+    std::cout &lt;&lt; <span class="hljs-string">&quot;First three eaters ate &quot;</span> &lt;&lt; sum &lt;&lt; <span class="hljs-string">&quot; cookies.\n&quot;</span>;
+    sum = <span class="hljs-built_in">sum_arr</span>(cookies + <span class="hljs-number">4</span>, <span class="hljs-number">4</span>);    <span class="hljs-comment">// another lie</span>
+    std::cout &lt;&lt; <span class="hljs-string">&quot;Last four eaters ate &quot;</span> &lt;&lt; sum &lt;&lt; <span class="hljs-string">&quot; cookies.\n&quot;</span>;
+    <span class="hljs-comment">// std::cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-comment">// return the sum of an integer array</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sum_arr</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">int</span> total = <span class="hljs-number">0</span>;
+    std::cout &lt;&lt; arr &lt;&lt; <span class="hljs-string">&quot; = arr, &quot;</span>;
+<span class="hljs-comment">// some systems require a type cast: unsigned (arr)</span>
+
+    std::cout &lt;&lt; <span class="hljs-keyword">sizeof</span> arr &lt;&lt; <span class="hljs-string">&quot; = sizeof arr\n&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+        total = total + arr[i];
+    <span class="hljs-keyword">return</span> total;
+&#125;
+<span class="hljs-comment">//0x16b5cf710 = array address, 32 = sizeof cookies</span>
+<span class="hljs-comment">//0x16b5cf710 = arr, 8 = sizeof arr</span>
+<span class="hljs-comment">//Total cookies eaten: 255</span>
+<span class="hljs-comment">//0x16b5cf710 = arr, 8 = sizeof arr</span>
+<span class="hljs-comment">//First three eaters ate 7 cookies.</span>
+<span class="hljs-comment">//0x16b5cf720 = arr, 8 = sizeof arr</span>
+<span class="hljs-comment">//Last four eaters ate 240 cookies.</span></code></pre></div>
+
+<p>注意，地址值和数组的长度随系统而异。另外，有些C++实现以十进制而不是十六进制格式显示地址，还有些编译器以十六进制显示地址 时，会加上前缀0x。 </p>
+<p>程序清单7.6说明了数组函数的一些有趣的地方。首先，cookies和arr指向同一个地址。但sizeof cookies的值为32，而sizeof arr为4。这是由于sizeof cookies是整个数组的长度，而sizeof arr只是指针变量的长度 （上述程序运行结果是从一个使用4字节地址的系统中获得的）。顺便 说一句，这也是必须显式传递数组长度，而不能在sum_arr( )中使用sizeof arr的原因；指针本身并没有指出数组的长度</p>
+<p>由于sum_arr( )只能通过第二个参数获知数组中的元素数量，因此可以对函数“说谎”。例如，程序第二次使用该函数时，这样调用它：</p>
+<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">sum</span> = sum_arr(cookies, <span class="hljs-number">3</span>)<span class="hljs-comment">;    // another lie</span></code></pre></div>
+
+<p>通过告诉该函数cookies有3个元素，可以让它计算前3个元素的总和</p>
+<p>为什么在这里停下了呢？还可以提供假的数组起始位置：</p>
+<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">sum</span> = sum_arr(cookies+<span class="hljs-number">4</span>, <span class="hljs-number">4</span>)<span class="hljs-comment">;</span></code></pre></div>
+
+<p>由于cookies是第一个元素的地址，因此cookies + 4是第5个元素的地址。这条语句将计算数组第5、6、7、8个元素的总和。请注意输出中第三次函数调用选择将不同于前两个调用的地址赋给arr的。是的，可以将&amp;cookies[4]，而不是cookies + 4作为参数；它们的含义是相同的</p>
+<p>为将数组类型和元素数量告诉数组处理函数，请通过两个不同的参数来传递它们：</p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fillArray</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[],<span class="hljs-type">int</span> size)</span></span>;</code></pre></div>
+
+<p>而不要试图使用方括号表示法来传递数组长度： </p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fillArray</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[size])</span></span>;</code></pre></div>
+
+<h3 id="更多数组函数示例"><a href="#更多数组函数示例" class="headerlink" title="更多数组函数示例"></a>更多数组函数示例</h3><p>来看一个简单的案例。假设要使用一个数组来记录房地产的价值（假设拥有房地产）。在这种情况下，程序员必须确定要使用哪种类 型。当然，double的取值范围比int和long大，并且提供了足够多的有效位数来精确地表示这些值。接下来必须决定数组元素的数目。（对于使用new创建的动态数组来说，可以稍后再决定，但我们希望使事情简单一点）。如果房地产数目不超过5个，则可以使用一个包含5个元素的double数组。 </p>
+<p>现在，考虑要对房地产数组执行的操作。两个基本的操作分别是，将值读入到数组中和显示数组内容。我们再添加另一个操作：重新评估 每种房地产的值。为简单起见，假设所有房地产都以相同的比率增加或 者减少。（别忘了，这是一本关于C++的书，而不是关于房地产管理的书。）接下来，为每项操作编写一个函数，然后编写相应的代码。下面首先介绍这些步骤，然后将其用于一个完整的示例中。</p>
+<h4 id="填充数组"><a href="#填充数组" class="headerlink" title="填充数组"></a>填充数组</h4><p>由于接受数组名参数的函数访问的是原始数组，而不是其副本，因此可以通过调用该函数将值赋给数组元素。该函数的一个参数是要填充的数组的名称。通常，程序可以管理多个人的投资，因此需要多个数组，因此不能在函数中设置数组长度，而要将数组长度作为第二个参数传递，就像前一个示例那样。另外，用户也可能希望在数组被填满之前停止读取数据，因此需要在函数中建立这种特性。由于用户输入的元素数目可能少于数组的长度，因此函数应返回实际输入的元素数目。因此，该函数的原型如下：</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> fill<span class="hljs-constructor">_array(<span class="hljs-params">double</span> <span class="hljs-params">arr</span>[],<span class="hljs-params">int</span> <span class="hljs-params">limit</span>)</span>;</code></pre></div>
+
+<p>该函数接受两个参数，一个是数组名，另一个指定了要读取的最大元素数；该函数返回实际读取的元素数。例如，如果使用该函数来处理 一个包含5个元素的数组，则将5作为第二个参数。如果只输入3个值，则该函数将返回3。 </p>
+<p>可以使用循环连续地将值读入到数组中，但如何提早结束循环呢？ 一种方法是，使用一个特殊值来指出输入结束。由于所有的属性都不为负，因此可以使用负数来指出输入结束。另外，该函数应对错误输入作出反应，如停止输入等。这样，该函数的代码如下所示：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fill_array</span><span class="hljs-params">(<span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> limit)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">double</span> temp;
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; limit; i++)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Enter value #&quot;</span> &lt;&lt; (i + <span class="hljs-number">1</span>) &lt;&lt; <span class="hljs-string">&quot;: &quot;</span>;
+        cin &gt;&gt; temp;
+        <span class="hljs-keyword">if</span> (!cin)    <span class="hljs-comment">// bad input</span>
+        &#123;
+            cin.<span class="hljs-built_in">clear</span>();
+            <span class="hljs-keyword">while</span> (cin.<span class="hljs-built_in">get</span>() != <span class="hljs-string">&#x27;\n&#x27;</span>)
+                <span class="hljs-keyword">continue</span>;
+           cout &lt;&lt; <span class="hljs-string">&quot;Bad input; input process terminated.\n&quot;</span>;
+           <span class="hljs-keyword">break</span>;
+        &#125;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (temp &lt; <span class="hljs-number">0</span>)     <span class="hljs-comment">// signal to terminate</span>
+            <span class="hljs-keyword">break</span>;
+        ar[i] = temp;
+    &#125;
+    <span class="hljs-keyword">return</span> i;
+&#125;</code></pre></div>
+
+<p>注意，代码中包含了对用户的提示。如果用户输入的是非负值，则这个值将被赋给数组，否则循环结束。如果用户输入的都是有效值，则 循环将在读取最大数目的值后结束。循环完成的最后一项工作是将i加1，因此循环结束后，i将比最后一个数组索引大1，即等于填充的元素数目。然后，函数返回这个值。</p>
+<h4 id="显示数组及用const保护数组"><a href="#显示数组及用const保护数组" class="headerlink" title="显示数组及用const保护数组"></a>显示数组及用const保护数组</h4><p>创建显示数组内容的函数很简单。只需将数组名和填充的元素数目传递给函数，然后该函数使用循环来显示每个元素。然而，还有另一个 问题——确保显示函数不修改原始数组。除非函数的目的就是修改传递给它的数据，否则应避免发生这种情况。使用普通参数时，这种保护将自动实现，这是由于C++按值传递数据，而且函数使用数据的副本。然而，接受数组名的函数将使用原始数据，这正是fill_array( )函数能够完成其工作的原因。为防止函数无意中修改数组的内容，可在声明形参时使用关键字const（参见第3章）： </p>
+<div class="code-wrapper"><pre><code class="hljs reasonml">void show<span class="hljs-constructor">_array(<span class="hljs-params">const</span> <span class="hljs-params">double</span> <span class="hljs-params">ar</span>[], <span class="hljs-params">int</span> <span class="hljs-params">n</span>)</span>;  <span class="hljs-comment">// don&#x27;t change data</span></code></pre></div>
+
+<p>该声明表明，指针ar指向的是常量数据。这意味着不能使用ar修改该数据，也就是说，可以使用像ar[0]这样的值，但不能修改。注意，这 并不是意味着原始数组必须是常量，而只是意味着不能在show_array( )函数中使用ar来修改这些数据。因此，show_array( )将数组视为只读数据。假设无意间在show_array( )函数中执行了下面的操作，从而违反了这种限制：</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">arr</span>[<span class="hljs-number">0</span>]+=<span class="hljs-number">10</span>;</code></pre></div>
+
+<p>编译器将禁止这样做。</p>
+<p>下面是show_array( )函数的代码：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_array</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Property #&quot;</span> &lt;&lt; (i + <span class="hljs-number">1</span>) &lt;&lt; <span class="hljs-string">&quot;: $&quot;</span>;
+        cout &lt;&lt; ar[i] &lt;&lt; endl;
+    &#125;
+&#125;
+</code></pre></div>
+
+<h4 id="修改数组"><a href="#修改数组" class="headerlink" title="修改数组"></a>修改数组</h4><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">revalue</span><span class="hljs-params">(<span class="hljs-type">double</span> r, <span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+        ar[i] *= r;
+&#125;</code></pre></div>
+
+<p>由于这个函数将修改数组的值，因此在声明ar时，不能使用const。</p>
+<h4 id="将上述代码组合起来"><a href="#将上述代码组合起来" class="headerlink" title="将上述代码组合起来"></a>将上述代码组合起来</h4><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// arrfun3.cpp -- array functions and const</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> Max = <span class="hljs-number">5</span>;
+
+<span class="hljs-comment">// function prototypes</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fill_array</span><span class="hljs-params">(<span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> limit)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_array</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> n)</span></span>;  <span class="hljs-comment">// don&#x27;t change data</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">revalue</span><span class="hljs-params">(<span class="hljs-type">double</span> r, <span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> n)</span></span>;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">double</span> properties[Max];
+
+    <span class="hljs-type">int</span> size = <span class="hljs-built_in">fill_array</span>(properties, Max);
+    <span class="hljs-built_in">show_array</span>(properties, size);
+    <span class="hljs-keyword">if</span> (size &gt; <span class="hljs-number">0</span>)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Enter revaluation factor: &quot;</span>;
+        <span class="hljs-type">double</span> factor;
+        <span class="hljs-keyword">while</span> (!(cin &gt;&gt; factor))    <span class="hljs-comment">// bad input</span>
+        &#123;
+            cin.<span class="hljs-built_in">clear</span>();
+            <span class="hljs-keyword">while</span> (cin.<span class="hljs-built_in">get</span>() != <span class="hljs-string">&#x27;\n&#x27;</span>)
+                <span class="hljs-keyword">continue</span>;
+            cout &lt;&lt; <span class="hljs-string">&quot;Bad input; Please enter a number: &quot;</span>;
+        &#125;
+        <span class="hljs-built_in">revalue</span>(factor, properties, size);
+        <span class="hljs-built_in">show_array</span>(properties, size);
+    &#125;
+    cout &lt;&lt; <span class="hljs-string">&quot;Done.\n&quot;</span>;
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fill_array</span><span class="hljs-params">(<span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> limit)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">double</span> temp;
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; limit; i++)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Enter value #&quot;</span> &lt;&lt; (i + <span class="hljs-number">1</span>) &lt;&lt; <span class="hljs-string">&quot;: &quot;</span>;
+        cin &gt;&gt; temp;
+        <span class="hljs-keyword">if</span> (!cin)    <span class="hljs-comment">// bad input</span>
+        &#123;
+            cin.<span class="hljs-built_in">clear</span>();
+            <span class="hljs-keyword">while</span> (cin.<span class="hljs-built_in">get</span>() != <span class="hljs-string">&#x27;\n&#x27;</span>)
+                <span class="hljs-keyword">continue</span>;
+            cout &lt;&lt; <span class="hljs-string">&quot;Bad input; input process terminated.\n&quot;</span>;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (temp &lt; <span class="hljs-number">0</span>)     <span class="hljs-comment">// signal to terminate</span>
+            <span class="hljs-keyword">break</span>;
+        ar[i] = temp;
+    &#125;
+    <span class="hljs-keyword">return</span> i;
+&#125;
+
+<span class="hljs-comment">// the following function can use, but not alter,</span>
+<span class="hljs-comment">// the array whose address is ar</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_array</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Property #&quot;</span> &lt;&lt; (i + <span class="hljs-number">1</span>) &lt;&lt; <span class="hljs-string">&quot;: $&quot;</span>;
+        cout &lt;&lt; ar[i] &lt;&lt; endl;
+    &#125;
+&#125;
+
+<span class="hljs-comment">// multiplies each element of ar[] by r</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">revalue</span><span class="hljs-params">(<span class="hljs-type">double</span> r, <span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+        ar[i] *= r;
+&#125;
+<span class="hljs-comment">//Enter value #1: 100000</span>
+<span class="hljs-comment">//Enter value #2: 80000</span>
+<span class="hljs-comment">//Enter value #3: 222000</span>
+<span class="hljs-comment">//Enter value #4: 240000</span>
+<span class="hljs-comment">//Enter value #5: 118000</span>
+<span class="hljs-comment">//Property #1: $100000</span>
+<span class="hljs-comment">//Property #2: $80000</span>
+<span class="hljs-comment">//Property #3: $222000</span>
+<span class="hljs-comment">//Property #4: $240000</span>
+<span class="hljs-comment">//Property #5: $118000</span>
+<span class="hljs-comment">//Enter revaluation factor: 0.8</span>
+<span class="hljs-comment">//Property #1: $80000</span>
+<span class="hljs-comment">//Property #2: $64000</span>
+<span class="hljs-comment">//Property #3: $177600</span>
+<span class="hljs-comment">//Property #4: $192000</span>
+<span class="hljs-comment">//Property #5: $94400</span>
+<span class="hljs-comment">//Done.</span></code></pre></div>
+
+<h4 id="程序说明-1"><a href="#程序说明-1" class="headerlink" title="程序说明"></a>程序说明</h4><p>前面已经讨论了与该示例相关的重要编程细节，因此这里回顾一下 整个过程。我们首先考虑的是通过数据类型和设计适当的函数来处理数 据，然后将这些函数组合成一个程序。有时也称为自下而上的程序设计 （bottom-up programming），因为设计过程从组件到整体进行。这种方法非常适合于OOP——它首先强调的是数据表示和操纵。而传统的过程性编程倾向于从上而下的程序设计（top-down programming），首先指定模块化设计方案，然后再研究细节。这两种方法都很有用，最终的产品都是模块化程序。</p>
+<h4 id="数组处理函数的常用编写方式"><a href="#数组处理函数的常用编写方式" class="headerlink" title="数组处理函数的常用编写方式"></a>数组处理函数的常用编写方式</h4><p>假设要编写一个处理double数组的函数。如果该函数要修改数组， 其原型可能类似于下面这样：</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml">void f<span class="hljs-constructor">_modify(<span class="hljs-params">double</span> <span class="hljs-params">ar</span>[],<span class="hljs-params">int</span> <span class="hljs-params">n</span>)</span>;</code></pre></div>
+
+<p>如果函数不修改数组，其原型可能类似于下面这样： </p>
+<div class="code-wrapper"><pre><code class="hljs reasonml">void f<span class="hljs-constructor">_modify(<span class="hljs-params">const</span> <span class="hljs-params">double</span> <span class="hljs-params">ar</span>[],<span class="hljs-params">int</span> <span class="hljs-params">n</span>)</span>;</code></pre></div>
+
+<p>当然，在函数原型中可以省略变量名，也可将返回类型指定为类型。这里的要点是，ar实际上是一个指针，指向传入的数组的第一个元 素；另外，由于通过参数传递了元素数，这两个函数都可使用任何长度的数组，只要数组的类型为double：</p>
+<div class="code-wrapper"><pre><code class="hljs scss">double rewards<span class="hljs-selector-attr">[1000]</span>;
+double default<span class="hljs-selector-attr">[50]</span>;
+
+<span class="hljs-built_in">f_modify</span>(rewards,<span class="hljs-number">1000</span>)</code></pre></div>
+
+<p>这种做法是通过传递两个数字（数组地址和元素数）实现的。正如您看到的，函数缺少一些有关原始数组的知识；例如，它不能使用 sizeof来获悉原始数组的长度，而必须依赖于程序员传入正确的元素数</p>
+<h3 id="使用数组区间的函数"><a href="#使用数组区间的函数" class="headerlink" title="使用数组区间的函数"></a>使用数组区间的函数</h3><p>对于处理数组的C++函数，必须将数组中的数据种类、数组的起始位置和数组中元素数量提交给它；传统的C/C++方法是，将指向数组起始处的指针作为一个参数，将数组长度作为第二个参数（指针指出数组的位置和数据类型），这样便给函数提供了找到所有数据所需的信息。</p>
+<p>还有另一种给函数提供所需信息的方法，即指定元素区间 （range），这可以通过传递两个指针来完成：一个指针标识数组的开头，另一个指针标识数组的尾部。例如，C++标准模板库（STL，将在第16章介绍）将区间方法广义化了。STL方法使用“超尾”概念来指定区间。也就是说，对于数组而言，标识数组结尾的参数将是指向最后一个元素后面的指针。例如，假设有这样的声明： </p>
+<div class="code-wrapper"><pre><code class="hljs scss">double elbuod<span class="hljs-selector-attr">[20]</span></code></pre></div>
+
+<p>则指针elboud和elboud + 20定义了区间。首先，数组名elboub指向第一个元素。表达式elboud + 19指向最后一个元素（即elboud[19]），因此，elboud + 20指向数组结尾后面的一个位置。将区间传递给函数将告诉函数应处理哪些元素。</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// arrfun4.cpp -- functions with an array range</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> ArSize = <span class="hljs-number">8</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sum_arr</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> * begin, <span class="hljs-type">const</span> <span class="hljs-type">int</span> * end)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">int</span> cookies[ArSize] = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>,<span class="hljs-number">16</span>,<span class="hljs-number">32</span>,<span class="hljs-number">64</span>,<span class="hljs-number">128</span>&#125;;
+<span class="hljs-comment">//  some systems require preceding int with static to</span>
+<span class="hljs-comment">//  enable array initialization</span>
+
+    <span class="hljs-type">int</span> sum = <span class="hljs-built_in">sum_arr</span>(cookies, cookies + ArSize);
+    cout &lt;&lt; <span class="hljs-string">&quot;Total cookies eaten: &quot;</span> &lt;&lt; sum &lt;&lt;  endl;
+    sum = <span class="hljs-built_in">sum_arr</span>(cookies, cookies + <span class="hljs-number">3</span>);        <span class="hljs-comment">// first 3 elements</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;First three eaters ate &quot;</span> &lt;&lt; sum &lt;&lt; <span class="hljs-string">&quot; cookies.\n&quot;</span>;
+    sum = <span class="hljs-built_in">sum_arr</span>(cookies + <span class="hljs-number">4</span>, cookies + <span class="hljs-number">8</span>);    <span class="hljs-comment">// last 4 elements</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;Last four eaters ate &quot;</span> &lt;&lt; sum &lt;&lt; <span class="hljs-string">&quot; cookies.\n&quot;</span>;
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-comment">// return the sum of an integer array</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sum_arr</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> * begin, <span class="hljs-type">const</span> <span class="hljs-type">int</span> * end)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">const</span> <span class="hljs-type">int</span> * pt;
+    <span class="hljs-type">int</span> total = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (pt = begin; pt != end; pt++)
+        total = total + *pt;
+    <span class="hljs-keyword">return</span> total;
+&#125;
+<span class="hljs-comment">//Total cookies eaten: 255</span>
+<span class="hljs-comment">//First three eaters ate 7 cookies.</span>
+<span class="hljs-comment">//Last four eaters ate 240 cookies.</span></code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs ada"><span class="hljs-keyword">for</span> (pt = <span class="hljs-keyword">begin</span>; pt != <span class="hljs-keyword">end</span>; pt++)
+       total = total + *pt;</code></pre></div>
+
+<p>它将pt设置为指向要处理的第一个元素（begin指向的元素）的指针，并将*pt（元素的值）加入到total中。然后，循环通过递增操作来更 新pt，使之指向下一个元素。只要pt不等于end，这一过程就将继续下去。当pt等于end时，它将指向区间中最后一个元素后面的一个位置，此时循环将结束。 </p>
+<p>其次，请注意不同的函数调用是如何指定数组中不同的区间的：</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> sum = sum<span class="hljs-constructor">_arr(<span class="hljs-params">cookies</span>, <span class="hljs-params">cookies</span> + ArSize)</span>;
+
+sum = sum<span class="hljs-constructor">_arr(<span class="hljs-params">cookies</span>, <span class="hljs-params">cookies</span> + 3)</span>;        <span class="hljs-comment">// first 3 elements</span>
+
+sum = sum<span class="hljs-constructor">_arr(<span class="hljs-params">cookies</span> + 4, <span class="hljs-params">cookies</span> + 8)</span>;    <span class="hljs-comment">// last 4 elements</span></code></pre></div>
+
+<p>指针cookies + ArSize指向最后一个元素后面的一个位置（数组有ArSize个元素，因此cookies[ArSize − 1]是最后一个元素，其地址为 cookies + ArSize – 1）。因此，区间[cookies，cookies + ArSize]指定的是整个数组。同样，cookies，cookies + 3指定了前3个元素，依此类推。 </p>
+<p>请注意，根据指针减法规则，在sum_arr( )中，表达式end – begin是一个整数值，等于数组的元素数目。</p>
+<h3 id="指针和const"><a href="#指针和const" class="headerlink" title="指针和const"></a>指针和const</h3><p>可以用两种不同的方式将const关键字用于指针。第一种方法是让指针指向一个常量对象，这样可以防止使用该指针来修改所指向的值，第二种方法是将指针本身声明为常量，这样可以防止改变指针指向的位置</p>
+<p>首先，声明一个指向常量的指针pt：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-built_in">int</span> age = <span class="hljs-number">39</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">int</span> * pt = &amp;age;</code></pre></div>
+
+<p>该声明指出，pt指向一个const int（这里为39），因此不能使用pt来修改这个值。换句话来说，*pt的值为const，不能被修改：</p>
+<div class="code-wrapper"><pre><code class="hljs awk">*pt+=<span class="hljs-number">1</span>;<span class="hljs-regexp">//i</span>nvalid
+cin&gt;&gt;*pt<span class="hljs-regexp">//i</span>nvalid</code></pre></div>
+
+<p>现在来看一个微妙的问题。pt的声明并不意味着它指向的值实际上就是一个常量，而只是意味着对pt而言，这个值是常量。例如，pt指向age，而age不是const。可以直接通过age变量来修改age的值，但不能使用pt指针来修改它： </p>
+<div class="code-wrapper"><pre><code class="hljs abnf">*pt <span class="hljs-operator">=</span> <span class="hljs-number">20</span><span class="hljs-comment">; //invalid</span>
+<span class="hljs-attribute">age</span> <span class="hljs-operator">=</span> <span class="hljs-number">20</span><span class="hljs-comment">; //valid</span></code></pre></div>
+
+<p>以前我们将常规变量的地址赋给常规指针，而这里将常规变量的地址赋给指向const的指针。因此还有两种可能：将const变量的地址赋给 指向const的指针、将const的地址赋给常规指针。这两种操作都可行吗？第一种可行，但第二种不可行： </p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-keyword">const</span> <span class="hljs-built_in">float</span> g_earth = <span class="hljs-number">9.80</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">float</span> * pe = &amp;g_earth; <span class="hljs-comment">//valid</span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">float</span> g_moon = <span class="hljs-number">1.63</span>;
+<span class="hljs-built_in">float</span> * pm = &amp;g_moon;<span class="hljs-comment">//invalid</span></code></pre></div>
+
+<p>对于第一种情况来说，既不能使用g_earth来修改值9.80，也不能使用pe来修改。C++禁止第二种情况的原因很简单——如果将g_moon的地址赋给pm，则可以使用pm来修改g_moon的值，这使得g_moon的const状态很荒谬，因此C++禁止将const的地址赋给非const指针。如果读者非要这样做，可以使用强制类型转换来突破这种限制，</p>
+<p>如果将指针指向指针，则情况将更复杂。前面讲过，假如涉及的是一级间接关系，则将非const指针赋给const指针是可以的：</p>
+
                 
               </div>
             
