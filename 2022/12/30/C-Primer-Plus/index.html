@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-02-28%2021.56.47.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-01%2021.49.14.png">
 <meta property="article:published_time" content="2022-12-30T23:19:45.000Z">
-<meta property="article:modified_time" content="2023-03-01T15:48:14.922Z">
+<meta property="article:modified_time" content="2023-03-02T15:55:05.878Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -225,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          142k 字
+          146k 字
         
       </span>
     
@@ -236,7 +236,7 @@
         
         
         
-          1185 分钟
+          1218 分钟
         
       </span>
     
@@ -4595,6 +4595,133 @@ cin&gt;&gt;*pt<span class="hljs-regexp">//i</span>nvalid</code></pre></div>
 
 <p>对于第一种情况来说，既不能使用g_earth来修改值9.80，也不能使用pe来修改。C++禁止第二种情况的原因很简单——如果将g_moon的地址赋给pm，则可以使用pm来修改g_moon的值，这使得g_moon的const状态很荒谬，因此C++禁止将const的地址赋给非const指针。如果读者非要这样做，可以使用强制类型转换来突破这种限制，</p>
 <p>如果将指针指向指针，则情况将更复杂。前面讲过，假如涉及的是一级间接关系，则将非const指针赋给const指针是可以的：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-built_in">int</span> age = <span class="hljs-number">39</span>;   <span class="hljs-comment">//age++ is a valid operation</span>
+<span class="hljs-built_in">int</span> *pd = &amp;age; <span class="hljs-comment">//*pd = 41 is a valid operation</span>
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">int</span> * pt = pd; <span class="hljs-comment">//*pt = 42 is an invalid operation</span></code></pre></div>
+
+<p>然而，进入两级间接关系时，与一级间接关系一样将const和非const混合的指针赋值方式将不再安全。如果允许这样做，则可以编写这 样的代码：</p>
+<div class="code-wrapper"><pre><code class="hljs smali">const<span class="hljs-built_in"> int </span>**pp2;<span class="hljs-built_in"></span>
+<span class="hljs-built_in">int </span>*p1;<span class="hljs-built_in"></span>
+<span class="hljs-built_in">const </span>int n = 13;
+pp2 = &amp;p1;//not allowed but suppose it were
+*pp2 = &amp;n;//valid,both<span class="hljs-built_in"> const </span>,but sets p1 to point at n
+*p1 = 10;//valid ,but change<span class="hljs-built_in"> const </span>n</code></pre></div>
+
+<p>上述代码将非const地址（&amp;pl）赋给了const指针（pp2），因此可以使用pl来修改const数据。因此，仅当只有一层间接关系（如指针指向基本数据类型）时，才可以将非const地址或指针赋给const指针。</p>
+<p>如果数据类型本身并不是指针，则可以将const数据或非const数据的地址赋给指向const的指针，但只能将非const数据的地址赋给非const指针。 </p>
+<p>假设有一个由const数据组成的数组：</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">const</span> int months[<span class="hljs-number">12</span>] = &#123;<span class="hljs-number">31</span>,<span class="hljs-number">28</span>,<span class="hljs-number">31</span>,<span class="hljs-number">30</span>,<span class="hljs-number">31</span>,<span class="hljs-number">30</span>,<span class="hljs-number">31</span>,<span class="hljs-number">31</span>,<span class="hljs-number">30</span>,<span class="hljs-number">31</span>,<span class="hljs-number">30</span>,<span class="hljs-number">31</span>&#125;</code></pre></div>
+
+<p>则禁止将常量数组的地址赋给非常量指针将意味着不能将数组名作为参数传递给使用非常量形参的函数： </p>
+<div class="code-wrapper"><pre><code class="hljs axapta"><span class="hljs-built_in">int</span> <span class="hljs-keyword">sum</span> (<span class="hljs-built_in">int</span> arr[],<span class="hljs-built_in">int</span> n);<span class="hljs-comment">//should have been const int arr[]</span>
+<span class="hljs-built_in">int</span> j = <span class="hljs-keyword">sum</span>(month,<span class="hljs-number">12</span>)<span class="hljs-comment">//not allow</span></code></pre></div>
+
+<p>上述函数调用试图将const指针（months）赋给非const指针（arr），编译器将禁止这种函数调用。 </p>
+<h5 id="尽可能使用const"><a href="#尽可能使用const" class="headerlink" title="尽可能使用const"></a>尽可能使用const</h5><p>将指针参数声明为指向常量数据的指针有两条理由：</p>
+<p>这样可以避免由于无意间修改数据而导致的编程错误；</p>
+<p>使用const使得函数能够处理const和非const实参，否则将只能接受非const数据。</p>
+<p>如果条件允许，则应将指针形参声明为指向const的指针。 </p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-built_in">int</span> age = <span class="hljs-number">39</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">int</span> * pt = &amp;age;</code></pre></div>
+
+<p>第二个声明中的const只能防止修改pt指向的值（这里为39），而不能防止修改pt的值。也就是说，可以将一个新地址赋给pt： </p>
+<div class="code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">int sage</span> = 80;
+<span class="hljs-attribute">pt</span> = &amp;sage;</code></pre></div>
+
+<p>但仍然不能使用pt来修改它指向的值（现在为80）。</p>
+<p>第二种使用const的方式使得无法修改指针的值：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-built_in">int</span> sloth = <span class="hljs-number">3</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">int</span> * ps = &amp;sloth;
+<span class="hljs-built_in">int</span> * <span class="hljs-keyword">const</span> finger = &amp;sloth;</code></pre></div>
+
+<p>在最后一个声明中，关键字const的位置与以前不同。这种声明格式使得finger只能指向sloth，但允许使用finger来修改sloth的值。中间的声明不允许使用ps来修改sloth的值，但允许将ps指向另一个位置。简而言之，finger和<em>ps都是const，而</em>finger和ps不是</p>
+<p>还可以声明指向const对象的const指针：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-built_in">double</span> trouble = <span class="hljs-number">2.0E30</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * <span class="hljs-keyword">const</span> stick = &amp;trouble;</code></pre></div>
+
+<p>其中，stick 只能指向 trouble，而 stick 不能用来修改 trouble 的值。简而言之，stick 和*stick 都是const。 </p>
+<h2 id="函数和二维数组"><a href="#函数和二维数组" class="headerlink" title="函数和二维数组"></a>函数和二维数组</h2><p>Data是一个数组名，该数组有3个元素。第一个元素本身是一个数组，有4个int值组成。因此data的类型是指向由4个int组成的数组的指 针，因此正确的原型如下：</p>
+<div class="code-wrapper"><pre><code class="hljs fortran"><span class="hljs-built_in">int</span> <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">int</span> (*ar2)[<span class="hljs-number">4</span>],<span class="hljs-built_in">int</span> <span class="hljs-built_in">size</span>)</code></pre></div>
+
+<p>​    其中的括号是必不可少的，因为下面的声明将声明一个由4个指向int的指针组成的数组，而不是由一个指向由4个int组成的数组的指针；另外，函数参数不能是数组</p>
+<p>还有另外一种格式，这种格式与上述原型的含义完全相同，但可读性更强：</p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sum</span><span class="hljs-params">(<span class="hljs-type">int</span> ar2[][<span class="hljs-number">4</span>],<span class="hljs-type">int</span> size)</span></span>;</code></pre></div>
+
+<p>上述两个原型都指出，ar2是指针而不是数组。还需注意的是，指针类型指出，它指向由4个int组成的数组。因此，指针类型指定了列 数，这就是没有将列数作为独立的函数参数进行传递的原因。</p>
+<p>由于指针类型指定了列数，因此sum( )函数只能接受由4列组成的数组。但长度变量指定了行数，因此sum( )对数组的行数没有限制：</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">int</span> a[<span class="hljs-number">100</span>][<span class="hljs-number">4</span>];
+<span class="hljs-attribute">int</span> b[<span class="hljs-number">6</span>][<span class="hljs-number">4</span>];
+
+<span class="hljs-attribute">int</span> total1=sum(a,<span class="hljs-number">100</span>)
+<span class="hljs-attribute">int</span> total2=sum(b,<span class="hljs-number">6</span>)</code></pre></div>
+
+<p>由于参数ar2是指向数组的指针，那么我们如何在函数定义中使用它呢？最简单的方法是将ar2看作是一个二维数组的名称。下面是一个 可行的函数定义：</p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sum</span><span class="hljs-params">(<span class="hljs-type">int</span> ar2[][<span class="hljs-number">4</span>],<span class="hljs-type">int</span> size)</span></span>&#123;
+	<span class="hljs-type">int</span> total = <span class="hljs-number">0</span> ;
+	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>;r&lt;size;r++)&#123;
+		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;c&lt;<span class="hljs-number">4</span>;c++)&#123;
+			total +=ar2[r][c]
+		&#125;
+	&#125;
+	<span class="hljs-keyword">return</span> total;
+&#125;</code></pre></div>
+
+<p>同样，行数被传递给size参数，但无论是参数ar2的声明或是内部for循环中，列数都是固定的——4列。</p>
+<p>可以使用数组表示法的原因如下。由于ar2指向数组（它的元素是由4个int组成的数组）的第一个元素（元素0），因此表达式ar2 + r指向 编号为r的元素。因此ar2[r]是编号为r的元素。由于该元素本身就是一个由4个int组成的数组，因此ar2[r]是由4个int组成的数组的名称。将下标用于数组名将得到一个数组元素，因此ar2[r][c]是由4个int组成的数组中的一个元素，是一个int值。必须对指针ar2执行两次解除引用，才能得到数据。最简单的方法是使用方括号两次：ar2[r][c]。然而，如果不考虑难看的话，也可以使用运算符*两次：</p>
+<div class="code-wrapper"><pre><code class="hljs inform7">ar2<span class="hljs-comment">[r]</span><span class="hljs-comment">[c]</span> ==*(*(ar2+r)+c)</code></pre></div>
+
+<h2 id="函数和C-风格字符串"><a href="#函数和C-风格字符串" class="headerlink" title="函数和C-风格字符串"></a>函数和C-风格字符串</h2><h3 id="将-C-风格字符串作为参数的函数"><a href="#将-C-风格字符串作为参数的函数" class="headerlink" title="将**C-**风格字符串作为参数的函数"></a>将**C-**风格字符串作为参数的函数</h3><p>假设要将字符串作为参数传递给函数，则表示字符串的方式有三 种：</p>
+<ul>
+<li>char数组； </li>
+<li>用引号括起的字符串常量（也称字符串字面值）； </li>
+<li>被设置为字符串的地址的char指针。</li>
+</ul>
+<p>但上述3种选择的类型都是char指针（准确地说是char*），因此可以将其作为字符串处理函数的参数：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-type">char</span> ghost[<span class="hljs-number">15</span>] = <span class="hljs-string">&quot;galloping&quot;</span>;
+<span class="hljs-type">char</span> * str = <span class="hljs-string">&quot;galumphing&quot;</span>;
+<span class="hljs-type">int</span> n1 = <span class="hljs-built_in">strlen</span>(ghost);<span class="hljs-comment">//ghost is &amp;ghost[0]</span>
+<span class="hljs-type">int</span> n2 = <span class="hljs-built_in">strlen</span>(str); <span class="hljs-comment">//pointer to char</span>
+<span class="hljs-type">int</span> n3 = <span class="hljs-built_in">strlen</span>(<span class="hljs-string">&quot;gamboling&quot;</span>); <span class="hljs-comment">// address of string</span></code></pre></div>
+
+<p>可以说是将字符串作为参数来传递，但实际传递的是字符串第一个字符的地址。这意味着字符串函数原型应将其表示字符串的形参声明为 char *类型。 </p>
+<p>C-风格字符串与常规char数组之间的一个重要区别是，字符串有内置的结束字符（前面讲过，包含字符，但不以空值字符结尾的char数组 只是数组，而不是字符串）。这意味着不必将字符串长度作为参数传递给函数，而函数可以使用循环依次检查字符串中的每个字符，直到遇到结尾的空值字符为止</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// strgfun.cpp -- functions with a string argument</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">c_in_str</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> * str, <span class="hljs-type">char</span> ch)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">char</span> mmm[<span class="hljs-number">15</span>] = <span class="hljs-string">&quot;minimum&quot;</span>;    <span class="hljs-comment">// string in an array</span>
+<span class="hljs-comment">// some systems require preceding char with static to</span>
+<span class="hljs-comment">// enable array initialization</span>
+
+    <span class="hljs-type">char</span> *wail = <span class="hljs-string">&quot;ululate&quot;</span>;    <span class="hljs-comment">// wail points to string</span>
+
+    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> ms = <span class="hljs-built_in">c_in_str</span>(mmm, <span class="hljs-string">&#x27;m&#x27;</span>);
+    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> us = <span class="hljs-built_in">c_in_str</span>(wail, <span class="hljs-string">&#x27;u&#x27;</span>);
+    cout &lt;&lt; ms &lt;&lt; <span class="hljs-string">&quot; m characters in &quot;</span> &lt;&lt; mmm &lt;&lt; endl;
+    cout &lt;&lt; us &lt;&lt; <span class="hljs-string">&quot; u characters in &quot;</span> &lt;&lt; wail &lt;&lt; endl;
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-comment">// this function counts the number of ch characters</span>
+<span class="hljs-comment">// in the string str</span>
+<span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">c_in_str</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> * str, <span class="hljs-type">char</span> ch)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">while</span> (*str)        <span class="hljs-comment">// quit when *str is &#x27;\0&#x27;</span>
+    &#123;
+        <span class="hljs-keyword">if</span> (*str == ch)
+            count++;
+        str++;        <span class="hljs-comment">// move pointer to next char</span>
+    &#125;
+    <span class="hljs-keyword">return</span> count; 
+&#125;
+</code></pre></div>
+
+<p>由于程序清单7.9中的c_int_str( )函数不应修改原始字符串，因此它在声明形参str时使用了限定符const。这样，如果错误地址函数修改了字 符串的内容，编译器将捕获这种错误。当然，可以在函数头中使用数组表示法，而不声明str： </p>
 
                 
               </div>
