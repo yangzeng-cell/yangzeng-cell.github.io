@@ -5901,3 +5901,196 @@ float * pm = &g_moon;//invalid
 对于第一种情况来说，既不能使用g_earth来修改值9.80，也不能使用pe来修改。C++禁止第二种情况的原因很简单——如果将g_moon的地址赋给pm，则可以使用pm来修改g_moon的值，这使得g_moon的const状态很荒谬，因此C++禁止将const的地址赋给非const指针。如果读者非要这样做，可以使用强制类型转换来突破这种限制，
 
 如果将指针指向指针，则情况将更复杂。前面讲过，假如涉及的是一级间接关系，则将非const指针赋给const指针是可以的：
+
+```
+int age = 39;   //age++ is a valid operation
+int *pd = &age; //*pd = 41 is a valid operation
+const int * pt = pd; //*pt = 42 is an invalid operation
+```
+
+然而，进入两级间接关系时，与一级间接关系一样将const和非const混合的指针赋值方式将不再安全。如果允许这样做，则可以编写这 样的代码：
+
+```
+const int **pp2;
+int *p1;
+const int n = 13;
+pp2 = &p1;//not allowed but suppose it were
+*pp2 = &n;//valid,both const ,but sets p1 to point at n
+*p1 = 10;//valid ,but change const n
+```
+
+上述代码将非const地址（&pl）赋给了const指针（pp2），因此可以使用pl来修改const数据。因此，仅当只有一层间接关系（如指针指向基本数据类型）时，才可以将非const地址或指针赋给const指针。
+
+如果数据类型本身并不是指针，则可以将const数据或非const数据的地址赋给指向const的指针，但只能将非const数据的地址赋给非const指针。 
+
+假设有一个由const数据组成的数组：
+
+```
+const int months[12] = {31,28,31,30,31,30,31,31,30,31,30,31}
+```
+
+则禁止将常量数组的地址赋给非常量指针将意味着不能将数组名作为参数传递给使用非常量形参的函数： 
+
+```
+int sum (int arr[],int n);//should have been const int arr[]
+int j = sum(month,12)//not allow
+```
+
+上述函数调用试图将const指针（months）赋给非const指针（arr），编译器将禁止这种函数调用。 
+
+##### 尽可能使用const
+
+将指针参数声明为指向常量数据的指针有两条理由：
+
+这样可以避免由于无意间修改数据而导致的编程错误；
+
+使用const使得函数能够处理const和非const实参，否则将只能接受非const数据。
+
+如果条件允许，则应将指针形参声明为指向const的指针。 
+
+```
+int age = 39;
+const int * pt = &age;
+```
+
+第二个声明中的const只能防止修改pt指向的值（这里为39），而不能防止修改pt的值。也就是说，可以将一个新地址赋给pt： 
+
+```
+int sage = 80;
+pt = &sage;
+```
+
+但仍然不能使用pt来修改它指向的值（现在为80）。
+
+第二种使用const的方式使得无法修改指针的值：
+
+```
+int sloth = 3;
+const int * ps = &sloth;
+int * const finger = &sloth;
+```
+
+在最后一个声明中，关键字const的位置与以前不同。这种声明格式使得finger只能指向sloth，但允许使用finger来修改sloth的值。中间的声明不允许使用ps来修改sloth的值，但允许将ps指向另一个位置。简而言之，finger和*ps都是const，而*finger和ps不是
+
+还可以声明指向const对象的const指针：
+
+```
+double trouble = 2.0E30;
+const double * const stick = &trouble;
+```
+
+其中，stick 只能指向 trouble，而 stick 不能用来修改 trouble 的值。简而言之，stick 和*stick 都是const。 
+
+## 函数和二维数组
+
+Data是一个数组名，该数组有3个元素。第一个元素本身是一个数组，有4个int值组成。因此data的类型是指向由4个int组成的数组的指 针，因此正确的原型如下：
+
+```
+int sum(int (*ar2)[4],int size)
+```
+
+​	其中的括号是必不可少的，因为下面的声明将声明一个由4个指向int的指针组成的数组，而不是由一个指向由4个int组成的数组的指针；另外，函数参数不能是数组
+
+还有另外一种格式，这种格式与上述原型的含义完全相同，但可读性更强：
+
+```
+int sum(int ar2[][4],int size);
+```
+
+上述两个原型都指出，ar2是指针而不是数组。还需注意的是，指针类型指出，它指向由4个int组成的数组。因此，指针类型指定了列 数，这就是没有将列数作为独立的函数参数进行传递的原因。
+
+由于指针类型指定了列数，因此sum( )函数只能接受由4列组成的数组。但长度变量指定了行数，因此sum( )对数组的行数没有限制：
+
+```
+int a[100][4];
+int b[6][4];
+
+int total1=sum(a,100)
+int total2=sum(b,6)
+```
+
+由于参数ar2是指向数组的指针，那么我们如何在函数定义中使用它呢？最简单的方法是将ar2看作是一个二维数组的名称。下面是一个 可行的函数定义：
+
+```
+int sum(int ar2[][4],int size){
+	int total = 0 ;
+	for(int r = 0;r<size;r++){
+		for(int c = 0;c<4;c++){
+			total +=ar2[r][c]
+		}
+	}
+	return total;
+}
+```
+
+同样，行数被传递给size参数，但无论是参数ar2的声明或是内部for循环中，列数都是固定的——4列。
+
+可以使用数组表示法的原因如下。由于ar2指向数组（它的元素是由4个int组成的数组）的第一个元素（元素0），因此表达式ar2 + r指向 编号为r的元素。因此ar2[r]是编号为r的元素。由于该元素本身就是一个由4个int组成的数组，因此ar2[r]是由4个int组成的数组的名称。将下标用于数组名将得到一个数组元素，因此ar2[r][c]是由4个int组成的数组中的一个元素，是一个int值。必须对指针ar2执行两次解除引用，才能得到数据。最简单的方法是使用方括号两次：ar2[r][c]。然而，如果不考虑难看的话，也可以使用运算符*两次：
+
+```
+ar2[r][c] ==*(*(ar2+r)+c)
+```
+
+## 函数和C-风格字符串
+
+### 将**C-**风格字符串作为参数的函数
+
+假设要将字符串作为参数传递给函数，则表示字符串的方式有三 种：
+
+- char数组； 
+- 用引号括起的字符串常量（也称字符串字面值）； 
+- 被设置为字符串的地址的char指针。
+
+但上述3种选择的类型都是char指针（准确地说是char*），因此可以将其作为字符串处理函数的参数：
+
+```
+char ghost[15] = "galloping";
+char * str = "galumphing";
+int n1 = strlen(ghost);//ghost is &ghost[0]
+int n2 = strlen(str); //pointer to char
+int n3 = strlen("gamboling"); // address of string
+```
+
+可以说是将字符串作为参数来传递，但实际传递的是字符串第一个字符的地址。这意味着字符串函数原型应将其表示字符串的形参声明为 char *类型。 
+
+C-风格字符串与常规char数组之间的一个重要区别是，字符串有内置的结束字符（前面讲过，包含字符，但不以空值字符结尾的char数组 只是数组，而不是字符串）。这意味着不必将字符串长度作为参数传递给函数，而函数可以使用循环依次检查字符串中的每个字符，直到遇到结尾的空值字符为止
+
+```cpp
+// strgfun.cpp -- functions with a string argument
+#include <iostream>
+unsigned int c_in_str(const char * str, char ch);
+int main()
+{
+    using namespace std;
+    char mmm[15] = "minimum";    // string in an array
+// some systems require preceding char with static to
+// enable array initialization
+
+    char *wail = "ululate";    // wail points to string
+
+    unsigned int ms = c_in_str(mmm, 'm');
+    unsigned int us = c_in_str(wail, 'u');
+    cout << ms << " m characters in " << mmm << endl;
+    cout << us << " u characters in " << wail << endl;
+    // cin.get();
+    return 0;
+}
+
+// this function counts the number of ch characters
+// in the string str
+unsigned int c_in_str(const char * str, char ch)
+{
+    unsigned int count = 0;
+
+    while (*str)        // quit when *str is '\0'
+    {
+        if (*str == ch)
+            count++;
+        str++;        // move pointer to next char
+    }
+    return count; 
+}
+
+```
+
+由于程序清单7.9中的c_int_str( )函数不应修改原始字符串，因此它在声明形参str时使用了限定符const。这样，如果错误地址函数修改了字 符串的内容，编译器将捕获这种错误。当然，可以在函数头中使用数组表示法，而不声明str： 
