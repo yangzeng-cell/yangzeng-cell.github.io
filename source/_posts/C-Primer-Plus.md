@@ -6094,3 +6094,447 @@ unsigned int c_in_str(const char * str, char ch)
 ```
 
 由于程序清单7.9中的c_int_str( )函数不应修改原始字符串，因此它在声明形参str时使用了限定符const。这样，如果错误地址函数修改了字 符串的内容，编译器将捕获这种错误。当然，可以在函数头中使用数组表示法，而不声明str： 
+
+```
+unsigned int c_in_str(const char str[], char ch)
+```
+
+然而，使用指针表示法提醒读者注意，参数不一定必须是数组名，也可以是其他形式的指针。
+
+该函数本身演示了处理字符串中字符的标准方式：
+
+```
+ while (*str)        // quit when *str is '\0'
+    {
+       	statement;
+        str++;        // move pointer to next char
+    }
+```
+
+str最初指向字符串的第一个字符，因此*str表示的是第一个字符。例如，第一次调用该函数后，*str的值将为m——“minimum”的第一个字 符。只要字符不为空值字符（\0），*str就为非零值，因此循环将继续。在每轮循环的结尾处，表达式str++将指针增加一个字节，使之指向字符串中的下一个字符。最终，str将指向结尾的空值字符，使得*str等于0——空值字符的数字编码，从而结束循环。 
+
+### 返回C-风格字符串的函数
+
+```cpp
+// strgback.cpp -- a function that returns a pointer to char
+#include <iostream>
+char * buildstr(char c, int n);     // prototype
+int main()
+{
+    using namespace std;
+    int times;
+    char ch;
+
+    cout << "Enter a character: ";
+    cin >> ch;
+    cout << "Enter an integer: ";
+    cin >> times;
+    char *ps = buildstr(ch, times);
+    cout << ps << endl;
+    delete [] ps;                   // free memory
+    ps = buildstr('+', 20);         // reuse pointer
+    cout << ps << "-DONE-" << ps << endl;
+    delete [] ps;                   // free memory
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+// builds string made of n c characters
+char * buildstr(char c, int n)
+{
+    char * pstr = new char[n + 1];
+    pstr[n] = '\0';         // terminate string
+    while (n-- > 0)
+        pstr[n] = c;        // fill rest of string
+    return pstr;
+}
+//Enter a character: V
+//Enter an integer: 48
+//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+//++++++++++++++++++++-DONE-++++++++++++++++++++
+```
+
+要创建包含n个字符的字符串，需要能够存储n + 1个字符的空间， 以便能够存储空值字符。因此，程序清单7.10中的函数请求分配n + 1个字节的内存来存储该字符串，并将最后一个字节设置为空值字符，然后从后向前对数组进行填充。在程序清单7.10中，下面的循环将循环n次，直到n减少到0，这将填充n个元素：
+
+```
+ while (n-- > 0)
+        pstr[n] = c; 
+```
+
+在最后一轮循环开始时，n的值为1。由于n−−意味着先使用这个值，然后将其递减，因此while循环测试条件将对1和0进行比较，发现 测试为true，循环继续。测试后，函数将n减为0，因此pstr[0]是最后一个被设置为c的元素。之所以从后向前（而不是从前向后）填充字符 串，是为了避免使用额外的变量。从前向后填充的代码将与下面类似：
+
+```
+int i = 0;
+while(i<n)
+	pstr[i++] = c;
+```
+
+注意，变量pstr的作用域为buildstr函数内，因此该函数结束时，pstr（而不是字符串）使用的内存将被释放。但由于函数返回了pstr的 值，因此程序仍可以通过main( )中的指针ps来访问新建的字符串。 
+
+当该字符串不再需要时，程序清单7.10中的程序使用delete释放该字符串占用的内存。然后，将ps指向为下一个字符串分配的内存块，然后释放它们。这种设计（让函数返回一个指针，该指针指向new分配的内存）的缺点是，程序员必须记住使用delete。在第12章中，读者将知道C++类如何使用构造函数和析构函数负责为您处理这些细节
+
+## 函数和结构
+
+为结构编写函数比为数组编写函数要简单得多。虽然结构变量和数组一样，都可以存储多个数据项，但在涉及到函数时，结构变量的行为更接近于基本的单值变量。也就是说，与数组不同，结构将其数据组合成单个实体或数据对象，该实体被视为一个整体。前面讲过，可以将一个结构赋给另外一个结构。同样，也可以按值传递结构，就像普通变量那样。在这种情况下，函数将使用原始结构的副本。另外，函数也可以返回结构。与数组名就是数组第一个元素的地址不同的是，结构名只是结构的名称，要获得结构的地址，必须使用地址运算符&。在C语言和C++中，都使用符号&来表示地址运算符；另外，C++还使用该运算符来表示引用变量，这将在第8章讨论。
+
+使用结构编程时，最直接的方式是像处理基本类型那样来处理结构；也就是说，将结构作为参数传递，并在需要时将结构用作返回值使 用。然而，按值传递结构有一个缺点。如果结构非常大，则复制结构将增加内存要求，降低系统运行的速度。出于这些原因（同时由于最初C语言不允许按值传递结构），许多C程序员倾向于传递结构的地址，然后使用指针来访问结构的内容。C++提供了第三种选择——按引用传递（将在第8章介绍）。下面介绍其他两种传递方式，首先介绍传递和返回整个结构
+
+### 传递和返回结构
+
+```cpp
+// travel.cpp -- using structures with functions
+#include <iostream>
+struct travel_time
+{
+    int hours;
+    int mins;
+};
+const int Mins_per_hr = 60;
+
+travel_time sum(travel_time t1, travel_time t2);
+void show_time(travel_time t);
+
+int main()
+{
+    using namespace std;
+    travel_time day1 = {5, 45};    // 5 hrs, 45 min
+    travel_time day2 = {4, 55};    // 4 hrs, 55 min
+
+    travel_time trip = sum(day1, day2);
+    cout << "Two-day total: ";
+    show_time(trip);
+
+    travel_time day3= {4, 32};
+    cout << "Three-day total: ";
+    show_time(sum(trip, day3));
+    // cin.get();
+
+    return 0;
+}
+
+travel_time sum(travel_time t1, travel_time t2)
+{
+    travel_time total;
+
+    total.mins = (t1.mins + t2.mins) % Mins_per_hr;
+    total.hours = t1.hours + t2.hours +
+                  (t1.mins + t2.mins) / Mins_per_hr;
+    return total;
+}
+
+void show_time(travel_time t)
+{
+    using namespace std;
+    cout << t.hours << " hours, "
+         << t.mins << " minutes\n";
+}
+//Two-day total: 10 hours, 40 minutes
+//Three-day total: 15 hours, 12 minutes
+```
+
+其中，travel_time就像是一个标准的类型名，可被用来声明变量、函数的返回类型和函数的参数类型。由于total和t1变量是travel_time结构，因此可以对它们使用句点成员运算符。由于sum( )函数返回travel_time结构，因此可以将其用作show_time( )函数的参数。由于在默认情况下，C++函数按值传递参数，因此函数调用show_time(sum(trip,day3))将执行函数调用sum(trip, day3)，以获得其返回值。然后，show_time( )调用将sum( )的返回值（而不是函数自身）传递给show_time( )。
+
+### 另一个处理结构的函数示例 
+
+```cpp
+// strctfun.cpp -- functions with a structure argument
+#include <iostream>
+#include <cmath>
+
+// structure declarations
+struct polar
+{
+    double distance;      // distance from origin
+    double angle;         // direction from origin
+};
+struct rect
+{
+    double x;             // horizontal distance from origin
+    double y;             // vertical distance from origin
+};
+
+// prototypes
+polar rect_to_polar(rect xypos);
+void show_polar(polar dapos);
+
+int main()
+{
+    using namespace std;
+    rect rplace;
+    polar pplace;
+
+    cout << "Enter the x and y values: ";
+    while (cin >> rplace.x >> rplace.y)  // slick use of cin
+    {
+        pplace = rect_to_polar(rplace);
+        show_polar(pplace);
+        cout << "Next two numbers (q to quit): ";
+    }
+    cout << "Done.\n";
+    return 0;
+}
+
+// convert rectangular to polar coordinates
+polar rect_to_polar(rect xypos)
+{
+    using namespace std;
+    polar answer;
+
+    answer.distance =
+        sqrt( xypos.x * xypos.x + xypos.y * xypos.y);
+    answer.angle = atan2(xypos.y, xypos.x);
+    return answer;      // returns a polar structure
+}
+
+// show polar coordinates, converting angle to degrees
+void show_polar (polar dapos)
+{
+    using namespace std;
+    const double Rad_to_deg = 57.29577951;
+
+    cout << "distance = " << dapos.distance;
+    cout << ", angle = " << dapos.angle * Rad_to_deg;
+    cout << " degrees\n";
+}
+
+```
+
+### 传递结构的地址
+
+假设要传递结构的地址而不是整个结构以节省时间和空间，则需要重新编写前面的函数，使用指向结构的指针。首先来看一看如何重新编 写show_polar( )函数。需要修改三个地方：
+
+调用函数时，将结构的地址（&pplace）而不是结构本身（pplace）传递给它； 
+
+将形参声明为指向polar的指针，即polar *类型。由于函数不应该修改结构，因此使用了const修饰符； 
+
+由于形参是指针而不是结构，因此应间接成员运算符（->），而不是成员运算符（句点）。
+
+```cpp
+// strctptr.cpp -- functions with pointer to structure arguments
+#include <iostream>
+#include <cmath>
+
+// structure templates
+struct polar
+{
+    double distance;      // distance from origin
+    double angle;         // direction from origin
+};
+struct rect
+{
+    double x;             // horizontal distance from origin
+    double y;             // vertical distance from origin
+};
+
+// prototypes
+void rect_to_polar(const rect * pxy, polar * pda);
+void show_polar (const polar * pda);
+
+int main()
+{
+    using namespace std;
+    rect rplace;
+    polar pplace;
+
+    cout << "Enter the x and y values: ";
+    while (cin >> rplace.x >> rplace.y)
+    {
+        rect_to_polar(&rplace, &pplace);    // pass addresses
+        show_polar(&pplace);        // pass address
+        cout << "Next two numbers (q to quit): ";
+    }
+    cout << "Done.\n";
+    return 0;
+}
+
+// show polar coordinates, converting angle to degrees
+void show_polar (const polar * pda)
+{
+    using namespace std;
+    const double Rad_to_deg = 57.29577951;
+
+    cout << "distance = " << pda->distance;
+    cout << ", angle = " << pda->angle * Rad_to_deg;
+    cout << " degrees\n";
+}
+
+// convert rectangular to polar coordinates
+void rect_to_polar(const rect * pxy, polar * pda)
+{
+    using namespace std;
+    pda->distance =
+            sqrt(pxy->x * pxy->x + pxy->y * pxy->y);
+    pda->angle = atan2(pxy->y, pxy->x);
+}
+//Enter the x and y values: 30 40
+//distance = 50, angle = 53.1301 degrees
+//Next two numbers (q to quit): -100 100
+//distance = 141.421, angle = 135 degrees
+//Next two numbers (q to quit): q
+//Done.
+```
+
+从用户的角度来说，程序清单7.13的行为与程序清单7.12相同。它们之间的差别在于，程序清单7.12使用的是结构副本，而程序清单7.13 使用的是指针，让函数能够对原始结构进行操作。 
+
+## 函数和string对象
+
+虽然C-风格字符串和string对象的用途几乎相同，但与数组相比，string对象与结构的更相似。例如，可以将一个结构赋给另一个结构， 也可以将一个对象赋给另一个对象。可以将结构作为完整的实体传递给函数，也可以将对象作为完整的实体进行传递。如果需要多个字符串，可以声明一个string对象数组，而不是二维char数组。
+
+```cpp
+/ topfive.cpp -- handling an array of string objects
+#include <iostream>
+#include <string>
+using namespace std;
+const int SIZE = 5;
+void display(const string sa[], int n);
+int main()
+{
+    string list[SIZE];     // an array holding 5 string object
+    cout << "Enter your " << SIZE << " favorite astronomical sights:\n";
+    for (int i = 0; i < SIZE; i++)
+    {
+        cout << i + 1 << ": ";
+        getline(cin,list[i]);
+    }
+
+    cout << "Your list:\n";
+    display(list, SIZE);
+    // cin.get();
+
+    return 0;
+}
+
+void display(const string sa[], int n)
+{
+    for (int i = 0; i < n; i++)
+        cout << i + 1 << ": " << sa[i] << endl;
+}
+```
+
+对于该示例，需要指出的一点是，除函数getline( )外，该程序像对待内置类型（如int）一样对待string对象。如果需要string数组，只需使用通常的数组声明格式即可： 
+
+```
+string list[SIZE];
+```
+
+这样，数组list的每个元素都是一个string对象，可以像下面这样使用它：
+
+```
+getline(cin,list[i]);
+```
+
+同样，形参sa是一个指向string对象的指针，因此sa[i]是一个string对象，可以像下面这样使用它： 
+
+```
+ cout << i + 1 << ": " << sa[i] << endl;
+```
+
+ 
+
+## 函数与array对象
+
+在C++中，类对象是基于结构的，因此结构编程方面的有些考虑因素也适用于类。例如，可按值将对象传递给函数，在这种情况下，函数 处理的是原始对象的副本。另外，也可传递指向对象的指针，这让函数能够操作原始对象。下面来看一个使用C++11模板类array的例子。 
+
+```cpp
+//arrobj.cpp -- functions with array objects
+#include <iostream>
+#include <array>
+#include <string>
+const int Seasons = 4;
+const std::array<std::string, Seasons> Snames =
+    {"Spring", "Summer", "Fall", "Winter"};
+
+void fill(std::array<double, Seasons> * pa);
+void show(std::array<double, Seasons> da);
+int main()
+{
+    std::array<double, 4> expenses;
+    fill(&expenses);
+    show(expenses);
+    // std::cin.get();
+    // std::cin.get();
+    return 0;
+}
+
+void fill(std::array<double, Seasons> * pa)
+{
+    for (int i = 0; i < Seasons; i++)
+    {
+        std::cout << "Enter " << Snames[i] << " expenses: ";
+        std::cin >> (*pa)[i];
+    }
+}
+
+void show(std::array<double, Seasons> da)
+{
+    double total = 0.0;
+    std::cout << "\nEXPENSES\n";
+    for (int i = 0; i < Seasons; i++)
+    {
+        std::cout << Snames[i] << ": $" << da[i] << '\n';
+        total += da[i];
+    }
+    std::cout << "Total: $" << total << '\n';
+}
+```
+
+由于const array对象Snames是在所有函数之前声明的，因此可后面的任何函数定义中使用它。与const Seasons一样，Snames也有整个源代码文件共享。这个程序没有使用编译指令using，因此必须使用std::限定array和string。为简化程序，并将重点放在函数可如何使用对象上，函数fill()没有检查输入是否有效
+
+函数fill()和show()都有缺点。函数show()存在的问题是，expenses存储了四个double值，而创建一个新对象并将expenses的值复制到其中的效率太低。如果修改该程序，使其处理每月甚至每日的开支，这种问题将更严重。 
+
+函数fill()使用指针来直接处理原始对象，这避免了上述效率低下的问题，但代价是代码看起来更复杂：
+
+```
+ fill(&expenses);
+```
+
+
+
+cin >> (*pa)[i];
+
+在最后一条语句中，pa是一个指向array<double, 4>对象的指针，因此*pa为这种对象，而(*pa) [i]是该对象的一个元素。由于运算符优先级 的影响，其中的括号必不可少。这里的逻辑很简单，但增加了犯错的机会。
+
+使用第8章将讨论的引用可解决效率和表示法两方面的问题。
+
+## 递归
+
+C++函数有一种有趣的特点——可以调用自己（然而，与C语言不同的是，C++不允许main( )调用自己），这种功能被称为递归
+
+### 包含一个递归调用的递归
+
+```cpp
+// recur.cpp -- using recursion
+#include <iostream>
+void countdown(int n);
+
+int main()
+{
+    countdown(4);           // call the recursive function
+    // std::cin.get();
+    return 0;
+}
+
+void countdown(int n)
+{
+    using namespace std;
+    cout << "Counting down ... " << n << &n << endl;
+    if (n > 0)
+        countdown(n-1);     // function calls itself
+    cout << n << &n << ": Kaboom!\n";
+}
+Counting down ... 4 0x16db2371c
+Counting down ... 3 0x16db236ec
+Counting down ... 2 0x16db236bc
+Counting down ... 1 0x16db2368c
+Counting down ... 0 0x16db2365c
+0 0x16db2365c: Kaboom!
+1 0x16db2368c: Kaboom!
+2 0x16db236bc: Kaboom!
+3 0x16db236ec: Kaboom!
+4 0x16db2371c: Kaboom!
+```
+
+注意，每个递归调用都创建自己的一套变量，因此当程序到达第5次调用时，将有5个独立的n变量，其中每个变量的值都不同。
+
+### 包含多个递归调用的递归
