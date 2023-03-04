@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-02-28%2021.56.47.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-01%2021.49.14.png">
 <meta property="article:published_time" content="2022-12-30T23:19:45.000Z">
-<meta property="article:modified_time" content="2023-03-04T01:17:36.378Z">
+<meta property="article:modified_time" content="2023-03-04T09:26:32.442Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -225,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          156k 字
+          164k 字
         
       </span>
     
@@ -236,7 +236,7 @@
         
         
         
-          1302 分钟
+          1368 分钟
         
       </span>
     
@@ -5086,7 +5086,257 @@ Counting down ... <span class="hljs-number">0</span> <span class="hljs-number">0
 <span class="hljs-number">4</span> <span class="hljs-number">0x16db2371c</span>: Kaboom!</code></pre></div>
 
 <p>注意，每个递归调用都创建自己的一套变量，因此当程序到达第5次调用时，将有5个独立的n变量，其中每个变量的值都不同。</p>
-<h3 id="包含多个递归调用的递归"><a href="#包含多个递归调用的递归" class="headerlink" title="包含多个递归调用的递归"></a>包含多个递归调用的递归</h3>
+<h3 id="包含多个递归调用的递归"><a href="#包含多个递归调用的递归" class="headerlink" title="包含多个递归调用的递归"></a>包含多个递归调用的递归</h3><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// ruler.cpp -- using recursion to subdivide a ruler</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> Len = <span class="hljs-number">66</span>;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> Divs = <span class="hljs-number">6</span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">subdivide</span><span class="hljs-params">(<span class="hljs-type">char</span> ar[], <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high, <span class="hljs-type">int</span> level)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">char</span> ruler[Len];
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; Len - <span class="hljs-number">2</span>; i++)
+        ruler[i] = <span class="hljs-string">&#x27; &#x27;</span>;
+    ruler[Len - <span class="hljs-number">1</span>] = <span class="hljs-string">&#x27;\0&#x27;</span>;
+    <span class="hljs-type">int</span> max = Len - <span class="hljs-number">2</span>;
+    <span class="hljs-type">int</span> min = <span class="hljs-number">0</span>;
+    ruler[min] = ruler[max] = <span class="hljs-string">&#x27;|&#x27;</span>;
+    std::cout &lt;&lt; ruler &lt;&lt; std::endl;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt;= Divs; i++)
+    &#123;
+        <span class="hljs-built_in">subdivide</span>(ruler,min,max, i);
+        std::cout &lt;&lt; ruler &lt;&lt; std::endl;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt; Len - <span class="hljs-number">2</span>; j++)
+            ruler[j] = <span class="hljs-string">&#x27; &#x27;</span>;  <span class="hljs-comment">// reset to blank ruler</span>
+    &#125;
+    <span class="hljs-comment">// std::cin.get();</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">subdivide</span><span class="hljs-params">(<span class="hljs-type">char</span> ar[], <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high, <span class="hljs-type">int</span> level)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (level == <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span>;
+    <span class="hljs-type">int</span> mid = (high + low) / <span class="hljs-number">2</span>;
+    ar[mid] = <span class="hljs-string">&#x27;|&#x27;</span>;
+    <span class="hljs-built_in">subdivide</span>(ar, low, mid, level - <span class="hljs-number">1</span>);
+    <span class="hljs-built_in">subdivide</span>(ar, mid, high, level - <span class="hljs-number">1</span>);
+&#125;
+<span class="hljs-comment">//|                                                               |</span>
+<span class="hljs-comment">//|                               |                               |</span>
+<span class="hljs-comment">//|               |               |               |               |</span>
+<span class="hljs-comment">//|       |       |       |       |       |       |       |       |</span>
+<span class="hljs-comment">//|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |</span>
+<span class="hljs-comment">//| | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |</span>
+<span class="hljs-comment">//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</span></code></pre></div>
+
+<p>subdivide( )函数使用变量level来控制递归层。函数调用自身时，将把level减1，当level为0时，该函数将不再调用自己。注意，subdivide( )调用自己两次，一次针对左半部分，另一次针对右半部分。最初的中点被用作一次调用的右端点和另一次调用的左端点。请注意，调用次数将呈几何级数增长。也就是说，调用一次导致两个调用，然后导致4个调用，再导致8个调用，依此类推。这就是6层调 用能够填充64个元素的原因（2^6=64）。这将不断导致函数调用数（以及存储的变量数）翻倍，因此如果要求的递归层次很多，这种递归方式将是一种糟糕的选择；然而，如果递归层次较少，这将是一种精致而简单的选择。 </p>
+<h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>与数据项相似，函数也有地址。函数的地址是存储其机器语言代码的内存的开始地址。通常，这些地址对用户而言，既不重要，也没有什么用处，但对程序而言，却很有用。例如，可以编写将另一个函数的地址作为参数的函数。这样第一个函数将能够找到第二个函数，并运行它。与直接调用另一个函数相比，这种方法很笨拙，但它允许在不同的时间传递不同函数的地址，这意味着可以在不同的时间使用不同的函数</p>
+<h3 id="函数指针的基础知识"><a href="#函数指针的基础知识" class="headerlink" title="函数指针的基础知识"></a>函数指针的基础知识</h3><h4 id="获取函数的地址"><a href="#获取函数的地址" class="headerlink" title="获取函数的地址"></a>获取函数的地址</h4><p>获取函数的地址很简单：只要使用函数名（后面不跟参数）即可。也就是说，如果think( )是一个函数，则think就是该函数的地址。要将函数作为参数进行传递，必须传递函数名。一定要区分传递的是函数的地址还是函数的返回值： </p>
+<div class="code-wrapper"><pre><code class="hljs isbl"><span class="hljs-variable">process</span>（<span class="hljs-variable">think</span>）
+<span class="hljs-variable">thought</span>（<span class="hljs-function"><span class="hljs-title">think</span>())</span></code></pre></div>
+
+<p>process( )调用使得process( )函数能够在其内部调用think( )函数。thought( )调用首先调用think( )函数，然后将think( )的返回值传递给 thought( )函数。 </p>
+<h4 id="声明函数指针"><a href="#声明函数指针" class="headerlink" title="声明函数指针"></a>声明函数指针</h4><p>声明指向某种数据类型的指针时，必须指定指针指向的类型。同样，声明指向函数的指针时，也必须指定指针指向的函数类型。这意味 着声明应指定函数的返回类型以及函数的特征标（参数列表）。也就是说，声明应像函数原型那样指出有关函数的信息</p>
+<div class="code-wrapper"><pre><code class="hljs scss">double (*pf)(int);</code></pre></div>
+
+<p>通常，要声明指向特定类型的函数的指针，可以首先编写这种函数的原型，然后用（*pf）替换函数名。这样pf就是这类函数的指针。</p>
+<p>为提供正确的运算符优先级，必须在声明中使用括号将<code>*pf</code>括起。括号的优先级比*运算符高，因此<code>*pf（int）</code>意味着pf( )是一个返回指针 的函数，而<code>(*pf)</code>（int）意味着pf是一个指向函数的指针：</p>
+<div class="code-wrapper"><pre><code class="hljs scss">double (*pf)(int);
+double * <span class="hljs-built_in">pf</span>(int);</code></pre></div>
+
+<p>正确地声明pf后，便可以将相应函数的地址赋给它：</p>
+<div class="code-wrapper"><pre><code class="hljs abnf">double pam(int)<span class="hljs-comment">;</span>
+double (*pf)(int)<span class="hljs-comment">;</span>
+<span class="hljs-attribute">pf</span> <span class="hljs-operator">=</span> pam<span class="hljs-comment">;</span></code></pre></div>
+
+<p>注意，pam( )的特征标和返回类型必须与pf相同。如果不相同，编译器将拒绝这种赋值：</p>
+<h4 id="使用指针来调用函数"><a href="#使用指针来调用函数" class="headerlink" title="使用指针来调用函数:"></a>使用指针来调用函数:</h4><p>现在进入最后一步，即使用指针来调用被指向的函数。线索来自指针声明。前面讲过，（*pf）扮演的角色与函数名相同，因此使用 </p>
+<p>（*pf）时，只需将它看作函数名即可：</p>
+<div class="code-wrapper"><pre><code class="hljs abnf">double pam(int)<span class="hljs-comment">;</span>
+double (*pf)(int)<span class="hljs-comment">;</span>
+<span class="hljs-attribute">pf</span> <span class="hljs-operator">=</span> pam<span class="hljs-comment">;</span>
+double x <span class="hljs-operator">=</span> pam(<span class="hljs-number">4</span>)<span class="hljs-comment">;</span>
+double y <span class="hljs-operator">=</span> (*pf)(<span class="hljs-number">5</span>)<span class="hljs-comment">;</span></code></pre></div>
+
+<p>实际上，C++也允许像使用函数名那样使用pf： </p>
+<div class="code-wrapper"><pre><code class="hljs abnf">double y <span class="hljs-operator">=</span> pf(<span class="hljs-number">5</span>)<span class="hljs-comment">;</span></code></pre></div>
+
+<p>第一种格式虽然不太好看，但它给出了强有力的提示——代码正在使用函数指针。 </p>
+<p>为何pf和<code>（*pf）</code>等价呢？一种学派认为，由于pf是函数指针，而*pf 是函数，因此应将<code>（*pf）( )</code>用作函数调用。另一种学派认为，由于函数名是指向该函数的指针，指向函数的指针的行为应与函数名相似，因此应将pf( )用作函数调用使用。C++进行了折衷——这2种方式都是正确的，或者至少是允许的，虽然它们在逻辑上是互相冲突的。</p>
+<h3 id="函数指针示例"><a href="#函数指针示例" class="headerlink" title="函数指针示例"></a>函数指针示例</h3><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// fun_ptr.cpp -- pointers to functions</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">betsy</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">pam</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span>;
+
+<span class="hljs-comment">// second argument is pointer to a type double function that</span>
+<span class="hljs-comment">// takes a type int argument</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">estimate</span><span class="hljs-params">(<span class="hljs-type">int</span> lines, <span class="hljs-type">double</span> (*pf)(<span class="hljs-type">int</span>))</span></span>;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">int</span> code;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;How many lines of code do you need? &quot;</span>;
+    cin &gt;&gt; code;
+    cout &lt;&lt; <span class="hljs-string">&quot;Here&#x27;s Betsy&#x27;s estimate:\n&quot;</span>;
+    <span class="hljs-built_in">estimate</span>(code, betsy);
+    cout &lt;&lt; <span class="hljs-string">&quot;Here&#x27;s Pam&#x27;s estimate:\n&quot;</span>;
+    <span class="hljs-built_in">estimate</span>(code, pam);
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">betsy</span><span class="hljs-params">(<span class="hljs-type">int</span> lns)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0.05</span> * lns;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">pam</span><span class="hljs-params">(<span class="hljs-type">int</span> lns)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0.03</span> * lns + <span class="hljs-number">0.0004</span> * lns * lns;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">estimate</span><span class="hljs-params">(<span class="hljs-type">int</span> lines, <span class="hljs-type">double</span> (*pf)(<span class="hljs-type">int</span>))</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    cout &lt;&lt; lines &lt;&lt; <span class="hljs-string">&quot; lines will take &quot;</span>;
+    cout &lt;&lt; (*pf)(lines) &lt;&lt; <span class="hljs-string">&quot; hour(s)\n&quot;</span>;
+&#125;</code></pre></div>
+
+<h3 id="深入探讨函数指针"><a href="#深入探讨函数指针" class="headerlink" title="深入探讨函数指针"></a>深入探讨函数指针</h3><p>下面是一些函数的原型，它们的特征标和返回类型相同： </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">double</span> * <span class="hljs-title">f1</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> ar[],<span class="hljs-type">int</span> n)</span></span>;
+<span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">double</span> * <span class="hljs-title">f2</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> [],<span class="hljs-type">int</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">double</span> * <span class="hljs-title">f3</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> * , <span class="hljs-type">int</span>)</span></span>;</code></pre></div>
+
+<p>这些函数的特征标看似不同，但实际上相同。首先，前面说过，在函数原型中，参数列表const double ar [ ]与const double * ar的含义完全相同。其次，在函数原型中，可以省略标识符。因此，const double ar [ ] 可简化为const double [ ]，而const double * ar可简化为const double *。因此，上述所有函数特征标的含义都相同。另一方面，函数定义必须提供标识符，因此需要使用const double ar [ ]或const double * ar。 </p>
+<p>接下来，假设要声明一个指针，它可指向这三个函数之一。假定该指针名为pa，则只需将目标函数原型中的函数名替换为(*pa)：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * (*p3)(<span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * , <span class="hljs-built_in">int</span>);</code></pre></div>
+
+<p>可在声明的同时进行初始化：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * (*p3)(<span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * , <span class="hljs-built_in">int</span>) = f1;</code></pre></div>
+
+<p>使用C++11的自动类型推断功能时，代码要简单得多： </p>
+<div class="code-wrapper"><pre><code class="hljs abnf">auto p3 <span class="hljs-operator">=</span> f1<span class="hljs-comment">;</span></code></pre></div>
+
+<p>鉴于需要使用三个函数，如果有一个函数指针数组将很方便。这样，将可使用for循环通过指针依次调用每个函数。如何声明这样的数组 呢？显然，这种声明应类似于单个函数指针的声明，但必须在某个地方加上[3]，以指出这是一个包含三个函数指针的数组。问题是在什么地方加上[3]，答案如下（包含初始化）： </p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * (*pa[<span class="hljs-number">3</span>])(<span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * , <span class="hljs-built_in">int</span>)=&#123;f1,f2,f3&#125;;</code></pre></div>
+
+<p>为何将[3]放在这个地方呢？pa是一个包含三个元素的数组，而要声明这样的数组，首先需要使用pa[3]。该声明的其他部分指出了数组包含的元素是什么样的。运算符[]的优先级高于*，因此<code>*pa[3]</code>表明pa是一个包含三个指针的数组。上述声明的其他部分指出了每个指针指向的是什么：特征标为const double *, int，且返回类型为const double *的函数。因此，pa是一个包含三个指针的数组，其中每个指针都指向这样的函数，即将const double *和int作为参数，并返回一个const double *。</p>
+<p>这里能否使用auto呢？不能。自动类型推断只能用于单值初始化，而不能用于初始化列表。但声明数组pa后，声明同样类型的数组就很简单了：    </p>
+<div class="code-wrapper"><pre><code class="hljs abnf">auto pb <span class="hljs-operator">=</span> pa<span class="hljs-comment">;</span></code></pre></div>
+
+<p>本书前面说过，数组名是指向第一个元素的指针，因此pa和pb都是指向函数指针的指针。 </p>
+<p>如何使用它们来调用函数呢？pa[i]和pb[i]都表示数组中的指针，因此可将任何一种函数调用表示法用于它们： </p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * px = pa[<span class="hljs-number">0</span>](av,<span class="hljs-number">3</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * py = (*pb[<span class="hljs-number">1</span>])(av,<span class="hljs-number">3</span>);</code></pre></div>
+
+<p>要获得指向的double值，可使用运算符*：</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">double</span> x = *pa[<span class="hljs-number">0</span>](av,<span class="hljs-number">3</span>);
+<span class="hljs-attribute">double</span> y = *(*pb[<span class="hljs-number">1</span>])(av,<span class="hljs-number">3</span>);</code></pre></div>
+
+<p>可做的另一件事是创建指向整个数组的指针。由于数组名pa是指向函数指针的指针，因此指向数组的指针将是这样的指针，即它指向指针 的指针。这听起来令人恐怖，但由于可使用单个值对其进行初始化，因 此可使用auto： </p>
+<div class="code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">auto pc</span> = &amp;pa;</code></pre></div>
+
+<p>如果您喜欢自己声明，该如何办呢？显然，这种声明应类似于pa的声明，但由于增加了一层间接，因此需要在某个地方添加一个*。具体 地说，如果这个指针名为pd，则需要指出它是一个指针，而不是数组。 这意味着声明的核心部分应为<code>(*pd)[3]</code>，其中的括号让标识符pd与<code>*</code>先结 合：</p>
+<div class="code-wrapper"><pre><code class="hljs smali">*pd[3] //an<span class="hljs-built_in"> array </span>of three pointer
+(*pd)[3] // a pointer to an<span class="hljs-built_in"> array </span>of 3 element</code></pre></div>
+
+<p>换句话说，pd是一个指针，它指向一个包含三个元素的数组。这些元素是什么呢？由pa的声明的其他部分描述，结果如下：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> *(*(*pd[<span class="hljs-number">3</span>]))(<span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> * ,<span class="hljs-built_in">int</span>)=&amp;pa;</code></pre></div>
+
+<p>要调用函数，需认识到这样一点：既然pd指向数组，那么<code>*pd</code>就是 数组，而<code>(*pd)[i]</code>是数组中的元素，即函数指针。因此，较简单的函数调 用是<code>(*pd)i</code>，而<code>*(*pd)i</code>是返回的指针指向的值。也可以使用第二种使用指针调用函数的语法：使用<code>(*(*pd)[i])(av,3)</code>来调用函数，而<code>*(*(*pd)[i])(av,3)</code>是指向的double值。 </p>
+<p>请注意pa（它是数组名，表示地址）和&amp;pa之间的差别。正如您在本书前面看到的，在大多数情况下，pa都是数组第一个元素的地址，即 &amp;pa[0]。因此，它是单个指针的地址。但&amp;pa是整个数组（即三个指针块）的地址。从数字上说，pa和&amp;pa的值相同，但它们的类型不同。一种差别是，pa+1为数组中下一个元素的地址，而&amp;pa+1为数组pa后面一 个12字节内存块的地址（这里假定地址为4字节）。另一个差别是，要 得到第一个元素的值，只需对pa解除一次引用，但需要对&amp;pa解除两次 引用：</p>
+<div class="code-wrapper"><pre><code class="hljs 1c">**<span class="hljs-meta">&amp;pa == *pa == pa[0]</span></code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// arfupt.cpp -- an array of function pointers</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-comment">// various notations, same signatures</span>
+<span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">double</span> * <span class="hljs-title">f1</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> n)</span></span>;
+<span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">double</span> * <span class="hljs-title">f2</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> [], <span class="hljs-type">int</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">double</span> * <span class="hljs-title">f3</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> *, <span class="hljs-type">int</span>)</span></span>;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">double</span> av[<span class="hljs-number">3</span>] = &#123;<span class="hljs-number">1112.3</span>, <span class="hljs-number">1542.6</span>, <span class="hljs-number">2227.9</span>&#125;;
+
+    <span class="hljs-comment">// pointer to a function</span>
+    <span class="hljs-type">const</span> <span class="hljs-type">double</span> *(*p1)(<span class="hljs-type">const</span> <span class="hljs-type">double</span> *, <span class="hljs-type">int</span>) = f1;
+    <span class="hljs-keyword">auto</span> p2 = f2;  <span class="hljs-comment">// C++0x automatic type deduction</span>
+    <span class="hljs-comment">// pre-C++0x can use the following code instead</span>
+    <span class="hljs-comment">// const double *(*p2)(const double *, int) = f2;</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;Using pointers to functions:\n&quot;</span>;
+    cout &lt;&lt; <span class="hljs-string">&quot; Address  Value\n&quot;</span>;
+    cout &lt;&lt;  (*p1)(av,<span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; *(*p1)(av,<span class="hljs-number">3</span>) &lt;&lt; endl;
+    cout &lt;&lt; <span class="hljs-built_in">p2</span>(av,<span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; *<span class="hljs-built_in">p2</span>(av,<span class="hljs-number">3</span>) &lt;&lt; endl;
+
+    <span class="hljs-comment">// pa an array of pointers</span>
+    <span class="hljs-comment">// auto doesn&#x27;t work with list initialization</span>
+    <span class="hljs-type">const</span> <span class="hljs-type">double</span> *(*pa[<span class="hljs-number">3</span>])(<span class="hljs-type">const</span> <span class="hljs-type">double</span> *, <span class="hljs-type">int</span>) = &#123;f1,f2,f3&#125;;
+    <span class="hljs-comment">// but it does work for initializing to a single value</span>
+    <span class="hljs-comment">// pb a pointer to first element of pa</span>
+    <span class="hljs-keyword">auto</span> pb = pa;
+    <span class="hljs-comment">// pre-C++0x can use the following code instead</span>
+    <span class="hljs-comment">// const double *(**pb)(const double *, int) = pa;</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;\nUsing an array of pointers to functions:\n&quot;</span>;
+    cout &lt;&lt; <span class="hljs-string">&quot; Address  Value\n&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)
+        cout &lt;&lt; pa[i](av,<span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; *pa[i](av,<span class="hljs-number">3</span>) &lt;&lt; endl;
+    cout &lt;&lt; <span class="hljs-string">&quot;\nUsing a pointer to a pointer to a function:\n&quot;</span>;
+    cout &lt;&lt; <span class="hljs-string">&quot; Address  Value\n&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)
+        cout &lt;&lt; pb[i](av,<span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; *pb[i](av,<span class="hljs-number">3</span>) &lt;&lt; endl;
+
+    <span class="hljs-comment">// what about a pointer to an array of function pointers</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;\nUsing pointers to an array of pointers:\n&quot;</span>;
+    cout &lt;&lt; <span class="hljs-string">&quot; Address  Value\n&quot;</span>;
+    <span class="hljs-comment">// easy way to declare pc</span>
+    <span class="hljs-keyword">auto</span> pc = &amp;pa;
+    <span class="hljs-comment">// pre-C++0x can use the following code instead</span>
+    <span class="hljs-comment">// const double *(*(*pc)[3])(const double *, int) = &amp;pa;</span>
+    cout &lt;&lt; (*pc)[<span class="hljs-number">0</span>](av,<span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; *(*pc)[<span class="hljs-number">0</span>](av,<span class="hljs-number">3</span>) &lt;&lt; endl;
+    <span class="hljs-comment">// hard way to declare pd</span>
+    <span class="hljs-type">const</span> <span class="hljs-type">double</span> *(*(*pd)[<span class="hljs-number">3</span>])(<span class="hljs-type">const</span> <span class="hljs-type">double</span> *, <span class="hljs-type">int</span>) = &amp;pa;
+    <span class="hljs-comment">// store return value in pdb</span>
+    <span class="hljs-type">const</span> <span class="hljs-type">double</span> * pdb = (*pd)[<span class="hljs-number">1</span>](av,<span class="hljs-number">3</span>);
+    cout &lt;&lt; pdb &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; *pdb &lt;&lt; endl;
+    <span class="hljs-comment">// alternative notation</span>
+    cout &lt;&lt; (*(*pd)[<span class="hljs-number">2</span>])(av,<span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; *(*(*pd)[<span class="hljs-number">2</span>])(av,<span class="hljs-number">3</span>) &lt;&lt; endl;
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-comment">// some rather dull functions</span>
+
+<span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">double</span> * <span class="hljs-title">f1</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> * ar, <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> ar;
+&#125;
+<span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">double</span> * <span class="hljs-title">f2</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> ar+<span class="hljs-number">1</span>;
+&#125;
+<span class="hljs-function"><span class="hljs-type">const</span> <span class="hljs-type">double</span> * <span class="hljs-title">f3</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">double</span> ar[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> ar+<span class="hljs-number">2</span>;
+&#125;</code></pre></div>
+
+<h3 id="使用typedef进行简化"><a href="#使用typedef进行简化" class="headerlink" title="使用typedef进行简化"></a>使用typedef进行简化</h3><p>除auto外，C++还提供了其他简化声明的工具。您可能还记得，第5章说过，关键字typedef让您能够创建类型别名： </p>
+<div class="code-wrapper"><pre><code class="hljs d"><span class="hljs-keyword">typedef</span> <span class="hljs-built_in">double</span> <span class="hljs-built_in">real</span> ;</code></pre></div>
+
+<p>这里采用的方法是，将别名当做标识符进行声明，并在开头使用关键字typedef。</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> *(*p_fun)(<span class="hljs-keyword">const</span> <span class="hljs-built_in">double</span> *,<span class="hljs-built_in">int</span>);
+p_fun p1 = f1;</code></pre></div>
+
+<p>然后使用这个别名来简化代码：</p>
+<div class="code-wrapper"><pre><code class="hljs armasm"><span class="hljs-symbol">p_fun</span> pa[<span class="hljs-number">3</span>]=&#123;<span class="hljs-built_in">f1</span>,<span class="hljs-built_in">f2</span>,<span class="hljs-built_in">f3</span>&#125;<span class="hljs-comment">;</span>
+<span class="hljs-symbol">p_fun</span> (*pd)[<span class="hljs-number">3</span>] = &amp;pa<span class="hljs-comment">;</span></code></pre></div>
+
+
                 
               </div>
             
