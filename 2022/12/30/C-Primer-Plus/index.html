@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-02-28%2021.56.47.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-01%2021.49.14.png">
 <meta property="article:published_time" content="2022-12-30T23:19:45.000Z">
-<meta property="article:modified_time" content="2023-03-02T15:55:05.878Z">
+<meta property="article:modified_time" content="2023-03-04T01:17:36.378Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -225,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          146k 字
+          156k 字
         
       </span>
     
@@ -236,7 +236,7 @@
         
         
         
-          1218 分钟
+          1302 分钟
         
       </span>
     
@@ -4722,7 +4722,371 @@ pp2 = &amp;p1;//not allowed but suppose it were
 </code></pre></div>
 
 <p>由于程序清单7.9中的c_int_str( )函数不应修改原始字符串，因此它在声明形参str时使用了限定符const。这样，如果错误地址函数修改了字 符串的内容，编译器将捕获这种错误。当然，可以在函数头中使用数组表示法，而不声明str： </p>
+<div class="code-wrapper"><pre><code class="hljs reasonml">unsigned <span class="hljs-built_in">int</span> c<span class="hljs-constructor">_in_str(<span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-params">str</span>[], <span class="hljs-params">char</span> <span class="hljs-params">ch</span>)</span></code></pre></div>
 
+<p>然而，使用指针表示法提醒读者注意，参数不一定必须是数组名，也可以是其他形式的指针。</p>
+<p>该函数本身演示了处理字符串中字符的标准方式：</p>
+<div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-keyword">while</span> (*str)        <span class="hljs-regexp">//</span> quit when *str is <span class="hljs-string">&#x27;\0&#x27;</span>
+   &#123;
+      	statement;
+       str++;        <span class="hljs-regexp">//</span> move pointer to <span class="hljs-keyword">next</span> char
+   &#125;</code></pre></div>
+
+<p>str最初指向字符串的第一个字符，因此<em>str表示的是第一个字符。例如，第一次调用该函数后，</em>str的值将为m——“minimum”的第一个字 符。只要字符不为空值字符（\0），<em>str就为非零值，因此循环将继续。在每轮循环的结尾处，表达式str++将指针增加一个字节，使之指向字符串中的下一个字符。最终，str将指向结尾的空值字符，使得</em>str等于0——空值字符的数字编码，从而结束循环。 </p>
+<h3 id="返回C-风格字符串的函数"><a href="#返回C-风格字符串的函数" class="headerlink" title="返回C-风格字符串的函数"></a>返回C-风格字符串的函数</h3><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// strgback.cpp -- a function that returns a pointer to char</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-function"><span class="hljs-type">char</span> * <span class="hljs-title">buildstr</span><span class="hljs-params">(<span class="hljs-type">char</span> c, <span class="hljs-type">int</span> n)</span></span>;     <span class="hljs-comment">// prototype</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">int</span> times;
+    <span class="hljs-type">char</span> ch;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Enter a character: &quot;</span>;
+    cin &gt;&gt; ch;
+    cout &lt;&lt; <span class="hljs-string">&quot;Enter an integer: &quot;</span>;
+    cin &gt;&gt; times;
+    <span class="hljs-type">char</span> *ps = <span class="hljs-built_in">buildstr</span>(ch, times);
+    cout &lt;&lt; ps &lt;&lt; endl;
+    <span class="hljs-keyword">delete</span> [] ps;                   <span class="hljs-comment">// free memory</span>
+    ps = <span class="hljs-built_in">buildstr</span>(<span class="hljs-string">&#x27;+&#x27;</span>, <span class="hljs-number">20</span>);         <span class="hljs-comment">// reuse pointer</span>
+    cout &lt;&lt; ps &lt;&lt; <span class="hljs-string">&quot;-DONE-&quot;</span> &lt;&lt; ps &lt;&lt; endl;
+    <span class="hljs-keyword">delete</span> [] ps;                   <span class="hljs-comment">// free memory</span>
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-comment">// builds string made of n c characters</span>
+<span class="hljs-function"><span class="hljs-type">char</span> * <span class="hljs-title">buildstr</span><span class="hljs-params">(<span class="hljs-type">char</span> c, <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">char</span> * pstr = <span class="hljs-keyword">new</span> <span class="hljs-type">char</span>[n + <span class="hljs-number">1</span>];
+    pstr[n] = <span class="hljs-string">&#x27;\0&#x27;</span>;         <span class="hljs-comment">// terminate string</span>
+    <span class="hljs-keyword">while</span> (n-- &gt; <span class="hljs-number">0</span>)
+        pstr[n] = c;        <span class="hljs-comment">// fill rest of string</span>
+    <span class="hljs-keyword">return</span> pstr;
+&#125;
+<span class="hljs-comment">//Enter a character: V</span>
+<span class="hljs-comment">//Enter an integer: 48</span>
+<span class="hljs-comment">//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV</span>
+<span class="hljs-comment">//++++++++++++++++++++-DONE-++++++++++++++++++++</span></code></pre></div>
+
+<p>要创建包含n个字符的字符串，需要能够存储n + 1个字符的空间， 以便能够存储空值字符。因此，程序清单7.10中的函数请求分配n + 1个字节的内存来存储该字符串，并将最后一个字节设置为空值字符，然后从后向前对数组进行填充。在程序清单7.10中，下面的循环将循环n次，直到n减少到0，这将填充n个元素：</p>
+<div class="code-wrapper"><pre><code class="hljs abnf">while (n-- &gt; <span class="hljs-number">0</span>)
+       pstr[n] <span class="hljs-operator">=</span> c<span class="hljs-comment">; </span></code></pre></div>
+
+<p>在最后一轮循环开始时，n的值为1。由于n−−意味着先使用这个值，然后将其递减，因此while循环测试条件将对1和0进行比较，发现 测试为true，循环继续。测试后，函数将n减为0，因此pstr[0]是最后一个被设置为c的元素。之所以从后向前（而不是从前向后）填充字符 串，是为了避免使用额外的变量。从前向后填充的代码将与下面类似：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">while</span>(i&lt;n)
+	pstr[i++] = c;</code></pre></div>
+
+<p>注意，变量pstr的作用域为buildstr函数内，因此该函数结束时，pstr（而不是字符串）使用的内存将被释放。但由于函数返回了pstr的 值，因此程序仍可以通过main( )中的指针ps来访问新建的字符串。 </p>
+<p>当该字符串不再需要时，程序清单7.10中的程序使用delete释放该字符串占用的内存。然后，将ps指向为下一个字符串分配的内存块，然后释放它们。这种设计（让函数返回一个指针，该指针指向new分配的内存）的缺点是，程序员必须记住使用delete。在第12章中，读者将知道C++类如何使用构造函数和析构函数负责为您处理这些细节</p>
+<h2 id="函数和结构"><a href="#函数和结构" class="headerlink" title="函数和结构"></a>函数和结构</h2><p>为结构编写函数比为数组编写函数要简单得多。虽然结构变量和数组一样，都可以存储多个数据项，但在涉及到函数时，结构变量的行为更接近于基本的单值变量。也就是说，与数组不同，结构将其数据组合成单个实体或数据对象，该实体被视为一个整体。前面讲过，可以将一个结构赋给另外一个结构。同样，也可以按值传递结构，就像普通变量那样。在这种情况下，函数将使用原始结构的副本。另外，函数也可以返回结构。与数组名就是数组第一个元素的地址不同的是，结构名只是结构的名称，要获得结构的地址，必须使用地址运算符&amp;。在C语言和C++中，都使用符号&amp;来表示地址运算符；另外，C++还使用该运算符来表示引用变量，这将在第8章讨论。</p>
+<p>使用结构编程时，最直接的方式是像处理基本类型那样来处理结构；也就是说，将结构作为参数传递，并在需要时将结构用作返回值使 用。然而，按值传递结构有一个缺点。如果结构非常大，则复制结构将增加内存要求，降低系统运行的速度。出于这些原因（同时由于最初C语言不允许按值传递结构），许多C程序员倾向于传递结构的地址，然后使用指针来访问结构的内容。C++提供了第三种选择——按引用传递（将在第8章介绍）。下面介绍其他两种传递方式，首先介绍传递和返回整个结构</p>
+<h3 id="传递和返回结构"><a href="#传递和返回结构" class="headerlink" title="传递和返回结构"></a>传递和返回结构</h3><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// travel.cpp -- using structures with functions</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">travel_time</span>
+&#123;
+    <span class="hljs-type">int</span> hours;
+    <span class="hljs-type">int</span> mins;
+&#125;;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> Mins_per_hr = <span class="hljs-number">60</span>;
+
+<span class="hljs-function">travel_time <span class="hljs-title">sum</span><span class="hljs-params">(travel_time t1, travel_time t2)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_time</span><span class="hljs-params">(travel_time t)</span></span>;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    travel_time day1 = &#123;<span class="hljs-number">5</span>, <span class="hljs-number">45</span>&#125;;    <span class="hljs-comment">// 5 hrs, 45 min</span>
+    travel_time day2 = &#123;<span class="hljs-number">4</span>, <span class="hljs-number">55</span>&#125;;    <span class="hljs-comment">// 4 hrs, 55 min</span>
+
+    travel_time trip = <span class="hljs-built_in">sum</span>(day1, day2);
+    cout &lt;&lt; <span class="hljs-string">&quot;Two-day total: &quot;</span>;
+    <span class="hljs-built_in">show_time</span>(trip);
+
+    travel_time day3= &#123;<span class="hljs-number">4</span>, <span class="hljs-number">32</span>&#125;;
+    cout &lt;&lt; <span class="hljs-string">&quot;Three-day total: &quot;</span>;
+    <span class="hljs-built_in">show_time</span>(<span class="hljs-built_in">sum</span>(trip, day3));
+    <span class="hljs-comment">// cin.get();</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function">travel_time <span class="hljs-title">sum</span><span class="hljs-params">(travel_time t1, travel_time t2)</span></span>
+<span class="hljs-function"></span>&#123;
+    travel_time total;
+
+    total.mins = (t1.mins + t2.mins) % Mins_per_hr;
+    total.hours = t1.hours + t2.hours +
+                  (t1.mins + t2.mins) / Mins_per_hr;
+    <span class="hljs-keyword">return</span> total;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_time</span><span class="hljs-params">(travel_time t)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    cout &lt;&lt; t.hours &lt;&lt; <span class="hljs-string">&quot; hours, &quot;</span>
+         &lt;&lt; t.mins &lt;&lt; <span class="hljs-string">&quot; minutes\n&quot;</span>;
+&#125;
+<span class="hljs-comment">//Two-day total: 10 hours, 40 minutes</span>
+<span class="hljs-comment">//Three-day total: 15 hours, 12 minutes</span></code></pre></div>
+
+<p>其中，travel_time就像是一个标准的类型名，可被用来声明变量、函数的返回类型和函数的参数类型。由于total和t1变量是travel_time结构，因此可以对它们使用句点成员运算符。由于sum( )函数返回travel_time结构，因此可以将其用作show_time( )函数的参数。由于在默认情况下，C++函数按值传递参数，因此函数调用show_time(sum(trip,day3))将执行函数调用sum(trip, day3)，以获得其返回值。然后，show_time( )调用将sum( )的返回值（而不是函数自身）传递给show_time( )。</p>
+<h3 id="另一个处理结构的函数示例"><a href="#另一个处理结构的函数示例" class="headerlink" title="另一个处理结构的函数示例"></a>另一个处理结构的函数示例</h3><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// strctfun.cpp -- functions with a structure argument</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span>
+
+<span class="hljs-comment">// structure declarations</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">polar</span>
+&#123;
+    <span class="hljs-type">double</span> distance;      <span class="hljs-comment">// distance from origin</span>
+    <span class="hljs-type">double</span> angle;         <span class="hljs-comment">// direction from origin</span>
+&#125;;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">rect</span>
+&#123;
+    <span class="hljs-type">double</span> x;             <span class="hljs-comment">// horizontal distance from origin</span>
+    <span class="hljs-type">double</span> y;             <span class="hljs-comment">// vertical distance from origin</span>
+&#125;;
+
+<span class="hljs-comment">// prototypes</span>
+<span class="hljs-function">polar <span class="hljs-title">rect_to_polar</span><span class="hljs-params">(rect xypos)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_polar</span><span class="hljs-params">(polar dapos)</span></span>;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    rect rplace;
+    polar pplace;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Enter the x and y values: &quot;</span>;
+    <span class="hljs-keyword">while</span> (cin &gt;&gt; rplace.x &gt;&gt; rplace.y)  <span class="hljs-comment">// slick use of cin</span>
+    &#123;
+        pplace = <span class="hljs-built_in">rect_to_polar</span>(rplace);
+        <span class="hljs-built_in">show_polar</span>(pplace);
+        cout &lt;&lt; <span class="hljs-string">&quot;Next two numbers (q to quit): &quot;</span>;
+    &#125;
+    cout &lt;&lt; <span class="hljs-string">&quot;Done.\n&quot;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-comment">// convert rectangular to polar coordinates</span>
+<span class="hljs-function">polar <span class="hljs-title">rect_to_polar</span><span class="hljs-params">(rect xypos)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    polar answer;
+
+    answer.distance =
+        <span class="hljs-built_in">sqrt</span>( xypos.x * xypos.x + xypos.y * xypos.y);
+    answer.angle = <span class="hljs-built_in">atan2</span>(xypos.y, xypos.x);
+    <span class="hljs-keyword">return</span> answer;      <span class="hljs-comment">// returns a polar structure</span>
+&#125;
+
+<span class="hljs-comment">// show polar coordinates, converting angle to degrees</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_polar</span> <span class="hljs-params">(polar dapos)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">const</span> <span class="hljs-type">double</span> Rad_to_deg = <span class="hljs-number">57.29577951</span>;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;distance = &quot;</span> &lt;&lt; dapos.distance;
+    cout &lt;&lt; <span class="hljs-string">&quot;, angle = &quot;</span> &lt;&lt; dapos.angle * Rad_to_deg;
+    cout &lt;&lt; <span class="hljs-string">&quot; degrees\n&quot;</span>;
+&#125;
+</code></pre></div>
+
+<h3 id="传递结构的地址"><a href="#传递结构的地址" class="headerlink" title="传递结构的地址"></a>传递结构的地址</h3><p>假设要传递结构的地址而不是整个结构以节省时间和空间，则需要重新编写前面的函数，使用指向结构的指针。首先来看一看如何重新编 写show_polar( )函数。需要修改三个地方：</p>
+<p>调用函数时，将结构的地址（&amp;pplace）而不是结构本身（pplace）传递给它； </p>
+<p>将形参声明为指向polar的指针，即polar *类型。由于函数不应该修改结构，因此使用了const修饰符； </p>
+<p>由于形参是指针而不是结构，因此应间接成员运算符（-&gt;），而不是成员运算符（句点）。</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// strctptr.cpp -- functions with pointer to structure arguments</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span>
+
+<span class="hljs-comment">// structure templates</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">polar</span>
+&#123;
+    <span class="hljs-type">double</span> distance;      <span class="hljs-comment">// distance from origin</span>
+    <span class="hljs-type">double</span> angle;         <span class="hljs-comment">// direction from origin</span>
+&#125;;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">rect</span>
+&#123;
+    <span class="hljs-type">double</span> x;             <span class="hljs-comment">// horizontal distance from origin</span>
+    <span class="hljs-type">double</span> y;             <span class="hljs-comment">// vertical distance from origin</span>
+&#125;;
+
+<span class="hljs-comment">// prototypes</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">rect_to_polar</span><span class="hljs-params">(<span class="hljs-type">const</span> rect * pxy, polar * pda)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_polar</span> <span class="hljs-params">(<span class="hljs-type">const</span> polar * pda)</span></span>;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    rect rplace;
+    polar pplace;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Enter the x and y values: &quot;</span>;
+    <span class="hljs-keyword">while</span> (cin &gt;&gt; rplace.x &gt;&gt; rplace.y)
+    &#123;
+        <span class="hljs-built_in">rect_to_polar</span>(&amp;rplace, &amp;pplace);    <span class="hljs-comment">// pass addresses</span>
+        <span class="hljs-built_in">show_polar</span>(&amp;pplace);        <span class="hljs-comment">// pass address</span>
+        cout &lt;&lt; <span class="hljs-string">&quot;Next two numbers (q to quit): &quot;</span>;
+    &#125;
+    cout &lt;&lt; <span class="hljs-string">&quot;Done.\n&quot;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-comment">// show polar coordinates, converting angle to degrees</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_polar</span> <span class="hljs-params">(<span class="hljs-type">const</span> polar * pda)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">const</span> <span class="hljs-type">double</span> Rad_to_deg = <span class="hljs-number">57.29577951</span>;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;distance = &quot;</span> &lt;&lt; pda-&gt;distance;
+    cout &lt;&lt; <span class="hljs-string">&quot;, angle = &quot;</span> &lt;&lt; pda-&gt;angle * Rad_to_deg;
+    cout &lt;&lt; <span class="hljs-string">&quot; degrees\n&quot;</span>;
+&#125;
+
+<span class="hljs-comment">// convert rectangular to polar coordinates</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">rect_to_polar</span><span class="hljs-params">(<span class="hljs-type">const</span> rect * pxy, polar * pda)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    pda-&gt;distance =
+            <span class="hljs-built_in">sqrt</span>(pxy-&gt;x * pxy-&gt;x + pxy-&gt;y * pxy-&gt;y);
+    pda-&gt;angle = <span class="hljs-built_in">atan2</span>(pxy-&gt;y, pxy-&gt;x);
+&#125;
+<span class="hljs-comment">//Enter the x and y values: 30 40</span>
+<span class="hljs-comment">//distance = 50, angle = 53.1301 degrees</span>
+<span class="hljs-comment">//Next two numbers (q to quit): -100 100</span>
+<span class="hljs-comment">//distance = 141.421, angle = 135 degrees</span>
+<span class="hljs-comment">//Next two numbers (q to quit): q</span>
+<span class="hljs-comment">//Done.</span></code></pre></div>
+
+<p>从用户的角度来说，程序清单7.13的行为与程序清单7.12相同。它们之间的差别在于，程序清单7.12使用的是结构副本，而程序清单7.13 使用的是指针，让函数能够对原始结构进行操作。 </p>
+<h2 id="函数和string对象"><a href="#函数和string对象" class="headerlink" title="函数和string对象"></a>函数和string对象</h2><p>虽然C-风格字符串和string对象的用途几乎相同，但与数组相比，string对象与结构的更相似。例如，可以将一个结构赋给另一个结构， 也可以将一个对象赋给另一个对象。可以将结构作为完整的实体传递给函数，也可以将对象作为完整的实体进行传递。如果需要多个字符串，可以声明一个string对象数组，而不是二维char数组。</p>
+<div class="code-wrapper"><pre><code class="hljs cpp">/ topfive.cpp -- handling an array of string objects
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> SIZE = <span class="hljs-number">5</span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">display</span><span class="hljs-params">(<span class="hljs-type">const</span> string sa[], <span class="hljs-type">int</span> n)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    string list[SIZE];     <span class="hljs-comment">// an array holding 5 string object</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;Enter your &quot;</span> &lt;&lt; SIZE &lt;&lt; <span class="hljs-string">&quot; favorite astronomical sights:\n&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; SIZE; i++)
+    &#123;
+        cout &lt;&lt; i + <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-string">&quot;: &quot;</span>;
+        <span class="hljs-built_in">getline</span>(cin,list[i]);
+    &#125;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Your list:\n&quot;</span>;
+    <span class="hljs-built_in">display</span>(list, SIZE);
+    <span class="hljs-comment">// cin.get();</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">display</span><span class="hljs-params">(<span class="hljs-type">const</span> string sa[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+        cout &lt;&lt; i + <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; sa[i] &lt;&lt; endl;
+&#125;</code></pre></div>
+
+<p>对于该示例，需要指出的一点是，除函数getline( )外，该程序像对待内置类型（如int）一样对待string对象。如果需要string数组，只需使用通常的数组声明格式即可： </p>
+<div class="code-wrapper"><pre><code class="hljs lsl"><span class="hljs-type">string</span> <span class="hljs-type">list</span>[SIZE];</code></pre></div>
+
+<p>这样，数组list的每个元素都是一个string对象，可以像下面这样使用它：</p>
+<div class="code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">getline</span>(cin,list[i]);</code></pre></div>
+
+<p>同样，形参sa是一个指向string对象的指针，因此sa[i]是一个string对象，可以像下面这样使用它： </p>
+<div class="code-wrapper"><pre><code class="hljs bash">cout &lt;&lt; <span class="hljs-string">i + 1 &lt;&lt; &quot;: &quot; &lt;&lt; sa[i</span>] &lt;&lt; <span class="hljs-string">endl;</span></code></pre></div>
+
+<h2 id="函数与array对象"><a href="#函数与array对象" class="headerlink" title="函数与array对象"></a>函数与array对象</h2><p>在C++中，类对象是基于结构的，因此结构编程方面的有些考虑因素也适用于类。例如，可按值将对象传递给函数，在这种情况下，函数 处理的是原始对象的副本。另外，也可传递指向对象的指针，这让函数能够操作原始对象。下面来看一个使用C++11模板类array的例子。 </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">//arrobj.cpp -- functions with array objects</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;array&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> Seasons = <span class="hljs-number">4</span>;
+<span class="hljs-type">const</span> std::array&lt;std::string, Seasons&gt; Snames =
+    &#123;<span class="hljs-string">&quot;Spring&quot;</span>, <span class="hljs-string">&quot;Summer&quot;</span>, <span class="hljs-string">&quot;Fall&quot;</span>, <span class="hljs-string">&quot;Winter&quot;</span>&#125;;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fill</span><span class="hljs-params">(std::array&lt;<span class="hljs-type">double</span>, Seasons&gt; * pa)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">(std::array&lt;<span class="hljs-type">double</span>, Seasons&gt; da)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    std::array&lt;<span class="hljs-type">double</span>, 4&gt; expenses;
+    <span class="hljs-built_in">fill</span>(&amp;expenses);
+    <span class="hljs-built_in">show</span>(expenses);
+    <span class="hljs-comment">// std::cin.get();</span>
+    <span class="hljs-comment">// std::cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fill</span><span class="hljs-params">(std::array&lt;<span class="hljs-type">double</span>, Seasons&gt; * pa)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; Seasons; i++)
+    &#123;
+        std::cout &lt;&lt; <span class="hljs-string">&quot;Enter &quot;</span> &lt;&lt; Snames[i] &lt;&lt; <span class="hljs-string">&quot; expenses: &quot;</span>;
+        std::cin &gt;&gt; (*pa)[i];
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">(std::array&lt;<span class="hljs-type">double</span>, Seasons&gt; da)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">double</span> total = <span class="hljs-number">0.0</span>;
+    std::cout &lt;&lt; <span class="hljs-string">&quot;\nEXPENSES\n&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; Seasons; i++)
+    &#123;
+        std::cout &lt;&lt; Snames[i] &lt;&lt; <span class="hljs-string">&quot;: $&quot;</span> &lt;&lt; da[i] &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+        total += da[i];
+    &#125;
+    std::cout &lt;&lt; <span class="hljs-string">&quot;Total: $&quot;</span> &lt;&lt; total &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+&#125;</code></pre></div>
+
+<p>由于const array对象Snames是在所有函数之前声明的，因此可后面的任何函数定义中使用它。与const Seasons一样，Snames也有整个源代码文件共享。这个程序没有使用编译指令using，因此必须使用std::限定array和string。为简化程序，并将重点放在函数可如何使用对象上，函数fill()没有检查输入是否有效</p>
+<p>函数fill()和show()都有缺点。函数show()存在的问题是，expenses存储了四个double值，而创建一个新对象并将expenses的值复制到其中的效率太低。如果修改该程序，使其处理每月甚至每日的开支，这种问题将更严重。 </p>
+<p>函数fill()使用指针来直接处理原始对象，这避免了上述效率低下的问题，但代价是代码看起来更复杂：</p>
+<div class="code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">fill</span>(&amp;expenses);</code></pre></div>
+
+
+
+<p>cin &gt;&gt; (*pa)[i];</p>
+<p>在最后一条语句中，pa是一个指向array&lt;double, 4&gt;对象的指针，因此*pa为这种对象，而(*pa) [i]是该对象的一个元素。由于运算符优先级 的影响，其中的括号必不可少。这里的逻辑很简单，但增加了犯错的机会。</p>
+<p>使用第8章将讨论的引用可解决效率和表示法两方面的问题。</p>
+<h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><p>C++函数有一种有趣的特点——可以调用自己（然而，与C语言不同的是，C++不允许main( )调用自己），这种功能被称为递归</p>
+<h3 id="包含一个递归调用的递归"><a href="#包含一个递归调用的递归" class="headerlink" title="包含一个递归调用的递归"></a>包含一个递归调用的递归</h3><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// recur.cpp -- using recursion</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">countdown</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span></span>;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">countdown</span>(<span class="hljs-number">4</span>);           <span class="hljs-comment">// call the recursive function</span>
+    <span class="hljs-comment">// std::cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">countdown</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    cout &lt;&lt; <span class="hljs-string">&quot;Counting down ... &quot;</span> &lt;&lt; n &lt;&lt; &amp;n &lt;&lt; endl;
+    <span class="hljs-keyword">if</span> (n &gt; <span class="hljs-number">0</span>)
+        <span class="hljs-built_in">countdown</span>(n<span class="hljs-number">-1</span>);     <span class="hljs-comment">// function calls itself</span>
+    cout &lt;&lt; n &lt;&lt; &amp;n &lt;&lt; <span class="hljs-string">&quot;: Kaboom!\n&quot;</span>;
+&#125;
+Counting down ... <span class="hljs-number">4</span> <span class="hljs-number">0x16db2371c</span>
+Counting down ... <span class="hljs-number">3</span> <span class="hljs-number">0x16db236ec</span>
+Counting down ... <span class="hljs-number">2</span> <span class="hljs-number">0x16db236bc</span>
+Counting down ... <span class="hljs-number">1</span> <span class="hljs-number">0x16db2368c</span>
+Counting down ... <span class="hljs-number">0</span> <span class="hljs-number">0x16db2365c</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0x16db2365c</span>: Kaboom!
+<span class="hljs-number">1</span> <span class="hljs-number">0x16db2368c</span>: Kaboom!
+<span class="hljs-number">2</span> <span class="hljs-number">0x16db236bc</span>: Kaboom!
+<span class="hljs-number">3</span> <span class="hljs-number">0x16db236ec</span>: Kaboom!
+<span class="hljs-number">4</span> <span class="hljs-number">0x16db2371c</span>: Kaboom!</code></pre></div>
+
+<p>注意，每个递归调用都创建自己的一套变量，因此当程序到达第5次调用时，将有5个独立的n变量，其中每个变量的值都不同。</p>
+<h3 id="包含多个递归调用的递归"><a href="#包含多个递归调用的递归" class="headerlink" title="包含多个递归调用的递归"></a>包含多个递归调用的递归</h3>
                 
               </div>
             
