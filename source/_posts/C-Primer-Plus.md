@@ -6538,3 +6538,352 @@ Counting down ... 0 0x16db2365c
 注意，每个递归调用都创建自己的一套变量，因此当程序到达第5次调用时，将有5个独立的n变量，其中每个变量的值都不同。
 
 ### 包含多个递归调用的递归
+
+```cpp
+// ruler.cpp -- using recursion to subdivide a ruler
+#include <iostream>
+const int Len = 66;
+const int Divs = 6;
+void subdivide(char ar[], int low, int high, int level);
+int main()
+{
+    char ruler[Len];
+    int i;
+    for (i = 1; i < Len - 2; i++)
+        ruler[i] = ' ';
+    ruler[Len - 1] = '\0';
+    int max = Len - 2;
+    int min = 0;
+    ruler[min] = ruler[max] = '|';
+    std::cout << ruler << std::endl;
+    for (i = 1; i <= Divs; i++)
+    {
+        subdivide(ruler,min,max, i);
+        std::cout << ruler << std::endl;
+        for (int j = 1; j < Len - 2; j++)
+            ruler[j] = ' ';  // reset to blank ruler
+    }
+    // std::cin.get();
+
+    return 0;
+}
+
+void subdivide(char ar[], int low, int high, int level)
+{
+    if (level == 0)
+        return;
+    int mid = (high + low) / 2;
+    ar[mid] = '|';
+    subdivide(ar, low, mid, level - 1);
+    subdivide(ar, mid, high, level - 1);
+}
+//|                                                               |
+//|                               |                               |
+//|               |               |               |               |
+//|       |       |       |       |       |       |       |       |
+//|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+//| | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+```
+
+subdivide( )函数使用变量level来控制递归层。函数调用自身时，将把level减1，当level为0时，该函数将不再调用自己。注意，subdivide( )调用自己两次，一次针对左半部分，另一次针对右半部分。最初的中点被用作一次调用的右端点和另一次调用的左端点。请注意，调用次数将呈几何级数增长。也就是说，调用一次导致两个调用，然后导致4个调用，再导致8个调用，依此类推。这就是6层调 用能够填充64个元素的原因（2^6=64）。这将不断导致函数调用数（以及存储的变量数）翻倍，因此如果要求的递归层次很多，这种递归方式将是一种糟糕的选择；然而，如果递归层次较少，这将是一种精致而简单的选择。 
+
+## 函数指针
+
+与数据项相似，函数也有地址。函数的地址是存储其机器语言代码的内存的开始地址。通常，这些地址对用户而言，既不重要，也没有什么用处，但对程序而言，却很有用。例如，可以编写将另一个函数的地址作为参数的函数。这样第一个函数将能够找到第二个函数，并运行它。与直接调用另一个函数相比，这种方法很笨拙，但它允许在不同的时间传递不同函数的地址，这意味着可以在不同的时间使用不同的函数
+
+### 函数指针的基础知识
+
+#### 获取函数的地址
+
+获取函数的地址很简单：只要使用函数名（后面不跟参数）即可。也就是说，如果think( )是一个函数，则think就是该函数的地址。要将函数作为参数进行传递，必须传递函数名。一定要区分传递的是函数的地址还是函数的返回值： 
+
+```
+process（think）
+thought（think())
+```
+
+process( )调用使得process( )函数能够在其内部调用think( )函数。thought( )调用首先调用think( )函数，然后将think( )的返回值传递给 thought( )函数。 
+
+#### 声明函数指针 
+
+声明指向某种数据类型的指针时，必须指定指针指向的类型。同样，声明指向函数的指针时，也必须指定指针指向的函数类型。这意味 着声明应指定函数的返回类型以及函数的特征标（参数列表）。也就是说，声明应像函数原型那样指出有关函数的信息
+
+```
+double (*pf)(int);
+```
+
+通常，要声明指向特定类型的函数的指针，可以首先编写这种函数的原型，然后用（*pf）替换函数名。这样pf就是这类函数的指针。
+
+为提供正确的运算符优先级，必须在声明中使用括号将`*pf`括起。括号的优先级比*运算符高，因此`*pf（int）`意味着pf( )是一个返回指针 的函数，而`(*pf)`（int）意味着pf是一个指向函数的指针：
+
+```
+double (*pf)(int);
+double * pf(int);
+```
+
+正确地声明pf后，便可以将相应函数的地址赋给它：
+
+```
+double pam(int);
+double (*pf)(int);
+pf = pam;
+```
+
+注意，pam( )的特征标和返回类型必须与pf相同。如果不相同，编译器将拒绝这种赋值：
+
+#### 使用指针来调用函数:
+
+现在进入最后一步，即使用指针来调用被指向的函数。线索来自指针声明。前面讲过，（*pf）扮演的角色与函数名相同，因此使用 
+
+（*pf）时，只需将它看作函数名即可：
+
+```
+double pam(int);
+double (*pf)(int);
+pf = pam;
+double x = pam(4);
+double y = (*pf)(5);
+```
+
+实际上，C++也允许像使用函数名那样使用pf： 
+
+```
+double y = pf(5);
+```
+
+第一种格式虽然不太好看，但它给出了强有力的提示——代码正在使用函数指针。 
+
+为何pf和`（*pf）`等价呢？一种学派认为，由于pf是函数指针，而*pf 是函数，因此应将`（*pf）( )`用作函数调用。另一种学派认为，由于函数名是指向该函数的指针，指向函数的指针的行为应与函数名相似，因此应将pf( )用作函数调用使用。C++进行了折衷——这2种方式都是正确的，或者至少是允许的，虽然它们在逻辑上是互相冲突的。
+
+### 函数指针示例
+
+```cpp
+// fun_ptr.cpp -- pointers to functions
+#include <iostream>
+double betsy(int);
+double pam(int);
+
+// second argument is pointer to a type double function that
+// takes a type int argument
+void estimate(int lines, double (*pf)(int));
+
+int main()
+{
+    using namespace std;
+    int code;
+
+    cout << "How many lines of code do you need? ";
+    cin >> code;
+    cout << "Here's Betsy's estimate:\n";
+    estimate(code, betsy);
+    cout << "Here's Pam's estimate:\n";
+    estimate(code, pam);
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+double betsy(int lns)
+{
+    return 0.05 * lns;
+}
+
+double pam(int lns)
+{
+    return 0.03 * lns + 0.0004 * lns * lns;
+}
+
+void estimate(int lines, double (*pf)(int))
+{
+    using namespace std;
+    cout << lines << " lines will take ";
+    cout << (*pf)(lines) << " hour(s)\n";
+}
+```
+
+### 深入探讨函数指针
+
+下面是一些函数的原型，它们的特征标和返回类型相同： 
+
+```
+const double * f1(const double ar[],int n);
+const double * f2(const double [],int);
+const double * f3(const double * , int);
+```
+
+这些函数的特征标看似不同，但实际上相同。首先，前面说过，在函数原型中，参数列表const double ar [ ]与const double * ar的含义完全相同。其次，在函数原型中，可以省略标识符。因此，const double ar [ ] 可简化为const double [ ]，而const double * ar可简化为const double *。因此，上述所有函数特征标的含义都相同。另一方面，函数定义必须提供标识符，因此需要使用const double ar [ ]或const double * ar。 
+
+接下来，假设要声明一个指针，它可指向这三个函数之一。假定该指针名为pa，则只需将目标函数原型中的函数名替换为(*pa)：
+
+```
+const double * (*p3)(const double * , int);
+```
+
+可在声明的同时进行初始化：
+
+```
+const double * (*p3)(const double * , int) = f1;
+```
+
+使用C++11的自动类型推断功能时，代码要简单得多： 
+
+```
+auto p3 = f1;
+```
+
+鉴于需要使用三个函数，如果有一个函数指针数组将很方便。这样，将可使用for循环通过指针依次调用每个函数。如何声明这样的数组 呢？显然，这种声明应类似于单个函数指针的声明，但必须在某个地方加上[3]，以指出这是一个包含三个函数指针的数组。问题是在什么地方加上[3]，答案如下（包含初始化）： 
+
+```
+const double * (*pa[3])(const double * , int)={f1,f2,f3};
+```
+
+为何将[3]放在这个地方呢？pa是一个包含三个元素的数组，而要声明这样的数组，首先需要使用pa[3]。该声明的其他部分指出了数组包含的元素是什么样的。运算符[]的优先级高于*，因此`*pa[3]`表明pa是一个包含三个指针的数组。上述声明的其他部分指出了每个指针指向的是什么：特征标为const double *, int，且返回类型为const double *的函数。因此，pa是一个包含三个指针的数组，其中每个指针都指向这样的函数，即将const double *和int作为参数，并返回一个const double *。
+
+这里能否使用auto呢？不能。自动类型推断只能用于单值初始化，而不能用于初始化列表。但声明数组pa后，声明同样类型的数组就很简单了：	
+
+```
+auto pb = pa;
+```
+
+本书前面说过，数组名是指向第一个元素的指针，因此pa和pb都是指向函数指针的指针。 
+
+如何使用它们来调用函数呢？pa[i]和pb[i]都表示数组中的指针，因此可将任何一种函数调用表示法用于它们： 
+
+```
+const double * px = pa[0](av,3);
+const double * py = (*pb[1])(av,3);
+```
+
+要获得指向的double值，可使用运算符*：
+
+```
+double x = *pa[0](av,3);
+double y = *(*pb[1])(av,3);
+```
+
+可做的另一件事是创建指向整个数组的指针。由于数组名pa是指向函数指针的指针，因此指向数组的指针将是这样的指针，即它指向指针 的指针。这听起来令人恐怖，但由于可使用单个值对其进行初始化，因 此可使用auto： 
+
+```
+auto pc = &pa;
+```
+
+如果您喜欢自己声明，该如何办呢？显然，这种声明应类似于pa的声明，但由于增加了一层间接，因此需要在某个地方添加一个*。具体 地说，如果这个指针名为pd，则需要指出它是一个指针，而不是数组。 这意味着声明的核心部分应为`(*pd)[3]`，其中的括号让标识符pd与`*`先结 合：
+
+```
+*pd[3] //an array of three pointer
+(*pd)[3] // a pointer to an array of 3 element
+```
+
+换句话说，pd是一个指针，它指向一个包含三个元素的数组。这些元素是什么呢？由pa的声明的其他部分描述，结果如下：
+
+```
+const double *(*(*pd[3]))(const double * ,int)=&pa;
+```
+
+要调用函数，需认识到这样一点：既然pd指向数组，那么`*pd`就是 数组，而`(*pd)[i]`是数组中的元素，即函数指针。因此，较简单的函数调 用是`(*pd)i`，而`*(*pd)i`是返回的指针指向的值。也可以使用第二种使用指针调用函数的语法：使用`(*(*pd)[i])(av,3)`来调用函数，而`*(*(*pd)[i])(av,3)`是指向的double值。 
+
+请注意pa（它是数组名，表示地址）和&pa之间的差别。正如您在本书前面看到的，在大多数情况下，pa都是数组第一个元素的地址，即 &pa[0]。因此，它是单个指针的地址。但&pa是整个数组（即三个指针块）的地址。从数字上说，pa和&pa的值相同，但它们的类型不同。一种差别是，pa+1为数组中下一个元素的地址，而&pa+1为数组pa后面一 个12字节内存块的地址（这里假定地址为4字节）。另一个差别是，要 得到第一个元素的值，只需对pa解除一次引用，但需要对&pa解除两次 引用：
+
+```
+**&pa == *pa == pa[0]
+```
+
+```cpp
+// arfupt.cpp -- an array of function pointers
+#include <iostream>
+// various notations, same signatures
+const double * f1(const double ar[], int n);
+const double * f2(const double [], int);
+const double * f3(const double *, int);
+
+int main()
+{
+    using namespace std;
+    double av[3] = {1112.3, 1542.6, 2227.9};
+
+    // pointer to a function
+    const double *(*p1)(const double *, int) = f1;
+    auto p2 = f2;  // C++0x automatic type deduction
+    // pre-C++0x can use the following code instead
+    // const double *(*p2)(const double *, int) = f2;
+    cout << "Using pointers to functions:\n";
+    cout << " Address  Value\n";
+    cout <<  (*p1)(av,3) << ": " << *(*p1)(av,3) << endl;
+    cout << p2(av,3) << ": " << *p2(av,3) << endl;
+
+    // pa an array of pointers
+    // auto doesn't work with list initialization
+    const double *(*pa[3])(const double *, int) = {f1,f2,f3};
+    // but it does work for initializing to a single value
+    // pb a pointer to first element of pa
+    auto pb = pa;
+    // pre-C++0x can use the following code instead
+    // const double *(**pb)(const double *, int) = pa;
+    cout << "\nUsing an array of pointers to functions:\n";
+    cout << " Address  Value\n";
+    for (int i = 0; i < 3; i++)
+        cout << pa[i](av,3) << ": " << *pa[i](av,3) << endl;
+    cout << "\nUsing a pointer to a pointer to a function:\n";
+    cout << " Address  Value\n";
+    for (int i = 0; i < 3; i++)
+        cout << pb[i](av,3) << ": " << *pb[i](av,3) << endl;
+
+    // what about a pointer to an array of function pointers
+    cout << "\nUsing pointers to an array of pointers:\n";
+    cout << " Address  Value\n";
+    // easy way to declare pc
+    auto pc = &pa;
+    // pre-C++0x can use the following code instead
+    // const double *(*(*pc)[3])(const double *, int) = &pa;
+    cout << (*pc)[0](av,3) << ": " << *(*pc)[0](av,3) << endl;
+    // hard way to declare pd
+    const double *(*(*pd)[3])(const double *, int) = &pa;
+    // store return value in pdb
+    const double * pdb = (*pd)[1](av,3);
+    cout << pdb << ": " << *pdb << endl;
+    // alternative notation
+    cout << (*(*pd)[2])(av,3) << ": " << *(*(*pd)[2])(av,3) << endl;
+    // cin.get();
+    return 0;
+}
+
+// some rather dull functions
+
+const double * f1(const double * ar, int n)
+{
+    return ar;
+}
+const double * f2(const double ar[], int n)
+{
+    return ar+1;
+}
+const double * f3(const double ar[], int n)
+{
+    return ar+2;
+}
+```
+
+### 使用typedef进行简化
+
+除auto外，C++还提供了其他简化声明的工具。您可能还记得，第5章说过，关键字typedef让您能够创建类型别名： 
+
+```
+typedef double real ;
+```
+
+这里采用的方法是，将别名当做标识符进行声明，并在开头使用关键字typedef。
+
+```
+typedef const double *(*p_fun)(const double *,int);
+p_fun p1 = f1;
+```
+
+然后使用这个别名来简化代码：
+
+```
+p_fun pa[3]={f1,f2,f3};
+p_fun (*pd)[3] = &pa;
+```
+
+ 
