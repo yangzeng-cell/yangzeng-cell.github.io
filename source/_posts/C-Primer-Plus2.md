@@ -871,3 +871,743 @@ const string & version3(string & s1, const string & s2)   // bad design
  
 
 ### 对象、继承和引用
+
+继承的另一个特征是，基类引用可以指向派生类对象，而无需进行强制类型转换。这种特征的一个实际结果是，可以定义一个接受基类引 用作为参数的函数，调用该函数时，可以将基类对象作为参数，也可以将派生类对象作为参数。
+
+```cpp
+//filefunc.cpp -- function with ostream & parameter
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
+
+void file_it(ostream & os, double fo, const double fe[],int n);
+const int LIMIT = 5;
+int main()
+{
+    ofstream fout;
+    const char * fn = "ep-data.txt";
+    fout.open(fn);
+    if (!fout.is_open())
+    {
+        cout << "Can't open " << fn << ". Bye.\n";
+        exit(EXIT_FAILURE);
+    }
+    double objective;
+    cout << "Enter the focal length of your "
+            "telescope objective in mm: ";
+    cin >> objective;
+    double eps[LIMIT];
+    cout << "Enter the focal lengths, in mm, of " << LIMIT
+         << " eyepieces:\n";
+    for (int i = 0; i < LIMIT; i++)
+    {
+        cout << "Eyepiece #" << i + 1 << ": ";
+        cin >> eps[i];
+    }
+    file_it(fout, objective, eps, LIMIT);
+    file_it(cout, objective, eps, LIMIT);
+    cout << "Done\n";
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+void file_it(ostream & os, double fo, const double fe[],int n)
+{
+    // save initial formatting state
+    ios_base::fmtflags initial;
+    initial = os.setf(ios_base::fixed, ios_base::floatfield);
+    std::streamsize sz = os.precision(0);
+    os << "Focal length of objective: " << fo << " mm\n";
+    os.precision(1);
+    os.width(12);
+    os << "f.l. eyepiece";
+    os.width(15);
+    os << "magnification" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        os.width(12);
+        os << fe[i];
+        os.width(15);
+        os << int (fo/fe[i] + 0.5) << endl;
+    }
+    // restore initial formatting state
+    os.setf(initial, ios_base::floatfield);
+    os.precision(sz);
+}
+```
+
+对于该程序，最重要的一点是，参数os（其类型为ostream &）可以指向ostream对象（如cout），也可以指向ofstream对象（如fout）。该程序还演示了如何使用ostream类中的格式化方法。方法setf( )让您能够设置各种格式化状态。例如，方法setf(ios_base::fixed)将对象置于使用定点表示法的模式；setf(ios_base::showpoint)将对象置于显示小数点的模式，即使小数部分为零。方法precision( )指定显示多少位小数（假定对象处于定点模式下）。所有这些设置都将一直保持不变，直到再次调用相应的方法重新 设置它们。方法width( )设置下一次输出操作使用的字段宽度，这种设置只在显示下一个值时有效，然后将恢复到默认设置。默认的字段宽度为零，这意味着刚好能容纳下要显示的内容。 
+
+函数file_it( )使用了两个有趣的方法调用：
+
+```cpp
+ios_base::fmtflags initial;
+    initial = os.setf(ios_base::fixed, ios_base::floatfield);
+    std::streamsize sz = os.precision(0);
+    os << "Focal length of objective: " << fo << " mm\n";
+    os.precision(1);
+    os.width(12);
+    os << "f.l. eyepiece";
+    os.width(15);
+    os << "magnification" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        os.width(12);
+        os << fe[i];
+        os.width(15);
+        os << int (fo/fe[i] + 0.5) << endl;
+    }
+    // restore initial formatting state
+    os.setf(initial, ios_base::floatfield);
+```
+
+方法setf( )返回调用它之前有效的所有格式化设置。ios_base::fmtflags是存储这种信息所需的数据类型名称。因此，将返回值赋给initial将存储调用file_it( )之前的格式化设置，然后便可以使用变量initial作为参数来调用setf( )，将所有的格式化设置恢复到原来的值。因此，该函数将对象回到传递给file_it( )之前的状态。
+
+需要说明的最后一点是，每个对象都存储了自己的格式化设置。因此，当程序将cout传递给file_it( )时，cout的设置将被修改，然后被恢 复；当程序将fout传递给file_it( )时，fout的设置将被修改，然后被恢复。
+
+### 何时使用引用参数
+
+使用引用参数的主要原因有两个。 
+
+- 程序员能够修改调用函数中的数据对象。 
+- 通过传递引用而不是整个数据对象，可以提高程序的运行速度。 
+
+当数据对象较大时（如结构和类对象），第二个原因最重要。这些也是使用指针参数的原因。这是有道理的，因为引用参数实际上是基于 指针的代码的另一个接口。那么，什么时候应使用引用、什么时候应使用指针呢？什么时候应按值传递呢？下面是一些指导原则： 
+
+- 对于使用传递的值而不作修改的函数。
+- 如果数据对象很小，如内置数据类型或小型结构，则按值传递。 
+- 如果数据对象是数组，则使用指针，因为这是唯一的选择，并将指针声明为指向const的指针。 
+- 如果数据对象是较大的结构，则使用const指针或const引用，以提高程序的效率。这样可以节省复制结构所需的时间和空间。 
+- 如果数据对象是类对象，则使用const引用。类设计的语义常常要求使用引用，这是C++新增这项特性的主要原因。因此，传递类对象参数的标准方式是按引用传递。 
+- 对于修改调用函数中数据的函数：如果数据对象是内置数据类型，则使用指针。如果看到诸如fixit（&x）这样的代码（其中x是int），则很明显，该函数将修改x。如果数据对象是数组，则只能使用指针。 
+- 如果数据对象是结构，则使用引用或指针。 
+- 如果数据对象是类对象，则使用引用。 
+
+当然，这只是一些指导原则，很可能有充分的理由做出其他的选择。例如，对于基本类型，cin使用引用，因此可以使用cin>>n，而不是 cin >> &n。
+
+## 默认参数
+
+默认参数指的是当函数调用中省略了实参时自动使用的一个值。
+
+如何设置默认值呢？必须通过函数原型。由于编译器通过查看原型来了解函数所使用的参数数目，因此函数原型也必须将可能的默认参数 告知程序。方法是将值赋给原型中的参数。
+
+```
+char * left (const char * str ,int n = 1);
+```
+
+您希望该函数返回一个新的字符串，因此将其类型设置为char *（指向char的指针）；您希望原始字符串保持不变，因此对第一个参数使用了const限定符；您希望n的默认值为1，因此将这个值赋给n。默认参数值是初始化值，因此上面的原型将n初始化为1。如果省略参数 n，则它的值将为1；否则，传递的值将覆盖1。
+
+对于带参数列表的函数，必须从右向左添加默认值。也就是说，要为某个参数设置默认值，则必须为它右边的所有参数提供默认值： 
+
+```
+int harpo(int n,int m = 4,int j = 5);//valid
+int chico(int n,int m = 6,int j);//invalid
+int groucho(int k = 1,int m =2,int n = 3);//valid
+```
+
+实参按从左到右的顺序依次被赋给相应的形参，而不能跳过任何参数。
+
+程序清单8.9使用了默认参数。请注意，只有原型指定了默认值。函数定义与没有默认参数时完全相同。 
+
+```cpp
+// left.cpp -- string function with a default argument
+#include <iostream>
+const int ArSize = 80;
+char * left(const char * str, int n = 1);
+int main()
+{
+    using namespace std;
+    char sample[ArSize];
+    cout << "Enter a string:\n";
+    cin.get(sample,ArSize);
+    char *ps = left(sample, 4);
+    cout << ps << endl;
+    delete [] ps;       // free old string
+    ps = left(sample);
+    cout << ps << endl;
+    delete [] ps;       // free new string
+    // cin.get();
+    // cin.get();
+    return 0;
+}
+
+// This function returns a pointer to a new string
+// consisting of the first n characters in the str string.
+char * left(const char * str, int n)
+{
+    if(n < 0)
+        n = 0;
+    char * p = new char[n+1];
+    int i;
+    for (i = 0; i < n && str[i]; i++)
+        p[i] = str[i];  // copy characters
+    while (i <= n)
+        p[i++] = '\0';  // set rest of string to '\0'
+    return p;
+}
+```
+
+该程序使用new创建一个新的字符串，以存储被选择的字符。一种可能出现的尴尬情况是，不合作的用户要求的字符数目可能为负。在这 种情况下，函数将字符计数设置为0，并返回一个空字符串。另一种可能出现的尴尬情况是，不负责任的用户要求的字符数目可能多于字符串包含的字符数，为预防这种情况，函数使用了一个组合测试：
+
+```cpp
+i < n && str[i]；
+```
+
+i < n测试让循环复制了n个字符后终止。测试的第二部分——表达式str[i]，是要复制的字符的编码。遇到空值字符（其编码为0）后，循 环将结束。这样，while循环将使字符串以空值字符结束，并将余下的空间（如果有的话）设置为空值字符。 
+
+另一种设置新字符串长度的方法是，将n设置为传递的值和字符串长度中较小的一个：
+
+```
+int len = strlen(str);
+n = (n<len) ? n:len;
+char *p = new char[n+1];
+```
+
+这将确保new分配的空间不会多于存储字符串所需的空间。如果用户执行像left(“Hi!”, 32767)这样的调用，则这种方法很有用。第一种方 法将把“Hi!”复制到由32767个字符组成的数组中，并将除前3个字符之外的所有字符都设置为空值字符；第二种方法将“Hi!”复制到由4个字符组成的数组中。但由于添加了另外一个函数调用（strlen( )），因此程序将更长，运行速度将降低，同时还必须包含头文件cstring（或 string.h）。C程序员倾向于选择运行速度更快、更简洁的代码，因此需要程序员在正确使用函数方面承担更多责任。然而，C++的传统是更强调可靠性。毕竟，速度较慢但能正常运行的程序，要比运行速度虽快但无法正常运行的程序好。如果调用strlen( )所需的时间很长，则可以让left( )直接确定n和字符串长度哪个小。例如，当m的值等于n或到达字符串结尾时，下面的循环都将终止：
+
+```
+int m = 0;
+while(m<=n&&str[m]!='\0')
+	m++
+char * p =new char[m+1];
+```
+
+别忘了，在str[m]不是空值字符时，表达式str[m] != '\0'的结果为true，否则为false。由于在&&表达式中，非零值被转换为true，而零被 转换为false，
+
+## 函数重载 
+
+函数重载的关键是函数的参数列表——也称为函数特征标（function signature）。如果两个函数的参数数目和类型相同，同时参数的排列顺序也相同，则它们的特征标相同，而变量名是无关紧要的。C++允许定义名称相同的函数，条件是它们的特征标不同。如果参数数目和/或参数类型不同，则特征标也不同。例如，可以定义一组原型如下的print( )函数：
+
+```
+void print(const char * str,int width);
+void print(double d,int width);
+void print(long l,int width);
+void print(int i,int width);
+void print(const  char * str);
+```
+
+使用被重载的函数时，需要在函数调用中使用正确的参数类型
+
+一些看起来彼此不同的特征标是不能共存的。例如，请看下面的两个原型：
+
+```
+double cube(double x);
+double cube(double &x);
+```
+
+您可能认为可以在此处使用函数重载，因为它们的特征标看起来不同。然而，请从编译器的角度来考虑这个问题。假设有下面这样的代 码：
+
+```
+cout << cube(x);
+```
+
+参数x与double x原型和double &x原型都匹配，因此编译器无法确定究竟应使用哪个原型。为避免这种混乱，编译器在检查函数特征标 时，将把类型引用和类型本身视为同一个特征标。 
+
+匹配函数时，并不区分const和非const变量。
+
+```
+void dribble(char * bits);//overloaded
+void dribble(const char *cbits);//overloaded
+void dabble(char * bits);//not overloaded
+void drivel(const char * bits);//not overloaded
+```
+
+dribble( )函数有两个原型，一个用于const指针，另一个用于常规指针，编译器将根据实参是否为const来决定使用哪个原型。dribble( )函数只与带非const参数的调用匹配，而drivel( )函数可以与带const或非const参数的调用匹配。drivel( )和dabble( )之所以在行为上有这种差别，主要是由于将非const值赋给const变量是合法的，但反之则是非法的。 
+
+请记住，是特征标，而不是函数类型使得可以对函数进行重载。例如，下面的两个声明是互斥的： 
+
+```
+long gronk(int n,float m);//same signatures
+double gronk(int n,float m);//not allowed
+```
+
+因此，C++不允许以这种方式重载gronk( )。返回类型可以不同，但特征标也必须不同： 
+
+```
+long gronk(int n,float m);//difference signatures
+double gronk(float n,float m);//allowed
+```
+
+类设计和STL经常使用引用参数，因此知道不同引用类型的重载很有用。请看下面三个原型：
+
+```
+void sink(double & r1);
+void sank(const double &r2);
+void sunk(double && r3);
+```
+
+左值引用参数r1与可修改的左值参数（如double变量）匹配；const左值引用参数r2与可修改的左值参数、const左值参数和右值参数（如两个double值的和）匹配；最后，左值引用参数r3与左值匹配。注意到与r1或r3匹配的参数都与r2匹配。这就带来了一个问题：如果重载使用这三种参数的函数，结果将如何？答案是将调用最匹配的版本： 
+
+```
+void staff(double & rs);
+void staff(const double &rcs);
+void stove(double &r1);
+void stove(const double & r2);
+void stove(double && r3);
+
+
+double x = 55.5;
+const double y = 32.0;
+stove(x)//call stove(double &);
+stove(y)//call stove(const double &);
+stove(x+y)//call stove(double &&);如果没有定义函数stove(double &&)，stove(x+y)将调用函数stove(const double &)
+```
+
+### 重载示例 
+
+```cpp
+// leftover.cpp -- overloading the left() function
+#include <iostream>
+unsigned long left(unsigned long num, unsigned ct);
+char * left(const char * str, int n = 1);
+
+int main()
+{
+    using namespace std;
+    char * trip = "Hawaii!!";   // test value
+    unsigned long n = 12345678; // test value
+    int i;
+    char * temp;
+
+    for (i = 1; i < 10; i++)
+    {
+        cout << left(n, i) << endl;
+        temp = left(trip,i);
+        cout << temp << endl;
+        delete [] temp; // point to temporary storage
+    }
+    // cin.get();
+    return 0;
+
+}
+
+// This function returns the first ct digits of the number num.
+unsigned long left(unsigned long num, unsigned ct)
+{
+    unsigned digits = 1;
+    unsigned long n = num;
+
+    if (ct == 0 || num == 0)
+        return 0;       // return 0 if no digits
+    while (n /= 10)
+        digits++;
+    if (digits > ct)
+    {
+        ct = digits - ct;
+        while (ct--)
+            num /= 10;
+        return num;         // return left ct digits
+    }
+    else                // if ct >= number of digits
+        return num;     // return the whole number
+}
+
+// This function returns a pointer to a new string
+// consisting of the first n characters in the str string.
+char * left(const char * str, int n)
+{
+    if(n < 0)
+        n = 0;
+    char * p = new char[n+1];
+    int i;
+    for (i = 0; i < n && str[i]; i++)
+        p[i] = str[i];  // copy characters
+    while (i <= n)
+        p[i++] = '\0';  // set rest of string to '\0'
+    return p;
+}
+//1
+//H
+//12
+//Ha
+//123
+//Haw
+//1234
+//Hawa
+//12345
+//Hawai
+//123456
+//Hawaii
+//1234567
+//Hawaii!
+//12345678
+//Hawaii!!
+//12345678
+//Hawaii!!
+```
+
+### 何时使用函数重载
+
+虽然函数重载很吸引人，但也不要滥用。仅当函数基本上执行相同的任务，但使用不同形式的数据时，才应采用函数重载。
+
+ 
+
+## 函数模板
+
+现在的C++编译器实现了C++新增的一项特性——函数模板。函数模板是通用的函数描述，也就是说，它们使用泛型来定义函数，其中的 泛型可用具体的类型（如int或double）替换。通过将类型作为参数传递给模板，可使编译器生成该类型的函数。由于模板允许以泛型（而不是具体类型）的方式编写程序，因此有时也被称为通用编程。由于类型是用参数表示的，因此模板特性有时也被称为参数化类型（parameterized types）。
+
+函数模板允许以任意类型的方式来定义函数。例如，可以这样建立一个交换模板：
+
+```cpp
+template <typename AnyType>
+void Swap<AnyType &a,AnyType &b>{
+	AnyType temp;
+	temp = a;
+	a=b;
+	b=temp;
+}
+```
+
+第一行指出，要建立一个模板，并将类型命名为AnyType。关键字template和typename是必需的，除非可以使用关键字class代替typename。另外，必须使用尖括号。类型名可以任意选择（这里为AnyType），只要遵守C++命名规则即可；许多程序员都使用简单的名称，如T。余下的代码描述了交换两个AnyType值的算法。模板并不创建任何函数，而只是告诉编译器如何定义函数。需要交换int的函数时，编译器将按模板模式创建这样的函数，并用int代替AnyType。同样，需要交换double的函数时，编译器将按模板模式创建这样的函数，并用double代替AnyType。 
+
+在标准C++98添加关键字typename之前，C++使用关键字class来创建模板。也就是说，可以这样编写模板定义： 
+
+```cpp
+template <class AnyType>
+void Swap<AnyType &a,AnyType &b>{
+	AnyType temp;
+	temp = a;
+	a=b;
+	b=temp;
+}
+```
+
+typename关键字使得参数AnyType表示类型这一点更为明显；然而，有大量代码库是使用关键字class开发的。在这种上下文中，这两个 关键字是等价的
+
+```cpp
+// funtemp.cpp -- using a function template
+#include <iostream>
+// function template prototype
+template <typename T>  // or class T
+void Swap(T &a, T &b);
+
+int main()
+{
+    using namespace std;
+    int i = 10;
+    int j = 20;
+    cout << "i, j = " << i << ", " << j << ".\n";
+    cout << "Using compiler-generated int swapper:\n";
+    Swap(i,j);  // generates void Swap(int &, int &)
+    cout << "Now i, j = " << i << ", " << j << ".\n";
+
+    double x = 24.5;
+    double y = 81.7;
+    cout << "x, y = " << x << ", " << y << ".\n";
+    cout << "Using compiler-generated double swapper:\n";
+    Swap(x,y);  // generates void Swap(double &, double &)
+    cout << "Now x, y = " << x << ", " << y << ".\n";
+    // cin.get();
+    return 0;
+}
+
+// function template definition
+template <typename T>  // or class T
+void Swap(T &a, T &b)
+{
+    T temp;   // temp a variable of type T
+    temp = a;
+    a = b;
+    b = temp;
+}
+//i, j = 10, 20.
+//Using compiler-generated int swapper:
+//Now i, j = 20, 10.
+//x, y = 24.5, 81.7.
+//Using compiler-generated double swapper:
+//Now x, y = 81.7, 24.5.
+```
+
+### 重载的模板
+
+```cpp
+// twotemps.cpp -- using overloaded template functions
+#include <iostream>
+template <typename T>     // original template
+void Swap(T &a, T &b);
+
+template <typename T>     // new template
+void Swap(T *a, T *b, int n);
+
+void Show(int a[]);
+const int Lim = 8;
+int main()
+{
+    using namespace std;
+    int i = 10, j = 20;
+    cout << "i, j = " << i << ", " << j << ".\n";
+    cout << "Using compiler-generated int swapper:\n";
+    Swap(i,j);              // matches original template
+    cout << "Now i, j = " << i << ", " << j << ".\n";
+
+    int d1[Lim] = {0,7,0,4,1,7,7,6};
+    int d2[Lim] = {0,7,2,0,1,9,6,9};
+    cout << "Original arrays:\n";
+    Show(d1);
+    Show(d2);
+    Swap(d1,d2,Lim);        // matches new template
+    cout << "Swapped arrays:\n";
+    Show(d1);
+    Show(d2);
+    // cin.get();
+    return 0;
+}
+
+template <typename T>
+void Swap(T &a, T &b)
+{
+    T temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+
+template <typename T>
+void Swap(T a[], T b[], int n)
+{
+    T temp;
+    for (int i = 0; i < n; i++)
+    {
+        temp = a[i];
+        a[i] = b[i];
+        b[i] = temp;
+    }
+}
+
+void Show(int a[])
+{
+    using namespace std;
+    cout << a[0] << a[1] << "/";
+    cout << a[2] << a[3] << "/";
+    for (int i = 4; i < Lim; i++)
+        cout << a[i];
+    cout << endl;
+}
+//i, j = 10, 20.
+//Using compiler-generated int swapper:
+//Now i, j = 20, 10.
+//Original arrays:
+//07/04/1776
+//07/20/1969
+//Swapped arrays:
+//07/20/1969
+//07/04/1776
+```
+
+### 模板的局限性 
+
+```
+template <class T>
+void f(T a,T b)
+{
+....
+}
+```
+
+通常，代码假定可执行哪些操作。例如，下面的代码假定定义了赋值，但如果T为数组，这种假设将不成立：
+
+a = b;
+
+同样，下面的语句假设定义了<，但如果T为结构，该假设便不成立：
+
+If(a > b)
+
+另外，为数组名定义了运算符>，但由于数组名为地址，因此它比较的是数组的地址，而这可能不是您希望的。下面的语句假定为类型T 定义了乘法运算符，但如果T为数组、指针或结构，这种假设便不成立：
+
+T c =a*b
+
+总之，编写的模板函数很可能无法处理某些类型。另一方面，有时候通用化是有意义的，但C++语法不允许这样做。
+
+### 显式具体化 
+
+#### 第三代具体化（ISO/ANSI C++标准）
+
+- 对于给定的函数名，可以有非模板函数、模板函数和显式具体化模 板函数以及它们的重载版本。 
+- 显式具体化的原型和定义应以template<>打头，并通过名称来指出类型。 
+- 具体化优先于常规模板，而非模板函数优先于具体化和常规模板。
+
+```
+void Swap(job &,job &);//non template function prototype
+
+//template prototype
+template <typename T>
+void Swap(T &,T &);
+
+//explicitd specialization for the job type
+template <> void Swap<job>(job &,job &);
+```
+
+正如前面指出的，如果有多个原型，则编译器在选择原型时，非模板版本优先于显式具体化和模板版本，而显式具体化优先于使用模板生 成的版本。
+
+#### 显式具体化示例
+
+```cpp
+// twoswap.cpp -- specialization overrides a template
+#include <iostream>
+template <typename T>
+void Swap(T &a, T &b);
+
+struct job
+{
+    char name[40];
+    double salary;
+    int floor;
+};
+
+// explicit specialization
+template <> void Swap<job>(job &j1, job &j2);
+void Show(job &j);
+
+int main()
+{
+    using namespace std;
+    cout.precision(2);
+    cout.setf(ios::fixed, ios::floatfield);
+    int i = 10, j = 20;
+    cout << "i, j = " << i << ", " << j << ".\n";
+    cout << "Using compiler-generated int swapper:\n";
+    Swap(i,j);    // generates void Swap(int &, int &)
+    cout << "Now i, j = " << i << ", " << j << ".\n";
+
+    job sue = {"Susan Yaffee", 73000.60, 7};
+    job sidney = {"Sidney Taffee", 78060.72, 9};
+    cout << "Before job swapping:\n";
+    Show(sue);
+    Show(sidney);
+    Swap(sue, sidney); // uses void Swap(job &, job &)
+    cout << "After job swapping:\n";
+    Show(sue);
+    Show(sidney);
+    // cin.get();
+    return 0;
+}
+
+template <typename T>
+void Swap(T &a, T &b)    // general version
+{
+    T temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+
+// swaps just the salary and floor fields of a job structure
+
+template <> void Swap<job>(job &j1, job &j2)  // specialization
+{
+    double t1;
+    int t2;
+    t1 = j1.salary;
+    j1.salary = j2.salary;
+    j2.salary = t1;
+    t2 = j1.floor;
+    j1.floor = j2.floor;
+    j2.floor = t2;
+}
+
+void Show(job &j)
+{
+    using namespace std;
+    cout << j.name << ": $" << j.salary
+         << " on floor " << j.floor << endl;
+}
+//i, j = 10, 20.
+//Using compiler-generated int swapper:
+//Now i, j = 20, 10.
+//Before job swapping:
+//Susan Yaffee: $73000.60 on floor 7
+//Sidney Taffee: $78060.72 on floor 9
+//After job swapping:
+//Susan Yaffee: $78060.72 on floor 9
+//Sidney Taffee: $73000.60 on floor 7
+```
+
+### 实例化和具体化
+
+为进一步了解模板，必须理解术语实例化和具体化。记住，在代码中包含函数模板本身并不会生成函数定义，它只是一个用于生成函数定 义的方案。编译器使用模板为特定类型生成函数定义时，得到的是模板实例（instantiation）。例如，在程序清单8.13中，函数调用Swap(i, j)导致编译器生成Swap( )的一个实例，该实例使用int类型。模板并非函数定义，但使用int的模板实例是函数定义。这种实例化方式被称为隐式实例化（implicit instantiation），因为编译器之所以知道需要进行定义，是由于程序调用Swap( )函数时提供了int参数。
+
+最初，编译器只能通过隐式实例化，来使用模板生成函数定义，但现在C++还允许显式实例化（explicit instantiation）。这意味着可以直接命令编译器创建特定的实例，如Swap<int>( )。其语法是，声明所需的种类——用<>符号指示类型，并在声明前加上关键字template： 
+
+```
+template void swap<int>(int,int);
+```
+
+实现了这种特性的编译器看到上述声明后，将使用Swap( )模板生成一个使用int类型的实例。也就是说，该声明的意思是“使用Swap( )模板生成int类型的函数定义。”
+
+与显式实例化不同的是，显式具体化使用下面两个等价的声明之一：
+
+```
+template <> void swap<int>(int &,int &);
+template <> void swap(int &,int &);
+```
+
+区别在于，这些声明的意思是“不要使用Swap( )模板来生成函数定义，而应使用专门为int类型显式地定义的函数定义”。这些原型必须有 自己的函数定义。显式具体化声明在关键字template后包含<>，而显式实例化没有。 
+
+试图在同一个文件（或转换单元）中使用同一种类型的显式实例和显式具体化将出错。
+
+还可通过在程序中使用函数来创建显式实例化
+
+```
+template <class T>
+T Add(T a,T b)
+{
+	return a+b;
+}
+...
+int m = 6;
+double x = 10.2;
+cout <<Add<double>(x,m)<<endl;
+```
+
+这里的模板与函数调用Add(x, m)不匹配，因为该模板要求两个函数参数的类型相同。但通过使用Add<double>(x, m)，可强制为double类型 实例化，并将参数m强制转换为double类型，以便与函数Add<double> (double, double)的第二个参数匹配。
+
+```
+int m = 5;
+double x = 14.3;
+Swap<double>(m,x);
+```
+
+这将为类型double生成一个显式实例化。不幸的是，这些代码不管用，因为第一个形参的类型为double &，不能指向int变量m。
+
+隐式实例化、显式实例化和显式具体化统称为具体化（specialization）。它们的相同之处在于，它们表示的都是使用具体类型的函数定义，而不是通用描述。 
+
+引入显式实例化后，必须使用新的语法——在声明中使用前缀template和template <>，以区分显式实例化和显式具体化。通常，功能 越多，语法规则也越多。下面的代码片段总结了这些概念：
+
+```
+template <class T>
+void Swap (T &,T &);
+
+template <>void Swap<job>(job &,job &);
+int main(void){
+	template void Swap<char>(char &,char &);
+	short a,b;
+	...
+	Swap(a,b);
+	job n,m;
+	...
+	Swap(n,m);
+	char g,h;
+	...
+	Swap(g,h)
+}
+```
+
+编译器看到char的显式实例化后，将使用模板定义来生成Swap( )的char版本。对于其他Swap( )调用，编译器根据函数调用中实际使用的参数，生成相应的版本。例如，当编译器看到函数调用Swap(a, b)后，将生成Swap( )的short版本，因为两个参数的类型都是short。当编译器看到Swap(n, m)后，将使用为job类型提供的独立定义（显式具体化）。当编译器看到Swap(g, h)后，将使用处理显式实例化时生成的模板具体化。
+
+### 编译器选择使用哪个函数版本 
+
+对于函数重载、函数模板和函数模板重载，C++需要（且有）一个 定义良好的策略，来决定为函数调用使用哪一个函数定义，尤其是有多 个参数时。这个过程称为重载解析（overloading resolution）。详细解释这个策略将需要将近一章的篇幅，因此我们先大致了解一下这个过程是如何进行的。 
+
+第1步：创建候选函数列表。其中包含与被调用函数的名称相同的函数和模板函数。 
+
+第2步：使用候选函数列表创建可行函数列表。这些都是参数数目正确的函数，为此有一个隐式转换序列，其中包括实参类型与相应的形参类型完全匹配的情况。例如，使用float参数的函数调用可以将该参数转换为double，从而与double形参匹配，而模板可以为float生成一个实例。 
+
+第3步：确定是否有最佳的可行函数。如果有，则使用它，否则该函数调用出错。
+
+```
+may('B')
+```
+
+首先，编译器将寻找候选者，即名称为may( )的函数和函数模板。然后寻找那些可以用一个参数调用的函数。例如，下面的函数符合要 求，因为其名称与被调用的函数相同，且可只给它们传递一个参数：
