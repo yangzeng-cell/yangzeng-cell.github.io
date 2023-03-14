@@ -1611,3 +1611,435 @@ may('B')
 ```
 
 首先，编译器将寻找候选者，即名称为may( )的函数和函数模板。然后寻找那些可以用一个参数调用的函数。例如，下面的函数符合要 求，因为其名称与被调用的函数相同，且可只给它们传递一个参数：
+
+```
+void may(int);//#1
+float may(float,float = 3);//#2
+void may(char);//#3
+char *may(const char *);//#4
+char may(const char &)//#5
+template<class T> void may(const T &);//#6
+template<class T> void may(T *);//#7
+```
+
+注意，只考虑特征标，而不考虑返回类型。其中的两个候选函数（#4和#7）不可行，因为整数类型不能被隐式地转换（即没有显式强制 类型转换）为指针类型。剩余的一个模板可用来生成具体化，其中T被替换为char类型。这样剩下5个可行的函数，其中的每一个函数，如果它是声明的唯一一个函数，都可以被使用。
+
+接下来，编译器必须确定哪个可行函数是最佳的。它查看为使函数调用参数与可行的候选函数的参数匹配所需要进行的转换。通常，从最 佳到最差的顺序如下所述。 
+
+1．完全匹配，但常规函数优先于模板。 
+
+2．提升转换（例如，char和shorts自动转换为int，float自动转换为double）。 
+
+3．标准转换（例如，int转换为char，long转换为double）。 
+
+4．用户定义的转换，如类声明中定义的转换。
+
+例如，函数#1优于函数#2，因为char到int的转换是提升转换（参见第3章），而char到float的转换是标准转换（参见第3章）。函数#3、函数#5和函数#6都优于函数#1和#2，因为它们都是完全匹配的。#3和#5优于#6，因为#6函数是模板。这种分析引出了两个问题。什么是完全匹配？如果两个函数（如#3和#5）都完全匹配，将如何办呢？通常，有两个函数完全匹配是一种错误，但这一规则有两个例外。显然，我们需要对这一点做更深入的探讨。 
+
+#### 完全匹配和最佳匹配
+
+进行完全匹配时，C++允许某些“无关紧要的转换”。表8.1列出了这些转换——Type表示任意类型。例如，int实参与int &形参完全匹配。注意，Type可以是char &这样的类型，因此这些规则包括从char &到const char &的转换。Type（argument-list）意味着用作实参的函数名与用作形参的函数指针只要返回类型和参数列表相同，就是匹配的（第7章介绍了函数指针以及为何可以将函数名作为参数传递给接受函数指针的函数）。第9章将介绍关键字volatile。 
+
+完全匹配允许的无关紧要转换
+
+| 从实参              | 到形参                  |
+| ------------------- | ----------------------- |
+| Type                | Type &                  |
+| Type &              | Type                    |
+| Type []             | *Type                   |
+| Type(argument-list) | Type(*)(argument-list)) |
+| Type                | const Type              |
+| Type                | Voliate Type            |
+| Type *              | const Type              |
+| Type *              | Voliate Type *          |
+
+```
+struct blot {int a,char b[10]};
+blot ink = {25,"spots"};
+...
+recycle(ink);
+```
+
+在这种情况下，下面的原型都是完全匹配的： 
+
+```
+void recycle(blot);
+void recycle(const blot);
+void recycle(blot &);
+void recycle(const blot &);
+```
+
+正如您预期的，如果有多个匹配的原型，则编译器将无法完成重载解析过程；如果没有最佳的可行函数，则编译器将生成一条错误消息， 该消息可能会使用诸如“ambiguous（二义性）”这样的词语。
+
+然而，有时候，即使两个函数都完全匹配，仍可完成重载解析。首先，指向非const数据的指针和引用优先与非const指针和引用参数匹 配。也就是说，在recycle( )示例中，如果只定义了函数#3和#4是完全匹配的，则将选择#3，因为ink没有被声明为const。然而，const和非const之间的区别只适用于指针和引用指向的数据。也就是说，如果只定义了 #1和#2，则将出现二义性错误
+
+一个完全匹配优于另一个的另一种情况是，其中一个是非模板函数，而另一个不是。在这种情况下，非模板函数将优先于模板函数（包 括显式具体化）。 
+
+如果两个完全匹配的函数都是模板函数，则较具体的模板函数优先。例如，这意味着显式具体化将优于使用模板隐式生成的具体化：
+
+```
+struct blot {int a,char b[10]};
+template <class Type> void recycle (Type t)//template
+template <> void recycle<blot> (blot & t);
+...
+blot ink = {25,"spots"};
+...
+recycle(ink);
+```
+
+术语“最具体（most specialized）”并不一定意味着显式具体化，而是指编译器推断使用哪种类型时执行的转换最少。例如，请看下面两个模板：
+
+```
+template <class Type> void recycle (Type t) //#1
+template <class Type> void recycle (Type *t) //#2
+```
+
+假设包含这些模板的程序也包含如下代码：
+
+```
+struct blot {int a,charb[10]};
+blot ink = {25,"spots"};
+...
+recycle(&ink);
+```
+
+recycle(&ink)调用与#1模板匹配，匹配时将Type解释为blot *。recycle（&ink）函数调用也与#2模板匹配，这次Type被解释为ink。因 此将两个隐式实例——recycle<blot *>(blot *)和recycle <blot>(blot *)发送到可行函数池中。 
+
+在这两个模板函数中，recycle<blot *>(blot *)被认为是更具体的，因为在生成过程中，它需要进行的转换更少。也就是说，#2模板已经显式指出，函数参数是指向Type的指针，因此可以直接用blot标识Type；而#1模板将Type作为函数参数，因此Type必须被解释为指向blot的指针。也就是说，在#2模板中，Type已经被具体化为指针，因此说它“更具体”。
+
+用于找出最具体的模板的规则被称为函数模板的部分排序规则（partial ordering rules）。和显式实例一样，这也是C++98新增的特性。 
+
+#### 部分排序规则示例 
+
+```cpp
+// tempover.cpp --- template overloading
+#include <iostream>
+
+template <typename T>            // template A
+void ShowArray(T arr[], int n);
+
+template <typename T>            // template B
+void ShowArray(T * arr[], int n);
+
+struct debts
+{
+    char name[50];
+    double amount;
+};
+
+int main()
+{
+    using namespace std;
+    int things[6] = {13, 31, 103, 301, 310, 130};
+    struct debts mr_E[3] =
+            {
+                    {"Ima Wolfe", 2400.0},
+                    {"Ura Foxe", 1300.0},
+                    {"Iby Stout", 1800.0}
+            };
+    double * pd[3];
+
+// set pointers to the amount members of the structures in mr_E
+    for (int i = 0; i < 3; i++)
+        pd[i] = &mr_E[i].amount;
+
+    cout << "Listing Mr. E's counts of things:\n";
+// things is an array of int
+    ShowArray(things, 6);  // uses template A
+    cout << "Listing Mr. E's debts:\n";
+// pd is an array of pointers to double
+    ShowArray(pd, 3);      // uses template B (more specialized)
+    // cin.get();
+    return 0;
+}
+
+template <typename T>
+void ShowArray(T arr[], int n)
+{
+    using namespace std;
+    cout << "template A\n";
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << ' ';
+    cout << endl;
+}
+
+template <typename T>
+void ShowArray(T * arr[], int n)
+{
+    using namespace std;
+    cout << "template B\n";
+    for (int i = 0; i < n; i++)
+        cout << *arr[i] << ' ';
+    cout << endl;
+}
+//Listing Mr. E's counts of things:
+//template A
+//13 31 103 301 310 130
+//Listing Mr. E's debts:
+//template B
+//2400 1300 1800
+```
+
+
+
+```
+ShowArray(things, 6);
+```
+
+标识符things是一个int数组的名称，因此与下面的模板匹配：
+
+```
+template <typename T>            // template A
+void ShowArray(T arr[], int n);
+```
+
+其中T被替换为int类型。 
+
+```
+ShowArray(pd, 3); 
+```
+
+其中pd是一个double *数组的名称。这与模板A匹配： 
+
+```
+template <typename T>            // template A
+void ShowArray(T arr[], int n);
+```
+
+其中，T被替换为类型double *。在这种情况下，模板函数将显示pd数组的内容，即3个地址。该函数调用也与模板B匹配：
+
+```
+template <typename T>            // template B
+void ShowArray(T * arr[], int n);
+```
+
+在这里，T被替换为类型double，而函数将显示被解除引用的元素 *arr[i]，即数组内容指向的double值。在这两个模板中，模板B更具体，因为它做了特定的假设——数组内容是指针，因此被使用。 
+
+简而言之，重载解析将寻找最匹配的函数。如果只存在一个这样的函数，则选择它；如果存在多个这样的函数，但其中只有一个是非模板 函数，则选择该函数；如果存在多个适合的函数，且它们都为模板函数，但其中有一个函数比其他函数更具体，则选择该函数。如果有多个同样合适的非模板函数或模板函数，但没有一个函数比其他函数更具体，则函数调用将是不确定的，因此是错误的；当然，如果不存在匹配的函数，则也是错误。 
+
+#### 自己选择
+
+在有些情况下，可通过编写合适的函数调用，引导编译器做出您希 望的选择。请看程序清单8.15，该程序将模板函数定义放在文件开头， 从而无需提供模板原型。与常规函数一样，通过在使用函数前提供模板函数定义，它让它也充当原型。
+
+```cpp
+// choices.cpp -- choosing a template
+#include <iostream>
+
+template<class T>
+T lesser(T a, T b)         // #1
+{
+    return a < b ? a : b;
+}
+
+int lesser (int a, int b)  // #2
+{
+    a = a < 0 ? -a : a;
+    b = b < 0 ? -b : b;
+    return a < b ? a : b;
+}
+
+int main()
+{
+    using namespace std;
+    int m = 20;
+    int n = -30;
+    double x = 15.5;
+    double y = 25.9;
+
+    cout << lesser(m, n) << endl;       // use #2
+    cout << lesser(x, y) << endl;       // use #1 with double
+    cout << lesser<>(m, n) << endl;     // use #1 with int
+    cout << lesser<int>(x, y)  << endl; // use #1 with int
+
+    // cin.get();
+    return 0;
+}
+```
+
+
+
+```
+cout << lesser<>(m, n) << endl;     // use #1 with int
+```
+
+lesser<>(m, n)中的<>指出，编译器应选择模板函数，而不是非模板函数；编译器注意到实参的类型为int，因此使用int替代T对模板进行实例化
+
+```
+ cout << lesser<int>(x, y)  << endl; // use #1 with int
+```
+
+这条语句要求进行显式实例化（使用int替代T），将使用显式实例化得到的函数。x和y的值将被强制转换为int，该函数返回一个int值，这 就是程序显示15而不是15.5的原因所在。
+
+#### 多个参数的函数
+
+将有多个参数的函数调用与有多个参数的原型进行匹配时，情况将非常复杂。编译器必须考虑所有参数的匹配情况。如果找到比其他可行 函数都合适的函数，则选择该函数。一个函数要比其他函数都合适，其所有参数的匹配程度都必须不比其他函数差，同时至少有一个参数的匹配程度比其他函数都高。 
+
+### 模板函数的发展
+
+#### 是什么类型
+
+```
+template<class T1,class T2>
+void ft(T1 x,T2 y)
+{
+	?type?xpy=x+y;
+}
+```
+
+xpy应为什么类型呢？由于不知道ft()将如何使用，因此无法预先知道这一点。正确的类型可能是T1、T2或其他类型。例如，T1可能是 double，而T2可能是int，在这种情况下，两个变量的和将为double类型。T1可能是short，而T2可能是int，在这种情况下，两个变量的和为int类型。T1还可能是short，而T2可能是char，在这种情况下，加法运算将导致自动整型提升，因此结果类型为int。另外，结构和类可能重载运算符+，这导致问题更加复杂。因此，在C++98中，没有办法声明xpy的类型。 
+
+#### 关键字**decltype**（**C++11**）
+
+C++11新增的关键字decltype提供了解决方案。可这样使用该关键字：
+
+```
+int x;
+decltype(x) y; //make y the same type as x
+```
+
+给decltype提供的参数可以是表达式，因此在前面的模板函数ft()中，可使用下面的代码： 
+
+```
+decltype(x+y) xpy;
+xpy = x+y;
+```
+
+另一种方法是，将这两条语句合而为一： 
+
+```
+decltype(x+y) xpy = x+y;
+```
+
+因此，可以这样修复前面的模板函数ft()：
+
+```
+template<class T1,class T2>
+void ft(T1 x,T2 y)
+{
+	decltype(x+y) xpy = x+y;
+}
+```
+
+
+
+```
+decltype(experession) var;
+```
+
+第一步：如果expression是一个没有用括号括起的标识符，则var的类型与该标识符的类型相同，包括const等限定符
+
+```
+double x =2.5;
+double y =7.9;
+double &rx = x;
+const double *pd;
+decltype(x) w;
+decltype(rx) u = y;
+decltype(pd) v;
+```
+
+第二步：如果expression是一个函数调用，则var的类型与函数的返回类型相同： 
+
+```
+long indeed(int);
+decltype (indeed(3)) m
+```
+
+并不会实际调用函数。编译器通过查看函数的原型来获悉返回类型，而无需实际调用函数
+
+第三步：如果expression是一个左值，则var为指向其类型的引用。这好像意味着前面的w应为引用类型，因为x是一个左值。但别忘了， 这种情况已经在第一步处理过了。要进入第三步，expression不能是未用括号括起的标识符。那么，expression是什么时将进入第三步呢？一 种显而易见的情况是，expression是用括号括起的标识符：
+
+```
+double xx =4.4;
+decltype ((xx)) r2 = xx;//r2 is double &
+decltype(xx) w =xx;
+```
+
+顺便说一句，括号并不会改变表达式的值和左值性。例如，下面两条语句等效： 
+
+```
+xx = 98.6;
+(xx) =98.6;
+```
+
+第四步：如果前面的条件都不满足，则var的类型与expression的类型相同：
+
+```
+int j = 3;
+int &k = j;
+int &n = j;
+decltype(j+6) il;
+decltype(100L) i2;
+```
+
+请注意，虽然k和n都是引用，但表达式k+n不是引用；它是两个int的和，因此类型为int。 
+
+如果需要多次声明，可结合使用typedef和decltype：
+
+```
+tempalte<class T1,class T2>
+void ft(T1 x,T2 y){
+	typedef decltype(x+y) xytype;
+	xytype xpy = x+y;
+	xytype arr[10];
+	xytype &rxy =arr[2];
+}
+```
+
+### 另一种函数声明语法（**C++11**后置返回类型） 
+
+```
+template<class T1,class T2>
+?typ?gt(T1 x,T2 y)
+{
+	return x+y
+}
+```
+
+同样，无法预先知道将x和y相加得到的类型。好像可以将返回类型设置为decltype ( x + y)，但不幸的是，此时还未声明参数x和y，它们不 在作用域内（编译器看不到它们，也无法使用它们）。必须在声明参数后使用decltype。为此，C++新增了一种声明和定义函数的语法。下面使用内置类型来说明这种语法的工作原理。对于下面的原型： 
+
+```
+double h(int x,float y);
+```
+
+使用新增的语法可编写成这样：
+
+```
+auto h(int x ,float y) ->double;
+```
+
+这将返回类型移到了参数声明后面。->double被称为后置返回类型（trailing return type）。其中auto是一个占位符，表示后置返回类型提供的类型，这是C++11给auto新增的一种角色。这种语法也可用于函数定义：
+
+```
+auto h(int x,float y) -> double
+{/* function body */}
+```
+
+通过结合使用这种语法和decltype，便可给gt()指定返回类型，如下所示：
+
+```
+template<class T1,class T2>
+auto gt(T1 x,T2 y){
+	...
+	return x+y;
+	...
+}
+```
+
+现在，decltype在参数声明后面，因此x和y位于作用域内，可以使用它们。 
+
+## 总结
+
+C++扩展了C语言的函数功能。通过将inline关键字用于函数定义，并在首次调用该函数前提供其函数定义，可以使得C++编译器将该函数 视为内联函数。也就是说，编译器不是让程序跳到独立的代码段，以执行函数，而是用相应的代码替换函数调用。只有在函数很短时才能采用内联方式。 
+
+引用变量是一种伪装指针，它允许为变量创建别名（另一个名称）。引用变量主要被用作处理结构和类对象的函数的参数。通常，被 声明为特定类型引用的标识符只能指向这种类型的数据；然而，如果一个类（如ofstream）是从另一个类（如ostream）派生出来的，则基类引用可以指向派生类对象
+
+C++原型让您能够定义参数的默认值。如果函数调用省略了相应的参数，则程序将使用默认值；如果函数调用提供了参数值，则程序将使 用这个值（而不是默认值）。只能在参数列表中从右到左提供默认参数。因此，如果为某个参数提供了默认值，则必须为该参数右边所有的参数提供默认值。 
+
+函数的特征标是其参数列表。程序员可以定义两个同名函数，只要其特征标不同。这被称为函数多态或函数重载。通常，通过重载函数来 为不同的数据类型提供相同的服务。
+
+函数模板自动完成重载函数的过程。只需使用泛型和具体算法来定义函数，编译器将为程序中使用的特定参数类型生成正确的函数定义。 
+
+# 内存模型和名称空间
+
+C++为在内存中存储数据方面提供了多种选择。可以选择数据保留在内存中的时间长度（存储持续性）以及程序的哪一部分可以访问数据 （作用域和链接）等。可以使用new来动态地分配内存，而定位new运算符提供了这种技术的一种变种。C++名称空间是另一种控制访问权的方式。通常，大型程序都由多个源代码文件组成，这些文件可能共享一些数据
