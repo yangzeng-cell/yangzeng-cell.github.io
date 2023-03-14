@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-04%2020.41.35.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-05%2010.01.02.png">
 <meta property="article:published_time" content="2023-03-04T17:25:36.000Z">
-<meta property="article:modified_time" content="2023-03-12T15:04:58.831Z">
+<meta property="article:modified_time" content="2023-03-14T15:24:28.064Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          37k 字
+          45k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          307 分钟
+          379 分钟
         
       </span>
     
@@ -1485,6 +1485,330 @@ Swap&lt;<span class="hljs-keyword">double</span>&gt;(m<span class="hljs-punctuat
 <div class="code-wrapper"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">may</span><span class="hljs-params">(<span class="hljs-string">&#x27;B&#x27;</span>)</span></span></code></pre></div>
 
 <p>首先，编译器将寻找候选者，即名称为may( )的函数和函数模板。然后寻找那些可以用一个参数调用的函数。例如，下面的函数符合要 求，因为其名称与被调用的函数相同，且可只给它们传递一个参数：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">may</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span>;<span class="hljs-comment">//#1</span>
+<span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">may</span><span class="hljs-params">(<span class="hljs-type">float</span>,<span class="hljs-type">float</span> = <span class="hljs-number">3</span>)</span></span>;<span class="hljs-comment">//#2</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">may</span><span class="hljs-params">(<span class="hljs-type">char</span>)</span></span>;<span class="hljs-comment">//#3</span>
+<span class="hljs-function"><span class="hljs-type">char</span> *<span class="hljs-title">may</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *)</span></span>;<span class="hljs-comment">//#4</span>
+<span class="hljs-function"><span class="hljs-type">char</span> <span class="hljs-title">may</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> &amp;)</span><span class="hljs-comment">//#5</span></span>
+<span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> T&gt; <span class="hljs-type">void</span> <span class="hljs-title">may</span><span class="hljs-params">(<span class="hljs-type">const</span> T &amp;)</span></span>;<span class="hljs-comment">//#6</span>
+<span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> T&gt; <span class="hljs-type">void</span> <span class="hljs-title">may</span><span class="hljs-params">(T *)</span></span>;<span class="hljs-comment">//#7</span></code></pre></div>
+
+<p>注意，只考虑特征标，而不考虑返回类型。其中的两个候选函数（#4和#7）不可行，因为整数类型不能被隐式地转换（即没有显式强制 类型转换）为指针类型。剩余的一个模板可用来生成具体化，其中T被替换为char类型。这样剩下5个可行的函数，其中的每一个函数，如果它是声明的唯一一个函数，都可以被使用。</p>
+<p>接下来，编译器必须确定哪个可行函数是最佳的。它查看为使函数调用参数与可行的候选函数的参数匹配所需要进行的转换。通常，从最 佳到最差的顺序如下所述。 </p>
+<p>1．完全匹配，但常规函数优先于模板。 </p>
+<p>2．提升转换（例如，char和shorts自动转换为int，float自动转换为double）。 </p>
+<p>3．标准转换（例如，int转换为char，long转换为double）。 </p>
+<p>4．用户定义的转换，如类声明中定义的转换。</p>
+<p>例如，函数#1优于函数#2，因为char到int的转换是提升转换（参见第3章），而char到float的转换是标准转换（参见第3章）。函数#3、函数#5和函数#6都优于函数#1和#2，因为它们都是完全匹配的。#3和#5优于#6，因为#6函数是模板。这种分析引出了两个问题。什么是完全匹配？如果两个函数（如#3和#5）都完全匹配，将如何办呢？通常，有两个函数完全匹配是一种错误，但这一规则有两个例外。显然，我们需要对这一点做更深入的探讨。 </p>
+<h4 id="完全匹配和最佳匹配"><a href="#完全匹配和最佳匹配" class="headerlink" title="完全匹配和最佳匹配"></a>完全匹配和最佳匹配</h4><p>进行完全匹配时，C++允许某些“无关紧要的转换”。表8.1列出了这些转换——Type表示任意类型。例如，int实参与int &amp;形参完全匹配。注意，Type可以是char &amp;这样的类型，因此这些规则包括从char &amp;到const char &amp;的转换。Type（argument-list）意味着用作实参的函数名与用作形参的函数指针只要返回类型和参数列表相同，就是匹配的（第7章介绍了函数指针以及为何可以将函数名作为参数传递给接受函数指针的函数）。第9章将介绍关键字volatile。 </p>
+<p>完全匹配允许的无关紧要转换</p>
+<table>
+<thead>
+<tr>
+<th>从实参</th>
+<th>到形参</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Type</td>
+<td>Type &amp;</td>
+</tr>
+<tr>
+<td>Type &amp;</td>
+<td>Type</td>
+</tr>
+<tr>
+<td>Type []</td>
+<td>*Type</td>
+</tr>
+<tr>
+<td>Type(argument-list)</td>
+<td>Type(*)(argument-list))</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>const Type</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Voliate Type</td>
+</tr>
+<tr>
+<td>Type *</td>
+<td>const Type</td>
+</tr>
+<tr>
+<td>Type *</td>
+<td>Voliate Type *</td>
+</tr>
+</tbody></table>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">blot</span> &#123;<span class="hljs-type">int</span> a,<span class="hljs-type">char</span> b[<span class="hljs-number">10</span>]&#125;;
+blot ink = &#123;<span class="hljs-number">25</span>,<span class="hljs-string">&quot;spots&quot;</span>&#125;;
+...
+<span class="hljs-built_in">recycle</span>(ink);</code></pre></div>
+
+<p>在这种情况下，下面的原型都是完全匹配的： </p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">recycle</span><span class="hljs-params">(blot)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">recycle</span><span class="hljs-params">(<span class="hljs-type">const</span> blot)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">recycle</span><span class="hljs-params">(blot &amp;)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">recycle</span><span class="hljs-params">(<span class="hljs-type">const</span> blot &amp;)</span></span>;</code></pre></div>
+
+<p>正如您预期的，如果有多个匹配的原型，则编译器将无法完成重载解析过程；如果没有最佳的可行函数，则编译器将生成一条错误消息， 该消息可能会使用诸如“ambiguous（二义性）”这样的词语。</p>
+<p>然而，有时候，即使两个函数都完全匹配，仍可完成重载解析。首先，指向非const数据的指针和引用优先与非const指针和引用参数匹 配。也就是说，在recycle( )示例中，如果只定义了函数#3和#4是完全匹配的，则将选择#3，因为ink没有被声明为const。然而，const和非const之间的区别只适用于指针和引用指向的数据。也就是说，如果只定义了 #1和#2，则将出现二义性错误</p>
+<p>一个完全匹配优于另一个的另一种情况是，其中一个是非模板函数，而另一个不是。在这种情况下，非模板函数将优先于模板函数（包 括显式具体化）。 </p>
+<p>如果两个完全匹配的函数都是模板函数，则较具体的模板函数优先。例如，这意味着显式具体化将优于使用模板隐式生成的具体化：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">blot</span> &#123;<span class="hljs-type">int</span> a,<span class="hljs-type">char</span> b[<span class="hljs-number">10</span>]&#125;;
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Type</span>&gt; <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">recycle</span> <span class="hljs-params">(Type t)</span><span class="hljs-comment">//template</span></span>
+<span class="hljs-function"><span class="hljs-keyword">template</span> &lt;&gt; <span class="hljs-type">void</span> recycle&lt;blot&gt; <span class="hljs-params">(blot &amp; t)</span></span>;
+...
+blot ink = &#123;<span class="hljs-number">25</span>,<span class="hljs-string">&quot;spots&quot;</span>&#125;;
+...
+<span class="hljs-built_in">recycle</span>(ink);</code></pre></div>
+
+<p>术语“最具体（most specialized）”并不一定意味着显式具体化，而是指编译器推断使用哪种类型时执行的转换最少。例如，请看下面两个模板：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript">template &lt;<span class="hljs-keyword">class</span> <span class="hljs-symbol">Type</span>&gt; <span class="hljs-symbol">void</span> <span class="hljs-symbol">recycle</span> (<span class="hljs-symbol">Type</span> <span class="hljs-symbol">t</span>) //#<span class="hljs-symbol">1</span>
+<span class="hljs-symbol">template</span> &lt;<span class="hljs-symbol">class</span> <span class="hljs-symbol">Type</span>&gt; <span class="hljs-symbol">void</span> <span class="hljs-symbol">recycle</span> (<span class="hljs-symbol">Type</span> *<span class="hljs-symbol">t</span>) //#<span class="hljs-symbol">2</span></code></pre></div>
+
+<p>假设包含这些模板的程序也包含如下代码：</p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">blot</span> &#123;<span class="hljs-type">int</span> a,charb[<span class="hljs-number">10</span>]&#125;;
+blot ink = &#123;<span class="hljs-number">25</span>,<span class="hljs-string">&quot;spots&quot;</span>&#125;;
+...
+<span class="hljs-built_in">recycle</span>(&amp;ink);</code></pre></div>
+
+<p>recycle(&amp;ink)调用与#1模板匹配，匹配时将Type解释为blot *。recycle（&amp;ink）函数调用也与#2模板匹配，这次Type被解释为ink。因 此将两个隐式实例——recycle&lt;blot *&gt;(blot *)和recycle <blot>(blot *)发送到可行函数池中。 </p>
+<p>在这两个模板函数中，recycle&lt;blot *&gt;(blot *)被认为是更具体的，因为在生成过程中，它需要进行的转换更少。也就是说，#2模板已经显式指出，函数参数是指向Type的指针，因此可以直接用blot标识Type；而#1模板将Type作为函数参数，因此Type必须被解释为指向blot的指针。也就是说，在#2模板中，Type已经被具体化为指针，因此说它“更具体”。</p>
+<p>用于找出最具体的模板的规则被称为函数模板的部分排序规则（partial ordering rules）。和显式实例一样，这也是C++98新增的特性。 </p>
+<h4 id="部分排序规则示例"><a href="#部分排序规则示例" class="headerlink" title="部分排序规则示例"></a>部分排序规则示例</h4><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// tempover.cpp --- template overloading</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;            <span class="hljs-comment">// template A</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowArray</span><span class="hljs-params">(T arr[], <span class="hljs-type">int</span> n)</span></span>;
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;            <span class="hljs-comment">// template B</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowArray</span><span class="hljs-params">(T * arr[], <span class="hljs-type">int</span> n)</span></span>;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">debts</span>
+&#123;
+    <span class="hljs-type">char</span> name[<span class="hljs-number">50</span>];
+    <span class="hljs-type">double</span> amount;
+&#125;;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">int</span> things[<span class="hljs-number">6</span>] = &#123;<span class="hljs-number">13</span>, <span class="hljs-number">31</span>, <span class="hljs-number">103</span>, <span class="hljs-number">301</span>, <span class="hljs-number">310</span>, <span class="hljs-number">130</span>&#125;;
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">debts</span> mr_E[<span class="hljs-number">3</span>] =
+            &#123;
+                    &#123;<span class="hljs-string">&quot;Ima Wolfe&quot;</span>, <span class="hljs-number">2400.0</span>&#125;,
+                    &#123;<span class="hljs-string">&quot;Ura Foxe&quot;</span>, <span class="hljs-number">1300.0</span>&#125;,
+                    &#123;<span class="hljs-string">&quot;Iby Stout&quot;</span>, <span class="hljs-number">1800.0</span>&#125;
+            &#125;;
+    <span class="hljs-type">double</span> * pd[<span class="hljs-number">3</span>];
+
+<span class="hljs-comment">// set pointers to the amount members of the structures in mr_E</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)
+        pd[i] = &amp;mr_E[i].amount;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Listing Mr. E&#x27;s counts of things:\n&quot;</span>;
+<span class="hljs-comment">// things is an array of int</span>
+    <span class="hljs-built_in">ShowArray</span>(things, <span class="hljs-number">6</span>);  <span class="hljs-comment">// uses template A</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;Listing Mr. E&#x27;s debts:\n&quot;</span>;
+<span class="hljs-comment">// pd is an array of pointers to double</span>
+    <span class="hljs-built_in">ShowArray</span>(pd, <span class="hljs-number">3</span>);      <span class="hljs-comment">// uses template B (more specialized)</span>
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowArray</span><span class="hljs-params">(T arr[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    cout &lt;&lt; <span class="hljs-string">&quot;template A\n&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+        cout &lt;&lt; arr[i] &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;
+    cout &lt;&lt; endl;
+&#125;
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowArray</span><span class="hljs-params">(T * arr[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    cout &lt;&lt; <span class="hljs-string">&quot;template B\n&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+        cout &lt;&lt; *arr[i] &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;
+    cout &lt;&lt; endl;
+&#125;
+<span class="hljs-comment">//Listing Mr. E&#x27;s counts of things:</span>
+<span class="hljs-comment">//template A</span>
+<span class="hljs-comment">//13 31 103 301 310 130</span>
+<span class="hljs-comment">//Listing Mr. E&#x27;s debts:</span>
+<span class="hljs-comment">//template B</span>
+<span class="hljs-comment">//2400 1300 1800</span></code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-constructor">ShowArray(<span class="hljs-params">things</span>, 6)</span>;</code></pre></div>
+
+<p>标识符things是一个int数组的名称，因此与下面的模板匹配：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;            <span class="hljs-comment">// template A</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowArray</span><span class="hljs-params">(T arr[], <span class="hljs-type">int</span> n)</span></span>;</code></pre></div>
+
+<p>其中T被替换为int类型。 </p>
+<div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-constructor">ShowArray(<span class="hljs-params">pd</span>, 3)</span>;</code></pre></div>
+
+<p>其中pd是一个double *数组的名称。这与模板A匹配： </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;            <span class="hljs-comment">// template A</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowArray</span><span class="hljs-params">(T arr[], <span class="hljs-type">int</span> n)</span></span>;</code></pre></div>
+
+<p>其中，T被替换为类型double *。在这种情况下，模板函数将显示pd数组的内容，即3个地址。该函数调用也与模板B匹配：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;            <span class="hljs-comment">// template B</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowArray</span><span class="hljs-params">(T * arr[], <span class="hljs-type">int</span> n)</span></span>;</code></pre></div>
+
+<p>在这里，T被替换为类型double，而函数将显示被解除引用的元素 *arr[i]，即数组内容指向的double值。在这两个模板中，模板B更具体，因为它做了特定的假设——数组内容是指针，因此被使用。 </p>
+<p>简而言之，重载解析将寻找最匹配的函数。如果只存在一个这样的函数，则选择它；如果存在多个这样的函数，但其中只有一个是非模板 函数，则选择该函数；如果存在多个适合的函数，且它们都为模板函数，但其中有一个函数比其他函数更具体，则选择该函数。如果有多个同样合适的非模板函数或模板函数，但没有一个函数比其他函数更具体，则函数调用将是不确定的，因此是错误的；当然，如果不存在匹配的函数，则也是错误。 </p>
+<h4 id="自己选择"><a href="#自己选择" class="headerlink" title="自己选择"></a>自己选择</h4><p>在有些情况下，可通过编写合适的函数调用，引导编译器做出您希 望的选择。请看程序清单8.15，该程序将模板函数定义放在文件开头， 从而无需提供模板原型。与常规函数一样，通过在使用函数前提供模板函数定义，它让它也充当原型。</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// choices.cpp -- choosing a template</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> T&gt;</span>
+<span class="hljs-function">T <span class="hljs-title">lesser</span><span class="hljs-params">(T a, T b)</span>         <span class="hljs-comment">// #1</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> a &lt; b ? a : b;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">lesser</span> <span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span>  <span class="hljs-comment">// #2</span></span>
+<span class="hljs-function"></span>&#123;
+    a = a &lt; <span class="hljs-number">0</span> ? -a : a;
+    b = b &lt; <span class="hljs-number">0</span> ? -b : b;
+    <span class="hljs-keyword">return</span> a &lt; b ? a : b;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">int</span> m = <span class="hljs-number">20</span>;
+    <span class="hljs-type">int</span> n = <span class="hljs-number">-30</span>;
+    <span class="hljs-type">double</span> x = <span class="hljs-number">15.5</span>;
+    <span class="hljs-type">double</span> y = <span class="hljs-number">25.9</span>;
+
+    cout &lt;&lt; <span class="hljs-built_in">lesser</span>(m, n) &lt;&lt; endl;       <span class="hljs-comment">// use #2</span>
+    cout &lt;&lt; <span class="hljs-built_in">lesser</span>(x, y) &lt;&lt; endl;       <span class="hljs-comment">// use #1 with double</span>
+    cout &lt;&lt; lesser&lt;&gt;(m, n) &lt;&lt; endl;     <span class="hljs-comment">// use #1 with int</span>
+    cout &lt;&lt; <span class="hljs-built_in">lesser</span>&lt;<span class="hljs-type">int</span>&gt;(x, y)  &lt;&lt; endl; <span class="hljs-comment">// use #1 with int</span>
+
+    <span class="hljs-comment">// cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs awk">cout &lt;&lt; lesser&lt;&gt;(m, n) &lt;&lt; endl;     <span class="hljs-regexp">//</span> use <span class="hljs-comment">#1 with int</span></code></pre></div>
+
+<p>lesser&lt;&gt;(m, n)中的&lt;&gt;指出，编译器应选择模板函数，而不是非模板函数；编译器注意到实参的类型为int，因此使用int替代T对模板进行实例化</p>
+<div class="code-wrapper"><pre><code class="hljs perl">cout &lt;&lt; lesser&lt;<span class="hljs-keyword">int</span>&gt;(<span class="hljs-keyword">x</span>, <span class="hljs-keyword">y</span>)  &lt;&lt; endl; <span class="hljs-regexp">//</span> <span class="hljs-keyword">use</span> <span class="hljs-comment">#1 with int</span></code></pre></div>
+
+<p>这条语句要求进行显式实例化（使用int替代T），将使用显式实例化得到的函数。x和y的值将被强制转换为int，该函数返回一个int值，这 就是程序显示15而不是15.5的原因所在。</p>
+<h4 id="多个参数的函数"><a href="#多个参数的函数" class="headerlink" title="多个参数的函数"></a>多个参数的函数</h4><p>将有多个参数的函数调用与有多个参数的原型进行匹配时，情况将非常复杂。编译器必须考虑所有参数的匹配情况。如果找到比其他可行 函数都合适的函数，则选择该函数。一个函数要比其他函数都合适，其所有参数的匹配程度都必须不比其他函数差，同时至少有一个参数的匹配程度比其他函数都高。 </p>
+<h3 id="模板函数的发展"><a href="#模板函数的发展" class="headerlink" title="模板函数的发展"></a>模板函数的发展</h3><h4 id="是什么类型"><a href="#是什么类型" class="headerlink" title="是什么类型"></a>是什么类型</h4><div class="code-wrapper"><pre><code class="hljs angelscript">template&lt;<span class="hljs-keyword">class</span> <span class="hljs-symbol">T1,<span class="hljs-symbol">class</span></span> <span class="hljs-symbol">T2</span>&gt;
+<span class="hljs-symbol">void</span> <span class="hljs-symbol">ft</span>(<span class="hljs-symbol">T1</span> <span class="hljs-symbol">x,<span class="hljs-symbol">T2</span></span> <span class="hljs-symbol">y</span>)
+&#123;
+	?type?xpy=x+y;
+&#125;</code></pre></div>
+
+<p>xpy应为什么类型呢？由于不知道ft()将如何使用，因此无法预先知道这一点。正确的类型可能是T1、T2或其他类型。例如，T1可能是 double，而T2可能是int，在这种情况下，两个变量的和将为double类型。T1可能是short，而T2可能是int，在这种情况下，两个变量的和为int类型。T1还可能是short，而T2可能是char，在这种情况下，加法运算将导致自动整型提升，因此结果类型为int。另外，结构和类可能重载运算符+，这导致问题更加复杂。因此，在C++98中，没有办法声明xpy的类型。 </p>
+<h4 id="关键字decltype（C-11）"><a href="#关键字decltype（C-11）" class="headerlink" title="关键字decltype（C++11）"></a>关键字<strong>decltype</strong>（<strong>C++11</strong>）</h4><p>C++11新增的关键字decltype提供了解决方案。可这样使用该关键字：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-type">int</span> x;
+<span class="hljs-keyword">decltype</span>(x) y; <span class="hljs-comment">//make y the same type as x</span></code></pre></div>
+
+<p>给decltype提供的参数可以是表达式，因此在前面的模板函数ft()中，可使用下面的代码： </p>
+<div class="code-wrapper"><pre><code class="hljs llvm">decltype(<span class="hljs-keyword">x</span>+y) xpy<span class="hljs-comment">;</span>
+xpy <span class="hljs-operator">=</span> <span class="hljs-keyword">x</span>+y<span class="hljs-comment">;</span></code></pre></div>
+
+<p>另一种方法是，将这两条语句合而为一： </p>
+<div class="code-wrapper"><pre><code class="hljs llvm">decltype(<span class="hljs-keyword">x</span>+y) xpy <span class="hljs-operator">=</span> <span class="hljs-keyword">x</span>+y<span class="hljs-comment">;</span></code></pre></div>
+
+<p>因此，可以这样修复前面的模板函数ft()：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript">template&lt;<span class="hljs-keyword">class</span> <span class="hljs-symbol">T1,<span class="hljs-symbol">class</span></span> <span class="hljs-symbol">T2</span>&gt;
+<span class="hljs-symbol">void</span> <span class="hljs-symbol">ft</span>(<span class="hljs-symbol">T1</span> <span class="hljs-symbol">x,<span class="hljs-symbol">T2</span></span> <span class="hljs-symbol">y</span>)
+&#123;
+	decltype(x+y) xpy = x+y;
+&#125;</code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">decltype</span>(experession) <span class="hljs-selector-tag">var</span>;</code></pre></div>
+
+<p>第一步：如果expression是一个没有用括号括起的标识符，则var的类型与该标识符的类型相同，包括const等限定符</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-type">double</span> x =<span class="hljs-number">2.5</span>;
+<span class="hljs-type">double</span> y =<span class="hljs-number">7.9</span>;
+<span class="hljs-type">double</span> &amp;rx = x;
+<span class="hljs-type">const</span> <span class="hljs-type">double</span> *pd;
+<span class="hljs-keyword">decltype</span>(x) w;
+<span class="hljs-keyword">decltype</span>(rx) u = y;
+<span class="hljs-keyword">decltype</span>(pd) v;</code></pre></div>
+
+<p>第二步：如果expression是一个函数调用，则var的类型与函数的返回类型相同： </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">long</span> <span class="hljs-title">indeed</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span>;
+<span class="hljs-keyword">decltype</span> (<span class="hljs-built_in">indeed</span>(<span class="hljs-number">3</span>)) m</code></pre></div>
+
+<p>并不会实际调用函数。编译器通过查看函数的原型来获悉返回类型，而无需实际调用函数</p>
+<p>第三步：如果expression是一个左值，则var为指向其类型的引用。这好像意味着前面的w应为引用类型，因为x是一个左值。但别忘了， 这种情况已经在第一步处理过了。要进入第三步，expression不能是未用括号括起的标识符。那么，expression是什么时将进入第三步呢？一 种显而易见的情况是，expression是用括号括起的标识符：</p>
+<div class="code-wrapper"><pre><code class="hljs abnf">double xx <span class="hljs-operator">=</span><span class="hljs-number">4.4</span><span class="hljs-comment">;</span>
+decltype ((xx)) r2 <span class="hljs-operator">=</span> xx<span class="hljs-comment">;//r2 is double &amp;</span>
+decltype(xx) w <span class="hljs-operator">=</span>xx<span class="hljs-comment">;</span></code></pre></div>
+
+<p>顺便说一句，括号并不会改变表达式的值和左值性。例如，下面两条语句等效： </p>
+<div class="code-wrapper"><pre><code class="hljs abnf"><span class="hljs-attribute">xx</span> <span class="hljs-operator">=</span> <span class="hljs-number">98.6</span><span class="hljs-comment">;</span>
+(xx) <span class="hljs-operator">=</span><span class="hljs-number">98.6</span><span class="hljs-comment">;</span></code></pre></div>
+
+<p>第四步：如果前面的条件都不满足，则var的类型与expression的类型相同：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-type">int</span> j = <span class="hljs-number">3</span>;
+<span class="hljs-type">int</span> &amp;k = j;
+<span class="hljs-type">int</span> &amp;n = j;
+<span class="hljs-keyword">decltype</span>(j+<span class="hljs-number">6</span>) il;
+<span class="hljs-keyword">decltype</span>(<span class="hljs-number">100L</span>) i2;</code></pre></div>
+
+<p>请注意，虽然k和n都是引用，但表达式k+n不是引用；它是两个int的和，因此类型为int。 </p>
+<p>如果需要多次声明，可结合使用typedef和decltype：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript">tempalte&lt;<span class="hljs-keyword">class</span> <span class="hljs-symbol">T1,<span class="hljs-symbol">class</span></span> <span class="hljs-symbol">T2</span>&gt;
+<span class="hljs-symbol">void</span> <span class="hljs-symbol">ft</span>(<span class="hljs-symbol">T1</span> <span class="hljs-symbol">x,<span class="hljs-symbol">T2</span></span> <span class="hljs-symbol">y</span>)&#123;
+	<span class="hljs-keyword">typedef</span> decltype(x+y) xytype;
+	xytype xpy = x+y;
+	xytype arr[<span class="hljs-number">10</span>];
+	xytype &amp;rxy =arr[<span class="hljs-number">2</span>];
+&#125;</code></pre></div>
+
+<h3 id="另一种函数声明语法（C-11后置返回类型）"><a href="#另一种函数声明语法（C-11后置返回类型）" class="headerlink" title="另一种函数声明语法（C++11后置返回类型）"></a>另一种函数声明语法（<strong>C++11</strong>后置返回类型）</h3><div class="code-wrapper"><pre><code class="hljs angelscript">template&lt;<span class="hljs-keyword">class</span> <span class="hljs-symbol">T1,<span class="hljs-symbol">class</span></span> <span class="hljs-symbol">T2</span>&gt;
+?<span class="hljs-symbol">typ</span>?<span class="hljs-symbol">gt</span>(<span class="hljs-symbol">T1</span> <span class="hljs-symbol">x,<span class="hljs-symbol">T2</span></span> <span class="hljs-symbol">y</span>)
+&#123;
+	<span class="hljs-keyword">return</span> x+y
+&#125;</code></pre></div>
+
+<p>同样，无法预先知道将x和y相加得到的类型。好像可以将返回类型设置为decltype ( x + y)，但不幸的是，此时还未声明参数x和y，它们不 在作用域内（编译器看不到它们，也无法使用它们）。必须在声明参数后使用decltype。为此，C++新增了一种声明和定义函数的语法。下面使用内置类型来说明这种语法的工作原理。对于下面的原型： </p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">h</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">float</span> y)</span></span>;</code></pre></div>
+
+<p>使用新增的语法可编写成这样：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-built_in">auto</span> h(<span class="hljs-built_in">int</span> x ,<span class="hljs-built_in">float</span> y) -&gt;<span class="hljs-built_in">double</span>;</code></pre></div>
+
+<p>这将返回类型移到了参数声明后面。-&gt;double被称为后置返回类型（trailing return type）。其中auto是一个占位符，表示后置返回类型提供的类型，这是C++11给auto新增的一种角色。这种语法也可用于函数定义：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-built_in">auto</span> h(<span class="hljs-built_in">int</span> x,<span class="hljs-built_in">float</span> y) -&gt; <span class="hljs-built_in">double</span>
+&#123;<span class="hljs-comment">/* function body */</span>&#125;</code></pre></div>
+
+<p>通过结合使用这种语法和decltype，便可给gt()指定返回类型，如下所示：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript">template&lt;<span class="hljs-keyword">class</span> <span class="hljs-symbol">T1,<span class="hljs-symbol">class</span></span> <span class="hljs-symbol">T2</span>&gt;
+<span class="hljs-symbol">auto</span> <span class="hljs-symbol">gt</span>(<span class="hljs-symbol">T1</span> <span class="hljs-symbol">x,<span class="hljs-symbol">T2</span></span> <span class="hljs-symbol">y</span>)&#123;
+	...
+	<span class="hljs-keyword">return</span> x+y;
+	...
+&#125;</code></pre></div>
+
+<p>现在，decltype在参数声明后面，因此x和y位于作用域内，可以使用它们。 </p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>C++扩展了C语言的函数功能。通过将inline关键字用于函数定义，并在首次调用该函数前提供其函数定义，可以使得C++编译器将该函数 视为内联函数。也就是说，编译器不是让程序跳到独立的代码段，以执行函数，而是用相应的代码替换函数调用。只有在函数很短时才能采用内联方式。 </p>
+<p>引用变量是一种伪装指针，它允许为变量创建别名（另一个名称）。引用变量主要被用作处理结构和类对象的函数的参数。通常，被 声明为特定类型引用的标识符只能指向这种类型的数据；然而，如果一个类（如ofstream）是从另一个类（如ostream）派生出来的，则基类引用可以指向派生类对象</p>
+<p>C++原型让您能够定义参数的默认值。如果函数调用省略了相应的参数，则程序将使用默认值；如果函数调用提供了参数值，则程序将使 用这个值（而不是默认值）。只能在参数列表中从右到左提供默认参数。因此，如果为某个参数提供了默认值，则必须为该参数右边所有的参数提供默认值。 </p>
+<p>函数的特征标是其参数列表。程序员可以定义两个同名函数，只要其特征标不同。这被称为函数多态或函数重载。通常，通过重载函数来 为不同的数据类型提供相同的服务。</p>
+<p>函数模板自动完成重载函数的过程。只需使用泛型和具体算法来定义函数，编译器将为程序中使用的特定参数类型生成正确的函数定义。 </p>
+<h1 id="内存模型和名称空间"><a href="#内存模型和名称空间" class="headerlink" title="内存模型和名称空间"></a>内存模型和名称空间</h1><p>C++为在内存中存储数据方面提供了多种选择。可以选择数据保留在内存中的时间长度（存储持续性）以及程序的哪一部分可以访问数据 （作用域和链接）等。可以使用new来动态地分配内存，而定位new运算符提供了这种技术的一种变种。C++名称空间是另一种控制访问权的方式。通常，大型程序都由多个源代码文件组成，这些文件可能共享一些数据</p>
 
                 
               </div>
@@ -1575,7 +1899,7 @@ Swap&lt;<span class="hljs-keyword">double</span>&gt;(m<span class="hljs-punctuat
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/12/hello-world/" title="Hello World">
+                      <a href="/2023/03/14/hello-world/" title="Hello World">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">上一篇</span>
