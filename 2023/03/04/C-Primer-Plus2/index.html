@@ -25,8 +25,9 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-04%2020.41.35.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-05%2010.01.02.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-15%2022.22.37.png">
 <meta property="article:published_time" content="2023-03-04T17:25:36.000Z">
-<meta property="article:modified_time" content="2023-03-14T15:24:28.064Z">
+<meta property="article:modified_time" content="2023-03-15T15:05:43.057Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          45k 字
+          48k 字
         
       </span>
     
@@ -233,7 +234,7 @@
         
         
         
-          379 分钟
+          403 分钟
         
       </span>
     
@@ -1809,7 +1810,116 @@ decltype(xx) w <span class="hljs-operator">=</span>xx<span class="hljs-comment">
 <p>函数的特征标是其参数列表。程序员可以定义两个同名函数，只要其特征标不同。这被称为函数多态或函数重载。通常，通过重载函数来 为不同的数据类型提供相同的服务。</p>
 <p>函数模板自动完成重载函数的过程。只需使用泛型和具体算法来定义函数，编译器将为程序中使用的特定参数类型生成正确的函数定义。 </p>
 <h1 id="内存模型和名称空间"><a href="#内存模型和名称空间" class="headerlink" title="内存模型和名称空间"></a>内存模型和名称空间</h1><p>C++为在内存中存储数据方面提供了多种选择。可以选择数据保留在内存中的时间长度（存储持续性）以及程序的哪一部分可以访问数据 （作用域和链接）等。可以使用new来动态地分配内存，而定位new运算符提供了这种技术的一种变种。C++名称空间是另一种控制访问权的方式。通常，大型程序都由多个源代码文件组成，这些文件可能共享一些数据</p>
+<h2 id="单独编译"><a href="#单独编译" class="headerlink" title="单独编译"></a>单独编译</h2><p>和C语言一样，C++也允许甚至鼓励程序员将组件函数放在独立的文件中。第1章介绍过，可以单独编译这些文件，然后将它们链接成可 执行的程序。（通常，C++编译器既编译程序，也管理链接器。）如果只修改了一个文件，则可以只重新编译该文件，然后将它与其他文件的编译版本链接。这使得大程序的管理更便捷。另外，大多数C++环境都提供了其他工具来帮助管理。例如，UNIX和Linux系统都具有make程序，可以跟踪程序依赖的文件以及这些文件的最后修改时间。运行make时，如果它检测到上次编译后修改了源文件，make将记住重新构建程序所需的步骤。大多数集成开发环境（包括Embarcadero C++ Builder、Microsoft Visual C++、Apple Xcode和Freescale CodeWarrior）都在Project菜单中提供了类似的工具</p>
+<p>下面列出了头文件中常包含的内容。</p>
+<ul>
+<li>函数原型。 </li>
+<li>使用#define或const定义的符号常量。 </li>
+<li>结构声明。 </li>
+<li>类声明。 </li>
+<li>模板声明。 </li>
+<li>内联函数。</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// coordin.h -- structure templates and function prototypes</span>
+<span class="hljs-comment">// structure templates</span>
+<span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> COORDIN_H_</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> COORDIN_H_</span>
 
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">polar</span>
+&#123;
+    <span class="hljs-type">double</span> distance;    <span class="hljs-comment">// distance from origin</span>
+    <span class="hljs-type">double</span> angle;        <span class="hljs-comment">// direction from origin</span>
+&#125;;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">rect</span>
+&#123;
+    <span class="hljs-type">double</span> x;        <span class="hljs-comment">// horizontal distance from origin</span>
+    <span class="hljs-type">double</span> y;        <span class="hljs-comment">// vertical distance from origin</span>
+&#125;;
+
+<span class="hljs-comment">// prototypes</span>
+<span class="hljs-function">polar <span class="hljs-title">rect_to_polar</span><span class="hljs-params">(rect xypos)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_polar</span><span class="hljs-params">(polar dapos)</span></span>; 
+
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></code></pre></div>
+
+<img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-15%2022.22.37.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+
+<p>头文件管理</p>
+<p>在同一个文件中只能将同一个头文件包含一次。记住这个规则很容易，但很可能在不知情的情况下将头文件包含多次。例如，可能使用包含了另外一个头文件的头文件。有一种标准的C/C++技术可以避免多次包含同一个头文件。它是基于预处理器编译指令#ifndef（即if not defined）的。下面的代码片段意味着仅当以前没有使用预处理器编译指令#define定义名称COORDIN<em>H</em>时，才处理#ifndef和#endif之间的语句：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> COORDIN_H_</span>
+...
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></code></pre></div>
+
+<p>通常，使用#define语句来创建符号常量，如下所示： </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXIMUM 4096</span></code></pre></div>
+
+<p>但只要将#define用于名称，就足以完成该名称的定义，如下所示： </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> COORDIN_H_</span></code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> COORDIN_H_</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> COORDIN_H_</span>
+...
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></code></pre></div>
+
+<p>编译器首次遇到该文件时，名称COORDIN<em>H</em>没有定义（我们根据include文件名来选择名称，并加上一些下划线，以创建一个在其他地方不太可能被定义的名称）。在这种情况下，编译器将查看#ifndef和#endif之间的内容（这正是我们希望的），并读取定义COORDIN<em>H</em>的一 行。如果在同一个文件中遇到其他包含coordin.h的代码，编译器将知道COORDIN<em>H</em>已经被定义了，从而跳到#endfi后面的一行上。注意，这种方法并不能防止编译器将文件包含两次，而只是让它忽略除第一次包含之外的所有内容。大多数标准C和C++头文件都使用这种防护（guarding）方案。否则，可能在一个文件中定义同一个结构两次，这将导致编译错误。 </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// file1.cpp -- example of a three-file program</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;coordin.h&quot;</span> <span class="hljs-comment">// structure templates, function prototypes</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    rect rplace;
+    polar pplace;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Enter the x and y values: &quot;</span>;
+    <span class="hljs-keyword">while</span> (cin &gt;&gt; rplace.x &gt;&gt; rplace.y)  <span class="hljs-comment">// slick use of cin</span>
+    &#123;
+        pplace = <span class="hljs-built_in">rect_to_polar</span>(rplace);
+        <span class="hljs-built_in">show_polar</span>(pplace);
+        cout &lt;&lt; <span class="hljs-string">&quot;Next two numbers (q to quit): &quot;</span>;
+    &#125;
+    cout &lt;&lt; <span class="hljs-string">&quot;Bye!\n&quot;</span>;
+<span class="hljs-comment">// keep window open in MSVC++</span>
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">    cin.clear();</span>
+<span class="hljs-comment">    while (cin.get() != &#x27;\n&#x27;)</span>
+<span class="hljs-comment">        continue;</span>
+<span class="hljs-comment">    cin.get();</span>
+<span class="hljs-comment">*/</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; 
+&#125;</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// file2.cpp -- contains functions called in file1.cpp</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;coordin.h&quot;</span> <span class="hljs-comment">// structure templates, function prototypes</span></span>
+
+<span class="hljs-comment">// convert rectangular to polar coordinates</span>
+<span class="hljs-function">polar <span class="hljs-title">rect_to_polar</span><span class="hljs-params">(rect xypos)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    polar answer;
+
+    answer.distance =
+        <span class="hljs-built_in">sqrt</span>( xypos.x * xypos.x + xypos.y * xypos.y);
+    answer.angle = <span class="hljs-built_in">atan2</span>(xypos.y, xypos.x);
+    <span class="hljs-keyword">return</span> answer;      <span class="hljs-comment">// returns a polar structure</span>
+&#125;
+
+<span class="hljs-comment">// show polar coordinates, converting angle to degrees</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show_polar</span> <span class="hljs-params">(polar dapos)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-type">const</span> <span class="hljs-type">double</span> Rad_to_deg = <span class="hljs-number">57.29577951</span>;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;distance = &quot;</span> &lt;&lt; dapos.distance;
+    cout &lt;&lt; <span class="hljs-string">&quot;, angle = &quot;</span> &lt;&lt; dapos.angle * Rad_to_deg;
+    cout &lt;&lt; <span class="hljs-string">&quot; degrees\n&quot;</span>;
+&#125;</code></pre></div>
+
+<p>将这两个源代码文件和新的头文件一起进行编译和链接，将生成一个可执行程序</p>
+<p>顺便说一句，虽然我们讨论的是根据文件进行单独编译，但为保持通用性，C++标准使用了术语翻译单元（translation unit），而不是文 件；文件并不是计算机组织信息时的唯一方式。</p>
+<h2 id="存储持续性、作用域和链接性"><a href="#存储持续性、作用域和链接性" class="headerlink" title="存储持续性、作用域和链接性"></a>存储持续性、作用域和链接性</h2>
                 
               </div>
             
@@ -1899,7 +2009,7 @@ decltype(xx) w <span class="hljs-operator">=</span>xx<span class="hljs-comment">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/14/hello-world/" title="Hello World">
+                      <a href="/2023/03/15/hello-world/" title="Hello World">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">上一篇</span>
