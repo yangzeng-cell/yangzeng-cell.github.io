@@ -2043,3 +2043,139 @@ C++原型让您能够定义参数的默认值。如果函数调用省略了相�
 # 内存模型和名称空间
 
 C++为在内存中存储数据方面提供了多种选择。可以选择数据保留在内存中的时间长度（存储持续性）以及程序的哪一部分可以访问数据 （作用域和链接）等。可以使用new来动态地分配内存，而定位new运算符提供了这种技术的一种变种。C++名称空间是另一种控制访问权的方式。通常，大型程序都由多个源代码文件组成，这些文件可能共享一些数据
+
+## 单独编译
+
+和C语言一样，C++也允许甚至鼓励程序员将组件函数放在独立的文件中。第1章介绍过，可以单独编译这些文件，然后将它们链接成可 执行的程序。（通常，C++编译器既编译程序，也管理链接器。）如果只修改了一个文件，则可以只重新编译该文件，然后将它与其他文件的编译版本链接。这使得大程序的管理更便捷。另外，大多数C++环境都提供了其他工具来帮助管理。例如，UNIX和Linux系统都具有make程序，可以跟踪程序依赖的文件以及这些文件的最后修改时间。运行make时，如果它检测到上次编译后修改了源文件，make将记住重新构建程序所需的步骤。大多数集成开发环境（包括Embarcadero C++ Builder、Microsoft Visual C++、Apple Xcode和Freescale CodeWarrior）都在Project菜单中提供了类似的工具
+
+下面列出了头文件中常包含的内容。
+
+- 函数原型。 
+- 使用#define或const定义的符号常量。 
+- 结构声明。 
+- 类声明。 
+- 模板声明。 
+- 内联函数。
+
+```cpp
+// coordin.h -- structure templates and function prototypes
+// structure templates
+#ifndef COORDIN_H_
+#define COORDIN_H_
+
+struct polar
+{
+    double distance;    // distance from origin
+    double angle;        // direction from origin
+};
+struct rect
+{
+    double x;        // horizontal distance from origin
+    double y;        // vertical distance from origin
+};
+
+// prototypes
+polar rect_to_polar(rect xypos);
+void show_polar(polar dapos); 
+
+#endif
+```
+
+<img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-15%2022.22.37.png" style="zoom:50%;" />
+
+头文件管理
+
+在同一个文件中只能将同一个头文件包含一次。记住这个规则很容易，但很可能在不知情的情况下将头文件包含多次。例如，可能使用包含了另外一个头文件的头文件。有一种标准的C/C++技术可以避免多次包含同一个头文件。它是基于预处理器编译指令#ifndef（即if not defined）的。下面的代码片段意味着仅当以前没有使用预处理器编译指令#define定义名称COORDIN*H*时，才处理#ifndef和#endif之间的语句：
+
+```
+#ifndef COORDIN_H_
+...
+#endif
+```
+
+通常，使用#define语句来创建符号常量，如下所示： 
+
+```
+#define MAXIMUM 4096
+```
+
+但只要将#define用于名称，就足以完成该名称的定义，如下所示： 
+
+```
+#define COORDIN_H_
+```
+
+```
+#ifndef COORDIN_H_
+#define COORDIN_H_
+...
+#endif
+```
+
+编译器首次遇到该文件时，名称COORDIN*H*没有定义（我们根据include文件名来选择名称，并加上一些下划线，以创建一个在其他地方不太可能被定义的名称）。在这种情况下，编译器将查看#ifndef和#endif之间的内容（这正是我们希望的），并读取定义COORDIN*H*的一 行。如果在同一个文件中遇到其他包含coordin.h的代码，编译器将知道COORDIN*H*已经被定义了，从而跳到#endfi后面的一行上。注意，这种方法并不能防止编译器将文件包含两次，而只是让它忽略除第一次包含之外的所有内容。大多数标准C和C++头文件都使用这种防护（guarding）方案。否则，可能在一个文件中定义同一个结构两次，这将导致编译错误。 
+
+```cpp
+// file1.cpp -- example of a three-file program
+#include <iostream>
+#include "coordin.h" // structure templates, function prototypes
+using namespace std;
+int main()
+{
+    rect rplace;
+    polar pplace;
+
+    cout << "Enter the x and y values: ";
+    while (cin >> rplace.x >> rplace.y)  // slick use of cin
+    {
+        pplace = rect_to_polar(rplace);
+        show_polar(pplace);
+        cout << "Next two numbers (q to quit): ";
+    }
+    cout << "Bye!\n";
+// keep window open in MSVC++
+/*
+    cin.clear();
+    while (cin.get() != '\n')
+        continue;
+    cin.get();
+*/
+    return 0; 
+}
+```
+
+```cpp
+// file2.cpp -- contains functions called in file1.cpp
+#include <iostream>
+#include <cmath>
+#include "coordin.h" // structure templates, function prototypes
+
+// convert rectangular to polar coordinates
+polar rect_to_polar(rect xypos)
+{
+    using namespace std;
+    polar answer;
+
+    answer.distance =
+        sqrt( xypos.x * xypos.x + xypos.y * xypos.y);
+    answer.angle = atan2(xypos.y, xypos.x);
+    return answer;      // returns a polar structure
+}
+
+// show polar coordinates, converting angle to degrees
+void show_polar (polar dapos)
+{
+    using namespace std;
+    const double Rad_to_deg = 57.29577951;
+
+    cout << "distance = " << dapos.distance;
+    cout << ", angle = " << dapos.angle * Rad_to_deg;
+    cout << " degrees\n";
+}
+```
+
+将这两个源代码文件和新的头文件一起进行编译和链接，将生成一个可执行程序
+
+顺便说一句，虽然我们讨论的是根据文件进行单独编译，但为保持通用性，C++标准使用了术语翻译单元（translation unit），而不是文 件；文件并不是计算机组织信息时的唯一方式。
+
+## 存储持续性、作用域和链接性
+
