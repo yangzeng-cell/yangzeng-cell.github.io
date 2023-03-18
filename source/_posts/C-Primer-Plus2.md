@@ -2304,3 +2304,611 @@ register int_count_fast;
 传统的K&R C不允许初始化自动数组和结构，但允许初始化静态数组和结构。ANSI C和C++允许对这两种数组和结构进行初始化，但有些旧的C++翻译器使用与ANSI C不完全兼容的C编译器。如果使用的是这样的实现，则可能需要使用这3种静态存储类型之一，以初始化数 组和结构。 
 
 要想创建链接性为外部的静态持续变量，必须在代码块的外面声明它；要创建链接性为内部的静态持续变量，必须在代码块的外面声明它，并使用static限定符；要创建没有链接性的静态持续变量，必须在代码块内声明它，并使用static限定符。
+
+```
+int global = 1000;//static duration,external linkage
+static int one_file = 50; //static duration,innteranl linkage
+int main(){
+	
+}
+void funct1(int n){
+	static int count =0;//static duration,no linkage;
+	int llama = 0;
+}
+void func2(int q){
+
+}
+```
+
+所有静态持续变量（上述示例中的global、 one_file和count）在整个程序执行期间都存在。在funct1( )中声明的变量count的作用域为局部，没有链接性，这意味着只能在funct1( )函数中使用它，就像自动变量llama一样。然而，与llama不同的是，即使在funct1( )函数没有被执行时，count也留在内存中。global和one_file的作用域都为整个文件，即在从声明位置到文件结尾的范围内都可以被使用。具体地说，可以在main( )、funct1( )和funct2( )中使用它们。由于one_file的链接性为内部，因此只能在包含上述代码的文件中使用它；由于global的链接性为外部，因此可以在程序的其他文件中使用它。
+
+所有的静态持续变量都有下述初始化特征：未被初始化的静态变量的所有位都被设置为0。这种变量被称为零初始化的（zero- initialized）
+
+##### **5**种变量储存方式
+
+| 存储描述         | 持续性 | 作用域 | 链接性 | 如何声明                         |
+| ---------------- | ------ | ------ | ------ | -------------------------------- |
+| 自动             | 自动   | 代码块 | 无     | 在代码块中                       |
+| 寄存器           | 自动   | 代码块 | 无     | 在代码块中，使用关键字register   |
+| 静态，无链接性   | 静态   | 代码块 | 无     | 在代码块中，使用关键字static     |
+| 静态，外部链接性 | 静态   | 文件   | 外部   | 不在任何函数内                   |
+| 静态，内部链接性 | 静态   | 文件   | 内部   | 不在任何函数内，使用关键字static |
+
+静态变量的初始化
+
+除默认的零初始化外，还可对静态变量进行常量表达式初始化和动态初始化。您可能猜到了，零初始化意味着将变量设置为零。对于标量 类型，零将被强制转换为合适的类型。例如，在C++代码中，空指针用0表示，但内部可能采用非零表示，因此指针变量将被初始化相应的内部表示。结构成员被零初始化，且填充位都被设置为零。 
+
+零初始化和常量表达式初始化被统称为静态初始化，这意味着在编译器处理文件（翻译单元）时初始化变量。动态初始化意味着变量将在 编译后初始化。 
+
+### 静态持续性、外部链接性 
+
+链接性为外部的变量通常简称为外部变量，它们的存储持续性为静态，作用域为整个文件。外部变量是在函数外部定义的，因此对所有函 数而言都是外部的。例如，可以在main( )前面或头文件中定义它们。可以在文件中位于外部变量定义后面的任何函数中使用它，因此外部变量也称全局变量（相对于局部的自动变量）。 
+
+#### 单定义规则 
+
+一方面，在每个使用外部变量的文件中，都必须声明它；另一方面，C++有“单定义规则”（One Definition Rule，ODR），该规则指出， 变量只能有一次定义。为满足这种需求，C++提供了两种变量声明。一种是定义声明（defining declaration）或简称为定义（definition），它给 变量分配存储空间；另一种是引用声明（referencing declaration）或简称为声明（declaration），它不给变量分配存储空间，因为它引用已有 的变量。
+
+引用声明使用关键字extern，且不进行初始化；否则，声明为定义，导致分配存储空间：
+
+```
+extern int blem;
+extern char gr = 'z';
+```
+
+如果要在多个文件中使用外部变量，只需在一个文件中包含该变量的定义（单定义规则），但在使用该变量的其他所有文件中，都必须使 用关键字extern声明它： 
+
+```
+//file01.cpp
+extern int cats = 20;//definition because of initialization
+int dogs =22; //also a definition
+int fleas;//also a definition
+
+//file02.cpp
+//use cats and dogs from file01.cpp
+extern int cats; //not definition because they use
+extern int dogs; //extern but not initialization
+
+....
+//file98.cpp
+extern int cats; 
+extern int dogs;
+extern int fleas;
+```
+
+在这里，所有文件都使用了在file01.cpp中定义的变量cats和dogs，但file02.cpp没有重新声明变量fleas，因此无法访问它。在文件file01.cpp 中，关键字extern并非必不可少的，因为即使省略它，效果也相同（参 见图9.4）
+
+<img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-18%2001.03.02.png" style="zoom:50%;" />
+
+请注意，单定义规则并非意味着不能有多个变量的名称相同。例如，在不同函数中声明的同名自动变量是彼此独立的，它们都有自己的 地址。
+
+```cpp
+// external.cpp -- external variable
+// compile with support.cpp
+#include <iostream>
+// external variable
+double warming = 0.3;       // warming defined
+
+// function prototypes
+void update(double dt);
+void local();
+
+int main()                  // uses global variable
+{
+    using namespace std;
+    cout << "Global warming is " << warming << " degrees.\n";
+    update(0.1);            // call function to change warming
+    cout << "Global warming is " << warming << " degrees.\n";
+    local();                // call function with local warming
+    cout << "Global warming is " << warming << " degrees.\n";
+    // cin.get();
+    return 0;
+}
+```
+
+```cpp
+// support.cpp -- use external variable
+// compile with external.cpp
+#include <iostream>
+extern double warming;  // use warming from another file
+
+// function prototypes
+void update(double dt);
+void local();
+
+using std::cout;
+void update(double dt)      // modifies global variable
+{
+    extern double warming;  // optional redeclaration
+    warming += dt;          // uses global warming
+    cout << "Updating global warming to " << warming;
+    cout << " degrees.\n";
+}
+
+void local()                // uses local variable
+{
+    double warming = 0.8;   // new variable hides external one
+
+    cout << "Local warming = " << warming << " degrees.\n";
+        // Access global variable with the
+        // scope resolution operator
+    cout << "But global warming = " << ::warming;
+    cout << " degrees.\n";
+}
+
+```
+
+main( )和update( ) 都可以访问外部变量warming。注意，update( )修改了warming，这种修改在随后使用该变量时显现出来了
+
+warming的定义如下：
+
+`double warming = 0.3;       // warming defined`
+
+使用关键字extern声明变量warming，让该文件中的函数能够使用它： 
+
+`extern double warming;  // use warming from another file`
+
+正如注释指出的，该声明的的意思是，使用外部定义的变量warming。 
+
+另外，函数update()使用关键字extern重新声明了变量warming，这个关键字的意思是，通过这个名称使用在外部定义的变量。由于即使省 略该声明，update( )的功能也相同，因此该声明是可选的。它指出该函数被设计成使用外部变量。 local( )函数表明，定义与全局变量同名的局部变量后，局部变量将隐藏全局变量。例如，local( )函数显示warming的值时，将使用warming 的局部定义。 
+
+C++比C语言更进了一步——它提供了作用域解析运算符（::）。放在变量名前面时，该运算符表示使用变量的全局版本。因此，local( )将 warming显示为0.8，但将::warming显示为0.4。从清晰和避免错误的角度说，相对于使用warming并依赖于作用域规则，在函数update()中使用::warming是更好的选择，也更安全。 
+
+### 静态持续性、内部链接性
+
+将static限定符用于作用域为整个文件的变量时，该变量的链接性将为内部的。在多文件程序中，内部链接性和外部链接性之间的差别很有意义。链接性为内部的变量只能在其所属的文件中使用；但常规外部变量都具有外部链接性，即可以在其他文件中使用，
+
+如果要在其他文件中使用相同的名称来表示其他变量，该如何办呢？只需省略关键字extern即可吗？
+
+```
+//file1.cpp
+int errors = 20;
+//file2.cpp
+int errors = 5;
+```
+
+这种做法将失败，因为它违反了单定义规则。file2中的定义试图创建一个外部变量，因此程序将包含errors的两个定义，这是错误。 
+
+但如果文件定义了一个静态外部变量，其名称与另一个文件中声明的常规外部变量相同，则在该文件中，静态变量将隐藏常规外部变量： 
+
+```
+//file1.cpp
+int errors = 20;
+//file2.cpp
+static int errors = 5;
+```
+
+这没有违反单定义规则，因为关键字static指出标识符errors的链接性为内部，因此并非要提供外部定义。
+
+在多文件程序中，可以在一个文件（且只能在一个文件）中定义一个外部变量。使用该变量的其他文件必须使用关键字extern声明它。 
+
+可使用外部变量在多文件程序的不同部分之间共享数据；可使用链接性为内部的静态变量在同一个文件中的多个函数之间共享数据（名称 空间提供了另外一种共享数据的方法）。另外，如果将作用域为整个文件的变量变为静态的，就不必担心其名称与其他文件中的作用域为整个文件的变量发生冲突。 
+
+```cpp
+// twofile1.cpp -- variables with external and internal linkage
+#include <iostream>     // to be compiled with two file2.cpp
+int tom = 3;            // external variable definition
+int dick = 30;          // external variable definition
+static int harry = 300; // static, internal linkage
+// function prototype
+void remote_access();
+
+int main()
+{
+    using namespace std;
+    cout << "main() reports the following addresses:\n";
+    cout << &tom << " = &tom, " << &dick << " = &dick, ";
+    cout << &harry << " = &harry\n";
+    remote_access();
+    // cin.get();
+    return 0; 
+}
+```
+
+```cpp
+// twofile2.cpp -- variables with internal and external linkage
+#include <iostream>
+extern int tom;         // tom defined elsewhere
+static int dick = 10;   // overrides external dick
+int harry = 200;        // external variable definition,
+                        // no conflict with twofile1 harry
+
+void remote_access()
+{
+    using namespace std;
+		
+    cout << "remote_access() reports the following addresses:\n";
+    cout << &tom << " = &tom, " << &dick << " = &dick, ";
+    cout << &harry << " = &harry\n";
+}
+```
+
+### 静态存储持续性、无链接性
+
+无链接性的局部变 量。这种变量是这样创建的，将static限定符用于在代码块中定义的变量。在代码块中使用static时，将导致局部变量的存储持续性为静态的。 这意味着虽然该变量只在该代码块中可用，但它在该代码块不处于活动状态时仍然存在。因此在两次函数调用之间，静态局部变量的值将保持不变。（静态变量适用于再生——可以用它们将瑞士银行的秘密账号传递到下一个要去的地方）。另外，如果初始化了静态局部变量，则程序只在启动时进行一次初始化。以后再调用函数时，将不会像自动变量那样再次被初始化
+
+```cpp
+// static.cpp -- using a static local variable
+#include <iostream>
+// constants
+const int ArSize = 10;
+
+// function prototype
+void strcount(const char * str);
+
+int main()
+{
+    using namespace std;
+    char input[ArSize];
+    char next;
+
+    cout << "Enter a line:\n";
+    cin.get(input, ArSize);
+    while (cin)
+    {
+        cin.get(next);
+        while (next != '\n')    // string didn't fit!
+            cin.get(next);      // dispose of remainder
+        strcount(input);
+        cout << "Enter next line (empty line to quit):\n";
+        cin.get(input, ArSize);
+    }
+    cout << "Bye\n";
+// code to keep window open for MSVC++
+/*
+cin.clear();
+    while (cin.get() != '\n')
+        continue;
+    cin.get();
+*/
+    return 0;
+}
+
+void strcount(const char * str)
+{
+    using namespace std;
+    static int total = 0;        // static local variable
+    int count = 0;               // automatic local variable
+
+    cout << "\"" << str <<"\" contains ";
+    while (*str++)               // go to end of string
+        count++;
+    total += count;
+    cout << count << " characters\n";
+    cout << total << " characters total\n";
+}
+//Enter a line:
+//nice plants
+//"nice plan" contains 9 characters
+//9 characters total
+//Enter next line (empty line to quit):
+//thanks
+//"thanks" contains 6 characters
+//15 characters total
+//Enter next line (empty line to quit):
+//parting is suchsweet snow
+//"parting i" contains 9 characters
+//24 characters total
+//Enter next line (empty line to quit):
+//ok
+//"ok" contains 2 characters
+//26 characters total
+//Enter next line (empty line to quit):
+//
+//Bye
+```
+
+注意，由于数组长度为10，因此程序从每行读取的字符数都不超过9个。另外还需要注意的是，每次函数被调用时，自动变量count都被重置为0。然而，静态变量total只在程序运行时被设置为0，以后在两次函数调用之间，其值将保持不变，因此能够记录读取的字符总数。
+
+### 说明符和限定符
+
+有些被称为存储说明符（storage class specifier）或cv-限定符（cv- qualifier）的C++关键字提供了其他有关存储的信息。下面是存储说明 符
+
+- auto（在C++11中不再是说明符）； 
+- register； 
+- static； 
+- extern； 
+- thread_local（C++11新增的）； 
+- mutable。 
+
+其中的大部分已经介绍过了，在同一个声明中不能使用多个说明符，但thread_local除外，它可与static或extern结合使用。前面讲过，在 C++11之前，可以在声明中使用关键字auto指出变量为自动变量；但在C++11中，auto用于自动类型推断。关键字register用于在声明中指示寄存器存储，而在C++11中，它只是显式地指出变量是自动的。关键字 static被用在作用域为整个文件的声明中时，表示内部链接性；被用于局部声明中，表示局部变量的存储持续性为静态的。关键字extern表明是引用声明，即声明引用在其他地方定义的变量。关键字thread_local指出变量的持续性与其所属线程的持续性相同。thread_local变量之于线程，犹如常规静态变量之于整个程序。关键字mutable的含义将根据const来解释，因此先来介绍cv-限定符，然后再解释它
+
+#### **cv-**限定符
+
+- const； 
+- volatile。
+
+关键字volatile表明，即使程序代码没有对内存单元进行修改，其值也可能发生变化。听起来似乎很神秘，实际上并非如此。例如，可以将一个指针指向某个硬件位置，其中包含了来自串行端口的时间或信息。在这种情况下，硬件（而不是程序）可能修改其中的内容。或者两个程序可能互相影响，共享数据。该关键字的作用是为了改善编译器的优化能力。例如，假设编译器发现，程序在几条语句中两次使用了某个变量的值，则编译器可能不是让程序查找这个值两次，而是将这个值缓存到寄存器中。这种优化假设变量的值在这两次使用之间不会变化。如果不将变量声明为volatile，则编译器将进行这种优化；将变量声明为volatile，相当于告诉编译器，不要进行这种优化。 
+
+#### mutable
+
+可以用它来指出，即使结构（或类）变量为const，其某个成员也可以被修改。
+
+```
+struct data {
+	char name[30];
+	mutable int access;
+}
+const data veep = {"mike",0};
+strcpy(veep.name,'joe');
+veep.access++
+```
+
+veep的const限定符禁止程序修改veep的成员，但access成员的mutable说明符使得access不受这种限制。
+
+#### const 
+
+```
+const int fingers =10;
+int main(void){
+	
+}
+```
+
+C++修改了常量类型的规则，让程序员更轻松。例如，假设将一组常量放在头文件中，并在同一个程序的多个文件中使用该头文件。那 么，预处理器将头文件的内容包含到每个源文件中后，所有的源文件都将包含类似下面这样的定义：
+
+```
+const int fingers = 10;
+const char * warning = "wark"
+```
+
+如果全局const声明的链接性像常规变量那样是外部的，则根据单定义规则，这将出错。也就是说，只能有一个文件可以包含前面的声明，而其他文件必须使用extern关键字来提供引用声明。另外，只有未使用extern关键字的声明才能进行初始化： 
+
+```
+//extern would be required if const had external linkage
+extern const int fingers;
+extern const char * warning;
+```
+
+因此，需要为某个文件使用一组定义，而其他文件使用另一组声明。然而，由于外部定义的const数据的链接性为内部的，因此可以在所 有文件中使用相同的声明。
+
+内部链接性还意味着，每个文件都有自己的一组常量，而不是所有文件共享一组常量。每个定义都是其所属文件私有的，这就是能够将常 量定义放在头文件中的原因。这样，只要在两个源代码文件中包括同一个头文件，则它们将获得同一组常量。 
+
+```
+extern const int states = 50;
+```
+
+在这种情况下，必须在所有使用该常量的文件中使用extern关键字来声明它。这与常规外部变量不同，定义常规外部变量时，不必使用 extern关键字，但在使用该变量的其他文件中必须使用extern。然而，请在函数或代码块中声明const时，其作用域为代码块，即仅当程序执行该代码块中的代码时，该常量才是可用的。这意味着在函数或代码块中创建常量时，不必担心其名称与其他地方定义的常量发生冲突。 
+
+### 函数和链接性 
+
+和变量一样，函数也有链接性，虽然可选择的范围比变量小。和C语言一样，C++不允许在一个函数中定义另外一个函数，因此所有函数 的存储持续性都自动为静态的，即在整个程序执行期间都一直存在。在默认情况下，函数的链接性为外部的，即可以在文件间共享。实际上，可以在函数原型中使用关键字extern来指出函数是在另一个文件中定义的，不过这是可选的（要让程序在另一个文件中查找函数，该文件必须作为程序的组成部分被编译，或者是由链接程序搜索的库文件）。还可以使用关键字static将函数的链接性设置为内部的，使之只能在一个文件中使用。必须同时在原型和函数定义中使用该关键字： 
+
+```
+static int private(double x);
+static int private(double x){
+	...
+}
+```
+
+这意味着该函数只在这个文件中可见，还意味着可以在其他文件中定义同名的的函数。和变量一样，在定义静态函数的文件中，静态函数 将覆盖外部定义，因此即使在外部定义了同名的函数，该文件仍将使用静态函数。
+
+单定义规则也适用于非内联函数，因此对于每个非内联函数，程序只能包含一个定义。对于链接性为外部的函数来说，这意味着在多文件 程序中，只能有一个文件（该文件可能是库文件，而不是您提供的）包含该函数的定义，但使用该函数的每个文件都应包含其函数原型。 内联函数不受这项规则的约束，这允许程序员能够将内联函数的定 义放在头文件中。这样，包含了头文件的每个文件都有内联函数的定 义。然而，C++要求同一个函数的所有内联定义都必须相同。 
+
+假设在程序的某个文件中调用一个函数，C++将到哪里去寻找该函数的定义呢？如果该文件中的函数原型指出该函数是静态的，则编译器将只在该文件中查找函数定义；否则，编译器（包括链接程序）将在所有的程序文件中查找。如果找到两个定义，编译器将发出错误消 息，因为每个外部函数只能有一个定义。如果在程序文件中没有找到，编译器将在库中搜索。这意味着如果定义了一个与库函数同名的函数，编译器将使用程序员定义的版本，而不是库函数（然而，C++保留了标准库函数的名称，即程序员不应使用它们）。有些编译器-链 接程序要求显式地指出要搜索哪些库。 
+
+### 语言链接性
+
+另一种形式的链接性——称为语言链接性（language linking）也对函数有影响。首先介绍一些背景知识。链接程序要求每个不同的函数都有不同的符号名。在C语言中，一个名称只对应一个函数，因此这很容易实现。为满足内部需要，C语言编译器可能将spiff这样的函数名翻译为_spiff。这种方法被称为C语言链接性（C language linkage）。但在C++中，同一个名称可能对应多个函数，必须将这些函数翻译为不同的符号名称。因此，C++编译器执行名称矫正或名称修饰（参见第8章），为重载函数生成不同的符号名称。例如，可能将spiff（int）转换为_spoff_i，而将spiff（double，double）转换为_spiff_d_d。这种方法被 称为C++语言链接（C++ language linkage）。 
+
+链接程序寻找与C++函数调用匹配的函数时，使用的方法与C语言 不同。
+
+```
+spiff(22)
+```
+
+它在C库文件中的符号名称为_spiff，但对于我们假设的链接程序来说，C++查询约定是查找符号名称_spiff_i。为解决这种问题，可以用函数原型来指出要使用的约定
+
+```
+extern "C" void spiff(int);
+extern void spoff(int);
+extern "C++" void spaff(int);
+```
+
+第一个原型使用C语言链接性；而后面的两个使用C++语言链接 性。第二个原型是通过默认方式指出这一点的，而第三个显式地指出了这一点.
+
+### 存储方案和动态分配
+
+前面介绍C++用来为变量（包括数组和结构）分配内存的5种方案（线程内存除外），它们不适用于使用C++运算符new（或C函数malloc( )）分配的内存，这种内存被称为动态内存。第4章介绍过，动态内存由运算符new和delete控制，而不是由作用域和链接性规则控制。因此，可以在一个函数中分配动态内存，而在另一个函数中将其释放。与自动内存不同，动态内存不是LIFO，其分配和释放顺序要取决于new和delete在何时以何种方式被使用。通常，编译器使用三块独立的内存：一块用于静态变量（可能再细分），一块用于自动变量，另外一块用于动态存储。
+
+虽然存储方案概念不适用于动态内存，但适用于用来跟踪动态内存的自动和静态指针变量。例如，假设在一个函数中包含下面的语句： 
+
+```
+float * p_fess = new float[20];
+```
+
+由new分配的80个字节（假设float为4个字节）的内存将一直保留在内存中，直到使用delete运算符将其释放。但当包含该声明的语句块执行完毕时，p_fees指针将消失。如果希望另一个函数能够使用这80个字节中的内容，则必须将其地址传递或返回给该函数。另一方面，如果将p_fees的链接性声明为外部的，则文件中位于该声明后面的所有函数都可以使用它。另外，通过在另一个文件中使用下述声明，便可在其中使用该指针：
+
+```
+extern float * p_fees;
+```
+
+在程序结束时，由new分配的内存通常都将被释放，不过情况也并不总是这样。例如，在不那么健壮的操作系统中，在某些情况下，请求大型内存块将导致该代码块在程序结束不会被自动释放。最佳的做法是，使用delete来释放new分配的内存。
+
+#### 使用new运算符初始化
+
+如果要初始化动态分配的变量，该如何办呢？在C++98中，有时候可以这样做，C++11增加了其他可能性。下面先来看看C++98提供的可 能性
+
+如果要为内置的标量类型（如int或double）分配存储空间并初始化，可在类型名后面加上初始值，并将其用括号括起： 
+
+```
+int *pi = new int (6);
+double * pd = new double (99.99);
+```
+
+然而，要初始化常规结构或数组，需要使用大括号的列表初始化，这要求编译器支持C++11。C++11允许您这样做： 
+
+```
+struct where {double x;double y;double z;};
+where * one =new where {2.5,5.3,7.2};
+int * ar = new int [4] {2,4,6,7};
+```
+
+在C++11中，还可将列表初始化用于单值变量:
+
+```
+int *pin = new int {6};
+double * pdo = new double {99.99};
+```
+
+#### new失败时 
+
+new可能找不到请求的内存量。在最初的10年中，C++在这种情况下让new返回空指针，但现在将引发异常std::bad_alloc
+
+#### new：运算符、函数和替换函数 
+
+运算符new和new []分别调用如下函数：
+
+```
+void new operator new(std::size_t);
+void new operator new[](std::size_t);
+```
+
+这些函数被称为分配函数（alloction function），它们位于全局名称空间中。同样，也有由delete和delete []调用的释放函数（deallocation function）： 
+
+```
+void operator delete(void *);
+void operator delete[](void *);
+```
+
+std::size_t是一个 typedef，对应于合适的整型。对于下面这样的基本语句：
+
+```
+int * pi = new int;
+```
+
+将被转换为下面这样
+
+```
+int *pi = new(sizeof(int));
+```
+
+而下面的语句： 
+
+```
+int *pa = new int[40];
+```
+
+将被转换为下面这样： 
+
+```
+int * pa = new(40*sizeof(int));
+```
+
+正如您知道的，使用运算符new的语句也可包含初始值，因此，使用new运算符时，可能不仅仅是调用new()函数。
+
+```
+delete pi =>delete (pi);
+```
+
+C++将这些函数称为可替换的（replaceable）。这意味着如果您有足够的知识和意愿，可为new和delete提供替换函数，并根据需要对其进行定制。例如，可定义作用域为类的替换函数，并对其进行定制，以满足该类的内存分配需求。在代码中，仍将使用new运算符，但它将调用您定义的new()函数。 
+
+#### 定位new运算符
+
+通常，new负责在堆（heap）中找到一个足以能够满足要求的内存块。new运算符还有另一种变体，被称为定位（placement）new运算 符，它让您能够指定要使用的位置。程序员可能使用这种特性来设置其内存管理规程、处理需要通过特定地址进行访问的硬件或在特定位置创建对象。
+
+要使用定位new特性，首先需要包含头文件new，它提供了这种版本的new运算符的原型；然后将new运算符用于提供了所需地址的参数。除需要指定参数外，句法与常规new运算符相同。具体地说，使用定位new运算符时，变量后面可以有方括号，也可以没有。
+
+```cpp
+// newplace.cpp -- using placement new
+#include <iostream>
+#include <new> // for placement new
+const int BUF = 512;
+const int N = 5;
+char buffer[BUF];      // chunk of memory
+int main()
+{
+    using namespace std;
+
+    double *pd1, *pd2;
+    int i;
+    cout << "Calling new and placement new:\n";
+    pd1 = new double[N];           // use heap
+    pd2 = new (buffer) double[N];  // use buffer array
+    for (i = 0; i < N; i++)
+        pd2[i] = pd1[i] = 1000 + 20.0 * i;
+    cout << "Memory addresses:\n" << "  heap: " << pd1
+         << "  static: " <<  (void *) buffer  <<endl;
+    cout << "Memory contents:\n";
+    for (i = 0; i < N; i++)
+    {
+        cout << pd1[i] << " at " << &pd1[i] << "; ";
+        cout << pd2[i] << " at " << &pd2[i] << endl;
+    }
+
+    cout << "\nCalling new and placement new a second time:\n";
+    double *pd3, *pd4;
+    pd3= new double[N];            // find new address
+    pd4 = new (buffer) double[N];  // overwrite old data
+    for (i = 0; i < N; i++)
+        pd4[i] = pd3[i] = 1000 + 40.0 * i;
+    cout << "Memory contents:\n";
+    for (i = 0; i < N; i++)
+    {
+        cout << pd3[i] << " at " << &pd3[i] << "; ";
+        cout << pd4[i] << " at " << &pd4[i] << endl;
+    }
+
+    cout << "\nCalling new and placement new a third time:\n";
+    delete [] pd1;
+    pd1= new double[N];
+    pd2 = new (buffer + N * sizeof(double)) double[N];
+    for (i = 0; i < N; i++)
+        pd2[i] = pd1[i] = 1000 + 60.0 * i;
+    cout << "Memory contents:\n";
+    for (i = 0; i < N; i++)
+    {
+        cout << pd1[i] << " at " << &pd1[i] << "; ";
+        cout << pd2[i] << " at " << &pd2[i] << endl;
+    }
+    delete [] pd1;
+    delete [] pd3;
+    // cin.get();
+    return 0;
+}
+//Calling new and placement new:
+//Memory addresses:
+//heap: 0x6000032d8210  static: 0x100074000
+//Memory contents:
+//1000 at 0x6000032d8210; 1000 at 0x100074000
+//1020 at 0x6000032d8218; 1020 at 0x100074008
+//1040 at 0x6000032d8220; 1040 at 0x100074010
+//1060 at 0x6000032d8228; 1060 at 0x100074018
+//1080 at 0x6000032d8230; 1080 at 0x100074020
+//
+//Calling new and placement new a second time:
+//Memory contents:
+//1000 at 0x6000032d8270; 1000 at 0x100074000
+//1040 at 0x6000032d8278; 1040 at 0x100074008
+//1080 at 0x6000032d8280; 1080 at 0x100074010
+//1120 at 0x6000032d8288; 1120 at 0x100074018
+//1160 at 0x6000032d8290; 1160 at 0x100074020
+//
+//Calling new and placement new a third time:
+//Memory contents:
+//1000 at 0x6000032d8210; 1000 at 0x100074028
+//1060 at 0x6000032d8218; 1060 at 0x100074030
+//1120 at 0x6000032d8220; 1120 at 0x100074038
+//1180 at 0x6000032d8228; 1180 at 0x100074040
+//1240 at 0x6000032d8230; 1240 at 0x100074048
+```
+
+#### 定位new的其他形式
+
+就像常规new调用一个接收一个参数的new()函数一样，标准定位new调用一个接收两个参数的new()函数： 
+
+```
+int * pi = new int;  //invokes new(sizeof(int))
+int * p2 = new (buffer) int; // invokes new(sizeof(int),buffer)
+int * p3 = new (buffer) int[40];//invokes new(40*sizeof(int),buffer)
+```
+
+定位new函数不可替换，但可重载。它至少需要接收两个参数，其中第一个总是std::size_t，指定了请求的字节数。这样的重载函数都被称为定义new，即使额外的参数没有指定位置。 
+
+## 名称空间 
+
+在C++中，名称可以是变量、函数、结构、枚举、类以及类和结构的成员。当随着项目的增大，名称相互冲突的可能性也将增加。使用多 个厂商的类库时，可能导致名称冲突。例如，两个库可能都定义了名为List、Tree和Node的类，但定义的方式不兼容。用户可能希望使用一个库的List类，而使用另一个库的Tree类。这种冲突被称为名称空间问题。
+
+C++标准提供了名称空间工具，以便更好地控制名称的作用域。经过了一段时间后，编译器才支持名称空间，但现在这种支持很普遍。 
+
+### 传统的**C++**名称空间 
+
