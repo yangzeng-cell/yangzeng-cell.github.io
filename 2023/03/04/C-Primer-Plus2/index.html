@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-16%2022.30.18.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-18%2001.03.02.png">
 <meta property="article:published_time" content="2023-03-04T17:25:36.000Z">
-<meta property="article:modified_time" content="2023-03-18T13:10:04.422Z">
+<meta property="article:modified_time" content="2023-03-19T13:19:50.430Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -225,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          70k 字
+          76k 字
         
       </span>
     
@@ -236,7 +236,7 @@
         
         
         
-          581 分钟
+          635 分钟
         
       </span>
     
@@ -2485,7 +2485,243 @@ veep.<span class="hljs-keyword">access</span>++</code></pre></div>
 <p>定位new函数不可替换，但可重载。它至少需要接收两个参数，其中第一个总是std::size_t，指定了请求的字节数。这样的重载函数都被称为定义new，即使额外的参数没有指定位置。 </p>
 <h2 id="名称空间"><a href="#名称空间" class="headerlink" title="名称空间"></a>名称空间</h2><p>在C++中，名称可以是变量、函数、结构、枚举、类以及类和结构的成员。当随着项目的增大，名称相互冲突的可能性也将增加。使用多 个厂商的类库时，可能导致名称冲突。例如，两个库可能都定义了名为List、Tree和Node的类，但定义的方式不兼容。用户可能希望使用一个库的List类，而使用另一个库的Tree类。这种冲突被称为名称空间问题。</p>
 <p>C++标准提供了名称空间工具，以便更好地控制名称的作用域。经过了一段时间后，编译器才支持名称空间，但现在这种支持很普遍。 </p>
-<h3 id="传统的-C-名称空间"><a href="#传统的-C-名称空间" class="headerlink" title="传统的**C++**名称空间"></a>传统的**C++**名称空间</h3>
+<h3 id="传统的-C-名称空间"><a href="#传统的-C-名称空间" class="headerlink" title="传统的**C++**名称空间"></a>传统的**C++**名称空间</h3><p>声明区域是可以在其中进行声明的区域。例如，可以在函数外面声明全局变量，对于这种变量，其声明区域为其声明所在的文件。对于在函数中声明的变量，其声明区域为其声明所在的代码块。 </p>
+<p>第二个需要知道的术语是潜在作用域（potential scope）。变量的潜在作用域从声明点开始，到其声明区域的结尾。因此潜在作用域比声明区域小，这是由于变量必须定义后才能使用。然而，变量并非在其潜在作用域内的任何位置都是可见的。例如，它可能被另一个在嵌套声明区域中声明的同名变量隐藏。例如，在函数中声明的局部变量（对于这种变量，声明区域为整个函数）将隐藏在同一个文件中声明的全局变量（对于这种变量，声明区域为整个文件）。 变量对程序而言可见的范围被称为作用域（scope），前面正是以这种方式使用该术语的。</p>
+<p>C++关于全局变量和局部变量的规则定义了一种名称空间层次。每个声明区域都可以声明名称，这些名称独立于在其他声明区域中声明的 名称。在一个函数中声明的局部变量不会与在另一个函数中声明的局部 变量发生冲突。</p>
+<h3 id="新的名称空间特性"><a href="#新的名称空间特性" class="headerlink" title="新的名称空间特性"></a>新的名称空间特性</h3><p>C++新增了这样一种功能，即通过定义一种新的声明区域来创建命名的名称空间，这样做的目的之一是提供一个声明名称的区域。一个名 称空间中的名称不会与另外一个名称空间的相同名称发生冲突，同时允许程序的其他部分使用该名称空间中声明的东西。</p>
+<div class="code-wrapper"><pre><code class="hljs csharp"><span class="hljs-keyword">namespace</span> <span class="hljs-title">Jack</span> &#123;
+	<span class="hljs-built_in">double</span> pail;
+	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">fetch</span>()</span>;
+	<span class="hljs-built_in">int</span> pal;
+	<span class="hljs-keyword">struct</span> Well&#123;&#125;
+&#125;
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">Jill</span>&#123;
+	<span class="hljs-function"><span class="hljs-built_in">double</span> <span class="hljs-title">bucket</span>(<span class="hljs-params"><span class="hljs-built_in">double</span> n</span>)</span> &#123;&#125;;
+	<span class="hljs-built_in">double</span> fetch;
+	<span class="hljs-built_in">int</span> pal;
+	<span class="hljs-keyword">struct</span> Hill&#123;&#125;
+&#125;</code></pre></div>
+
+<p>名称空间可以是全局的，也可以位于另一个名称空间中，但不能位于代码块中。因此，在默认情况下，在名称空间中声明的名称的链接性 为外部的（除非它引用了常量）。 </p>
+<p>除了用户定义的名称空间外，还存在另一个名称空间——全局名称空间（global namespace）。它对应于文件级声明区域，因此前面所说的全局变量现在被描述为位于全局名称空间中。</p>
+<p>任何名称空间中的名称都不会与其他名称空间中的名称发生冲突。 因此，Jack中的fetch可以与Jill中的fetch共存，Jill中的Hill可以与外部 Hill共存。名称空间中的声明和定义规则同全局声明和定义规则相同。 </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">namespace</span> Jill &#123;
+	<span class="hljs-function"><span class="hljs-type">char</span> * <span class="hljs-title">goose</span> <span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *)</span></span>;
+&#125;</code></pre></div>
+
+<p>同样，原来的Jack名称空间为fetch( )函数提供了原型。可以在该文件后面（或另外一个文件中）再次使用Jack名称空间来提供该函数的代 码：</p>
+<div class="code-wrapper"><pre><code class="hljs csharp">namespece Jack &#123;
+	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">fetch</span>()</span>&#123;
+		...
+	&#125;
+&#125;</code></pre></div>
+
+<p>当然，需要有一种方法来访问给定名称空间中的名称。最简单的方法是，通过作用域解析运算符::，使用名称空间来限定该名称： </p>
+<div class="code-wrapper"><pre><code class="hljs css">Jack::pail = <span class="hljs-number">12.34</span>;
+Jill::Hill mole;
+Jack::<span class="hljs-built_in">fetch</span>();</code></pre></div>
+
+<p>未被装饰的名称（如pail）称为未限定的名称（unqualified name）；包含名称空间的名称（如Jack::pail）称为限定的名称（qualified name）。 </p>
+<h4 id="using声明和using编译指令"><a href="#using声明和using编译指令" class="headerlink" title="using声明和using编译指令"></a>using声明和using编译指令</h4><p>我们并不希望每次使用名称时都对它进行限定，因此C++提供了两种机制（using声明和using编译指令）来简化对名称空间中名称的使 用。using声明使特定的标识符可用，using编译指令使整个名称空间可用。</p>
+<p>using声明由被限定的名称和它前面的关键字using组成：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> Jill::fetch;</code></pre></div>
+
+<p>using声明将特定的名称添加到它所属的声明区域中。例如main( )中的using声明Jill::fetch将fetch添加到main( )定义的声明区域中。完成该声明后，便可以使用名称fetch代替Jill::fetch。</p>
+<h4 id="using编译指令和using声明之比较"><a href="#using编译指令和using声明之比较" class="headerlink" title="using编译指令和using声明之比较"></a>using编译指令和using声明之比较</h4><p>使用using编译指令导入一个名称空间中所有的名称与使用多个using声明是不一样的，而更像是大量使用作用域解析运算符。使用 using声明时，就好像声明了相应的名称一样。如果某个名称已经在函数 中声明了，则不能用using声明导入相同的名称。然而，使用using编译指令时，将进行名称解析，就像在包含using声明和名称空间本身的最小声明区域中声明了名称一样。如果使用using编译指令导入一个已经在函数中声明的名称，则局部名称将隐藏名称空间名，就像隐藏同名的全局变量一样。</p>
+<p>需要指出的另一点是，虽然函数中的using编译指令将名称空间的名称视为在函数之外声明的，但它不会使得该文件中的其他函数能够使用这些名称</p>
+<p>一般说来，使用using声明比使用using编译指令更安全，这是由于它只导入指定的名称。如果该名称与局部名称发生冲突，编译器将发出 指示。using编译指令导入所有名称，包括可能并不需要的名称。如果与局部名称发生冲突，则局部名称将覆盖名称空间版本，而编译器并不会发出警告。另外，名称空间的开放性意味着名称空间的名称可能分散在多个地方，这使得难以准确知道添加了哪些名称。 </p>
+<h4 id="名称空间的其他特性"><a href="#名称空间的其他特性" class="headerlink" title="名称空间的其他特性"></a>名称空间的其他特性</h4><p>可以将名称空间声明进行嵌套：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript">namespact elements &#123;
+	<span class="hljs-keyword">namespace</span> <span class="hljs-symbol">file</span> &#123;
+		<span class="hljs-built_in">int</span> flame;
+	&#125;
+	<span class="hljs-built_in">float</span> water;
+&#125;</code></pre></div>
+
+<p>这里，flame指的是element::fire::flame。同样，可以使用下面的 using编译指令使内部的名称可用： </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> elements::fire;</code></pre></div>
+
+<p>另外，也可以在名称空间中使用using编译指令和using声明，如下所示：</p>
+<div class="code-wrapper"><pre><code class="hljs powershell">namespece myth&#123;
+	<span class="hljs-keyword">using</span> Jill::fetch;
+	<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> element;
+	<span class="hljs-keyword">using</span> std::cout;
+	<span class="hljs-keyword">using</span> std::cin;
+&#125;</code></pre></div>
+
+<p>假设要访问Jill::fetch。由于Jill::fetch现在位于名称空间myth（在这里，它被叫做fetch）中，因此可以这样访问它：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp">std::cin &gt;&gt; myth::fetch;</code></pre></div>
+
+<p>当然，由于它也位于Jill名称空间中，因此仍然可以称作Jill::fetch： </p>
+<div class="code-wrapper"><pre><code class="hljs cpp">Jill::fetch;
+std::cout&lt;&lt;Jill::fetch;</code></pre></div>
+
+<p>如果没有与之冲突的局部变量，则也可以这样做： </p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> myth;
+cin &gt;&gt; fetch;<span class="hljs-comment">//really std::cin and Jill::fetch</span></code></pre></div>
+
+<p>现在考虑将using编译指令用于myth名称空间的情况。using编译指令是可传递的。如果A op B且B op C，则A op C，则说操作op是可传递的。例如，&gt;运算符是可传递的（也就是说，如果A&gt;B且B&gt;C，则A&gt;C）。在这个情况下，下面的语句将导入名称空间myth和elements：</p>
+<div class="code-wrapper"><pre><code class="hljs powershell"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> myth;</code></pre></div>
+
+<p>这条编译指令与下面两条编译指令等价： </p>
+<div class="code-wrapper"><pre><code class="hljs powershell"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> myth;
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> elements;</code></pre></div>
+
+<p>可以给名称空间创建别名。例如，假设有下面的名称空间</p>
+<div class="code-wrapper"><pre><code class="hljs abnf">namespace mvft <span class="hljs-operator">=</span> my_every_favorite_things<span class="hljs-comment">;</span></code></pre></div>
+
+<p>可以使用这种技术来简化对嵌套名称空间的使用：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">namespace</span> MEF = myth::elements::fires;
+<span class="hljs-keyword">using</span> MEF::flame</code></pre></div>
+
+<h4 id="未命名的名称空间"><a href="#未命名的名称空间" class="headerlink" title="未命名的名称空间"></a>未命名的名称空间</h4><p>可以通过省略名称空间的名称来创建未命名的名称空间：</p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-keyword">namespace</span> &#123;
+	<span class="hljs-built_in">int</span> ice;
+	<span class="hljs-built_in">int</span> bandycoot;
+&#125;</code></pre></div>
+
+<p>这就像后面跟着using编译指令一样，也就是说，在该名称空间中声明的名称的潜在作用域为：从声明点到该声明区域末尾。从这个方面 看，它们与全局变量相似。然而，由于这种名称空间没有名称，因此不能显式地使用using编译指令或using声明来使它在其他位置都可用。具体地说，不能在未命名名称空间所属文件之外的其他文件中，使用该名称空间中的名称。这提供了链接性为内部的静态变量的替代品</p>
+<div class="code-wrapper"><pre><code class="hljs arduino"><span class="hljs-type">static</span> <span class="hljs-type">int</span> counts;
+
+&lt;=&gt;
+<span class="hljs-keyword">namespace</span> &#123;
+	<span class="hljs-type">int</span> counts
+&#125;</code></pre></div>
+
+<h3 id="名称空间示例"><a href="#名称空间示例" class="headerlink" title="名称空间示例"></a>名称空间示例</h3><p>现在来看一个多文件示例，该示例说明了名称空间的一些特性。该程序的第一个文件（参见程序清单9.11）是头文件，其中包含头文件中 常包含的内容：常量、结构定义和函数原型。在这个例子中，这些内容被放在两个名称空间中。第一个名称空间叫做pers，其中包含Person结构的定义和两个函数的原型——一个函数用人名填充结构，另一个函数显示结构的内容；第二个名称空间叫做debts，它定义了一个结构，该结构用来存储人名和金额。该结构使用了Person结构，因此，debts名称空间使用一条using编译指令，让pers中的名称在debts名称空间可用。debts名称空间也包含一些原型。 </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// namesp.h</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-comment">// create the pers and debts namespaces</span>
+<span class="hljs-keyword">namespace</span> pers
+&#123;
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Person</span>
+    &#123; 
+        std::string fname;
+        std::string lname;
+     &#125;;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">getPerson</span><span class="hljs-params">(Person &amp;)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showPerson</span><span class="hljs-params">(<span class="hljs-type">const</span> Person &amp;)</span></span>;
+&#125;
+
+<span class="hljs-keyword">namespace</span> debts
+&#123;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pers;
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Debt</span>
+    &#123;
+        Person name;
+        <span class="hljs-type">double</span> amount;
+    &#125;;
+    
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">getDebt</span><span class="hljs-params">(Debt &amp;)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showDebt</span><span class="hljs-params">(<span class="hljs-type">const</span> Debt &amp;)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">sumDebts</span><span class="hljs-params">(<span class="hljs-type">const</span> Debt ar[], <span class="hljs-type">int</span> n)</span></span>; 
+&#125;</code></pre></div>
+
+<p>第二个文件（见程序清单9.12）是源代码文件，它提供了头文件中的函数原型对应的定义。在名称空间中声明的函数名的作用域为整个名 称空间，因此定义和声明必须位于同一个名称空间中。这正是名称空间的开放性发挥作用的地方。通过包含namesp.h（参见程序清单9.11）导入了原来的名称空间。然后该文件将函数定义添加入到两个名称空间中，如程序清单9.12所示。另外，文件names.cpp演示了如何使用using声明和作用域解析运算符来使名称空间std中的元素可用。 </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// namesp.cpp -- namespaces</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;namesp.h&quot;</span></span>
+
+<span class="hljs-keyword">namespace</span> pers
+&#123;
+    <span class="hljs-keyword">using</span> std::cout;
+    <span class="hljs-keyword">using</span> std::cin;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">getPerson</span><span class="hljs-params">(Person &amp; rp)</span></span>
+<span class="hljs-function">    </span>&#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Enter first name: &quot;</span>;
+        cin &gt;&gt; rp.fname;
+        cout &lt;&lt; <span class="hljs-string">&quot;Enter last name: &quot;</span>;
+        cin &gt;&gt; rp.lname;
+    &#125;
+    
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showPerson</span><span class="hljs-params">(<span class="hljs-type">const</span> Person &amp; rp)</span></span>
+<span class="hljs-function">    </span>&#123;
+        std::cout &lt;&lt; rp.lname &lt;&lt; <span class="hljs-string">&quot;, &quot;</span> &lt;&lt; rp.fname;
+    &#125;
+&#125;
+
+<span class="hljs-keyword">namespace</span> debts
+&#123;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">getDebt</span><span class="hljs-params">(Debt &amp; rd)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-built_in">getPerson</span>(rd.name);
+        std::cout &lt;&lt; <span class="hljs-string">&quot;Enter debt: &quot;</span>;
+        std::cin &gt;&gt; rd.amount;
+    &#125;
+    
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showDebt</span><span class="hljs-params">(<span class="hljs-type">const</span> Debt &amp; rd)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-built_in">showPerson</span>(rd.name);
+        std::cout &lt;&lt;<span class="hljs-string">&quot;: $&quot;</span> &lt;&lt; rd.amount &lt;&lt; std::endl;
+    &#125;
+    
+    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">sumDebts</span><span class="hljs-params">(<span class="hljs-type">const</span> Debt ar[], <span class="hljs-type">int</span> n)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-type">double</span> total = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+            total += ar[i].amount;
+        <span class="hljs-keyword">return</span> total;
+    &#125;
+&#125;</code></pre></div>
+
+<p>最后，该程序的第三个文件（参见程序清单9.13）是一个源代码文件，它使用了名称空间中声明和定义的结构和函数。程序清单9.13演示 了多种使名称空间标识符可用的方法。</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// usenmsp.cpp -- using namespaces</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;namesp.h&quot;</span></span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">other</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">another</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> debts::Debt;
+	<span class="hljs-keyword">using</span> debts::showDebt;
+    Debt golf = &#123; &#123;<span class="hljs-string">&quot;Benny&quot;</span>, <span class="hljs-string">&quot;Goatsniff&quot;</span>&#125;, <span class="hljs-number">120.0</span> &#125;;
+    <span class="hljs-built_in">showDebt</span>(golf);
+    <span class="hljs-built_in">other</span>();
+    <span class="hljs-built_in">another</span>(); 
+	<span class="hljs-comment">// std::cin.get();</span>
+	<span class="hljs-comment">// std::cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">other</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> std::cout;
+    <span class="hljs-keyword">using</span> std::endl;
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> debts;
+    Person dg = &#123;<span class="hljs-string">&quot;Doodles&quot;</span>, <span class="hljs-string">&quot;Glister&quot;</span>&#125;;
+    <span class="hljs-built_in">showPerson</span>(dg);
+    cout &lt;&lt; endl;
+    Debt zippy[<span class="hljs-number">3</span>];
+    <span class="hljs-type">int</span> i;
+    
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)
+        <span class="hljs-built_in">getDebt</span>(zippy[i]);
+
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)
+        <span class="hljs-built_in">showDebt</span>(zippy[i]);
+    cout &lt;&lt; <span class="hljs-string">&quot;Total debt: $&quot;</span> &lt;&lt; <span class="hljs-built_in">sumDebts</span>(zippy, <span class="hljs-number">3</span>) &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">another</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> pers::Person;;
+    
+    Person collector = &#123; <span class="hljs-string">&quot;Milo&quot;</span>, <span class="hljs-string">&quot;Rightshift&quot;</span> &#125;;
+    pers::<span class="hljs-built_in">showPerson</span>(collector);
+    std::cout &lt;&lt; std::endl; 
+&#125;</code></pre></div>
+
+<h3 id="名称空间及其前途"><a href="#名称空间及其前途" class="headerlink" title="名称空间及其前途"></a>名称空间及其前途</h3><p>下面是当前的一些指导原则。 </p>
+<p>使用在已命名的名称空间中声明的变量，而不是使用外部全局变量。</p>
+<p>使用在已命名的名称空间中声明的变量，而不是使用静态全局变量。</p>
+<p>如果开发了一个函数库或类库，将其放在一个名称空间中。事实上，C++当前提倡将标准函数库放在名称空间std中，这种做法扩展 到了来自C语言中的函数。例如，头文件math.h是与C语言兼容的，没有使用名称空间，但C++头文件cmath应将各种数学库函数放在名称空间std中。实际上，并非所有的编译器都完成了这种过渡。 </p>
+<p>仅将编译指令using作为一种将旧代码转换为使用名称空间的权宜之计。</p>
+<p>不要在头文件中使用using编译指令。首先，这样做掩盖了要让哪些名称可用；另外，包含头文件的顺序可能影响程序的行为。如果非 要使用编译指令using，应将其放在所有预处理器编译指令#include之后。 </p>
+<p>导入名称时，首选使用作用域解析运算符或using声明的方法。对于using声明，首选将其作用域设置为局部而不是全局。</p>
+
                 
               </div>
             
@@ -2575,7 +2811,7 @@ veep.<span class="hljs-keyword">access</span>++</code></pre></div>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/18/hello-world/" title="Hello World">
+                      <a href="/2023/03/19/hello-world/" title="Hello World">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">上一篇</span>
