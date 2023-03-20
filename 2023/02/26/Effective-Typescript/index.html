@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="了解TypescriptTypescript的类型系统类型推断类型设计和Any一起工作类型声明和@types编写和运行你的代码迁移到Typescript">
+    <meta name="description" content="了解Typescript理解Typescript与Javascript的关系知道你在使用那个Typescript选项理解代码的生成是独立于类型的习惯结构类型限制使用any类型Typescript的类型系统使用你的编辑器来询问和探索类型系统要将类型视为价值的集合知道如何分辨符号是类型空间还是值空间优先选择类型声明而不是类型断言避免对象包装类(String,Number,Boolean,Symbol,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective Typescript">
 <meta property="og:url" content="http://example.com/2023/02/26/Effective-Typescript/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="了解TypescriptTypescript的类型系统类型推断类型设计和Any一起工作类型声明和@types编写和运行你的代码迁移到Typescript">
+<meta property="og:description" content="了解Typescript理解Typescript与Javascript的关系知道你在使用那个Typescript选项理解代码的生成是独立于类型的习惯结构类型限制使用any类型Typescript的类型系统使用你的编辑器来询问和探索类型系统要将类型视为价值的集合知道如何分辨符号是类型空间还是值空间优先选择类型声明而不是类型断言避免对象包装类(String,Number,Boolean,Symbol,">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-26T18:29:14.000Z">
-<meta property="article:modified_time" content="2023-03-19T13:32:47.343Z">
+<meta property="article:modified_time" content="2023-03-20T15:08:03.923Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="typescript">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          76 字
+          268 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          1 分钟
+          3 分钟
         
       </span>
     
@@ -273,7 +273,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="了解Typescript"><a href="#了解Typescript" class="headerlink" title="了解Typescript"></a>了解Typescript</h1><h1 id="Typescript的类型系统"><a href="#Typescript的类型系统" class="headerlink" title="Typescript的类型系统"></a>Typescript的类型系统</h1><h1 id="类型推断"><a href="#类型推断" class="headerlink" title="类型推断"></a>类型推断</h1><h1 id="类型设计"><a href="#类型设计" class="headerlink" title="类型设计"></a>类型设计</h1><h1 id="和Any一起工作"><a href="#和Any一起工作" class="headerlink" title="和Any一起工作"></a>和Any一起工作</h1><h1 id="类型声明和-types"><a href="#类型声明和-types" class="headerlink" title="类型声明和@types"></a>类型声明和@types</h1><h1 id="编写和运行你的代码"><a href="#编写和运行你的代码" class="headerlink" title="编写和运行你的代码"></a>编写和运行你的代码</h1><h1 id="迁移到Typescript"><a href="#迁移到Typescript" class="headerlink" title="迁移到Typescript"></a>迁移到Typescript</h1>
+                <h1 id="了解Typescript"><a href="#了解Typescript" class="headerlink" title="了解Typescript"></a>了解Typescript</h1><h2 id="理解Typescript与Javascript的关系"><a href="#理解Typescript与Javascript的关系" class="headerlink" title="理解Typescript与Javascript的关系"></a>理解Typescript与Javascript的关系</h2><h2 id="知道你在使用那个Typescript选项"><a href="#知道你在使用那个Typescript选项" class="headerlink" title="知道你在使用那个Typescript选项"></a>知道你在使用那个Typescript选项</h2><h2 id="理解代码的生成是独立于类型的"><a href="#理解代码的生成是独立于类型的" class="headerlink" title="理解代码的生成是独立于类型的"></a>理解代码的生成是独立于类型的</h2><h2 id="习惯结构类型"><a href="#习惯结构类型" class="headerlink" title="习惯结构类型"></a>习惯结构类型</h2><h2 id="限制使用any类型"><a href="#限制使用any类型" class="headerlink" title="限制使用any类型"></a>限制使用any类型</h2><h1 id="Typescript的类型系统"><a href="#Typescript的类型系统" class="headerlink" title="Typescript的类型系统"></a>Typescript的类型系统</h1><h2 id="使用你的编辑器来询问和探索类型系统"><a href="#使用你的编辑器来询问和探索类型系统" class="headerlink" title="使用你的编辑器来询问和探索类型系统"></a>使用你的编辑器来询问和探索类型系统</h2><h2 id="要将类型视为价值的集合"><a href="#要将类型视为价值的集合" class="headerlink" title="要将类型视为价值的集合"></a>要将类型视为价值的集合</h2><h2 id="知道如何分辨符号是类型空间还是值空间"><a href="#知道如何分辨符号是类型空间还是值空间" class="headerlink" title="知道如何分辨符号是类型空间还是值空间"></a>知道如何分辨符号是类型空间还是值空间</h2><h2 id="优先选择类型声明而不是类型断言"><a href="#优先选择类型声明而不是类型断言" class="headerlink" title="优先选择类型声明而不是类型断言"></a>优先选择类型声明而不是类型断言</h2><h2 id="避免对象包装类-String-Number-Boolean-Symbol-BigInt"><a href="#避免对象包装类-String-Number-Boolean-Symbol-BigInt" class="headerlink" title="避免对象包装类(String,Number,Boolean,Symbol,BigInt)"></a>避免对象包装类(String,Number,Boolean,Symbol,BigInt)</h2><h2 id="认识额外属性检查的局限性"><a href="#认识额外属性检查的局限性" class="headerlink" title="认识额外属性检查的局限性"></a>认识额外属性检查的局限性</h2><h1 id="类型推断"><a href="#类型推断" class="headerlink" title="类型推断"></a>类型推断</h1><h1 id="类型设计"><a href="#类型设计" class="headerlink" title="类型设计"></a>类型设计</h1><h1 id="和Any一起工作"><a href="#和Any一起工作" class="headerlink" title="和Any一起工作"></a>和Any一起工作</h1><h1 id="类型声明和-types"><a href="#类型声明和-types" class="headerlink" title="类型声明和@types"></a>类型声明和@types</h1><h1 id="编写和运行你的代码"><a href="#编写和运行你的代码" class="headerlink" title="编写和运行你的代码"></a>编写和运行你的代码</h1><h1 id="迁移到Typescript"><a href="#迁移到Typescript" class="headerlink" title="迁移到Typescript"></a>迁移到Typescript</h1>
                 
               </div>
             
