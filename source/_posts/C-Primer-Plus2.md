@@ -3265,3 +3265,795 @@ C++的存储方案决定了变量保留在内存中的时间（储存持续性�
 - 代码的可重用性。
 
 ## 抽象和类 
+
+将变量声明为int或float指针时，不仅仅是分配内存，还规定了可对变量执行的操作。总之，指定基本类型完成了三项工作： 
+
+- 决定数据对象需要的内存数量； 
+- 决定如何解释内存中的位（long和float在内存中占用的位数相同，但将它们转换为数值的方法不同）； 
+- 决定可使用数据对象执行的操作或方法。
+
+### C++中的类
+
+一般来说，类规范由两个部分组成。
+
+- 类声明：以数据成员的方式描述数据部分，以成员函数（被称为方法）的方式描述公有接口。 
+- 类方法定义：描述如何实现类成员函数。 
+
+```cpp
+// stock00.h -- Stock class interface
+// version 00
+#ifndef STOCK00_H_
+#define STOCK00_H_
+
+#include <string>  
+
+class Stock  // class declaration
+{
+private: 
+    std::string company;
+    long shares;
+    double share_val;
+    double total_val;
+    void set_tot() { total_val = shares * share_val; }
+public:
+    void acquire(const std::string & co, long n, double pr);
+    void buy(long num, double price);
+    void sell(long num, double price);
+    void update(double price);
+    void show();
+};    // note semicolon at the end
+
+#endif
+```
+
+#### 访问控制
+
+<img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-25%2014.22.49.png" style="zoom:50%;" />
+
+类描述看上去很像是包含成员函数以及public和private可见性标签的结构声明。实际上，C++对结构进行了扩展，使之具有与类相同的特性。它们之间唯一的区别是，结构的默认访问类型是public，而类为private。
+
+### 实现类成员函数 
+
+还需要创建类描述的第二部分：为那些由类声明中的原型表示的成员函数提供代码。成员函数定义与常规函数定义非常相似，它们有函数 头和函数体，也可以有返回类型和参数。但是它们还有两个特殊的特征：
+
+- 定义成员函数时，使用作用域解析运算符（::）来标识函数所属的类；
+- 类方法可以访问类的private组件。 
+
+首先，成员函数的函数头使用作用域运算符解析（::）来指出函数所属的类。例如，update( )成员函数的函数头如下：
+
+```
+void Stock::update(double price);
+```
+
+这种表示法意味着我们定义的update( )函数是Stock类的成员。
+
+```cpp
+// stock00.cpp -- implementing the Stock class
+// version 00
+#include <iostream>
+#include "stock00.h"
+
+void Stock::acquire(const std::string & co, long n, double pr)
+{
+    company = co;
+    if (n < 0)
+    {
+        std::cout << "Number of shares can't be negative; "
+                  << company << " shares set to 0.\n";
+        shares = 0;
+    }
+    else
+        shares = n;
+    share_val = pr;
+    set_tot();
+}
+
+void Stock::buy(long num, double price)
+{
+     if (num < 0)
+    {
+        std::cout << "Number of shares purchased can't be negative. "
+             << "Transaction is aborted.\n";
+    }
+    else
+    {
+        shares += num;
+        share_val = price;
+        set_tot();
+    }
+}
+
+void Stock::sell(long num, double price)
+{
+    using std::cout;
+    if (num < 0)
+    {
+        cout << "Number of shares sold can't be negative. "
+             << "Transaction is aborted.\n";
+    }
+    else if (num > shares)
+    {
+        cout << "You can't sell more than you have! "
+             << "Transaction is aborted.\n";
+    }
+    else
+    {
+        shares -= num;
+        share_val = price;
+        set_tot();
+    }
+}
+
+void Stock::update(double price)
+{
+    share_val = price;
+    set_tot();
+}
+
+void Stock::show()
+{
+    std::cout << "Company: " << company
+              << "  Shares: " << shares << '\n'
+              << "  Share Price: $" << share_val
+              << "  Total Worth: $" << total_val << '\n';
+}
+
+```
+
+### 使用类
+
+```cpp
+// usestok0.cpp -- the client program
+// compile with stock.cpp
+#include <iostream>
+#include "stock00.h"
+
+int main()
+{
+    Stock fluffy_the_cat;
+    fluffy_the_cat.acquire("NanoSmart", 20, 12.50);
+    fluffy_the_cat.show();
+    fluffy_the_cat.buy(15, 18.125);
+    fluffy_the_cat.show();
+    fluffy_the_cat.sell(400, 20.00);
+    fluffy_the_cat.show();
+    fluffy_the_cat.buy(300000,40.125);
+    fluffy_the_cat.show();
+    fluffy_the_cat.sell(300000,0.125);
+    fluffy_the_cat.show();
+    // std::cin.get();
+    return 0;
+}
+```
+
+## 类的构造函数和析构函数
+
+```cpp
+// stock10.h � Stock class declaration with constructors, destructor added
+#ifndef STOCK1_H_
+#define STOCK1_H_
+#include <string>
+class Stock
+{
+private:
+    std::string company;
+    long shares;
+    double share_val;
+    double total_val;
+    void set_tot() { total_val = shares * share_val; }
+public:
+    Stock();        // default constructor
+    Stock(const std::string & co, long n = 0, double pr = 0.0);
+    ~Stock();       // noisy destructor
+    void buy(long num, double price);
+    void sell(long num, double price);
+    void update(double price);
+    void show();
+};
+
+#endif
+```
+
+```cpp
+// stock1.cpp � Stock class implementation with constructors, destructor added
+#include <iostream>
+#include "stock10.h"
+
+// constructors (verbose versions)
+Stock::Stock()        // default constructor
+{
+    std::cout << "Default constructor called\n";
+    company = "no name";
+    shares = 0;
+    share_val = 0.0;
+    total_val = 0.0;
+}
+
+Stock::Stock(const std::string & co, long n, double pr)
+{
+    std::cout << "Constructor using " << co << " called\n";
+    company = co;
+
+    if (n < 0)
+    {
+        std::cout << "Number of shares can't be negative; "
+                   << company << " shares set to 0.\n";
+        shares = 0;
+    }
+    else
+        shares = n;
+    share_val = pr;
+    set_tot();
+}
+// class destructor
+Stock::~Stock()        // verbose class destructor
+{
+    std::cout << "Bye, " << company << "!\n";
+}
+
+// other methods
+void Stock::buy(long num, double price)
+{
+     if (num < 0)
+    {
+        std::cout << "Number of shares purchased can't be negative. "
+             << "Transaction is aborted.\n";
+    }
+    else
+    {
+        shares += num;
+        share_val = price;
+        set_tot();
+    }
+}
+
+void Stock::sell(long num, double price)
+{
+    using std::cout;
+    if (num < 0)
+    {
+        cout << "Number of shares sold can't be negative. "
+             << "Transaction is aborted.\n";
+    }
+    else if (num > shares)
+    {
+        cout << "You can't sell more than you have! "
+             << "Transaction is aborted.\n";
+    }
+    else
+    {
+        shares -= num;
+        share_val = price;
+        set_tot();
+    }
+}
+
+void Stock::update(double price)
+{
+    share_val = price;
+    set_tot();
+}
+
+void Stock::show()
+{
+    using std::cout;
+    using std::ios_base;
+    // set format to #.###
+    ios_base::fmtflags orig = 
+        cout.setf(ios_base::fixed, ios_base::floatfield); 
+    std::streamsize prec = cout.precision(3);
+
+    cout << "Company: " << company
+        << "  Shares: " << shares << '\n';
+    cout << "  Share Price: $" << share_val;
+    // set format to #.##
+    cout.precision(2);
+    cout << "  Total Worth: $" << total_val << '\n';
+
+    // restore original format
+    cout.setf(orig, ios_base::floatfield);
+    cout.precision(prec);
+}
+```
+
+```cpp
+// usestok1.cpp -- using the Stock class
+// compile with stock10.cpp
+#include <iostream>
+#include "stock10.h"
+
+int main()
+{
+    {
+        using std::cout;
+        cout << "Using constructors to create new objects\n";
+        Stock stock1("NanoSmart", 12, 20.0);            // syntax 1
+        stock1.show();
+        Stock stock2 = Stock ("Boffo Objects", 2, 2.0); // syntax 2
+        stock2.show();
+
+        cout << "Assigning stock1 to stock2:\n";
+        stock2 = stock1;
+        cout << "Listing stock1 and stock2:\n";
+        stock1.show();
+        stock2.show();
+
+        cout << "Using a constructor to reset an object\n";
+        stock1 = Stock("Nifty Foods", 10, 50.0);    // temp object
+        cout << "Revised stock1:\n";
+        stock1.show();
+        cout << "Done\n";
+    }
+    // std::cin.get();
+    return 0;
+}
+```
+
+### 构造函数和析构函数小结
+
+构造函数是一种特殊的类成员函数，在创建类对象时被调用。构造函数的名称和类名相同，但通过函数重载，可以创建多个同名的构造函 数，条件是每个函数的特征标（参数列表）都不同。另外，构造函数没有声明类型。通常，构造函数用于初始化类对象的成员，初始化应与构造函数的参数列表匹配。
+
+```
+Bozo(const char * fname,const char * lname); //constructor prototype
+```
+
+则可以使用它来初始化新对象： 
+
+```cpp
+Bozo bozetta = bozo('Bozetta','Bigges');   //primary form
+Bozo fufu('Bozetta','Bigges')；//short form
+Bozo * pc = new Bozo('Bozetta','Bigges') //dynamic form
+```
+
+如果编译器支持C++11，则可使用列表初始化：
+
+```
+Bozo bozetta = bozo{'Bozetta','Bigges'};   
+Bozo fufu{'Bozetta','Bigges'}；
+Bozo * pc = new Bozo{'Bozetta','Bigges'};
+```
+
+如果构造函数只有一个参数，则将对象初始化为一个与参数的类型相同的值时，该构造函数将被调用。
+
+可以使用下面的任何一种形式来初始化对象：
+
+```
+Bozo one =bozo(44); //primary form
+Bozo two(66); //secondry form
+Bozo tubby = 32; //special from for one-argument constructor
+```
+
+**接受一个参数的构造函数允许使用赋值语法将对象初始化为一个值：**
+
+```
+classname object = value;
+```
+
+默认构造函数没有参数，因此如果创建对象时没有进行显式地初始化，则将调用默认构造函数。如果程序中没有提供任何构造函数，则编 译器会为程序定义一个默认构造函数；否则，必须自己提供默认构造函数。默认构造函数可以没有任何参数；如果有，则必须给所有参数都提供默认值： 
+
+```
+Bozo();//default
+Bistro(const char * s = 'cha');//default
+```
+
+对于未被初始化的对象，程序将使用默认构造函数来创建：
+
+```
+Bozo bubi;
+Bozo *pd = new Bozo
+```
+
+就像对象被创建时程序将调用构造函数一样，当对象被删除时，程序将调用析构函数。每个类都只能有一个析构函数。析构函数没有返回 类型（连void都没有），也没有参数，其名称为类名称前加上~。例如，Bozo类的析构函数的原型如下： 
+
+```
+~Bozo()
+```
+
+如果构造函数使用了new，则必须提供使用delete的析构函数。 
+
+## **this**指针
+
+每个成员函数（包括构造函数和析构函数）都有一个this指针。this指针指向调用对象。如果方法需要引用整个调用对象，则可以使用表达式*this。在函数的括号后面使用const限定符将this限定为const，这样将不能使用this来修改对象的值。 
+
+然而，要返回的并不是this，因为this是对象的地址，而是对象本身，即`*this`（将解除引用运算符*用于指针，将得到指针指向的值）。现在，可以将`*this`作为调用对象的别名来完成前面的方法定义。
+
+```cpp
+#ifndef CPPTEST_STOCK20_H
+#define CPPTEST_STOCK20_H
+#include <string>
+
+class Stock
+{
+private:
+    Stock();
+
+    std::string company;
+    int shares;
+    double share_val;
+    double total_val;
+    void set_tot() { total_val = shares * share_val; }
+public:
+    //  Stock();        // default constructor
+    Stock(const std::string & co, long n = 0, double pr = 0.0);
+    ~Stock();       // do-nothing destructor
+    void buy(long num, double price);
+    void sell(long num, double price);
+    void update(double price);
+    void show()const;
+    const Stock & topval(const Stock & s) const;
+};
+
+#endif //CPPTEST_STOCK20_H
+```
+
+
+
+
+
+```cpp
+//
+// Created by 杨曾 on 2023/3/26.
+//
+// stock20.cpp -- augmented version
+#include <iostream>
+#include "stock20.h"
+using namespace std;
+// constructors
+Stock::Stock()        // default constructor
+{
+    shares = 0;
+    share_val = 0.0;
+    total_val = 0.0;
+}
+
+Stock::Stock(const std::string & co, long n, double pr)
+{
+    company = co;
+    if (n < 0)
+    {
+        std::cout << "Number of shares can't be negative; "
+                  << company << " shares set to 0.\n";
+        shares = 0;
+    }
+    else
+        shares = n;
+    share_val = pr;
+    set_tot();
+}
+
+// class destructor
+Stock::~Stock()        // quiet class destructor
+{
+}
+
+// other methods
+void Stock::buy(long num, double price)
+{
+    if (num < 0)
+    {
+        std::cout << "Number of shares purchased can't be negative. "
+                  << "Transaction is aborted.\n";
+    }
+    else
+    {
+        shares += num;
+        share_val = price;
+        set_tot();
+    }
+}
+
+void Stock::sell(long num, double price)
+{
+    using std::cout;
+    if (num < 0)
+    {
+        cout << "Number of shares sold can't be negative. "
+             << "Transaction is aborted.\n";
+    }
+    else if (num > shares)
+    {
+        cout << "You can't sell more than you have! "
+             << "Transaction is aborted.\n";
+    }
+    else
+    {
+        shares -= num;
+        share_val = price;
+        set_tot();
+    }
+}
+
+void Stock::update(double price)
+{
+    share_val = price;
+    set_tot();
+}
+
+void Stock::show() const
+{
+    using std::cout;
+    using std::ios_base;
+    // set format to #.###
+    ios_base::fmtflags orig =
+            cout.setf(ios_base::fixed, ios_base::floatfield);
+    std::streamsize prec = cout.precision(3);
+
+    cout << "Company: " << company
+         << "  Shares: " << shares << '\n';
+    cout << "  Share Price: $" << share_val;
+    // set format to #.##
+    cout.precision(2);
+    cout << "  Total Worth: $" << total_val << '\n';
+
+    // restore original format
+    cout.setf(orig, ios_base::floatfield);
+    cout.precision(prec);
+}
+
+const Stock & Stock::topval(const Stock & s) const
+{
+    if (s.total_val > total_val)
+        return s;
+    else
+        return *this;
+}
+```
+
+
+
+```cpp
+// usestok1.cpp -- using the Stock class
+// compile with stock10.cpp
+#include <iostream>
+#include "stock10.h"
+
+int main()
+{
+  {
+    using std::cout;
+    cout << "Using constructors to create new objects\n";
+    Stock stock1("NanoSmart", 12, 20.0);            // syntax 1
+    stock1.show();
+    Stock stock2 = Stock ("Boffo Objects", 2, 2.0); // syntax 2
+    stock2.show();
+
+    cout << "Assigning stock1 to stock2:\n";
+    stock2 = stock1;
+    cout << "Listing stock1 and stock2:\n";
+    stock1.show();
+    stock2.show();
+
+    cout << "Using a constructor to reset an object\n";
+    stock1 = Stock("Nifty Foods", 10, 50.0);    // temp object
+    cout << "Revised stock1:\n";
+    stock1.show();
+    cout << "Done\n";
+  }
+	// std::cin.get();
+    return 0; 
+}
+```
+
+## 对象数组 
+
+```cpp
+#include <iostream>
+#include "stock20.h"
+
+const int STKS = 4;
+int main()
+{{
+// create an array of initialized objects
+        Stock stocks[STKS] = {
+                Stock("NanoSmart", 12, 20.0),
+                Stock("Boffo Objects", 200, 2.0),
+                Stock("Monolithic Obelisks", 130, 3.25),
+                Stock("Fleep Enterprises", 60, 6.5)
+        };
+
+        std::cout << "Stock holdings:\n";
+        int st;
+        for (st = 0; st < STKS; st++)
+            stocks[st].show();
+// set pointer to first element
+        const Stock * top = &stocks[0];
+        for (st = 1; st < STKS; st++)
+            top = &top->topval(stocks[st]);
+// now top points to the most valuable holding
+        std::cout << "\nMost valuable holding:\n";
+        top->show();}
+    // std::cin.get();
+    return 0;
+}
+```
+
+## 类作用域
+
+在类中定义的名称（如类数据成员名和类成员函数名）的作用域都为整个类，作用域为整个类的名称只在该类中是已知的，在类外是不可 知的。因此，可以在不同类中使用相同的类成员名而不会引起冲突。例如，Stock类的shares成员不同于JobRide类的shares成员。另外，类作用域意味着不能从外部直接访问类的成员，公有成员函数也是如此。也就是说，要调用公有成员函数，必须通过对象： 
+
+```
+Stock sleeper('n',100,0.25);
+sleeper.update()
+```
+
+同样，在定义成员函数时，必须使用作用域解析运算符：
+
+```
+void Stock::update(){
+
+}
+```
+
+总之，在类声明或成员函数定义中，可以使用未修饰的成员名称（未限定的名称），就像sell( )调用set_tot( )成员函数时那样。构造函数 名称在被调用时，才能被识别，因为它的名称与类名相同。在其他情况下，使用类成员名时，必须根据上下文使用直接成员运算符（．）、间接成员运算符（->）或作用域解析运算符（::）。
+
+### 作用域为类的常量
+
+有时候，使符号常量的作用域为类很有用。例如，类声明可能使用字面值30来指定数组的长度，由于该常量对于所有对象来说都是相同 的，因此创建一个由所有对象共享的常量是个不错的主意。您可能以为这样做可行：
+
+```
+class Bakery {
+	private"
+		const int Months = 12;
+		double costs[Months];
+		...
+}
+```
+
+但这是行不通的，因为声明类只是描述了对象的形式，并没有创建对象。因此，在创建对象前，将没有用于存储值的空间（实际上， C++11提供了成员初始化，但不适用于前述数组声明，第12章将介绍该主题）。然而，有两种方式可以实现这个目标，并且效果相同。
+
+第一种方式是在类中声明一个枚举。在类声明中声明的枚举的作用域为整个类，因此可以用枚举为整型常量提供作用域为整个类的符号名 称。也就是说，可以这样开始Bakery声明
+
+```
+class Bakery {
+	private"
+		enum {Months = 12};
+		double costs[Months];
+		...
+}
+```
+
+注意，用这种方式声明枚举并不会创建类数据成员。也就是说，所有对象中都不包含枚举。另外，Months只是一个符号名称，在作用域为整个类的代码中遇到它时，编译器将用12来替换它。
+
+由于这里使用枚举只是为了创建符号常量，并不打算创建枚举类型的变量，因此不需要提供枚举名。顺便说一句，在很多实现中， ios_base类在其公有部分中完成了类似的工作，诸如ios_base::fixed等标识符就来自这里。其中，fixed是ios_base类中定义的典型的枚举量
+
+C++提供了另一种在类中定义常量的方式——使用关键字static：
+
+```
+class Bakery {
+	private:
+		static const int Months = 12;
+		double costs[Months];
+		...
+}
+```
+
+这将创建一个名为Months的常量，该常量将与其他静态变量存储在一起，而不是存储在对象中。因此，只有一个Months常量，被所有 Bakery对象共享。第12章将深入介绍静态类成员。在C++98中，只能使用这种技术声明值为整数或枚举的静态常量，而不能存储double常量。C++11消除了这种限制。
+
+### 作用域内枚举（C++11）
+
+传统的枚举存在一些问题，其中之一是两个枚举定义中的枚举量可能发生冲突
+
+```
+enum egg {Small,Medium,Large,Jumbo};
+enum t_shirt {Small,Medium,Large,XLarge};
+```
+
+也可使用关键字struct代替class。无论使用哪种方式，都需要使用枚举名来限定枚举量： 
+
+```
+egg choice = egg::Large;
+t_shirt Floyd = t_shirt::Large;
+```
+
+C++11还提高了作用域内枚举的类型安全。在有些情况下，常规枚举将自动转换为整型，如将其赋给int变量或用于比较表达式时，但作用 域内枚举不能隐式地转换为整型：
+
+```
+enum egg_old {Small,Medium,Large,Jumbo};//unscoped
+enum class t_shirt {Small,Medium,Large,XLarge};//scoped
+egg_old one  = Medium;//unscoped
+t_shirt rolf =t_shirt::Large;//scpoed
+int king = one//implicit type conversion for unscoped
+int ring = rolf; //not allowed ,no implicit type conversion
+if(king < Jumbo)//allowed
+	std::cout<<'....';
+if(king < t_shirt::Medium)
+	....
+```
+
+但在必要时，可进行显式类型转换： 
+
+```
+int Frodo = int(t_shirt::Small);
+```
+
+枚举用某种底层整型类型表示，在C++98中，如何选择取决于实现，因此包含枚举的结构的长度可能随系统而异。对于作用域内枚举， C++11消除了这种依赖性。默认情况下，C++11作用域内枚举的底层类型为int。另外，还提供了一种语法，可用于做出不同的选择： 
+
+```
+enum class:short pizza{Small,Medium,Large,XLarge};
+```
+
+:short将底层类型指定为short。底层类型必须为整型。在C++11中，也可使用这种语法来指定常规枚举的底层类型，但如果没有指定，编译器选择的底层类型将随实现而异。 
+
+## 抽象数据类型 
+
+```cpp
+// stack.h -- class definition for the stack ADT
+#ifndef STACK_H_
+#define STACK_H_
+
+typedef unsigned long Item;
+
+class Stack
+{
+private:
+    enum {MAX = 10};    // constant specific to class
+    Item items[MAX];    // holds stack items
+    int top;            // index for top stack item
+public:
+    Stack();
+    bool isempty() const;
+    bool isfull() const;
+    // push() returns false if stack already is full, true otherwise
+    bool push(const Item & item);   // add item to stack
+    // pop() returns false if stack already is empty, true otherwise
+    bool pop(Item & item);          // pop top into item
+};
+#endif
+```
+
+```cpp
+// stack.cpp -- Stack member functions
+#include "stack.h"
+Stack::Stack()    // create an empty stack
+{
+    top = 0;
+}
+
+bool Stack::isempty() const
+{
+    return top == 0;
+}
+
+bool Stack::isfull() const
+{
+    return top == MAX;
+}
+
+bool Stack::push(const Item & item) 
+{
+    if (top < MAX)
+    {
+        items[top++] = item;
+        return true;
+    }
+    else
+        return false;
+}
+
+bool Stack::pop(Item & item)
+{
+    if (top > 0)
+    {
+        item = items[--top];
+        return true;
+    }
+    else
+        return false; 
+}
+```
+
+## 总结
+
+面向对象编程强调的是程序如何表示数据。使用OOP方法解决编程问题的第一步是根据它与程序之间的接口来描述数据，从而指定如何使 用数据。然后，设计一个类来实现该接口。一般来说，私有数据成员存储信息，公有成员函数（又称为方法）提供访问数据的唯一途径。类将数据和方法组合成一个单元，其私有性实现数据隐藏。
+
+通常，将类声明分成两部分组成，这两部分通常保存在不同的文件中。类声明（包括由函数原型表示的方法）应放到头文件中。定义成员 函数的源代码放在方法文件中。这样便将接口描述与实现细节分开了。从理论上说，只需知道公有接口就可以使用类。当然，可以查看实现方法（除非只提供了编译形式），但程序不应依赖于其实现细节，如知道某个值被存储为int。只要程序和类只通过定义接口的方法进行通信，程序员就可以随意地对任何部分做独立的改进，而不必担心这样做会导致意外的不良影响。 
+
+类是用户定义的类型，对象是类的实例。这意味着对象是这种类型的变量，例如由new按类描述分配的内存。C++试图让用户定义的类型 尽可能与标准类型类似，因此可以声明对象、指向对象的指针和对象数组。可以按值传递对象、将对象作为函数返回值、将一个对象赋给同类型的另一个对象。如果提供了构造函数，则在创建对象时，可以初始化对象。如果提供了析构函数方法，则在对象消亡后，程序将执行该函数。
+
+每个对象都存储自己的数据，而共享类方法。如果mr_object是对象名，try_me( )是成员函数，则可以使用成员运算符句点调用成员函数：mr_object.try_me( )。在OOP中，这种函数调用被称为将try_me消息发送给mr_object对象。在try_me( )方法中引用类数据成员时，将使用mr_object对象相应的数据成员。同样，函数调用i_object.try_me( )将访问i_object对象的数据成员。 
+
+如果希望成员函数对多个对象进行操作，可以将额外的对象作为参数传递给它。如果方法需要显式地引用调用它的对象，则可以使用this 指针。由于this指针被设置为调用对象的地址，因此*this是该对象的别名
+
+类很适合用于描述ADT。公有成员函数接口提供了ADT描述的服务，类的私有部分和类方法的代码提供了实现，这些实现对类的客户隐藏
+
+# 使用类
