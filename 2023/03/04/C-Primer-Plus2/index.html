@@ -28,8 +28,9 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-15%2022.22.37.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-16%2022.30.18.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-18%2001.03.02.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-25%2014.22.49.png">
 <meta property="article:published_time" content="2023-03-04T17:25:36.000Z">
-<meta property="article:modified_time" content="2023-03-20T15:08:03.923Z">
+<meta property="article:modified_time" content="2023-03-26T12:08:57.057Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -225,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          77k 字
+          93k 字
         
       </span>
     
@@ -236,7 +237,7 @@
         
         
         
-          643 分钟
+          774 分钟
         
       </span>
     
@@ -2743,7 +2744,672 @@ cin &gt;&gt; fetch;<span class="hljs-comment">//really std::cin and Jill::fetch<
 <li>继承； </li>
 <li>代码的可重用性。</li>
 </ul>
-<h2 id="抽象和类"><a href="#抽象和类" class="headerlink" title="抽象和类"></a>抽象和类</h2>
+<h2 id="抽象和类"><a href="#抽象和类" class="headerlink" title="抽象和类"></a>抽象和类</h2><p>将变量声明为int或float指针时，不仅仅是分配内存，还规定了可对变量执行的操作。总之，指定基本类型完成了三项工作： </p>
+<ul>
+<li>决定数据对象需要的内存数量； </li>
+<li>决定如何解释内存中的位（long和float在内存中占用的位数相同，但将它们转换为数值的方法不同）； </li>
+<li>决定可使用数据对象执行的操作或方法。</li>
+</ul>
+<h3 id="C-中的类"><a href="#C-中的类" class="headerlink" title="C++中的类"></a>C++中的类</h3><p>一般来说，类规范由两个部分组成。</p>
+<ul>
+<li>类声明：以数据成员的方式描述数据部分，以成员函数（被称为方法）的方式描述公有接口。 </li>
+<li>类方法定义：描述如何实现类成员函数。 </li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// stock00.h -- Stock class interface</span>
+<span class="hljs-comment">// version 00</span>
+<span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> STOCK00_H_</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> STOCK00_H_</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span>  </span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Stock</span>  <span class="hljs-comment">// class declaration</span>
+&#123;
+<span class="hljs-keyword">private</span>: 
+    std::string company;
+    <span class="hljs-type">long</span> shares;
+    <span class="hljs-type">double</span> share_val;
+    <span class="hljs-type">double</span> total_val;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">set_tot</span><span class="hljs-params">()</span> </span>&#123; total_val = shares * share_val; &#125;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">acquire</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp; co, <span class="hljs-type">long</span> n, <span class="hljs-type">double</span> pr)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">buy</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">sell</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-type">double</span> price)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span></span>;
+&#125;;    <span class="hljs-comment">// note semicolon at the end</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></code></pre></div>
+
+<h4 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h4><img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-25%2014.22.49.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+
+<p>类描述看上去很像是包含成员函数以及public和private可见性标签的结构声明。实际上，C++对结构进行了扩展，使之具有与类相同的特性。它们之间唯一的区别是，结构的默认访问类型是public，而类为private。</p>
+<h3 id="实现类成员函数"><a href="#实现类成员函数" class="headerlink" title="实现类成员函数"></a>实现类成员函数</h3><p>还需要创建类描述的第二部分：为那些由类声明中的原型表示的成员函数提供代码。成员函数定义与常规函数定义非常相似，它们有函数 头和函数体，也可以有返回类型和参数。但是它们还有两个特殊的特征：</p>
+<ul>
+<li>定义成员函数时，使用作用域解析运算符（::）来标识函数所属的类；</li>
+<li>类方法可以访问类的private组件。 </li>
+</ul>
+<p>首先，成员函数的函数头使用作用域运算符解析（::）来指出函数所属的类。例如，update( )成员函数的函数头如下：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::update</span><span class="hljs-params">(<span class="hljs-type">double</span> price)</span></span>;</code></pre></div>
+
+<p>这种表示法意味着我们定义的update( )函数是Stock类的成员。</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// stock00.cpp -- implementing the Stock class</span>
+<span class="hljs-comment">// version 00</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stock00.h&quot;</span></span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::acquire</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp; co, <span class="hljs-type">long</span> n, <span class="hljs-type">double</span> pr)</span></span>
+<span class="hljs-function"></span>&#123;
+    company = co;
+    <span class="hljs-keyword">if</span> (n &lt; <span class="hljs-number">0</span>)
+    &#123;
+        std::cout &lt;&lt; <span class="hljs-string">&quot;Number of shares can&#x27;t be negative; &quot;</span>
+                  &lt;&lt; company &lt;&lt; <span class="hljs-string">&quot; shares set to 0.\n&quot;</span>;
+        shares = <span class="hljs-number">0</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+        shares = n;
+    share_val = pr;
+    <span class="hljs-built_in">set_tot</span>();
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::buy</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>
+<span class="hljs-function"></span>&#123;
+     <span class="hljs-keyword">if</span> (num &lt; <span class="hljs-number">0</span>)
+    &#123;
+        std::cout &lt;&lt; <span class="hljs-string">&quot;Number of shares purchased can&#x27;t be negative. &quot;</span>
+             &lt;&lt; <span class="hljs-string">&quot;Transaction is aborted.\n&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        shares += num;
+        share_val = price;
+        <span class="hljs-built_in">set_tot</span>();
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::sell</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> std::cout;
+    <span class="hljs-keyword">if</span> (num &lt; <span class="hljs-number">0</span>)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Number of shares sold can&#x27;t be negative. &quot;</span>
+             &lt;&lt; <span class="hljs-string">&quot;Transaction is aborted.\n&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num &gt; shares)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;You can&#x27;t sell more than you have! &quot;</span>
+             &lt;&lt; <span class="hljs-string">&quot;Transaction is aborted.\n&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        shares -= num;
+        share_val = price;
+        <span class="hljs-built_in">set_tot</span>();
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::update</span><span class="hljs-params">(<span class="hljs-type">double</span> price)</span></span>
+<span class="hljs-function"></span>&#123;
+    share_val = price;
+    <span class="hljs-built_in">set_tot</span>();
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::show</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    std::cout &lt;&lt; <span class="hljs-string">&quot;Company: &quot;</span> &lt;&lt; company
+              &lt;&lt; <span class="hljs-string">&quot;  Shares: &quot;</span> &lt;&lt; shares &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>
+              &lt;&lt; <span class="hljs-string">&quot;  Share Price: $&quot;</span> &lt;&lt; share_val
+              &lt;&lt; <span class="hljs-string">&quot;  Total Worth: $&quot;</span> &lt;&lt; total_val &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+&#125;
+</code></pre></div>
+
+<h3 id="使用类"><a href="#使用类" class="headerlink" title="使用类"></a>使用类</h3><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// usestok0.cpp -- the client program</span>
+<span class="hljs-comment">// compile with stock.cpp</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stock00.h&quot;</span></span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    Stock fluffy_the_cat;
+    fluffy_the_cat.<span class="hljs-built_in">acquire</span>(<span class="hljs-string">&quot;NanoSmart&quot;</span>, <span class="hljs-number">20</span>, <span class="hljs-number">12.50</span>);
+    fluffy_the_cat.<span class="hljs-built_in">show</span>();
+    fluffy_the_cat.<span class="hljs-built_in">buy</span>(<span class="hljs-number">15</span>, <span class="hljs-number">18.125</span>);
+    fluffy_the_cat.<span class="hljs-built_in">show</span>();
+    fluffy_the_cat.<span class="hljs-built_in">sell</span>(<span class="hljs-number">400</span>, <span class="hljs-number">20.00</span>);
+    fluffy_the_cat.<span class="hljs-built_in">show</span>();
+    fluffy_the_cat.<span class="hljs-built_in">buy</span>(<span class="hljs-number">300000</span>,<span class="hljs-number">40.125</span>);
+    fluffy_the_cat.<span class="hljs-built_in">show</span>();
+    fluffy_the_cat.<span class="hljs-built_in">sell</span>(<span class="hljs-number">300000</span>,<span class="hljs-number">0.125</span>);
+    fluffy_the_cat.<span class="hljs-built_in">show</span>();
+    <span class="hljs-comment">// std::cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h2 id="类的构造函数和析构函数"><a href="#类的构造函数和析构函数" class="headerlink" title="类的构造函数和析构函数"></a>类的构造函数和析构函数</h2><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// stock10.h � Stock class declaration with constructors, destructor added</span>
+<span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> STOCK1_H_</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> STOCK1_H_</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Stock</span>
+&#123;
+<span class="hljs-keyword">private</span>:
+    std::string company;
+    <span class="hljs-type">long</span> shares;
+    <span class="hljs-type">double</span> share_val;
+    <span class="hljs-type">double</span> total_val;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">set_tot</span><span class="hljs-params">()</span> </span>&#123; total_val = shares * share_val; &#125;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">Stock</span>();        <span class="hljs-comment">// default constructor</span>
+    <span class="hljs-built_in">Stock</span>(<span class="hljs-type">const</span> std::string &amp; co, <span class="hljs-type">long</span> n = <span class="hljs-number">0</span>, <span class="hljs-type">double</span> pr = <span class="hljs-number">0.0</span>);
+    ~<span class="hljs-built_in">Stock</span>();       <span class="hljs-comment">// noisy destructor</span>
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">buy</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">sell</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-type">double</span> price)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span></span>;
+&#125;;
+
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// stock1.cpp � Stock class implementation with constructors, destructor added</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stock10.h&quot;</span></span>
+
+<span class="hljs-comment">// constructors (verbose versions)</span>
+Stock::<span class="hljs-built_in">Stock</span>()        <span class="hljs-comment">// default constructor</span>
+&#123;
+    std::cout &lt;&lt; <span class="hljs-string">&quot;Default constructor called\n&quot;</span>;
+    company = <span class="hljs-string">&quot;no name&quot;</span>;
+    shares = <span class="hljs-number">0</span>;
+    share_val = <span class="hljs-number">0.0</span>;
+    total_val = <span class="hljs-number">0.0</span>;
+&#125;
+
+Stock::<span class="hljs-built_in">Stock</span>(<span class="hljs-type">const</span> std::string &amp; co, <span class="hljs-type">long</span> n, <span class="hljs-type">double</span> pr)
+&#123;
+    std::cout &lt;&lt; <span class="hljs-string">&quot;Constructor using &quot;</span> &lt;&lt; co &lt;&lt; <span class="hljs-string">&quot; called\n&quot;</span>;
+    company = co;
+
+    <span class="hljs-keyword">if</span> (n &lt; <span class="hljs-number">0</span>)
+    &#123;
+        std::cout &lt;&lt; <span class="hljs-string">&quot;Number of shares can&#x27;t be negative; &quot;</span>
+                   &lt;&lt; company &lt;&lt; <span class="hljs-string">&quot; shares set to 0.\n&quot;</span>;
+        shares = <span class="hljs-number">0</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+        shares = n;
+    share_val = pr;
+    <span class="hljs-built_in">set_tot</span>();
+&#125;
+<span class="hljs-comment">// class destructor</span>
+Stock::~<span class="hljs-built_in">Stock</span>()        <span class="hljs-comment">// verbose class destructor</span>
+&#123;
+    std::cout &lt;&lt; <span class="hljs-string">&quot;Bye, &quot;</span> &lt;&lt; company &lt;&lt; <span class="hljs-string">&quot;!\n&quot;</span>;
+&#125;
+
+<span class="hljs-comment">// other methods</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::buy</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>
+<span class="hljs-function"></span>&#123;
+     <span class="hljs-keyword">if</span> (num &lt; <span class="hljs-number">0</span>)
+    &#123;
+        std::cout &lt;&lt; <span class="hljs-string">&quot;Number of shares purchased can&#x27;t be negative. &quot;</span>
+             &lt;&lt; <span class="hljs-string">&quot;Transaction is aborted.\n&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        shares += num;
+        share_val = price;
+        <span class="hljs-built_in">set_tot</span>();
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::sell</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> std::cout;
+    <span class="hljs-keyword">if</span> (num &lt; <span class="hljs-number">0</span>)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Number of shares sold can&#x27;t be negative. &quot;</span>
+             &lt;&lt; <span class="hljs-string">&quot;Transaction is aborted.\n&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num &gt; shares)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;You can&#x27;t sell more than you have! &quot;</span>
+             &lt;&lt; <span class="hljs-string">&quot;Transaction is aborted.\n&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        shares -= num;
+        share_val = price;
+        <span class="hljs-built_in">set_tot</span>();
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::update</span><span class="hljs-params">(<span class="hljs-type">double</span> price)</span></span>
+<span class="hljs-function"></span>&#123;
+    share_val = price;
+    <span class="hljs-built_in">set_tot</span>();
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::show</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> std::cout;
+    <span class="hljs-keyword">using</span> std::ios_base;
+    <span class="hljs-comment">// set format to #.###</span>
+    ios_base::fmtflags orig = 
+        cout.<span class="hljs-built_in">setf</span>(ios_base::fixed, ios_base::floatfield); 
+    std::streamsize prec = cout.<span class="hljs-built_in">precision</span>(<span class="hljs-number">3</span>);
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Company: &quot;</span> &lt;&lt; company
+        &lt;&lt; <span class="hljs-string">&quot;  Shares: &quot;</span> &lt;&lt; shares &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    cout &lt;&lt; <span class="hljs-string">&quot;  Share Price: $&quot;</span> &lt;&lt; share_val;
+    <span class="hljs-comment">// set format to #.##</span>
+    cout.<span class="hljs-built_in">precision</span>(<span class="hljs-number">2</span>);
+    cout &lt;&lt; <span class="hljs-string">&quot;  Total Worth: $&quot;</span> &lt;&lt; total_val &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+
+    <span class="hljs-comment">// restore original format</span>
+    cout.<span class="hljs-built_in">setf</span>(orig, ios_base::floatfield);
+    cout.<span class="hljs-built_in">precision</span>(prec);
+&#125;</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// usestok1.cpp -- using the Stock class</span>
+<span class="hljs-comment">// compile with stock10.cpp</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stock10.h&quot;</span></span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    &#123;
+        <span class="hljs-keyword">using</span> std::cout;
+        cout &lt;&lt; <span class="hljs-string">&quot;Using constructors to create new objects\n&quot;</span>;
+        <span class="hljs-function">Stock <span class="hljs-title">stock1</span><span class="hljs-params">(<span class="hljs-string">&quot;NanoSmart&quot;</span>, <span class="hljs-number">12</span>, <span class="hljs-number">20.0</span>)</span></span>;            <span class="hljs-comment">// syntax 1</span>
+        stock1.<span class="hljs-built_in">show</span>();
+        Stock stock2 = <span class="hljs-built_in">Stock</span> (<span class="hljs-string">&quot;Boffo Objects&quot;</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2.0</span>); <span class="hljs-comment">// syntax 2</span>
+        stock2.<span class="hljs-built_in">show</span>();
+
+        cout &lt;&lt; <span class="hljs-string">&quot;Assigning stock1 to stock2:\n&quot;</span>;
+        stock2 = stock1;
+        cout &lt;&lt; <span class="hljs-string">&quot;Listing stock1 and stock2:\n&quot;</span>;
+        stock1.<span class="hljs-built_in">show</span>();
+        stock2.<span class="hljs-built_in">show</span>();
+
+        cout &lt;&lt; <span class="hljs-string">&quot;Using a constructor to reset an object\n&quot;</span>;
+        stock1 = <span class="hljs-built_in">Stock</span>(<span class="hljs-string">&quot;Nifty Foods&quot;</span>, <span class="hljs-number">10</span>, <span class="hljs-number">50.0</span>);    <span class="hljs-comment">// temp object</span>
+        cout &lt;&lt; <span class="hljs-string">&quot;Revised stock1:\n&quot;</span>;
+        stock1.<span class="hljs-built_in">show</span>();
+        cout &lt;&lt; <span class="hljs-string">&quot;Done\n&quot;</span>;
+    &#125;
+    <span class="hljs-comment">// std::cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h3 id="构造函数和析构函数小结"><a href="#构造函数和析构函数小结" class="headerlink" title="构造函数和析构函数小结"></a>构造函数和析构函数小结</h3><p>构造函数是一种特殊的类成员函数，在创建类对象时被调用。构造函数的名称和类名相同，但通过函数重载，可以创建多个同名的构造函 数，条件是每个函数的特征标（参数列表）都不同。另外，构造函数没有声明类型。通常，构造函数用于初始化类对象的成员，初始化应与构造函数的参数列表匹配。</p>
+<div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-constructor">Bozo(<span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span> <span class="hljs-params">fname</span>,<span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span> <span class="hljs-params">lname</span>)</span>; <span class="hljs-comment">//constructor prototype</span></code></pre></div>
+
+<p>则可以使用它来初始化新对象： </p>
+<div class="code-wrapper"><pre><code class="hljs cpp">Bozo bozetta = <span class="hljs-built_in">bozo</span>(<span class="hljs-string">&#x27;Bozetta&#x27;</span>,<span class="hljs-string">&#x27;Bigges&#x27;</span>);   <span class="hljs-comment">//primary form</span>
+<span class="hljs-function">Bozo <span class="hljs-title">fufu</span><span class="hljs-params">(<span class="hljs-string">&#x27;Bozetta&#x27;</span>,<span class="hljs-string">&#x27;Bigges&#x27;</span>)</span>；<span class="hljs-comment">//short form</span></span>
+<span class="hljs-function">Bozo * pc </span>= <span class="hljs-keyword">new</span> <span class="hljs-built_in">Bozo</span>(<span class="hljs-string">&#x27;Bozetta&#x27;</span>,<span class="hljs-string">&#x27;Bigges&#x27;</span>) <span class="hljs-comment">//dynamic form</span></code></pre></div>
+
+<p>如果编译器支持C++11，则可使用列表初始化：</p>
+<div class="code-wrapper"><pre><code class="hljs haxe">Bozo bozetta = bozo&#123;<span class="hljs-string">&#x27;Bozetta&#x27;</span>,<span class="hljs-string">&#x27;Bigges&#x27;</span>&#125;;   
+Bozo fufu&#123;<span class="hljs-string">&#x27;Bozetta&#x27;</span>,<span class="hljs-string">&#x27;Bigges&#x27;</span>&#125;；
+Bozo * pc = <span class="hljs-keyword">new</span> <span class="hljs-type">Bozo</span>&#123;<span class="hljs-string">&#x27;Bozetta&#x27;</span>,<span class="hljs-string">&#x27;Bigges&#x27;</span>&#125;;</code></pre></div>
+
+<p>如果构造函数只有一个参数，则将对象初始化为一个与参数的类型相同的值时，该构造函数将被调用。</p>
+<p>可以使用下面的任何一种形式来初始化对象：</p>
+<div class="code-wrapper"><pre><code class="hljs java"><span class="hljs-type">Bozo</span> <span class="hljs-variable">one</span> <span class="hljs-operator">=</span>bozo(<span class="hljs-number">44</span>); <span class="hljs-comment">//primary form</span>
+Bozo <span class="hljs-title function_">two</span><span class="hljs-params">(<span class="hljs-number">66</span>)</span>; <span class="hljs-comment">//secondry form</span>
+<span class="hljs-type">Bozo</span> <span class="hljs-variable">tubby</span> <span class="hljs-operator">=</span> <span class="hljs-number">32</span>; <span class="hljs-comment">//special from for one-argument constructor</span></code></pre></div>
+
+<p><strong>接受一个参数的构造函数允许使用赋值语法将对象初始化为一个值：</strong></p>
+<div class="code-wrapper"><pre><code class="hljs abnf">classname object <span class="hljs-operator">=</span> value<span class="hljs-comment">;</span></code></pre></div>
+
+<p>默认构造函数没有参数，因此如果创建对象时没有进行显式地初始化，则将调用默认构造函数。如果程序中没有提供任何构造函数，则编 译器会为程序定义一个默认构造函数；否则，必须自己提供默认构造函数。默认构造函数可以没有任何参数；如果有，则必须给所有参数都提供默认值： </p>
+<div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-constructor">Bozo()</span>;<span class="hljs-comment">//default</span>
+<span class="hljs-constructor">Bistro(<span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span> <span class="hljs-params">s</span> = &#x27;<span class="hljs-params">cha</span>&#x27;)</span>;<span class="hljs-comment">//default</span></code></pre></div>
+
+<p>对于未被初始化的对象，程序将使用默认构造函数来创建：</p>
+<div class="code-wrapper"><pre><code class="hljs mipsasm"><span class="hljs-keyword">Bozo </span><span class="hljs-keyword">bubi;</span>
+<span class="hljs-keyword"></span><span class="hljs-keyword">Bozo </span>*pd = new <span class="hljs-keyword">Bozo</span></code></pre></div>
+
+<p>就像对象被创建时程序将调用构造函数一样，当对象被删除时，程序将调用析构函数。每个类都只能有一个析构函数。析构函数没有返回 类型（连void都没有），也没有参数，其名称为类名称前加上~。例如，Bozo类的析构函数的原型如下： </p>
+<div class="code-wrapper"><pre><code class="hljs scss">~<span class="hljs-built_in">Bozo</span>()</code></pre></div>
+
+<p>如果构造函数使用了new，则必须提供使用delete的析构函数。 </p>
+<h2 id="this指针"><a href="#this指针" class="headerlink" title="this指针"></a><strong>this</strong>指针</h2><p>每个成员函数（包括构造函数和析构函数）都有一个this指针。this指针指向调用对象。如果方法需要引用整个调用对象，则可以使用表达式*this。在函数的括号后面使用const限定符将this限定为const，这样将不能使用this来修改对象的值。 </p>
+<p>然而，要返回的并不是this，因为this是对象的地址，而是对象本身，即<code>*this</code>（将解除引用运算符*用于指针，将得到指针指向的值）。现在，可以将<code>*this</code>作为调用对象的别名来完成前面的方法定义。</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> CPPTEST_STOCK20_H</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> CPPTEST_STOCK20_H</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Stock</span>
+&#123;
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-built_in">Stock</span>();
+
+    std::string company;
+    <span class="hljs-type">int</span> shares;
+    <span class="hljs-type">double</span> share_val;
+    <span class="hljs-type">double</span> total_val;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">set_tot</span><span class="hljs-params">()</span> </span>&#123; total_val = shares * share_val; &#125;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">//  Stock();        // default constructor</span>
+    <span class="hljs-built_in">Stock</span>(<span class="hljs-type">const</span> std::string &amp; co, <span class="hljs-type">long</span> n = <span class="hljs-number">0</span>, <span class="hljs-type">double</span> pr = <span class="hljs-number">0.0</span>);
+    ~<span class="hljs-built_in">Stock</span>();       <span class="hljs-comment">// do-nothing destructor</span>
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">buy</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">sell</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-type">double</span> price)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">show</span><span class="hljs-params">()</span><span class="hljs-type">const</span></span>;
+    <span class="hljs-function"><span class="hljs-type">const</span> Stock &amp; <span class="hljs-title">topval</span><span class="hljs-params">(<span class="hljs-type">const</span> Stock &amp; s)</span> <span class="hljs-type">const</span></span>;
+&#125;;
+
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">//CPPTEST_STOCK20_H</span></span></code></pre></div>
+
+
+
+
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">//</span>
+<span class="hljs-comment">// Created by 杨曾 on 2023/3/26.</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// stock20.cpp -- augmented version</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stock20.h&quot;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-comment">// constructors</span>
+Stock::<span class="hljs-built_in">Stock</span>()        <span class="hljs-comment">// default constructor</span>
+&#123;
+    shares = <span class="hljs-number">0</span>;
+    share_val = <span class="hljs-number">0.0</span>;
+    total_val = <span class="hljs-number">0.0</span>;
+&#125;
+
+Stock::<span class="hljs-built_in">Stock</span>(<span class="hljs-type">const</span> std::string &amp; co, <span class="hljs-type">long</span> n, <span class="hljs-type">double</span> pr)
+&#123;
+    company = co;
+    <span class="hljs-keyword">if</span> (n &lt; <span class="hljs-number">0</span>)
+    &#123;
+        std::cout &lt;&lt; <span class="hljs-string">&quot;Number of shares can&#x27;t be negative; &quot;</span>
+                  &lt;&lt; company &lt;&lt; <span class="hljs-string">&quot; shares set to 0.\n&quot;</span>;
+        shares = <span class="hljs-number">0</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+        shares = n;
+    share_val = pr;
+    <span class="hljs-built_in">set_tot</span>();
+&#125;
+
+<span class="hljs-comment">// class destructor</span>
+Stock::~<span class="hljs-built_in">Stock</span>()        <span class="hljs-comment">// quiet class destructor</span>
+&#123;
+&#125;
+
+<span class="hljs-comment">// other methods</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::buy</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (num &lt; <span class="hljs-number">0</span>)
+    &#123;
+        std::cout &lt;&lt; <span class="hljs-string">&quot;Number of shares purchased can&#x27;t be negative. &quot;</span>
+                  &lt;&lt; <span class="hljs-string">&quot;Transaction is aborted.\n&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        shares += num;
+        share_val = price;
+        <span class="hljs-built_in">set_tot</span>();
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::sell</span><span class="hljs-params">(<span class="hljs-type">long</span> num, <span class="hljs-type">double</span> price)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> std::cout;
+    <span class="hljs-keyword">if</span> (num &lt; <span class="hljs-number">0</span>)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;Number of shares sold can&#x27;t be negative. &quot;</span>
+             &lt;&lt; <span class="hljs-string">&quot;Transaction is aborted.\n&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num &gt; shares)
+    &#123;
+        cout &lt;&lt; <span class="hljs-string">&quot;You can&#x27;t sell more than you have! &quot;</span>
+             &lt;&lt; <span class="hljs-string">&quot;Transaction is aborted.\n&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        shares -= num;
+        share_val = price;
+        <span class="hljs-built_in">set_tot</span>();
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::update</span><span class="hljs-params">(<span class="hljs-type">double</span> price)</span></span>
+<span class="hljs-function"></span>&#123;
+    share_val = price;
+    <span class="hljs-built_in">set_tot</span>();
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Stock::show</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">using</span> std::cout;
+    <span class="hljs-keyword">using</span> std::ios_base;
+    <span class="hljs-comment">// set format to #.###</span>
+    ios_base::fmtflags orig =
+            cout.<span class="hljs-built_in">setf</span>(ios_base::fixed, ios_base::floatfield);
+    std::streamsize prec = cout.<span class="hljs-built_in">precision</span>(<span class="hljs-number">3</span>);
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Company: &quot;</span> &lt;&lt; company
+         &lt;&lt; <span class="hljs-string">&quot;  Shares: &quot;</span> &lt;&lt; shares &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    cout &lt;&lt; <span class="hljs-string">&quot;  Share Price: $&quot;</span> &lt;&lt; share_val;
+    <span class="hljs-comment">// set format to #.##</span>
+    cout.<span class="hljs-built_in">precision</span>(<span class="hljs-number">2</span>);
+    cout &lt;&lt; <span class="hljs-string">&quot;  Total Worth: $&quot;</span> &lt;&lt; total_val &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+
+    <span class="hljs-comment">// restore original format</span>
+    cout.<span class="hljs-built_in">setf</span>(orig, ios_base::floatfield);
+    cout.<span class="hljs-built_in">precision</span>(prec);
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">const</span> Stock &amp; <span class="hljs-title">Stock::topval</span><span class="hljs-params">(<span class="hljs-type">const</span> Stock &amp; s)</span> <span class="hljs-type">const</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (s.total_val &gt; total_val)
+        <span class="hljs-keyword">return</span> s;
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;
+&#125;</code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// usestok1.cpp -- using the Stock class</span>
+<span class="hljs-comment">// compile with stock10.cpp</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stock10.h&quot;</span></span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+  &#123;
+    <span class="hljs-keyword">using</span> std::cout;
+    cout &lt;&lt; <span class="hljs-string">&quot;Using constructors to create new objects\n&quot;</span>;
+    <span class="hljs-function">Stock <span class="hljs-title">stock1</span><span class="hljs-params">(<span class="hljs-string">&quot;NanoSmart&quot;</span>, <span class="hljs-number">12</span>, <span class="hljs-number">20.0</span>)</span></span>;            <span class="hljs-comment">// syntax 1</span>
+    stock1.<span class="hljs-built_in">show</span>();
+    Stock stock2 = <span class="hljs-built_in">Stock</span> (<span class="hljs-string">&quot;Boffo Objects&quot;</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2.0</span>); <span class="hljs-comment">// syntax 2</span>
+    stock2.<span class="hljs-built_in">show</span>();
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Assigning stock1 to stock2:\n&quot;</span>;
+    stock2 = stock1;
+    cout &lt;&lt; <span class="hljs-string">&quot;Listing stock1 and stock2:\n&quot;</span>;
+    stock1.<span class="hljs-built_in">show</span>();
+    stock2.<span class="hljs-built_in">show</span>();
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Using a constructor to reset an object\n&quot;</span>;
+    stock1 = <span class="hljs-built_in">Stock</span>(<span class="hljs-string">&quot;Nifty Foods&quot;</span>, <span class="hljs-number">10</span>, <span class="hljs-number">50.0</span>);    <span class="hljs-comment">// temp object</span>
+    cout &lt;&lt; <span class="hljs-string">&quot;Revised stock1:\n&quot;</span>;
+    stock1.<span class="hljs-built_in">show</span>();
+    cout &lt;&lt; <span class="hljs-string">&quot;Done\n&quot;</span>;
+  &#125;
+	<span class="hljs-comment">// std::cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; 
+&#125;</code></pre></div>
+
+<h2 id="对象数组"><a href="#对象数组" class="headerlink" title="对象数组"></a>对象数组</h2><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stock20.h&quot;</span></span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> STKS = <span class="hljs-number">4</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;&#123;
+<span class="hljs-comment">// create an array of initialized objects</span>
+        Stock stocks[STKS] = &#123;
+                <span class="hljs-built_in">Stock</span>(<span class="hljs-string">&quot;NanoSmart&quot;</span>, <span class="hljs-number">12</span>, <span class="hljs-number">20.0</span>),
+                <span class="hljs-built_in">Stock</span>(<span class="hljs-string">&quot;Boffo Objects&quot;</span>, <span class="hljs-number">200</span>, <span class="hljs-number">2.0</span>),
+                <span class="hljs-built_in">Stock</span>(<span class="hljs-string">&quot;Monolithic Obelisks&quot;</span>, <span class="hljs-number">130</span>, <span class="hljs-number">3.25</span>),
+                <span class="hljs-built_in">Stock</span>(<span class="hljs-string">&quot;Fleep Enterprises&quot;</span>, <span class="hljs-number">60</span>, <span class="hljs-number">6.5</span>)
+        &#125;;
+
+        std::cout &lt;&lt; <span class="hljs-string">&quot;Stock holdings:\n&quot;</span>;
+        <span class="hljs-type">int</span> st;
+        <span class="hljs-keyword">for</span> (st = <span class="hljs-number">0</span>; st &lt; STKS; st++)
+            stocks[st].<span class="hljs-built_in">show</span>();
+<span class="hljs-comment">// set pointer to first element</span>
+        <span class="hljs-type">const</span> Stock * top = &amp;stocks[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (st = <span class="hljs-number">1</span>; st &lt; STKS; st++)
+            top = &amp;top-&gt;<span class="hljs-built_in">topval</span>(stocks[st]);
+<span class="hljs-comment">// now top points to the most valuable holding</span>
+        std::cout &lt;&lt; <span class="hljs-string">&quot;\nMost valuable holding:\n&quot;</span>;
+        top-&gt;<span class="hljs-built_in">show</span>();&#125;
+    <span class="hljs-comment">// std::cin.get();</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h2 id="类作用域"><a href="#类作用域" class="headerlink" title="类作用域"></a>类作用域</h2><p>在类中定义的名称（如类数据成员名和类成员函数名）的作用域都为整个类，作用域为整个类的名称只在该类中是已知的，在类外是不可 知的。因此，可以在不同类中使用相同的类成员名而不会引起冲突。例如，Stock类的shares成员不同于JobRide类的shares成员。另外，类作用域意味着不能从外部直接访问类的成员，公有成员函数也是如此。也就是说，要调用公有成员函数，必须通过对象： </p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">Stock</span> sleeper(&#x27;n&#x27;,<span class="hljs-number">100</span>,<span class="hljs-number">0</span>.<span class="hljs-number">25</span>);
+<span class="hljs-attribute">sleeper</span>.update()</code></pre></div>
+
+<p>同样，在定义成员函数时，必须使用作用域解析运算符：</p>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title class_">Stock</span>::<span class="hljs-title function_">update</span>(<span class="hljs-params"></span>)&#123;
+
+&#125;</code></pre></div>
+
+<p>总之，在类声明或成员函数定义中，可以使用未修饰的成员名称（未限定的名称），就像sell( )调用set_tot( )成员函数时那样。构造函数 名称在被调用时，才能被识别，因为它的名称与类名相同。在其他情况下，使用类成员名时，必须根据上下文使用直接成员运算符（．）、间接成员运算符（-&gt;）或作用域解析运算符（::）。</p>
+<h3 id="作用域为类的常量"><a href="#作用域为类的常量" class="headerlink" title="作用域为类的常量"></a>作用域为类的常量</h3><p>有时候，使符号常量的作用域为类很有用。例如，类声明可能使用字面值30来指定数组的长度，由于该常量对于所有对象来说都是相同 的，因此创建一个由所有对象共享的常量是个不错的主意。您可能以为这样做可行：</p>
+<div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bakery</span> &#123;
+	private<span class="hljs-string">&quot;</span>
+<span class="hljs-string">		const int Months = 12;</span>
+<span class="hljs-string">		double costs[Months];</span>
+<span class="hljs-string">		...</span>
+<span class="hljs-string">&#125;</span></code></pre></div>
+
+<p>但这是行不通的，因为声明类只是描述了对象的形式，并没有创建对象。因此，在创建对象前，将没有用于存储值的空间（实际上， C++11提供了成员初始化，但不适用于前述数组声明，第12章将介绍该主题）。然而，有两种方式可以实现这个目标，并且效果相同。</p>
+<p>第一种方式是在类中声明一个枚举。在类声明中声明的枚举的作用域为整个类，因此可以用枚举为整型常量提供作用域为整个类的符号名 称。也就是说，可以这样开始Bakery声明</p>
+<div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bakery</span> &#123;
+	private<span class="hljs-string">&quot;</span>
+<span class="hljs-string">		enum &#123;Months = 12&#125;;</span>
+<span class="hljs-string">		double costs[Months];</span>
+<span class="hljs-string">		...</span>
+<span class="hljs-string">&#125;</span></code></pre></div>
+
+<p>注意，用这种方式声明枚举并不会创建类数据成员。也就是说，所有对象中都不包含枚举。另外，Months只是一个符号名称，在作用域为整个类的代码中遇到它时，编译器将用12来替换它。</p>
+<p>由于这里使用枚举只是为了创建符号常量，并不打算创建枚举类型的变量，因此不需要提供枚举名。顺便说一句，在很多实现中， ios_base类在其公有部分中完成了类似的工作，诸如ios_base::fixed等标识符就来自这里。其中，fixed是ios_base类中定义的典型的枚举量</p>
+<p>C++提供了另一种在类中定义常量的方式——使用关键字static：</p>
+<div class="code-wrapper"><pre><code class="hljs axapta"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bakery</span> &#123;
+	<span class="hljs-keyword">private</span>:
+		<span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-built_in">int</span> Months = <span class="hljs-number">12</span>;
+		<span class="hljs-built_in">double</span> costs[Months];
+		...
+&#125;</code></pre></div>
+
+<p>这将创建一个名为Months的常量，该常量将与其他静态变量存储在一起，而不是存储在对象中。因此，只有一个Months常量，被所有 Bakery对象共享。第12章将深入介绍静态类成员。在C++98中，只能使用这种技术声明值为整数或枚举的静态常量，而不能存储double常量。C++11消除了这种限制。</p>
+<h3 id="作用域内枚举（C-11）"><a href="#作用域内枚举（C-11）" class="headerlink" title="作用域内枚举（C++11）"></a>作用域内枚举（C++11）</h3><p>传统的枚举存在一些问题，其中之一是两个枚举定义中的枚举量可能发生冲突</p>
+<div class="code-wrapper"><pre><code class="hljs mathematica"><span class="hljs-variable">enum</span> <span class="hljs-variable">egg</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-built_in">Small</span><span class="hljs-operator">,</span><span class="hljs-built_in">Medium</span><span class="hljs-operator">,</span><span class="hljs-built_in">Large</span><span class="hljs-operator">,</span><span class="hljs-variable">Jumbo</span><span class="hljs-punctuation">&#125;</span><span class="hljs-operator">;</span>
+<span class="hljs-variable">enum</span> <span class="hljs-type">t_shirt</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-built_in">Small</span><span class="hljs-operator">,</span><span class="hljs-built_in">Medium</span><span class="hljs-operator">,</span><span class="hljs-built_in">Large</span><span class="hljs-operator">,</span><span class="hljs-variable">XLarge</span><span class="hljs-punctuation">&#125;</span><span class="hljs-operator">;</span></code></pre></div>
+
+<p>也可使用关键字struct代替class。无论使用哪种方式，都需要使用枚举名来限定枚举量： </p>
+<div class="code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">egg choice</span> = egg::Large;
+<span class="hljs-attribute">t_shirt Floyd</span> = t_shirt::Large;</code></pre></div>
+
+<p>C++11还提高了作用域内枚举的类型安全。在有些情况下，常规枚举将自动转换为整型，如将其赋给int变量或用于比较表达式时，但作用 域内枚举不能隐式地转换为整型：</p>
+<div class="code-wrapper"><pre><code class="hljs fortran"><span class="hljs-keyword">enum</span> egg_old &#123;Small,Medium,Large,Jumbo&#125;;//unscoped
+<span class="hljs-keyword">enum</span> <span class="hljs-keyword">class</span> t_shirt &#123;Small,Medium,Large,XLarge&#125;;//scoped
+egg_old one  = Medium;//unscoped
+t_shirt rolf =t_shirt::Large;//scpoed
+<span class="hljs-built_in">int</span> king = one//<span class="hljs-keyword">implicit</span> <span class="hljs-keyword">type</span> conversion for unscoped
+<span class="hljs-built_in">int</span> ring = rolf; //not allowed ,no <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">type</span> conversion
+<span class="hljs-keyword">if</span>(king &lt; Jumbo)//allowed
+	std::cout&lt;&lt;<span class="hljs-string">&#x27;....&#x27;</span>;
+<span class="hljs-keyword">if</span>(king &lt; t_shirt::Medium)
+	....</code></pre></div>
+
+<p>但在必要时，可进行显式类型转换： </p>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">int</span> Frodo = <span class="hljs-keyword">int</span>(t_shirt::<span class="hljs-variable constant_">Small</span>);</code></pre></div>
+
+<p>枚举用某种底层整型类型表示，在C++98中，如何选择取决于实现，因此包含枚举的结构的长度可能随系统而异。对于作用域内枚举， C++11消除了这种依赖性。默认情况下，C++11作用域内枚举的底层类型为int。另外，还提供了一种语法，可用于做出不同的选择： </p>
+<div class="code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-keyword">enum</span> <span class="hljs-keyword">class</span>:<span class="hljs-symbol">short</span> <span class="hljs-symbol">pizza</span>&#123;Small,Medium,Large,XLarge&#125;;</code></pre></div>
+
+<p>:short将底层类型指定为short。底层类型必须为整型。在C++11中，也可使用这种语法来指定常规枚举的底层类型，但如果没有指定，编译器选择的底层类型将随实现而异。 </p>
+<h2 id="抽象数据类型"><a href="#抽象数据类型" class="headerlink" title="抽象数据类型"></a>抽象数据类型</h2><div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// stack.h -- class definition for the stack ADT</span>
+<span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> STACK_H_</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> STACK_H_</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> Item;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Stack</span>
+&#123;
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">enum</span> &#123;MAX = <span class="hljs-number">10</span>&#125;;    <span class="hljs-comment">// constant specific to class</span>
+    Item items[MAX];    <span class="hljs-comment">// holds stack items</span>
+    <span class="hljs-type">int</span> top;            <span class="hljs-comment">// index for top stack item</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">Stack</span>();
+    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isempty</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;
+    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isfull</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;
+    <span class="hljs-comment">// push() returns false if stack already is full, true otherwise</span>
+    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">push</span><span class="hljs-params">(<span class="hljs-type">const</span> Item &amp; item)</span></span>;   <span class="hljs-comment">// add item to stack</span>
+    <span class="hljs-comment">// pop() returns false if stack already is empty, true otherwise</span>
+    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">pop</span><span class="hljs-params">(Item &amp; item)</span></span>;          <span class="hljs-comment">// pop top into item</span>
+&#125;;
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">// stack.cpp -- Stack member functions</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stack.h&quot;</span></span>
+Stack::<span class="hljs-built_in">Stack</span>()    <span class="hljs-comment">// create an empty stack</span>
+&#123;
+    top = <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">Stack::isempty</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> top == <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">Stack::isfull</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> top == MAX;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">Stack::push</span><span class="hljs-params">(<span class="hljs-type">const</span> Item &amp; item)</span> </span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (top &lt; MAX)
+    &#123;
+        items[top++] = item;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">Stack::pop</span><span class="hljs-params">(Item &amp; item)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (top &gt; <span class="hljs-number">0</span>)
+    &#123;
+        item = items[--top];
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; 
+&#125;</code></pre></div>
+
+<h2 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h2><p>面向对象编程强调的是程序如何表示数据。使用OOP方法解决编程问题的第一步是根据它与程序之间的接口来描述数据，从而指定如何使 用数据。然后，设计一个类来实现该接口。一般来说，私有数据成员存储信息，公有成员函数（又称为方法）提供访问数据的唯一途径。类将数据和方法组合成一个单元，其私有性实现数据隐藏。</p>
+<p>通常，将类声明分成两部分组成，这两部分通常保存在不同的文件中。类声明（包括由函数原型表示的方法）应放到头文件中。定义成员 函数的源代码放在方法文件中。这样便将接口描述与实现细节分开了。从理论上说，只需知道公有接口就可以使用类。当然，可以查看实现方法（除非只提供了编译形式），但程序不应依赖于其实现细节，如知道某个值被存储为int。只要程序和类只通过定义接口的方法进行通信，程序员就可以随意地对任何部分做独立的改进，而不必担心这样做会导致意外的不良影响。 </p>
+<p>类是用户定义的类型，对象是类的实例。这意味着对象是这种类型的变量，例如由new按类描述分配的内存。C++试图让用户定义的类型 尽可能与标准类型类似，因此可以声明对象、指向对象的指针和对象数组。可以按值传递对象、将对象作为函数返回值、将一个对象赋给同类型的另一个对象。如果提供了构造函数，则在创建对象时，可以初始化对象。如果提供了析构函数方法，则在对象消亡后，程序将执行该函数。</p>
+<p>每个对象都存储自己的数据，而共享类方法。如果mr_object是对象名，try_me( )是成员函数，则可以使用成员运算符句点调用成员函数：mr_object.try_me( )。在OOP中，这种函数调用被称为将try_me消息发送给mr_object对象。在try_me( )方法中引用类数据成员时，将使用mr_object对象相应的数据成员。同样，函数调用i_object.try_me( )将访问i_object对象的数据成员。 </p>
+<p>如果希望成员函数对多个对象进行操作，可以将额外的对象作为参数传递给它。如果方法需要显式地引用调用它的对象，则可以使用this 指针。由于this指针被设置为调用对象的地址，因此*this是该对象的别名</p>
+<p>类很适合用于描述ADT。公有成员函数接口提供了ADT描述的服务，类的私有部分和类方法的代码提供了实现，这些实现对类的客户隐藏</p>
+<h1 id="使用类-1"><a href="#使用类-1" class="headerlink" title="使用类"></a>使用类</h1>
                 
               </div>
             
@@ -2833,7 +3499,7 @@ cin &gt;&gt; fetch;<span class="hljs-comment">//really std::cin and Jill::fetch<
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/20/hello-world/" title="Hello World">
+                      <a href="/2023/03/26/hello-world/" title="Hello World">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Hello World</span>
                         <span class="visible-mobile">上一篇</span>
