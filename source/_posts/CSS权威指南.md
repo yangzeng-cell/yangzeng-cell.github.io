@@ -963,4 +963,44 @@ border的颜色由border-color来确定，如果没有设置，那么他的颜�
 
 #### 置换元素
 
+为其他内容占位的元素，典型的置换元素是img，多数表单元素也是置换元素
+
 ##### 根元素
+
+位于文档树顶端的元素，在html文档中，根元素是html，在xml文档中，根元素可以是语言允许的任何元素，例如，RSS文件的根元素是rss。
+
+##### 块级框
+
+段落，标签，或者div等元素生成的框，在常规流动模式下，块级框在框体前货都换行，因此块级框是纵向堆叠的，display：block可以把任何元素的框变成块级框
+
+##### 行内框
+
+strong，span生成的框，行内框前后不换行，display：inline声明能把任何元素生成的框体变成行内框
+
+##### 行内块级框
+
+内部特征像行内框，外部特征像块级框，行内块级框的行为和置换元素相似，但不完全相同
+
+### containing block
+
+containing block是由离元素最近的那个生成列表项目或者块级框(包含所有与表格有关的框体，例如单元格生成的框体)的祖辈元素构成
+
+```
+<body>
+	<div>
+		<p>this is a paragraph</p>
+	</div>
+</body>
+```
+
+p元素的containing block是div，因为他是祖辈元素中离p元素最近的，div的containing block是body，p元素的布局依赖于div元素，div元素的布局依赖于body元素，html元素是body元素的containing block，html元素是 initial containning block，他的独特之处在于他的尺寸是由视区即浏览器的窗口决定的，而非根元素内容的尺寸
+
+### 调整元素显示方式
+
+#### 改变元素的显示方式
+
+display可以改变显示方式，但是不会改变元素的特性，把p元素变成行内框，但是不会把p元素变成行内元素，行内元素可以作为块级元素的后代，反过来一般不行，
+
+#### 块级框
+
+<img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-29%2022.29.45.png" style="zoom:50%;" />
