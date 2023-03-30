@@ -1004,3 +1004,157 @@ display可以改变显示方式，但是不会改变元素的特性，把p元素
 #### 块级框
 
 <img src="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-29%2022.29.45.png" style="zoom:50%;" />
+
+默认情况下，块级框的宽度就是左内边界到右内边界的距离，就是conten的宽度，高度就是下内边界到上内边界之间的距离，就是content的高度
+
+可以通过box-sizing来改变块级框的width和height的具体的意义
+
+#### 横向格式化
+
+```
+width:160px;
+padding:20px;
+border:10px solid;
+box-sizing：border-box;
+content宽度=width-2*padding-border*2
+```
+
+
+
+```
+width:160px;
+padding:20px;
+border:10px solid;
+box-sizing：content-box;
+content宽度=width
+```
+
+#### 横向格式化属性
+
+Margin-left,padding-left,margin-right,padding-right,border-left,border-right,width
+
+Width,margin-left,margin-right可以设置为auto，其余的值要么是具体的值，要么是默认值
+
+#### 使用auto
+
+width和margin-left，margin-right只有有一个值设置为auto，另外两个值设置为具体的值·，那么设置为auto的值的宽度就会自动适应父元素的宽度，例如没有设置padding，border的情况下，
+
+```css
+.parent {
+        width: 500px;
+        background-color: red;
+        height: 500px;
+      }
+
+      .child {
+        width: 100px;
+        background-color: green;
+        height: 100px;
+        margin-right: auto;//margin-right会变成300px
+        margin-left: 100px;
+        /* box-sizing: border-box; */
+        /* border: 10px solid black; */
+      }
+```
+
+如果width，margin-right，margin-left都设置为100px
+
+```css
+ .parent {
+        width: 500px;
+        background-color: red;
+        height: 500px;
+      }
+
+      .child {
+        width: 100px;
+        background-color: green;
+        height: 100px;
+        margin-right: 100px;////margin-right会重置为auto
+        margin-left: 100px;
+        /* box-sizing: border-box; */
+        /* border: 10px solid black; */
+      }
+```
+
+
+
+```css
+ .parent {
+        width: 500px;
+        background-color: red;
+        height: 500px;
+      }
+
+      .child {
+        width: auto;//500-100-100 这种也可以放元素水平居中
+        background-color: green;
+        height: 100px;
+        margin-right: 100px;
+        margin-left: 100px;
+        /* box-sizing: border-box; */
+        /* border: 10px solid black; */
+      }
+```
+
+
+
+```css
+ .parent {
+        width: 500px;
+        background-color: red;
+        height: 500px;
+      }
+
+      .child {
+        width: 100px;
+        background-color: green;
+        height: 100px;
+        margin-right: auto;//margin会平分剩余空间，可以让元素水平居中
+        margin-left: auto;
+        /* box-sizing: border-box; */
+        /* border: 10px solid black; */
+      }
+```
+
+
+
+```css
+      .parent {
+        width: 500px;
+        background-color: red;
+        height: 500px;
+      }
+
+      .child {
+        width: auto;
+        background-color: green;
+        height: 100px;
+        margin-right: 100px;
+        margin-left: auto;//margin-left,width都设置为auto，这样会让margin-left变成0，width设置为剩余的宽度400px
+        /* box-sizing: border-box; */
+        /* border: 10px solid black; */
+      }
+```
+
+
+
+```css
+ .parent {
+        width: 500px;
+        background-color: red;
+        height: 500px;
+      }
+
+      .child {
+        width: auto;
+        background-color: green;
+        height: 100px;
+        margin-right: auto;
+        margin-left: auto;
+        /* box-sizing: border-box; */
+        /* border: 10px solid black; */
+      }
+/*三个都设置为auto，此时margin为默认值0，width为父元素的width*/
+```
+
