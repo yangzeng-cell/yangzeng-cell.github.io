@@ -981,7 +981,7 @@ strong，span生成的框，行内框前后不换行，display：inline声明能
 
 内部特征像行内框，外部特征像块级框，行内块级框的行为和置换元素相似，但不完全相同
 
-### containing block
+#### containing block
 
 containing block是由离元素最近的那个生成列表项目或者块级框(包含所有与表格有关的框体，例如单元格生成的框体)的祖辈元素构成
 
@@ -1158,3 +1158,221 @@ width和margin-left，margin-right只有有一个值设置为auto，另外两个
 /*三个都设置为auto，此时margin为默认值0，width为父元素的width*/
 ```
 
+#### 负外边距
+
+```css
+.parent {
+        width: 500px;
+        background-color: red;
+        height: 500px;
+      }
+
+      .child {
+        width: auto;
+        background-color: green;
+        height: 100px;
+        margin-right: -50px;
+        margin-left: 10px;
+      }
+ /*width+margin-right+margin-left=500px于是width=540px*/
+```
+
+把margin设置为负值，子元素的width比父元素的width宽
+
+```css
+ .parent {
+        width: 500px;
+        background-color: red;
+        height: 500px;
+      }
+
+      .child {
+        width: auto;
+        background-color: green;
+        height: 600px;
+        margin-right: auto;
+        margin-left: 10px;
+        border：3px solid；
+      }
+/*margin-right=500-600-10-6*/
+```
+
+只有margin可以设置为负值，当有一个只设置为auto时，就会让margin+padding+border+width=父元素的width
+
+#### 置换元素
+
+当置换元素的width为auto的时候，置换元素的width会等于内容自身的宽度。如果置换元素的宽度和自身的宽度不同，高度也会随之变化，如果设置了height，width为auto，width也会随高度变化
+
+#### 纵向变化属性
+
+height方向和width方向一致，都有7个值，如果把margin-top，margin-bottom设置为auto，则会为0
+
+#### 折叠纵行外边距
+
+在垂直方向上两个响铃块元素的margin会发生重叠，大的margin会覆盖小的margin。父子元素的margin也会发生重叠，
+
+```
+ .parent {
+        margin-top: 50px;
+        width: 500px;
+        background-color: red;
+        height: 500px;
+      }
+
+      .child {
+        width: auto;
+        background-color: green;
+        height: 100px;
+        margin-top: 100px;
+      }
+```
+
+父元素和子元素都设置了margin-top，而且互相接触，如果子元素的margin-top大于父元素的margin-top，他们重叠之后的margin-top为子元素的margin-top，如果父元素的margin-top大于子元素，则会取父元素的margin-top，他们的上边框会重叠在一起。
+
+#### 负外边距和重叠
+
+```
+li {margin-bottom: 20px;}
+ul {margin-bottom: -15px;}
+h1 {margin-top: -18px;}
+```
+
+两个负外边距中，绝对值更大的会覆盖绝对值更小的，在和正外边距相加，所以实际的margin为2px
+
+### 行内元素
+
+table元素及其子元素和块级元素和行内元素有很大的区别
+
+```cpp
+	span{
+        border: 1px solid yellow;
+        background-color: blue;
+        text-align: right;
+        word-wrap: break-word;
+        white-space: normal;
+      }
+```
+
+span在连续的数字和字母的情况下不会出现换行，需要使用` word-wrap: break-word; white-space: normal;`来强制让他换行
+
+行距：font-size和line-heigh之差，二者之间的差值/2，添加到内容区的上下部分。只有非置换元素有行距。
+
+行内框：内容区加上行距之后的边框，对于非置换元素来说，行内框的高度=line-height。
+
+行框：各行内框最高点到最低点的距离，就是最高行内框的顶边到最低行内框的底边的距离
+
+内容区相当于块级框的内容框
+
+行内元素的banckground在内容区和内边距的区域内
+
+非置换行内元素的内边距，边框，外边距在高度上没有效果
+
+置换元素的外边距和边框对行内框的高度有影响
+
+行内框的在一行中的纵向对齐方式由vertical-align来决定
+
+一行中各元素的行内框的高度是这样确定的：
+
+- 确定非置换元素和匿名文本的font-size和line-height的差/2加到文本的上下部分
+- 确定各置换元素的heigh，padding-top，padding-bottom,margin-top,margin-bottom,border-top-width,border-bottom-width,相加
+- 确定内容区在一行基线上方和下方超出多少，要把置换元素的底边与一行的基线对齐
+- 确定vertical- aligne的值
+- 知道所有行内框的位置之后，要计算行框的高度：基线和最高那个行内框之间的距离加上基线和最低行内框之间的距离
+
+#### 行内格式化
+
+所有元素都有line-height属性，无论是否有显式声明，line-height会影响行内元素及其内部，但不会影响块级元素，块级元素设置line-height是为块级元素的内容设置最小行框高度
+
+#### 行内非置换元素
+
+行框的构成：
+
+对于非置换元素和匿名文本，font-size决定着内容区的高度，如果font-size：15px；那么内容区的高度为15px，line-height-font-size/2加到内容区的上下部分就可以得到行内框的高度，相减为负数也是一样操作
+
+#### 纵向对齐
+
+vertical-align：
+
+top：元素行内框的顶边和所在行框的顶边对齐
+
+bottom： 元素行内框的底边和所在行内框的底边对齐
+
+text-top：元素行内框的顶边和父元素内容区的顶边对齐
+
+text-bottom： 元素行内框的底边与父元素内容区的底边对齐
+
+middle：元素行内框的纵向中点与父元素的基线向上偏移0.5ex处对齐
+
+super：向上移动元素的内容区和行内框，无法制定移动距离
+
+sub：向下移动元素的内容框和行内框
+
+<percentage>  : 向上向下移动元素，移动的距离为line-height*百分比，line-height可能是继承自父元素
+
+
+
+使用line-height可以控制上下行不会出现重叠。
+
+**line-height是相对于元素本身的font-size来进行计算的**
+
+line-height的最佳设定方式是使用比例因子，`line-height:1.5;`,因为line-height会被子元素继承，所以实际的line-height为font-size*比例因子。
+
+padding，margin，border可以用于行内非置换元素，当时不会增加行框的高度，边框的边界是由font-size控制的。
+
+#### 行内置换元素
+
+行内置换元素例如image 有自己的height，width。置换元素的行内框包括content，padding，margin，border。
+
+行内置换元素的line-height也是有值的，因为vertify-align需要使用到line-height。行内置换元素的padding在content四周，border会围绕padding，padding和border会影响行框的高度，因为他们是行内置换元素的一部分，margin也在行框中，正margin会增加行框的高度，负margin会减少行框的高度，并且可能和临近的上边元素重叠
+
+行内置换元素默认是和基线对齐，由于行内替换元素没有基线，所以会让margin的下底边和基线对齐
+
+#### 行内块级元素
+
+`display:inline-block`就可以将元素设置为行内块级元素
+
+行内块级元素与其他元素和内容的关系按照行内框来处理，也就是说，他在一行中的布局方式和image相同，行内块级元素实际上是当行内块级元素来格式化，意味着行内块级元素的底部默认和基线对齐。
+
+行内块级元素中的content会当作块级元素来进行格式化，width，height，box-sizing可以用于行内块级元素
+
+## padding，margin，border，outline
+
+### width，height
+
+width，height	默认值是auto，适用于行内非替换元素table元素中的tr，td之外的元素
+
+### padding
+
+适用于所有元素，background默认延伸到padding，可以使用background-clip来设置
+
+padding的百分数是相对父元素的width来计算的
+
+行内非替换元素的padding对行高没有影响，但是行内非替换元素设置了background，padding-top/bottom，padding会向上或者向下延伸，造成和前面的行重叠，如果设置了padding-left，padding-right，会向左右留出空白，如果显示多行的时候，只会在第一行的首部和最后一行的末尾有空白
+
+### border
+
+默认情况下，border的颜色和color的颜色一致
+
+#### outline
+
+outline不占据空间
+
+outline可以不是矩形
+
+用户代理经常在：focus时候渲染outline
+
+outline对布局没有任何影响
+
+#### margin
+
+margin默认值为0，margin的百分数是相对于父元素内容区的宽度计算
+
+相邻色上下margin会折叠，取最大值，父元素的margin和子元素的margin也会重叠，也是取最大值
+
+行内非替换元素的margin始终是透明的，margin对行高没有影响，但是设置左右margin则会有间距出现，设置多行的margin又不同。
+
+行内置换元素设置margin会影响行高
+
+## color，background，linear-gradient
+
+#### color
