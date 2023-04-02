@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-29%2022.29.45.png">
 <meta property="article:published_time" content="2022-11-30T22:47:43.000Z">
-<meta property="article:modified_time" content="2023-04-01T17:14:05.668Z">
+<meta property="article:modified_time" content="2023-04-02T14:42:21.475Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="CSS">
 <meta name="twitter:card" content="summary_large_image">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          22k 字
+          24k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          181 分钟
+          202 分钟
         
       </span>
     
@@ -1146,7 +1146,105 @@ padding:20px;
 <p>相邻色上下margin会折叠，取最大值，父元素的margin和子元素的margin也会重叠，也是取最大值</p>
 <p>行内非替换元素的margin始终是透明的，margin对行高没有影响，但是设置左右margin则会有间距出现，设置多行的margin又不同。</p>
 <p>行内置换元素设置margin会影响行高</p>
-<h2 id="color，background，linear-gradient"><a href="#color，background，linear-gradient" class="headerlink" title="color，background，linear-gradient"></a>color，background，linear-gradient</h2><h4 id="color"><a href="#color" class="headerlink" title="color"></a>color</h4>
+<h2 id="color，background，linear-gradient"><a href="#color，background，linear-gradient" class="headerlink" title="color，background，linear-gradient"></a>color，background，linear-gradient</h2><h3 id="前景色"><a href="#前景色" class="headerlink" title="前景色"></a>前景色</h3><p>设置元素前景色的最简单的方法是color，前景色会默认应用到border上，如果没有设置border-color，那么默认颜色和color是一致的。</p>
+<p>border使用前景色的行为来自一个特殊的关键字，currentColor，currentColor始终为color的计算值，设置border-color可以覆盖currentColor</p>
+<p>表单元素也可以设置前景色，例如input，select，radio</p>
+<p>color会被继承</p>
+<h3 id="background"><a href="#background" class="headerlink" title="background"></a>background</h3><p>background-color可以设置背景色，任何元素都可以使用background-color，默认值是tranparent</p>
+<h4 id="background-clip"><a href="#background-clip" class="headerlink" title="background-clip"></a>background-clip</h4><p>设置背景可以延伸到那个位置，border-box，padding-box，content-box，text，初始值是border-box，background-clip对根元素html，body没有效果，border-radis会影响background-clip的效果</p>
+<h4 id="background-image"><a href="#background-image" class="headerlink" title="background-image"></a>background-image</h4><p>background-image适用于所有元素</p>
+<h4 id="background-position"><a href="#background-position" class="headerlink" title="background-position"></a>background-position</h4><p>适用于块级元素和置换元素，初始值是0% 0%，</p>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>等效关键字</th>
+<th>等效百分比</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>center</td>
+<td>center center</td>
+<td>50% 50%</td>
+</tr>
+<tr>
+<td>Right</td>
+<td>Center right</td>
+<td>100% 50%</td>
+</tr>
+<tr>
+<td>Left</td>
+<td>Center left</td>
+<td>0% 50%</td>
+</tr>
+<tr>
+<td>Top</td>
+<td>top center</td>
+<td>50% 0</td>
+</tr>
+<tr>
+<td>Bottom</td>
+<td>Bottom center</td>
+<td>50% 100%</td>
+</tr>
+<tr>
+<td>Top left</td>
+<td>left top</td>
+<td>0 0</td>
+</tr>
+<tr>
+<td>top right</td>
+<td>right top</td>
+<td>100% 0%</td>
+</tr>
+<tr>
+<td>Bottom right</td>
+<td>right bottom</td>
+<td>100% 100%</td>
+</tr>
+<tr>
+<td>bottom left</td>
+<td>left bottom</td>
+<td>0 100%</td>
+</tr>
+</tbody></table>
+<h4 id="Background-rapeat"><a href="#Background-rapeat" class="headerlink" title="Background-rapeat"></a>Background-rapeat</h4><h4 id="Background-attchement"><a href="#Background-attchement" class="headerlink" title="Background-attchement"></a>Background-attchement</h4><p>Background-attchementk可以把background-image在固定的视图内，避免受滚动的影响。</p>
+<p>默认是scroll，还有属性fixed，local</p>
+<h4 id="background-size"><a href="#background-size" class="headerlink" title="background-size"></a>background-size</h4><h4 id="background-1"><a href="#background-1" class="headerlink" title="background"></a>background</h4><p>顺序上没要求</p>
+<p>background-size必须紧跟background-position后面，并用/隔开</p>
+<p>横值在前，纵值在后</p>
+<p>如果同时设置background-origin，background-clip，前面的给background-origin，后面的给background-clip，如果只有一个与之相关的值，则是属于两个</p>
+<p>设置多个background属性时，用逗号分隔，多个背景分布在不同的层，background-color不能设置多个值，多个background中最先设置的会在最上面，</p>
+<h3 id="渐变"><a href="#渐变" class="headerlink" title="渐变"></a>渐变</h3><p>有两种图像由css来实现的：线性渐变和径向渐变，二者有分为循环渐变和不循环渐变。渐变可以在任何可以使用image的地方。</p>
+<p>渐变是指一个颜色向另外一个颜色平滑的过度，0%表示白色，100%表示黑色。<strong>渐变是图像</strong>，渐变没有尺寸，如果background没有声明banckground-size，默认值是auto，渐变值为100%</p>
+<h4 id="线性渐变"><a href="#线性渐变" class="headerlink" title="线性渐变"></a>线性渐变</h4><div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">div</span> &#123;<span class="hljs-attribute">background-image</span>:<span class="hljs-built_in">linear-gradient</span>(purple,gold);&#125;
+<span class="hljs-selector-tag">div</span> &#123;<span class="hljs-attribute">background-image</span>:<span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90</span>edg,purple,gold);&#125;
+<span class="hljs-selector-tag">div</span> &#123;<span class="hljs-attribute">background-image</span>:<span class="hljs-built_in">linear-gradient</span>(to left,purple,gold);&#125;
+<span class="hljs-selector-tag">div</span> &#123;<span class="hljs-attribute">background-image</span>:<span class="hljs-built_in">linear-gradient</span>(-<span class="hljs-number">135deg</span>,purple,gold);&#125;
+<span class="hljs-selector-tag">div</span> &#123;<span class="hljs-attribute">background-image</span>:<span class="hljs-built_in">linear-gradient</span>(to bottom left,purple,gold,navy);&#125;</code></pre></div>
+
+<p>linear-gradient的color可以有多个</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">div</span>&#123;background-image:linear-gradient(<span class="hljs-number">90</span>deg,red,orange <span class="hljs-number">25</span>px,yellow <span class="hljs-number">50</span>px,green <span class="hljs-number">75</span>px,blue <span class="hljs-number">100</span>px,indigo	<span class="hljs-number">125</span>px,violet <span class="hljs-number">15</span>opx);&#125;</code></pre></div>
+
+<p>可以设置每个color的长度，如果是用百分比，50%是梯度线的终点，两条相同的色标放在一起会重叠</p>
+<h4 id="径向渐变"><a href="#径向渐变" class="headerlink" title="径向渐变"></a>径向渐变</h4><div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">div</span>&#123;<span class="hljs-attribute">background-image</span>:<span class="hljs-built_in">radial-gradient</span>(purple,gold);&#125;</code></pre></div>
+
+<h3 id="box-shadow"><a href="#box-shadow" class="headerlink" title="box-shadow"></a>box-shadow</h3><div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">div</span> &#123;<span class="hljs-attribute">box-shadow</span>:横向偏移 纵向偏移 模糊距离 颜色&#125;
+<span class="hljs-selector-tag">div</span> &#123;<span class="hljs-attribute">box-shadow</span>:inset 横向偏移 纵向偏移 模糊距离 颜色&#125; inset表示是在里面渲染是内凹的</code></pre></div>
+
+<p>一个元素可以有任意个box-shadow，并用逗号隔开</p>
+<h2 id="float"><a href="#float" class="headerlink" title="float"></a>float</h2><p>float元素脱离常规文档流，元素浮动后，其他content会围绕他流动，浮动元素可以设置宽高。margin，padding，border，不管什么类型，浮动之后生成的是块级框，即使是行内框，浮动之后会变成块级框。</p>
+<p>规则：</p>
+<p>浮动元素的左右边界不能超过容纳块的左右边界</p>
+<p>如果向左浮动，那么浮动块会从左向右排列，如果向右浮动则会从右向左排列，除非浮动块的宽度无法占据剩余的宽度，才会换行</p>
+<p>左浮动元素的右外边界不能再右浮动元素左外边界的右侧，右浮动元素的左外边界不能再左浮动元素的右外边界</p>
+<p>浮动元素的顶边不能比父元素的内顶边高，如果浮动元素位于两个折叠的外边距之间，在两个元素之间放置他的位置时，将视其有个块级元素</p>
+<p>浮动元素的顶边不能比前方任何一个浮动元素或者块级元素的顶边高</p>
+<p>浮动元素的顶边不能高于文档中出现在浮动元素之前的元素生成的框体所在行框的顶边</p>
+<p>左浮动元素的左边如果还有一个向左浮动的元素，那么他的右外边界不能在容纳块右边界的右侧，类似的，右浮动元素的右边如果还有一个向右的浮动元素，那么他的右边界不能再容纳块的左边界的左侧</p>
+<p>浮动元素必须放在尽可能高的位置上</p>
+<p>左浮动元素必须尽量向左移动，右浮动元素必须尽量向右移动。位置越高，向左或者向右移动的距离越远</p>
+
                 
               </div>
             
