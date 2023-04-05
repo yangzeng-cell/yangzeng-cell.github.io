@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-29%2022.29.45.png">
 <meta property="article:published_time" content="2022-11-30T22:47:43.000Z">
-<meta property="article:modified_time" content="2023-04-02T14:42:21.475Z">
+<meta property="article:modified_time" content="2023-04-05T14:22:24.678Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="CSS">
 <meta name="twitter:card" content="summary_large_image">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          24k 字
+          27k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          202 分钟
+          225 分钟
         
       </span>
     
@@ -1235,16 +1235,141 @@ padding:20px;
 <p>一个元素可以有任意个box-shadow，并用逗号隔开</p>
 <h2 id="float"><a href="#float" class="headerlink" title="float"></a>float</h2><p>float元素脱离常规文档流，元素浮动后，其他content会围绕他流动，浮动元素可以设置宽高。margin，padding，border，不管什么类型，浮动之后生成的是块级框，即使是行内框，浮动之后会变成块级框。</p>
 <p>规则：</p>
-<p>浮动元素的左右边界不能超过容纳块的左右边界</p>
-<p>如果向左浮动，那么浮动块会从左向右排列，如果向右浮动则会从右向左排列，除非浮动块的宽度无法占据剩余的宽度，才会换行</p>
-<p>左浮动元素的右外边界不能再右浮动元素左外边界的右侧，右浮动元素的左外边界不能再左浮动元素的右外边界</p>
-<p>浮动元素的顶边不能比父元素的内顶边高，如果浮动元素位于两个折叠的外边距之间，在两个元素之间放置他的位置时，将视其有个块级元素</p>
-<p>浮动元素的顶边不能比前方任何一个浮动元素或者块级元素的顶边高</p>
-<p>浮动元素的顶边不能高于文档中出现在浮动元素之前的元素生成的框体所在行框的顶边</p>
-<p>左浮动元素的左边如果还有一个向左浮动的元素，那么他的右外边界不能在容纳块右边界的右侧，类似的，右浮动元素的右边如果还有一个向右的浮动元素，那么他的右边界不能再容纳块的左边界的左侧</p>
-<p>浮动元素必须放在尽可能高的位置上</p>
-<p>左浮动元素必须尽量向左移动，右浮动元素必须尽量向右移动。位置越高，向左或者向右移动的距离越远</p>
+<ul>
+<li><p>浮动元素的左右边界不能超过容纳块的左右边界</p>
+</li>
+<li><p>如果向左浮动，那么浮动块会从左向右排列，如果向右浮动则会从右向左排列，除非浮动块的宽度无法占据剩余的宽度，才会换行</p>
+</li>
+<li><p>左浮动元素的右外边界不能再右浮动元素左外边界的右侧，右浮动元素的左外边界不能再左浮动元素的右外边界</p>
+</li>
+<li><p>浮动元素的顶边不能比父元素的内顶边高，如果浮动元素位于两个折叠的外边距之间，在两个元素之间放置他的位置时，将视其有个块级元素</p>
+</li>
+<li><p>浮动元素的顶边不能比前方任何一个浮动元素或者块级元素的顶边高</p>
+</li>
+<li><p>浮动元素的顶边不能高于文档中出现在浮动元素之前的元素生成的框体所在行框的顶边</p>
+</li>
+<li><p>左浮动元素的左边如果还有一个向左浮动的元素，那么他的右外边界不能在容纳块右边界的右侧，类似的，右浮动元素的右边如果还有一个向右的浮动元素，那么他的右边界不能再容纳块的左边界的左侧</p>
+</li>
+<li><p>浮动元素必须放在尽可能高的位置上</p>
+</li>
+<li><p>左浮动元素必须尽量向左移动，右浮动元素必须尽量向右移动。位置越高，向左或者向右移动的距离越远</p>
+</li>
+</ul>
+<p>浮动元素的后代元素也是浮动时，将扩大范围，涵盖浮动的后代元素。</p>
+<p>在有负外边距的情况下，浮动元素会会超出父元素</p>
+<p>浮动元素比父元素宽时，会溢出</p>
+<h3 id="浮动元素和内容重叠"><a href="#浮动元素和内容重叠" class="headerlink" title="浮动元素和内容重叠"></a>浮动元素和内容重叠</h3><p>行内框和浮动元素重叠时，其border，background，content都会在浮动元素之上渲染</p>
+<p>块级元素与浮动元素重叠时，border，background会在浮动元素背后渲染，content会在浮动元素之上渲染</p>
+<h3 id="清除浮动"><a href="#清除浮动" class="headerlink" title="清除浮动"></a>清除浮动</h3><div class="code-wrapper"><pre><code class="hljs scss"><span class="hljs-attribute">clear</span>：both｜<span class="hljs-attribute">left</span>｜<span class="hljs-attribute">right</span>｜<span class="hljs-attribute">none</span>；</code></pre></div>
 
+<h3 id="shape-outside"><a href="#shape-outside" class="headerlink" title="shape-outside"></a>shape-outside</h3><p>浮动周围的元素按什么方式流动</p>
+<p>none：除了浮动元素自己的margin，不产生任何影响</p>
+<p>base-shape：</p>
+<ul>
+<li><p>inset() //将形状框内凹 inset(2.5em) 默认形状框是margin-box</p>
+</li>
+<li><p>Circle()//圆形</p>
+</li>
+<li><p>Ellipse()//椭圆形</p>
+</li>
+<li><p>Polygon()//多边形</p>
+</li>
+</ul>
+<p>shade-box：</p>
+<ul>
+<li>Margin-box</li>
+<li>Border-box</li>
+<li>Padding-box</li>
+<li>Content-box</li>
+</ul>
+<p>默认使用margin-box</p>
+<p>base-shape和shade-box可以一起使用</p>
+<div class="code-wrapper"><pre><code class="hljs scss"><span class="hljs-attribute">shape-outside</span>：inset(<span class="hljs-number">10</span>) <span class="hljs-attribute">border</span>-box;</code></pre></div>
+
+<h3 id="shape-image-threshold"><a href="#shape-image-threshold" class="headerlink" title="shape-image-threshold"></a>shape-image-threshold</h3><p><strong><code>shape-image-threshold</code></strong> 通过设定一个 alpha 通道的界限值来提取<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside"><code>shape-outside</code></a> 值为图像的形状。</p>
+<p>这个属性用于指定 透明度为多少时，允许内容流入</p>
+<h3 id="shape-margin"><a href="#shape-margin" class="headerlink" title="shape-margin"></a>shape-margin</h3><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS">CSS</a> 属性 <strong><code>shape-margin</code></strong> 用于设定由<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside"><code>shape-outside</code></a>创建的 CSS 形状的外边距。</p>
+<h2 id="position"><a href="#position" class="headerlink" title="position"></a>position</h2><p>static｜relative ｜sticky｜absolute｜fixed</p>
+<p>static：默认的类型，块级元素生成矩形框，位于文档流中，行内元素生成一个或者多个行框，随父元素流动</p>
+<p>relative：元素框偏移一定的距离，元素所占的空间也是和正常情况下一样</p>
+<p>absolute：脱离文档流，相对于设置了position非默认属性的父元素进行定位，否则就是相对于视口进行定位，无论在文档流中是什么元素，设置了absolute之后都会变成块级框</p>
+<p>fixed：相对于视口进行定位</p>
+<p>sticky：元素已开始是位于文档流中，当达到触发条件时，就会脱离文档流，不过会在文档流中占据空间，这个时候是相对于position：absolute进行定位的，触发条件失效后，会回到文档流中</p>
+<h4 id="min-width，min-height，max-width，max-height"><a href="#min-width，min-height，max-width，max-height" class="headerlink" title="min-width，min-height，max-width，max-height"></a>min-width，min-height，max-width，max-height</h4><p>适用于除了置换行内元素和表格元素之外的元素，百分比都是针对父元素的宽度和高度进行计算</p>
+<h4 id="overflow"><a href="#overflow" class="headerlink" title="overflow"></a>overflow</h4><p>visible，hidden，scroll，auto</p>
+<p>初始值为visible，使用块级元素和置换元素</p>
+<h4 id="visibility"><a href="#visibility" class="headerlink" title="visibility"></a>visibility</h4><p>visible，hidden，collapse</p>
+<p>初始值是visible</p>
+<p>适用于所有元素</p>
+<p>和display：none的1区别，display会让元素从文档流中删除，不再对文档流有影响，visibility：hidden是将元素应仓，但是还是存在于文档流中。设置为hidden的元素，其后代也是hidden，可以将后代元素设置为visible</p>
+<p>visibility：collapse用于渲染表格</p>
+<h4 id="position：absolute；"><a href="#position：absolute；" class="headerlink" title="position：absolute；"></a>position：absolute；</h4><div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">span</span> &#123;
+	<span class="hljs-attribute">position</span>:absolute;
+	<span class="hljs-attribute">top</span>:auto;
+	<span class="hljs-attribute">left</span>:<span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<p>这时候定位元素的顶部将和设置为position：static；的时候的顶部一致，即为脱离文档流时一致</p>
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">span</span> &#123;
+	<span class="hljs-attribute">position</span>:absolute;
+	<span class="hljs-attribute">top</span>:auto;
+	<span class="hljs-attribute">left</span>:auto;
+&#125;</code></pre></div>
+
+<p>此时由于脱离文档流，会和文档流中的元素重叠</p>
+<h4 id="非置换元素的尺寸和位置"><a href="#非置换元素的尺寸和位置" class="headerlink" title="非置换元素的尺寸和位置"></a>非置换元素的尺寸和位置</h4><p>$$<br>left+margin-left+margin-right+right+padding-right+padding-left=容纳块的width<br>$$</p>
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">span</span> &#123;
+	<span class="hljs-attribute">position</span>:absolute;
+	<span class="hljs-attribute">top</span>:<span class="hljs-number">0</span>;
+	<span class="hljs-attribute">left</span>:<span class="hljs-number">1em</span>;
+	<span class="hljs-attribute">right</span>：<span class="hljs-number">1em</span>；
+	<span class="hljs-attribute">width</span>：<span class="hljs-number">10em</span>；
+	<span class="hljs-attribute">margin-left</span>：<span class="hljs-number">1em</span>；
+	<span class="hljs-attribute">margin-right</span>：<span class="hljs-number">1em</span>；
+&#125;//如果比父元素的宽度小，这时候<span class="hljs-attribute">right</span>会被重置满足要求，这和<span class="hljs-attribute">right</span>：auto是一致的。</code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">span</span> &#123;
+	<span class="hljs-attribute">position</span>:absolute;
+	<span class="hljs-attribute">top</span>:<span class="hljs-number">0</span>;
+	<span class="hljs-attribute">left</span>:<span class="hljs-number">1em</span>;
+	<span class="hljs-attribute">right</span>：<span class="hljs-number">1em</span>；
+	<span class="hljs-attribute">width</span>：<span class="hljs-number">10em</span>；
+	<span class="hljs-attribute">margin-left</span>：<span class="hljs-number">1em</span>；
+	<span class="hljs-attribute">margin-right</span>：auto；
+&#125;//如果比父元素的宽度小，<span class="hljs-attribute">margin-right</span>会被匹配适当的值。</code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">span</span> &#123;
+	<span class="hljs-attribute">position</span>:absolute;
+	<span class="hljs-attribute">top</span>:<span class="hljs-number">0</span>;
+	<span class="hljs-attribute">width</span>：<span class="hljs-number">100%</span>；
+	<span class="hljs-attribute">bottom</span>：<span class="hljs-number">0</span>；
+	<span class="hljs-attribute">margin</span>：auto <span class="hljs-number">0</span>；
+&#125;//
+元素剧中显示</code></pre></div>
+
+<p>在横向布局中，如果left或者right为auto，左右边界的位置会根据static时的确定，在纵向布局中，只有top才是根据static的位置确定，bottom任何时候都不这样确定。在纵向布局中，首先会判断top的值是否存在，如果top值不为auto，在确定满足容纳块高度的情况下，确定bottom的距离。纵向尺寸过约束，bottom会被忽略，但是top永远不会被忽略</p>
+<h4 id="置换元素的位置和尺寸"><a href="#置换元素的位置和尺寸" class="headerlink" title="置换元素的位置和尺寸"></a>置换元素的位置和尺寸</h4><ul>
+<li>置换元素会有自己原来的尺寸，如果width设置为auto，则使用自己原来的尺寸</li>
+<li>在从左到右的语言中，left设置为auto，auto设置为static的位置，在从右至左的语言中，right设置为auto，auto会设置为static的位置</li>
+<li>在right/left：auto，上一步auto没有替换时，margin-left/margin-right：0</li>
+<li>如果这时候right/left还是auto，则把right。left设置为相同值，元素会居中</li>
+<li>如果最后还有值为auto，则会设置为最后等于容纳块的值</li>
+</ul>
+<p>和非置换元素一样，如果过约束，用户代理会忽略right/left的值</p>
+<p>纵向布局也是一样</p>
+<h4 id="z-index"><a href="#z-index" class="headerlink" title="z-index"></a>z-index</h4><p>初始值为auto，适用于定位元素</p>
+<p>无论元素的z-index的正负值，都显示在父元素的前面，不会在父元素的背后绘制，元素的z-index是相对于局部的堆叠上下文，即容纳块。</p>
+<p>auto：生成的框体在当前堆叠上下文中的堆叠次序是0，如果不是跟元素，不确立新的堆叠上下文    ，z-index：auto===z-index：0</p>
+<p>flex布局和grid布局元素不使用position，但是也受z-index的控制</p>
+<h4 id="固定定位"><a href="#固定定位" class="headerlink" title="固定定位"></a>固定定位</h4><h4 id="相对定位"><a href="#相对定位" class="headerlink" title="相对定位"></a>相对定位</h4><p>postion：relative只是会移动一定的距离，元素还是在原来的位置上</p>
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">strong</span> &#123;<span class="hljs-attribute">position</span>:relative;<span class="hljs-attribute">top</span>:<span class="hljs-number">10px</span>;<span class="hljs-attribute">bottom</span>:<span class="hljs-number">20px</span>&#125;;</code></pre></div>
+
+<p>relative过约束，会把其中一个值设置为绝对值的负数</p>
+<h4 id="粘性定位"><a href="#粘性定位" class="headerlink" title="粘性定位"></a>粘性定位</h4><h2 id="flex布局"><a href="#flex布局" class="headerlink" title="flex布局"></a>flex布局</h2>
                 
               </div>
             
