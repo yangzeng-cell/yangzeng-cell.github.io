@@ -1480,20 +1480,224 @@ float元素脱离常规文档流，元素浮动后，其他content会围绕他�
 
 规则：
 
-浮动元素的左右边界不能超过容纳块的左右边界
+- 浮动元素的左右边界不能超过容纳块的左右边界
 
-如果向左浮动，那么浮动块会从左向右排列，如果向右浮动则会从右向左排列，除非浮动块的宽度无法占据剩余的宽度，才会换行
+- 如果向左浮动，那么浮动块会从左向右排列，如果向右浮动则会从右向左排列，除非浮动块的宽度无法占据剩余的宽度，才会换行
 
-左浮动元素的右外边界不能再右浮动元素左外边界的右侧，右浮动元素的左外边界不能再左浮动元素的右外边界
+- 左浮动元素的右外边界不能再右浮动元素左外边界的右侧，右浮动元素的左外边界不能再左浮动元素的右外边界
 
-浮动元素的顶边不能比父元素的内顶边高，如果浮动元素位于两个折叠的外边距之间，在两个元素之间放置他的位置时，将视其有个块级元素
+- 浮动元素的顶边不能比父元素的内顶边高，如果浮动元素位于两个折叠的外边距之间，在两个元素之间放置他的位置时，将视其有个块级元素
 
-浮动元素的顶边不能比前方任何一个浮动元素或者块级元素的顶边高
+- 浮动元素的顶边不能比前方任何一个浮动元素或者块级元素的顶边高
 
-浮动元素的顶边不能高于文档中出现在浮动元素之前的元素生成的框体所在行框的顶边
+- 浮动元素的顶边不能高于文档中出现在浮动元素之前的元素生成的框体所在行框的顶边
 
-左浮动元素的左边如果还有一个向左浮动的元素，那么他的右外边界不能在容纳块右边界的右侧，类似的，右浮动元素的右边如果还有一个向右的浮动元素，那么他的右边界不能再容纳块的左边界的左侧
+- 左浮动元素的左边如果还有一个向左浮动的元素，那么他的右外边界不能在容纳块右边界的右侧，类似的，右浮动元素的右边如果还有一个向右的浮动元素，那么他的右边界不能再容纳块的左边界的左侧
 
-浮动元素必须放在尽可能高的位置上
+- 浮动元素必须放在尽可能高的位置上
 
-左浮动元素必须尽量向左移动，右浮动元素必须尽量向右移动。位置越高，向左或者向右移动的距离越远
+- 左浮动元素必须尽量向左移动，右浮动元素必须尽量向右移动。位置越高，向左或者向右移动的距离越远
+
+浮动元素的后代元素也是浮动时，将扩大范围，涵盖浮动的后代元素。
+
+在有负外边距的情况下，浮动元素会会超出父元素
+
+浮动元素比父元素宽时，会溢出
+
+### 浮动元素和内容重叠
+
+行内框和浮动元素重叠时，其border，background，content都会在浮动元素之上渲染
+
+块级元素与浮动元素重叠时，border，background会在浮动元素背后渲染，content会在浮动元素之上渲染
+
+### 清除浮动
+
+```
+clear：both｜left｜right｜none；
+```
+
+### shape-outside
+
+浮动周围的元素按什么方式流动
+
+none：除了浮动元素自己的margin，不产生任何影响
+
+base-shape：
+
+- inset() //将形状框内凹 inset(2.5em) 默认形状框是margin-box
+
+- Circle()//圆形
+
+- Ellipse()//椭圆形
+
+- Polygon()//多边形
+
+  
+
+shade-box：
+
+- Margin-box
+- Border-box
+- Padding-box
+- Content-box
+
+默认使用margin-box
+
+base-shape和shade-box可以一起使用
+
+```
+shape-outside：inset(10) border-box;
+```
+
+### shape-image-threshold
+
+**`shape-image-threshold`** 通过设定一个 alpha 通道的界限值来提取[`shape-outside`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside) 值为图像的形状。
+
+这个属性用于指定 透明度为多少时，允许内容流入
+
+### shape-margin
+
+[CSS](https://developer.mozilla.org/zh-CN/docs/Web/CSS) 属性 **`shape-margin`** 用于设定由[`shape-outside`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/shape-outside)创建的 CSS 形状的外边距。
+
+## position
+
+static｜relative ｜sticky｜absolute｜fixed
+
+static：默认的类型，块级元素生成矩形框，位于文档流中，行内元素生成一个或者多个行框，随父元素流动
+
+relative：元素框偏移一定的距离，元素所占的空间也是和正常情况下一样
+
+absolute：脱离文档流，相对于设置了position非默认属性的父元素进行定位，否则就是相对于视口进行定位，无论在文档流中是什么元素，设置了absolute之后都会变成块级框
+
+fixed：相对于视口进行定位
+
+sticky：元素已开始是位于文档流中，当达到触发条件时，就会脱离文档流，不过会在文档流中占据空间，这个时候是相对于position：absolute进行定位的，触发条件失效后，会回到文档流中
+
+#### min-width，min-height，max-width，max-height
+
+适用于除了置换行内元素和表格元素之外的元素，百分比都是针对父元素的宽度和高度进行计算
+
+#### overflow
+
+visible，hidden，scroll，auto
+
+初始值为visible，使用块级元素和置换元素
+
+#### visibility
+
+visible，hidden，collapse
+
+初始值是visible
+
+适用于所有元素
+
+和display：none的1区别，display会让元素从文档流中删除，不再对文档流有影响，visibility：hidden是将元素应仓，但是还是存在于文档流中。设置为hidden的元素，其后代也是hidden，可以将后代元素设置为visible
+
+visibility：collapse用于渲染表格
+
+#### position：absolute；
+
+```
+span {
+	position:absolute;
+	top:auto;
+	left:0;
+}
+```
+
+这时候定位元素的顶部将和设置为position：static；的时候的顶部一致，即为脱离文档流时一致
+
+```
+span {
+	position:absolute;
+	top:auto;
+	left:auto;
+}
+```
+
+此时由于脱离文档流，会和文档流中的元素重叠
+
+#### 非置换元素的尺寸和位置
+
+$$
+left+margin-left+margin-right+right+padding-right+padding-left=容纳块的width
+$$
+
+```
+span {
+	position:absolute;
+	top:0;
+	left:1em;
+	right：1em；
+	width：10em；
+	margin-left：1em；
+	margin-right：1em；
+}//如果比父元素的宽度小，这时候right会被重置满足要求，这和right：auto是一致的。
+```
+
+
+
+```
+span {
+	position:absolute;
+	top:0;
+	left:1em;
+	right：1em；
+	width：10em；
+	margin-left：1em；
+	margin-right：auto；
+}//如果比父元素的宽度小，margin-right会被匹配适当的值。
+```
+
+
+
+```
+span {
+	position:absolute;
+	top:0;
+	width：100%；
+	bottom：0；
+	margin：auto 0；
+}//
+元素剧中显示
+```
+
+在横向布局中，如果left或者right为auto，左右边界的位置会根据static时的确定，在纵向布局中，只有top才是根据static的位置确定，bottom任何时候都不这样确定。在纵向布局中，首先会判断top的值是否存在，如果top值不为auto，在确定满足容纳块高度的情况下，确定bottom的距离。纵向尺寸过约束，bottom会被忽略，但是top永远不会被忽略
+
+#### 置换元素的位置和尺寸
+
+- 置换元素会有自己原来的尺寸，如果width设置为auto，则使用自己原来的尺寸
+- 在从左到右的语言中，left设置为auto，auto设置为static的位置，在从右至左的语言中，right设置为auto，auto会设置为static的位置
+- 在right/left：auto，上一步auto没有替换时，margin-left/margin-right：0
+- 如果这时候right/left还是auto，则把right。left设置为相同值，元素会居中
+- 如果最后还有值为auto，则会设置为最后等于容纳块的值
+
+和非置换元素一样，如果过约束，用户代理会忽略right/left的值
+
+纵向布局也是一样
+
+#### z-index
+
+初始值为auto，适用于定位元素
+
+无论元素的z-index的正负值，都显示在父元素的前面，不会在父元素的背后绘制，元素的z-index是相对于局部的堆叠上下文，即容纳块。
+
+auto：生成的框体在当前堆叠上下文中的堆叠次序是0，如果不是跟元素，不确立新的堆叠上下文	，z-index：auto===z-index：0
+
+flex布局和grid布局元素不使用position，但是也受z-index的控制
+
+#### 固定定位
+
+#### 相对定位
+
+postion：relative只是会移动一定的距离，元素还是在原来的位置上
+
+```
+strong {position:relative;top:10px;bottom:20px};
+```
+
+relative过约束，会把其中一个值设置为绝对值的负数
+
+#### 粘性定位
+
+## flex布局

@@ -95,4 +95,4 @@ categories:
 
 # 编写和运行你的代码
 
-# 迁移到Typescript
+# 迁移到Typescripto
