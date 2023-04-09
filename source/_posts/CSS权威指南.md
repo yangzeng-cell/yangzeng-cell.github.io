@@ -1701,3 +1701,17 @@ relative过约束，会把其中一个值设置为绝对值的负数
 #### 粘性定位
 
 ## flex布局
+
+### flex-direction
+
+取值：row｜row-reverse｜column｜column-reverse
+
+初始值：row
+
+用于定义主轴的方向
+
+### flex-wrap
+
+取值：nowrap｜wrap｜wrap-reverse
+
+初始值：nowrap
