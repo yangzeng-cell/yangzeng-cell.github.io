@@ -24,7 +24,7 @@
 <meta property="og:description" content="Mode配置Mode配置选项，可以告知webpack使用相应模式的内置优化：  默认值是production（什么都不设置的情况下）； 可选值有：’none’ | ‘development’ | ‘production’；  mode选项的区别：    选项 描述    development 会将 DefinePlugin 中 process.env.NODE_ENV 的值设置为 develop">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-09T21:20:02.000Z">
-<meta property="article:modified_time" content="2023-04-09T14:33:09.503Z">
+<meta property="article:modified_time" content="2023-04-19T15:56:06.779Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="webpack">
 <meta name="twitter:card" content="summary_large_image">
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.1k 字
+          5.2k 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          27 分钟
+          44 分钟
         
       </span>
     
@@ -365,6 +365,98 @@
 <p>因为在开发中，我们只需要行信息通常就可以定位到错误了</p>
 <h2 id="Babel"><a href="#Babel" class="headerlink" title="Babel"></a>Babel</h2><p>Babel是一个工具链，主要用于旧浏览器或者缓解中将ECMAScript 2015+代码转换为向后兼容版本的JavaScript； </p>
 <p>包括：语法转换、源代码转换、Polyfill实现目标环境缺少的功能等；</p>
+<p>babel本身可以作为一个独立的工具（和postcss一样），不和webpack等构建工具配置来单独使用。</p>
+<p>如果我们希望在命令行尝试使用babel，需要安装如下库：</p>
+<p>@babel/core：babel的核心代码，必须安装；</p>
+<p>@babel/cli：可以让我们在命令行使用babel； </p>
+<div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> install @babel/cli @babel/core</code></pre></div>
+
+<p>使用babel来处理我们的源代码：</p>
+<p>src：是源文件的目录；</p>
+<p>–out-dir：指定要输出的文件夹dist；</p>
+<div class="code-wrapper"><pre><code class="hljs css">npx babel <span class="hljs-attribute">src</span> <span class="hljs-attr">--out-dir</span> dist</code></pre></div>
+
+<p><strong>比如我们需要转换箭头函数，那么我们就可以使用箭头函数转换相关的插件：</strong></p>
+<div class="code-wrapper"><pre><code class="hljs mipsasm">npm <span class="hljs-keyword">install </span>@<span class="hljs-keyword">babel/plugin-transform-arrow-functions </span>-D
+
+npx <span class="hljs-keyword">babel </span>src --out-<span class="hljs-keyword">dir </span><span class="hljs-keyword">dist </span>--plugins=@<span class="hljs-keyword">babel/plugin-transform-arrow-functions</span></code></pre></div>
+
+<p><strong>查看转换后的结果：我们会发现 const 并没有转成</strong> </p>
+<p>这是因为 plugin-transform-arrow-functions，并没有提供这样的功能；</p>
+<p>我们需要使用 plugin-transform-block-scoping 来完成这样的功能；</p>
+<div class="code-wrapper"><pre><code class="hljs mipsasm">npm <span class="hljs-keyword">install </span>@<span class="hljs-keyword">babel/plugin-transform-block-scoping </span>-D
+npx <span class="hljs-keyword">babel </span>src --out-<span class="hljs-keyword">dir </span><span class="hljs-keyword">dist </span>--plugins=@<span class="hljs-keyword">babel/plugin-transform-block-scoping</span>
+<span class="hljs-keyword"></span>,@<span class="hljs-keyword">babel/plugin-transform-arrow-functions</span></code></pre></div>
+
+<p><strong>但是如果要转换的内容过多，一个个设置是比较麻烦的，我们可以使用预设（preset）</strong></p>
+<div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> install @babel/preset-env -D</code></pre></div>
+
+<p><strong>babel是如何做到将我们的一段代码（ES6、TypeScript、React）转成另外一段代码（ES5）的呢？</strong></p>
+<p>从一种源代码（原生语言）转换成另一种源代码（目标语言），这是什么的工作呢？</p>
+<p>就是<strong>编译器</strong>，事实上我们可以将babel看成就是一个编译器。 </p>
+<p>Babel编译器的作用就是将我们的源代码，转换成浏览器可以直接识别的另外一段源代码； </p>
+<p><strong>Babel也拥有编译器的工作流程：</strong></p>
+<p>解析阶段（Parsing） </p>
+<p>转换阶段（Transformation） </p>
+<p>生成阶段（Code Generation） </p>
+<p>别人用js写的编译器</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jamiebuilds/the-super-tiny-compiler">https://github.com/jamiebuilds/the-super-tiny-compiler</a></p>
+<p><strong>babel编译器执行原理</strong></p>
+<p>源代码-&gt;解析-&gt;转换-&gt;代码生成-&gt;目标代码</p>
+<p>源代码-&gt;词法分析-&gt;tokens数组-&gt;语法分析-&gt;AST树-    &gt;遍历-&gt;访问-&gt;应用插件-&gt;新的AST树-&gt;目标代码</p>
+<h3 id="babel-loader"><a href="#babel-loader" class="headerlink" title="babel-loader"></a>babel-loader</h3><p>在webpack中会使用babel-loader</p>
+<div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> install babel-loader @babel/core</code></pre></div>
+
+<p>webpack.config.js</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-attr">module</span>: &#123;
+    <span class="hljs-attr">rules</span>: [
+      &#123;
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.m?js/</span>,
+        <span class="hljs-attr">use</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,
+      &#125;,
+    ],
+  &#125;,</code></pre></div>
+
+<p>需要使用相应插件时才生效</p>
+<div class="code-wrapper"><pre><code class="hljs js">&#123;
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.m?js/</span>,
+        <span class="hljs-attr">use</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,
+        <span class="hljs-attr">options</span>: &#123;
+          <span class="hljs-attr">plugins</span>: [
+            <span class="hljs-string">&quot;@babel/plugin-transform-arrow-functions&quot;</span>,
+            <span class="hljs-string">&quot;@babel/plugin-transform-block-scoping&quot;</span>,
+          ],
+        &#125;,
+      &#125;,</code></pre></div>
+
+<h3 id="babel-preset"><a href="#babel-preset" class="headerlink" title="babel-preset"></a>babel-preset</h3><p><strong>如果我们一个个去安装使用插件，那么需要手动来管理大量的babel插件，我们可以直接给webpack提供一个preset，webpack会根据我们的预设来加载对应的插件列表，并且将其传递给babel</strong></p>
+<p><strong>比如常见的预设有三个：</strong></p>
+<p>env</p>
+<p>react</p>
+<p>TypeScript</p>
+<div class="code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> install @babel/preset-env</code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs js">&#123;
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.m?js/</span>,
+        <span class="hljs-attr">use</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,
+        <span class="hljs-attr">options</span>: &#123;
+          <span class="hljs-attr">presets</span>: [[<span class="hljs-string">&quot;@babel/preset-env&quot;</span>]],
+        &#125;,
+      &#125;,</code></pre></div>
+
+<h3 id="浏览器兼容性"><a href="#浏览器兼容性" class="headerlink" title="浏览器兼容性"></a>浏览器兼容性</h3><p>使用browserlist可以在css兼容性和js兼容性下共享我们配置的兼容性条件</p>
+<p>Browserslist是一个在不同的前端工具之间，共享目标浏览器和Node.js版本的配置</p>
+<ul>
+<li>Autoprefixer</li>
+<li>Babel</li>
+<li>postcss-preset-env</li>
+<li>eslint-plugin-compat</li>
+<li>stylelint-no-unsupported-browser-features</li>
+<li>postcss-normalize</li>
+<li>obsolete-webpack-plugin</li>
+</ul>
 
                 
               </div>
@@ -461,6 +553,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2023/04/12/monorepo/" title="monorepo">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">monorepo</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
