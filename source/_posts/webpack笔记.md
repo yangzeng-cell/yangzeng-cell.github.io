@@ -138,3 +138,157 @@ mode选项的区别：
 Babel是一个工具链，主要用于旧浏览器或者缓解中将ECMAScript 2015+代码转换为向后兼容版本的JavaScript； 
 
 包括：语法转换、源代码转换、Polyfill实现目标环境缺少的功能等；
+
+babel本身可以作为一个独立的工具（和postcss一样），不和webpack等构建工具配置来单独使用。
+
+如果我们希望在命令行尝试使用babel，需要安装如下库：
+
+@babel/core：babel的核心代码，必须安装；
+
+@babel/cli：可以让我们在命令行使用babel； 
+
+```
+npm install @babel/cli @babel/core
+```
+
+使用babel来处理我们的源代码：
+
+src：是源文件的目录；
+
+--out-dir：指定要输出的文件夹dist；
+
+```
+npx babel src --out-dir dist
+```
+
+**比如我们需要转换箭头函数，那么我们就可以使用箭头函数转换相关的插件：**
+
+```
+npm install @babel/plugin-transform-arrow-functions -D
+
+npx babel src --out-dir dist --plugins=@babel/plugin-transform-arrow-functions
+```
+
+**查看转换后的结果：我们会发现 const 并没有转成** 
+
+这是因为 plugin-transform-arrow-functions，并没有提供这样的功能；
+
+我们需要使用 plugin-transform-block-scoping 来完成这样的功能；
+
+```
+npm install @babel/plugin-transform-block-scoping -D
+npx babel src --out-dir dist --plugins=@babel/plugin-transform-block-scoping
+,@babel/plugin-transform-arrow-functions
+```
+
+**但是如果要转换的内容过多，一个个设置是比较麻烦的，我们可以使用预设（preset）**
+
+```
+npm install @babel/preset-env -D
+```
+
+**babel是如何做到将我们的一段代码（ES6、TypeScript、React）转成另外一段代码（ES5）的呢？**
+
+从一种源代码（原生语言）转换成另一种源代码（目标语言），这是什么的工作呢？
+
+就是**编译器**，事实上我们可以将babel看成就是一个编译器。 
+
+Babel编译器的作用就是将我们的源代码，转换成浏览器可以直接识别的另外一段源代码； 
+
+**Babel也拥有编译器的工作流程：**
+
+解析阶段（Parsing） 
+
+转换阶段（Transformation） 
+
+生成阶段（Code Generation） 
+
+
+
+别人用js写的编译器
+
+https://github.com/jamiebuilds/the-super-tiny-compiler
+
+**babel编译器执行原理**
+
+源代码->解析->转换->代码生成->目标代码
+
+源代码->词法分析->tokens数组->语法分析->AST树-	>遍历->访问->应用插件->新的AST树->目标代码
+
+### babel-loader
+
+在webpack中会使用babel-loader
+
+```
+npm install babel-loader @babel/core
+```
+
+webpack.config.js
+
+```js
+module: {
+    rules: [
+      {
+        test: /\.m?js/,
+        use: "babel-loader",
+      },
+    ],
+  },
+```
+
+需要使用相应插件时才生效
+
+```js
+{
+        test: /\.m?js/,
+        use: "babel-loader",
+        options: {
+          plugins: [
+            "@babel/plugin-transform-arrow-functions",
+            "@babel/plugin-transform-block-scoping",
+          ],
+        },
+      },
+```
+
+### babel-preset
+
+**如果我们一个个去安装使用插件，那么需要手动来管理大量的babel插件，我们可以直接给webpack提供一个preset，webpack会根据我们的预设来加载对应的插件列表，并且将其传递给babel**
+
+**比如常见的预设有三个：**
+
+env
+
+react
+
+TypeScript
+
+```
+npm install @babel/preset-env
+```
+
+
+
+```js
+{
+        test: /\.m?js/,
+        use: "babel-loader",
+        options: {
+          presets: [["@babel/preset-env"]],
+        },
+      },
+```
+
+### 浏览器兼容性
+
+使用browserlist可以在css兼容性和js兼容性下共享我们配置的兼容性条件
+
+Browserslist是一个在不同的前端工具之间，共享目标浏览器和Node.js版本的配置
+
+- Autoprefixer
+- Babel
+- postcss-preset-env
+- eslint-plugin-compat
+- stylelint-no-unsupported-browser-features
+- postcss-normalize
+- obsolete-webpack-plugin
