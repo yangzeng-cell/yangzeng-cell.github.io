@@ -281,6 +281,10 @@ npm install @babel/preset-env
 
 ### 浏览器兼容性
 
+**但是在哪里可以查询到浏览器的市场占有率呢？**
+
+https://caniuse.com/usage-table
+
 使用browserlist可以在css兼容性和js兼容性下共享我们配置的兼容性条件
 
 Browserslist是一个在不同的前端工具之间，共享目标浏览器和Node.js版本的配置
@@ -292,3 +296,636 @@ Browserslist是一个在不同的前端工具之间，共享目标浏览器和No
 - stylelint-no-unsupported-browser-features
 - postcss-normalize
 - obsolete-webpack-plugin
+
+#### 
+
+browserlist可以替代babel的target
+
+browserlist可以在package.json中写
+
+```json
+"browserslist": [
+    "defaults and supports es6-module",
+    "maintained node versions"
+  ]
+```
+
+也可以创建.browserslistrc文件
+
+```
+> 0.1%
+last 2 versions
+not dead
+```
+
+Browserslist编写规则一：
+
+**defaults：Browserslist的默认浏览器（> 0.5%, last 2 versions, Firefox ESR, not dead）。**
+
+**5%：通过全局使用情况统计信息选择的浏览器版本。 >=，<和<=工作过。**
+
+5% in US：使用美国使用情况统计信息。它接受两个字母的国家/地区代码。
+
+5% in alt-AS：使用亚洲地区使用情况统计信息。有关所有区域代码的列表，请参见caniuse-lite/data/regions
+
+5% in my stats：使用自定义用法数据。
+
+5% in browserslist-config-mycompany stats：使用 来自的自定义使用情况数据browserslist-config-mycompany/browserslist-stats.json。 
+
+cover 99.5%：提供覆盖率的最受欢迎的浏览器。
+
+cover 99.5% in US：与上述相同，但国家/地区代码由两个字母组成。
+
+cover 99.5% in my stats：使用自定义用法数据。
+
+**dead：24个月内没有官方支持或更新的浏览器。现在是IE 10，IE_Mob 11，BlackBerry 10，BlackBerry 7， Samsung 4和OperaMobile 12.1。** 
+
+**last 2 versions：每个浏览器的最后2个版本。**
+
+last 2 Chrome versions：最近2个版本的Chrome浏览器。
+
+last 2 major versions或last 2 iOS major versions：最近2个主要版本的所有次要/补丁版本。
+
+Browserslist编写规则二：
+
+**node 10和node 10.4：选择最新的Node.js10.x.x 或10.4.x版本。**
+
+current node：Browserslist现在使用的Node.js版本。
+
+maintained node versions：所有Node.js版本，仍由 Node.js Foundation维护。
+
+**iOS 7：直接使用iOS浏览器版本7。** 
+
+Firefox > 20：Firefox的版本高于20 >=，<并且<=也可以使用。它也可以与Node.js一起使用。
+
+ie 6-8：选择一个包含范围的版本。
+
+Firefox ESR：最新的[Firefox ESR]版本。
+
+PhantomJS 2.1和PhantomJS 1.9：选择类似于PhantomJS运行时的Safari版本。
+
+**extends browserslist-config-mycompany：从browserslist-config-mycompanynpm包中查询 。** 
+
+**supports es6-module：支持特定功能的浏览器。**
+
+es6-module这是“我可以使用” 页面feat的URL上的参数。有关所有可用功能的列表，请参见 。caniuse-lite/data/features
+
+**browserslist config：在Browserslist配置中定义的浏览器。**在差异服务中很有用，可用于修改用户的配置，例如 browserslist config and supports es6-module。 
+
+**since 2015或last 2 years**：自2015年以来发布的所有版本（since 2015-03以及since 2015-03-10）。
+
+**unreleased versions或unreleased Chrome versions**：Alpha和Beta版本。
+
+**not ie <= 8：排除先前查询选择的浏览器。**
+
+命令行使用browserslist
+
+```
+npx browserslist ">1%, last 2 version, not dead"
+```
+
+#### 配置browserslist
+
+方案一：在package.json中配置；
+
+方案二：单独的一个配置文件.browserslistrc文件
+
+如果install 之后没有配置browserlist，他会有个默认的配置
+
+```
+> 0.5%, last 2 versions, Firefox ESR, not dead
+```
+
+不同的查询条件的意义
+
+| Query combiner type                  | Illustration                                                 | Example                                                      |
+| ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `or`/`,` combiner (union)            | [![Union of queries](https://github.com/browserslist/browserslist/raw/main/img/union.svg)](https://github.com/browserslist/browserslist/blob/main/img/union.svg) | `> .5% or last 2 versions` `> .5%, last 2 versions`          |
+| `and` combiner (intersection)        | [![intersection of queries](https://github.com/browserslist/browserslist/raw/main/img/intersection.svg)](https://github.com/browserslist/browserslist/blob/main/img/intersection.svg) | `> .5% and last 2 versions`                                  |
+| `not` combiner (relative complement) | [![Relative complement of queries](https://github.com/browserslist/browserslist/raw/main/img/complement.svg)](https://github.com/browserslist/browserslist/blob/main/img/complement.svg) | These three are equivalent to one another: `> .5% and not last 2 versions` `> .5% or not last 2 versions` `> .5%, not last 2 versions` |
+
+#### 设置目标浏览器 browserslist
+
+**我们最终打包的JavaScript代码，是需要跑在目标浏览器上的，那么如何告知babel我们的目标浏览器呢？**
+
+browserslist工具
+
+target属性
+
+#### 设置目标浏览器 targets
+
+**我们也可以通过targets来进行配置：**
+
+webpack.config.js
+
+```js
+ {
+        test: /\.jsx?$/, // x?: 0或者1个x
+        // exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+            options: {
+              presets: [
+                ["@babel/preset-env", {
+                  // 在开发中针对babel的浏览器兼容查询使用browserslist工具, 而不是设置target
+                  // 因为browserslist工具, 可以在多个前端工具之间进行共享浏览器兼容性(postcss/babel)
+                  targets: ">5%"
+                }]
+              ]
+            }
+        },
+      },
+```
+
+**那么，如果两个同时配置了，哪一个会生效呢？**
+
+配置的targets属性会覆盖browserslist； 
+
+但是在开发中，更推荐通过browserslist来配置，因为类似于postcss工具，也会使用browserslist，进行统一浏览器的适配；
+
+### Stage-X的preset
+
+**要了解Stage-X，我们需要先了解一下TC39的组织：**
+
+TC39是指技术委员会（Technical Committee）第 39 号；
+
+它是 ECMA 的一部分，ECMA 是 “ECMAScript” 规范下的 JavaScript 语言标准化的机构；
+
+ECMAScript 规范定义了 JavaScript 如何一步一步的进化、发展；
+
+**TC39 遵循的原则是：分阶段加入不同的语言特性，新流程涉及四个不同的 Stage**
+
+**Stage 0：**strawman（稻草人），任何尚未提交作为正式提案的讨论、想法变更或者补充都被认为是第 0 阶段的"稻草人"； 
+
+**Stage 1：**proposal（提议），提案已经被正式化，并期望解决此问题，还需要观察与其他提案的相互影响；
+
+**Stage 2：**draft（草稿），Stage 2 的提案应提供规范初稿、草稿。此时，语言的实现者开始观察 runtime 的具体实现是否
+
+合理；
+
+**Stage 3：**candidate（候补），Stage 3 提案是建议的候选提案。在这个高级阶段，规范的编辑人员和评审人员必须在最终
+
+规范上签字。Stage 3 的提案不会有太大的改变，在对外发布之前只是修正一些问题；
+
+**Stage 4：**finished（完成），进入 Stage 4 的提案将包含在 ECMAScript 的下一个修订版中；
+
+### Babel的Stage-X设置
+
+**在babel7之前（比如babel6中），我们会经常看到这种设置方式：**
+
+它表达的含义是使用对应的 babel-preset-stage-x 预设；
+
+但是从babel7开始，已经不建议使用了，建议使用preset-env来设置；
+
+```
+module.exports={
+	'presets': ['stage-0'];
+}
+```
+
+### Babel的配置文件
+
+**我们可以将babel的配置信息放到一个独立的文件中，babel给我们提供了两种配置文件的编写：**
+
+babel.config.json（或者.js，.cjs，.mjs）文件；
+
+.babelrc.json（或者.babelrc，.js，.cjs，.mjs）文件；
+
+**它们两个有什么区别呢？目前很多的项目都采用了多包管理的方式（babel本身、element-plus、umi等）；**
+
+.babelrc.json：早期使用较多的配置方式，但是对于配置Monorepos项目是比较麻烦的；
+
+babel.config.json（babel7）：可以直接作用于Monorepos项目的子包，更加推荐；
+
+```js
+module.exports = {
+  // plugins: [
+  //   "@babel/plugin-transform-arrow-functions",
+  //   "@babel/plugin-transform-block-scoping"
+  // ]
+  presets: [
+    [
+      "@babel/preset-env",
+      {
+        // 在开发中针对babel的浏览器兼容查询使用browserslist工具, 而不是设置target
+        // 因为browserslist工具, 可以在多个前端工具之间进行共享浏览器兼容性(postcss/babel)
+        // targets: ">5%"
+        // corejs: 3,
+        // // false: 不使用polyfill进行填充
+        // useBuiltIns: "entry"//会对第三方的库进行polyfill
+      },
+    ],
+    ["@babel/preset-react"],
+    [
+      "@babel/preset-typescript",
+      {
+        corejs: 3, //下载的版本
+        useBuiltIns: "usage", //一般会使用usage
+      },
+    ],
+  ],
+};
+```
+
+问题：如果在webpack.config.js和babel.config.js都配置了babel。那么最后谁生效了呢
+
+### polyfill
+
+**为什么时候会用到polyfill呢？**
+
+比如我们使用了一些语法特性（例如：Promise, Generator, Symbol等以及实例方法例如Array.prototype.includes等）
+
+但是某些浏览器压根不认识这些特性，必然会报错；
+
+我们可以使用polyfill来填充或者说打一个补丁，那么就会包含该特性了；
+
+**如何使用polyfill**
+
+**babel7.4.0之前，可以使用 @babel/polyfill的包，但是该包现在已经不推荐使用了**
+
+**babel7.4.0之后，可以通过单独引入core-js和regenerator-runtime来完成polyfill的使用**
+
+```
+npm install core-js regenerator-runtime --save
+```
+
+可以在webpack中配置，也可以在babel的配置文件中进行配置
+
+**我们需要在babel.config.js文件中进行配置，给preset-env配置一些属性：**
+
+useBuiltIns：设置以什么样的方式来使用polyfill； 
+
+corejs：设置corejs的版本，目前使用较多的是3.x的版本，
+
+另外corejs可以设置是否对提议阶段的特性进行支持；
+
+设置 proposals属性为true即可；
+
+**useBuiltIns属性设置**
+
+```
+useBuiltIns: 'false'
+```
+
+打包后的文件不使用polyfill来进行适配；
+
+并且这个时候是不需要设置corejs属性的；
+
+```
+useBuiltIns: 'usage'
+```
+
+会根据源代码中出现的语言特性，自动检测所需要的polyfill； 
+
+这样可以确保最终包里的polyfill数量的最小化，打包的包相对会小一些；
+
+可以设置corejs属性来确定使用的corejs的版本；
+
+```js
+presets: [
+    [
+      "@babel/preset-typescript",
+      {
+        corejs: 3, //下载的版本
+        useBuiltIns: "usage", //一般会使用usage
+      },
+    ],
+  ],
+```
+
+
+
+```
+useBuiltIns: 'usage'
+```
+
+如果我们依赖的某一个库本身使用了某些polyfill的特性，但是因为我们使用的是usage，所以之后用户浏览器可能会报错；
+
+所以，如果你担心出现这种情况，可以使用 entry； 
+
+并且需要在入口文件中添加 **`import 'core-js/stable'; import 'regenerator-runtime/runtime';**
+
+这样做会根据 browserslist 目标导入所有的polyfill，但是对应的包也会变大；
+
+```
+//例如入口文件是index.js
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
+```
+
+### React的jsx支持
+
+**对react jsx代码进行处理需要如下的插件：**
+
+@babel/plugin-syntax-jsx
+
+@babel/plugin-transform-react-jsx
+
+@babel/plugin-transform-react-display-name
+
+**但是开发中，我们并不需要一个个去安装这些插件，我们依然可以使用preset来配置**
+
+```
+npm install @babel/preset-react -D
+```
+
+
+
+```
+presets: [
+    [
+      "@babel/preset-react",
+    ],
+  ],
+```
+
+## TypeScript的编译
+
+```
+npm install typescript -D
+```
+
+**另外TypeScript的编译配置信息我们通常会编写一个tsconfig.json文件：**
+
+```
+tsc --init
+```
+
+**之后我们可以运行 npx tsc来编译自己的ts代码**
+
+```
+npx tsc
+```
+
+### **使用ts-loader**
+
+在webpack中可以使用ts-loader来处理ts文件
+
+```
+npm install ts-loader -D
+```
+
+
+
+```
+{
+        test: /\.ts$/,
+        use: "ts-loader"
+ }
+```
+
+
+
+#### **使用babel-loader**
+
+**除了可以使用TypeScript Compiler来编译TypeScript之外，我们也可以使用Babel：** 
+
+Babel是有对TypeScript进行支持；
+
+我们可以使用插件： @babel/tranform-typescript； 
+
+但是更推荐直接使用preset：@babel/preset-typescript； 
+
+**我们来安装@babel/preset-typescript：**
+
+```
+npm install @babel/preset-typescript -D
+```
+
+```js
+[
+      "@babel/preset-typescript",
+      {
+        corejs: 3, //下载的版本
+        useBuiltIns: "usage", //一般会使用usage
+      },
+    ],
+```
+
+#### ts-loader和babel-loader选择
+
+**使用ts-loader（TypeScript Compiler）** 
+
+来直接编译TypeScript，那么只能将ts转换成js； 
+
+如果我们还希望在这个过程中添加对应的polyfill，那么ts-loader是无能为力的；
+
+我们需要借助于babel来完成polyfill的填充功能；
+
+**使用babel-loader（Babel）** 
+
+来直接编译TypeScript，也可以将ts转换成js，并且可以实现polyfill的功能；
+
+但是babel-loader在编译的过程中，不会对类型错误进行检测；
+
+我们可以在开发阶段使用ts-loader，在构建阶段使用babel-loader
+
+```
+ "scripts": {
+    "build": "webpack",
+    "ts-check": "tsc --noEmit",
+    "ts-check-watch": "tsc --noEmit --watch"
+  },
+```
+
+我们执行 npm run type-check可以对ts代码的类型进行检测；
+
+我们执行 npm run type-check-watch可以实时的检测类型错误；
+
+## 搭建本地服务器
+
+**为了完成自动编译，webpack提供了几种可选的方式：**
+
+webpack watch mode； 
+
+webpack-dev-server（常用）；
+
+webpack-dev-middleware；
+
+#### webpack-dev-server
+
+```
+npm install webpack-dev-server -D
+```
+
+**修改配置文件，启动时加上serve参数：**
+
+```js
+ //webpack-dev-server 不会打包到dist文件夹
+  devServer: {
+    //静态资源文件夹，在devserver中 ，告诉浏览器静态资源文件去哪里找，如果不写，默认是public文件夹
+    //下面的设置是告诉浏览器去content，public文件夹去找
+    static: ["public", "content"],
+    // 设置主机地址，设置为0.0.0.0可以监听同一网段下的所有地址
+    // host: '0.0.0.0',
+    hot: only,//启用热模块替换功能，在构建失败时不刷新页面作为回退，使用 hot: 'only'
+    port: 3000,
+    open: true,
+    compress: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:9000",
+        pathRewrite: {
+          "^/api": "",
+        },
+        changeOrigin: true,
+      },
+    },
+
+    historyApiFallback: true,
+  },
+```
+
+
+
+```
+ "serve": "webpack serve",
+```
+
+**webpack-dev-server 在编译之后不会写入到任何输出文件，而是将 bundle 文件保留在内存中：**
+
+事实上webpack-dev-server使用了一个库叫memfs（memory-fs webpack自己写的）
+
+#### devServer的static
+
+**devServer中static对于我们直接访问打包后的资源其实并没有太大的作用，它的主要作用是如果我们打包后的资源，又依赖于**
+
+**其他的一些资源，那么就需要指定从哪里来查找这个内容：**
+
+比如在index.html中，我们需要依赖一个 abc.js 文件，这个文件我们存放在 public文件 中；
+
+在index.html中，我们应该如何去引入这个文件呢？
+
+✓比如代码是这样的：<script src="./public/abc.js"></script>； 
+
+✓ 但是这样打包后浏览器是无法通过相对路径去找到这个文件夹的；
+
+✓ 所以代码是这样的：<script src="/abc.js"></script>;
+
+✓ 但是我们如何让它去查找到这个文件的存在呢？ 设置static即可；
+
+#### **hot、host配置**
+
+**hot:only是当代码编译失败时，是否刷新整个页面：**
+
+默认情况下当代码编译失败修复后，我们会重新刷新整个页面；
+
+如果不希望重新刷新整个页面，可以设置hot:only； 
+
+**host设置主机地址：**
+
+默认值是localhost；
+
+如果希望其他地方也可以访问，可以设置为 0.0.0.0； 
+
+**localhost 和 0.0.0.0 的区别：**
+
+localhost：本质上是一个域名，通常情况下会被解析成127.0.0.1;
+
+127.0.0.1：回环地址(Loop Back Address)，表达的意思其实是我们主机自己发出去的包，直接被自己接收;
+
+✓ 正常的数据库包经常 应用层 - 传输层 - 网络层 - 数据链路层 - 物理层 ; 
+
+✓ 而回环地址，是在网络层直接就被获取到了，是不会经常数据链路层和物理层的; 
+
+✓ 比如我们监听 127.0.0.1时，在同一个网段下的主机中，通过ip地址是不能访问的;
+
+0.0.0.0：监听IPV4上所有的地址，再根据端口找到不同的应用程序; 
+
+✓ 比如我们监听 0.0.0.0时，在同一个网段下的主机中，通过ip地址是可以访问的;
+
+#### port、open、compress
+
+**port设置监听的端口，默认情况下是8080**
+
+**open是否打开浏览器：**
+
+默认值是false，设置为true会打开浏览器；
+
+也可以设置为类似于 Google Chrome等值；
+
+**compress是否为静态文件开启gzip compression：**
+
+默认值是false，可以设置为true；
+
+#### Proxy代理
+
+**proxy是我们开发中非常常用的一个配置选项，它的目的设置代理来解决跨域访问的问题：**
+
+比如我们的一个api请求是 http://localhost:8888，但是本地启动服务器的域名是 http://localhost:8080，这个时候发送网络请求就会出现跨域的问题；
+
+那么我们可以将请求先发送到一个代理服务器，代理服务器和API服务器没有跨域的问题，就可以解决我们的跨域问题了；
+
+**我们可以进行如下的设置：**
+
+target：表示的是代理到的目标地址，比如 /api-hy/moment会被代理到 http://localhost:8888/api-hy/moment； 
+
+pathRewrite：默认情况下，我们的 /api-hy 也会被写入到URL中，如果希望删除，可以使用pathRewrite； 
+
+changeOrigin：它表示是否更新代理后请求的headers中host地址；
+
+#### changeOrigin
+
+**其实是要修改代理请求中的headers中的host属性：**
+
+因为我们真实的请求，其实是需要通过 http://localhost:8888来请求的；
+
+但是因为使用了代码，默认情况下它的值时 http://localhost:8000； 
+
+如果我们需要修改，那么可以将changeOrigin设置为true即可；
+
+#### historyApiFallback
+
+**historyApiFallback是开发中一个非常常见的属性，它主要的作用是解决SPA页面在路由跳转之后，进行页面刷新时，返回404**
+
+**的错误。**
+
+**boolean值：默认是false**
+
+如果设置为true，那么在刷新时，返回404错误时，会自动返回 index.html 的内容；
+
+**object类型的值，可以配置rewrites属性**
+
+可以配置from来匹配路径，决定要跳转到哪一个页面；
+
+**事实上devServer中实现historyApiFallback功能是通过connect-history-api-fallback库的**：
+
+## 如何使用webpack性能优化？
+
+**比较常见的面试题包括：**
+
+可以配置哪些属性来进行webpack性能优化？ 
+
+前端有哪些常见的性能优化？（问到前端性能优化时，除了其他常见的，也完全可以从webpack来回答）
+
+**webpack的性能优化较多，我们可以对其进行分类：**
+
+优化一：打包后的结果，上线时的性能优化。（比如分包处理、减小包体积、CDN服务器等）
+
+优化二：优化打包速度，开发或者构建时优化打包速度。（比如exclude、cache-loader等）
+
+**大多数情况下，我们会更加侧重于优化一，这对于线上的产品影响更大**
+
+**在大多数情况下webpack都帮我们做好了该有的性能优化：**
+
+比如配置mode为production或者development时，默认webpack的配置信息；
+
+但是我们也可以针对性的进行自己的项目优化；
+
+### 性能优化 - 代码分离
+
+**代码分离（Code Splitting）是webpack一个非常重要的特性**
+
+它主要的目的是将代码分离到不同的bundle中，之后我们可以按需加载，或者并行加载这些文件； 
+
+比如默认情况下，所有的JavaScript代码（业务代码、第三方依赖、暂时没有用到的模块）在首页全部都加载，就会影响首页的加载速度；
+
+代码分离可以分出更小的bundle，以及控制资源加载优先级，提供代码的加载性能；
+
+**Webpack中常用的代码分离有三种：**
+
+入口起点：使用entry配置手动分离代码；
+
+防止重复：使用Entry Dependencies或者SplitChunksPlugin去重和分离代码；
+
+动态导入：通过模块的内联函数调用来分离代码；
