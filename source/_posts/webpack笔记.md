@@ -929,3 +929,73 @@ changeOrigin：它表示是否更新代理后请求的headers中host地址；
 防止重复：使用Entry Dependencies或者SplitChunksPlugin去重和分离代码；
 
 动态导入：通过模块的内联函数调用来分离代码；
+
+#### 多入口起点
+
+将入口文件分为多个，将必要的库，但是又不大会改变的代码打成一个包，例如jquery，图片，bootstrap等，多入口都依赖的文件可以使用dependOn属性，下面的shared属性是自定义属性，这样shared会自己打成一个包，而不会打包到index，main入口文件，减少包的体积，index，main共享这个包
+
+```js
+entry: {
+    index: {
+      import: './src/index.js',
+      dependOn: 'shared'
+    },
+    main: {
+      import: './src/main.js',
+      dependOn: 'shared'
+    },
+    shared: ['axios']
+  },
+  output: {
+    path: path.resolve(__dirname, './build'),
+    // placeholder
+    filename: '[name]-bundle.js',
+    clean: true
+  },
+```
+
+![](https://raw.githubusercontent.com/yangzeng-cell/blogImage3/main/%E6%88%AA%E5%B1%8F2023-06-05%2022.30.31.png)
+
+上图就是打包之后的样子
+
+#### 动态导入(dynamic import)
+
+**另外一个代码拆分的方式是动态导入时，webpack提供了两种实现动态导入的方式：**
+
+第一种，使用ECMAScript中的 import() 语法来完成，也是目前推荐的方式；
+
+第二种，使用webpack遗留的 require.ensure，目前已经不推荐使用；
+
+**比如我们有一个模块 bar.js：** 
+
+该模块我们希望在代码运行过程中来加载它（比如判断一个条件成立时加载）；
+
+因为我们并不确定这个模块中的代码一定会用到，所以最好拆分成一个独立的js文件； 
+
+这样可以保证不用到该内容时，浏览器不需要加载和处理该文件的js代码； 
+
+这个时候我们就可以使用动态导入； 
+
+**注意：使用动态导入bar.js：** 
+
+在webpack中，通过动态导入获取到一个对象； 
+
+真正导出的内容，在该对象的default属性中，所以我们需要做一个简单的解构；
+
+```
+/**
+ * import的内容刚开始是不会下载下来的，用到的时候才会下载下来
+ */
+btn1.onclick = function () {
+  //魔法注释，修改到处bundle.js的命名,不一定需要配合webpack的chunkFileName一起使用
+  import(/* webpackChunkName: "about" */ "./router/about").then((res) => {
+    res.about(); //如果是使用export导出的
+    res.default(); //如果是使用export default 导出的
+  });
+};
+
+btn2.onclick = function () {
+  import(/* webpackChunkName: "category" */ "./router/category");
+};
+```
+
