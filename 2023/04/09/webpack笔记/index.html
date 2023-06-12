@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://github.com/browserslist/browserslist/raw/main/img/complement.svg">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogImage3/main/%E6%88%AA%E5%B1%8F2023-06-05%2022.30.31.png">
 <meta property="article:published_time" content="2023-04-09T21:20:02.000Z">
-<meta property="article:modified_time" content="2023-06-05T15:17:30.113Z">
+<meta property="article:modified_time" content="2023-06-12T13:52:07.679Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="webpack">
 <meta name="twitter:card" content="summary_large_image">
@@ -224,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          17k 字
+          37k 字
         
       </span>
     
@@ -235,7 +235,7 @@
         
         
         
-          140 分钟
+          307 分钟
         
       </span>
     
@@ -879,6 +879,853 @@ btn2.onclick = <span class="hljs-keyword">function</span> (<span class="hljs-par
   import(<span class="hljs-comment">/* webpackChunkName: &quot;category&quot; */</span> <span class="hljs-string">&quot;./router/category&quot;</span>);
 &#125;;</code></pre></div>
 
+<h4 id="动态导入的文件命名"><a href="#动态导入的文件命名" class="headerlink" title="动态导入的文件命名"></a>动态导入的文件命名</h4><p><strong>动态导入的文件命名：</strong></p>
+<p>因为动态导入通常是一定会打包成独立的文件的，所以并不会再cacheGroups中进行配置；</p>
+<p>那么它的命名我们通常会在output中，通过 chunkFilename 属性来命名；</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-attr">output</span>: &#123;
+    <span class="hljs-attr">clean</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">path</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./build&quot;</span>),
+    <span class="hljs-comment">// placeholder</span>
+    <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;[name]-bundle.js&quot;</span>,
+    <span class="hljs-comment">// 单独针对分包的文件进行命名</span>
+    <span class="hljs-attr">chunkFilename</span>: <span class="hljs-string">&quot;[id]_[name]_chunk.js&quot;</span>,
+  &#125;,</code></pre></div>
+
+<p>通过chunkFilename来定义文件的文字,默认情况下，id和name的名字是一样的</p>
+<p>如果我们希望修改name的值，可以通过magic comments（魔法注释）的方式；</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-title function_">import</span>(<span class="hljs-comment">/* webpackChunkName: &quot;category&quot; */</span> <span class="hljs-string">&quot;./router/category&quot;</span>);</code></pre></div>
+
+<h4 id="optimization-chunkIds配置"><a href="#optimization-chunkIds配置" class="headerlink" title="optimization.chunkIds配置"></a>optimization.chunkIds配置</h4><p>optimization.chunkIds配置用于告知webpack模块的id采用什么算法生成。</p>
+<p><strong>有三个比较常见的值：</strong></p>
+<p>natural：按照数字的顺序使用id； </p>
+<p>named：development下的默认值，一个可读的名称的id； </p>
+<p>deterministic：确定性的，在不同的编译中不变的短数字id</p>
+<p>✓ 在webpack4中是没有这个值的；</p>
+<p>✓ 那个时候如果使用natural，那么在一些编译发生变化时，就会有问题；</p>
+<p><strong>最佳实践：</strong></p>
+<p>开发过程中，我们推荐使用named； </p>
+<p>打包过程中，我们推荐使用deterministic；</p>
+<h4 id="optimization-runtimeChunk配置"><a href="#optimization-runtimeChunk配置" class="headerlink" title="optimization.runtimeChunk配置"></a>optimization.runtimeChunk配置</h4><p><strong>配置runtime相关的代码是否抽取到一个单独的chunk中：</strong></p>
+<p>runtime相关的代码指的是在运行环境中，对模块进行解析、加载、模块信息相关的代码； </p>
+<p>比如我们的component、bar两个通过import函数相关的代码加载，就是通过runtime代码完成的；</p>
+<p><strong>抽离出来后，有利于浏览器缓存的策略：</strong></p>
+<p>比如我们修改了业务代码（main），那么runtime和component、bar的chunk是不需要重新加载的；</p>
+<p>比如我们修改了component、bar的代码，那么main中的代码是不需要重新加载的；</p>
+<p>设置的值：</p>
+<p>true/multiple：针对每个入口打包一个runtime文件；</p>
+<p>single：打包一个runtime文件；</p>
+<p>对象：name属性决定runtimeChunk的名称；</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 优化配置</span>
+<span class="hljs-attr">optimization</span>: &#123;
+  <span class="hljs-comment">// 设置生成的chunkId的算法</span>
+  <span class="hljs-comment">// development: named</span>
+  <span class="hljs-comment">// production: deterministic(确定性)</span>
+  <span class="hljs-comment">// webpack4中使用: natural</span>
+  <span class="hljs-attr">chunkIds</span>: <span class="hljs-string">&quot;deterministic&quot;</span>,
+  <span class="hljs-comment">// runtime的代码是否抽取到单独的包中(早Vue2脚手架中)</span>
+  <span class="hljs-attr">runtimeChunk</span>: &#123;
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;runtime&quot;</span>,
+  &#125;,
+  <span class="hljs-comment">// 分包插件: SplitChunksPlugin</span>
+  <span class="hljs-attr">splitChunks</span>: &#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 默认情况下只对异步代码进行分饱</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-attr">chunks</span>: <span class="hljs-string">&quot;all&quot;</span>, <span class="hljs-comment">//initial 同步代码分包，async  异步代码分包，同步异步投分饱</span>
+    <span class="hljs-comment">// 当一个包大于指定的大小时, 继续进行拆包，但是必须保持包的完整性</span>
+    <span class="hljs-comment">// maxSize: 20000,</span>
+    <span class="hljs-comment">// // 将包拆分成不小于minSize的包</span>
+    <span class="hljs-comment">// minSize: 10000,</span>
+    <span class="hljs-attr">minSize</span>: <span class="hljs-number">10</span>,
+
+    <span class="hljs-comment">// 自己对需要进行拆包的内容进行分包</span>
+    <span class="hljs-attr">cacheGroups</span>: &#123;
+      <span class="hljs-attr">utils</span>: &#123;
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/utils/</span>, <span class="hljs-comment">//utils目录下的文件进行分饱</span>
+        <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;[id]_utils.js&quot;</span>,
+      &#125;,
+      <span class="hljs-attr">vendors</span>: &#123;
+        <span class="hljs-comment">// /node_modules/</span>
+        <span class="hljs-comment">// window上面 /\</span>
+        <span class="hljs-comment">// mac上面 /</span>
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]node_modules[\\/]/</span>, <span class="hljs-comment">//所有node__module 目录下的进行分包</span>
+        <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;[id]_vendors.js&quot;</span>,
+      &#125;,
+    &#125;,
+  &#125;,
+  <span class="hljs-comment">// 代码优化: TerserPlugin =&gt; 让代码更加简单 =&gt; Terser</span>
+  <span class="hljs-attr">minimizer</span>: [
+    <span class="hljs-comment">// JS代码简化</span>
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">TerserPlugin</span>(&#123;
+      <span class="hljs-comment">//这个插件webpack已经集成，</span>
+      <span class="hljs-attr">extractComments</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">//可以用于删除提取的注视文件</span>
+    &#125;),
+    <span class="hljs-comment">// CSS代码简化</span>
+  ],
+&#125;,</code></pre></div>
+
+<h4 id="Prefetch和Preload"><a href="#Prefetch和Preload" class="headerlink" title="Prefetch和Preload"></a>Prefetch和Preload</h4><p>webpack v4.6.0+ 增加了对预获取和预加载的支持。</p>
+<p>在声明 import 时，使用下面这些内置指令，来告知浏览器</p>
+<p><strong>prefetch</strong>(预获取)：将来某些导航下可能需要的资源</p>
+<p><strong>preload</strong>(预加载)：当前导航下可能需要资源</p>
+<p><strong>与 prefetch 指令相比，preload 指令有许多不同之处：</strong></p>
+<p>preload chunk 会在父 chunk 加载时，以并行方式开始加载。prefetch chunk 会在父 chunk 加载结束后开始加载。</p>
+<p>preload chunk 具有中等优先级，并立即下载。prefetch chunk 在浏览器闲置时下载。</p>
+<p>preload chunk 会在父 chunk 中立即请求，用于当下时刻。prefetch chunk 会用于未来的某个时刻。</p>
+<div class="code-wrapper"><pre><code class="hljs js">btn1.<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-title function_">import</span>(
+    <span class="hljs-comment">/* webpackChunkName: &quot;about&quot; */</span>
+    <span class="hljs-comment">/* webpackPrefetch: true */</span>
+    <span class="hljs-string">&#x27;./router/about&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
+    res.<span class="hljs-title function_">about</span>()
+    res.<span class="hljs-title function_">default</span>()
+  &#125;)
+&#125;
+
+btn2.<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
+  <span class="hljs-title function_">import</span>(
+    <span class="hljs-comment">/* webpackChunkName: &quot;category&quot; */</span>
+    <span class="hljs-comment">/* webpackPrefetch: true */</span>
+    <span class="hljs-string">&#x27;./router/category&#x27;</span>)
+&#125;</code></pre></div>
+
+<h4 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h4><p>在开发中，我们使用CDN主要是两种方式：</p>
+<p>方式一：打包的所有静态资源，放到CDN服务器，</p>
+<p>用户所有资源都是通过CDN服务器加载的；</p>
+<p>方式二：一些第三方资源放到CDN服务器上；</p>
+<p>在开发环境中可以使用node_module中加载，在生产环境中使用cdn加载</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-attr">output</span>: &#123;
+    <span class="hljs-attr">clean</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">path</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./build&quot;</span>),
+    <span class="hljs-comment">// placeholder</span>
+    <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;[name]-bundle.js&quot;</span>,
+    <span class="hljs-comment">// 单独针对分包的文件进行命名</span>
+    <span class="hljs-attr">chunkFilename</span>: <span class="hljs-string">&quot;[name]_chunk.js&quot;</span>,
+    <span class="hljs-attr">publicPath</span>: <span class="hljs-string">&quot;http://coderwhycdn.com/&quot;</span>,
+  &#125;,
+  <span class="hljs-comment">// 排除某些包不需要进行打包</span>
+  <span class="hljs-attr">externals</span>: &#123;
+    <span class="hljs-attr">react</span>: <span class="hljs-string">&quot;React&quot;</span>,
+    <span class="hljs-comment">// key属性名: 排除的框架的名称</span>
+    <span class="hljs-comment">// value值: 从CDN地址请求下来的js中提供对应的名称</span>
+    <span class="hljs-attr">axios</span>: <span class="hljs-string">&quot;axios&quot;</span>,
+  &#125;,</code></pre></div>
+
+<p>在publicPath中配置cdn的路径，打包之后就会自动加载这个cdn地址</p>
+<div class="code-wrapper"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width,initial-scale=1&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span></span>
+<span class="hljs-tag">      <span class="hljs-attr">defer</span>=<span class="hljs-string">&quot;defer&quot;</span></span>
+<span class="hljs-tag">      <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;http://coderwhycdn.com/runtime-bundle.js&quot;</span></span>
+<span class="hljs-tag">    &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">defer</span>=<span class="hljs-string">&quot;defer&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;http://coderwhycdn.com/497_utils.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">defer</span>=<span class="hljs-string">&quot;defer&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;http://coderwhycdn.com/main-bundle.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;root&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.bootcdn.net/ajax/libs/axios/1.2.0/axios.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
+<p>第三方的库可以使用cdn的方式进行引入，可以在webpack配置中来排出这些包，在html模版文件中使用cdn的地址</p>
+<div class="code-wrapper"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;root&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- 排除的包，在这里手动加载这个cdn包 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.bootcdn.net/ajax/libs/axios/1.2.0/axios.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
+<h4 id="MiniCssExtractPlugin"><a href="#MiniCssExtractPlugin" class="headerlink" title="MiniCssExtractPlugin"></a>MiniCssExtractPlugin</h4><p><strong>MiniCssExtractPlugin可以帮助我们将css提取到一个独立的css文件中，该插件需要在webpack4+才可以使用。</strong></p>
+<p><strong>首先，我们需要安装 mini-css-extract-plugin：</strong></p>
+<div class="code-wrapper"><pre><code class="hljs mipsasm">npm <span class="hljs-keyword">install </span>mini-css-<span class="hljs-keyword">extract-plugin </span>-D</code></pre></div>
+
+<p> <strong>配置rules和plugins：</strong></p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-attr">module</span>: &#123;
+   <span class="hljs-attr">rules</span>: [
+     &#123;
+       <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>,
+       <span class="hljs-attr">use</span>: [
+         <span class="hljs-comment">// &#x27;style-loader&#x27;, 开发阶段</span>
+         <span class="hljs-title class_">MiniCssExtractPlugin</span>.<span class="hljs-property">loader</span>, <span class="hljs-comment">// 生产阶段</span>
+         <span class="hljs-string">&quot;css-loader&quot;</span>,
+       ],
+     &#125;,
+   ],
+ &#125;,
+ <span class="hljs-attr">plugins</span>: [
+   <span class="hljs-comment">// 完成css的提取</span>
+   <span class="hljs-keyword">new</span> <span class="hljs-title class_">MiniCssExtractPlugin</span>(&#123;
+     <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;css/[name].css&quot;</span>,
+     <span class="hljs-attr">chunkFilename</span>: <span class="hljs-string">&quot;css/[name]_chunk.css&quot;</span>,
+   &#125;),
+ ],</code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">HtmlWebpackPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;html-webpack-plugin&quot;</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">TerserPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;terser-webpack-plugin&quot;</span>);
+<span class="hljs-keyword">const</span> &#123; <span class="hljs-title class_">ProvidePlugin</span> &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack&quot;</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">MiniCssExtractPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;mini-css-extract-plugin&quot;</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">CSSMinimizerPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;css-minimizer-webpack-plugin&quot;</span>);
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;
+  <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;production&quot;</span>,
+  <span class="hljs-attr">devtool</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-comment">// entry: &#x27;./src/index.js&#x27;,</span>
+  <span class="hljs-attr">entry</span>: <span class="hljs-string">&quot;./src/main.js&quot;</span>,
+  <span class="hljs-attr">output</span>: &#123;
+    <span class="hljs-attr">clean</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">path</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./build&quot;</span>),
+    <span class="hljs-comment">// placeholder</span>
+    <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;js/[name]-bundle.js&quot;</span>,
+    <span class="hljs-comment">// 单独针对分包的文件进行命名</span>
+    <span class="hljs-attr">chunkFilename</span>: <span class="hljs-string">&quot;js/[name]_chunk.js&quot;</span>,
+    <span class="hljs-comment">// publicPath: &#x27;http://coderwhycdn.com/&#x27;</span>
+  &#125;,
+  <span class="hljs-comment">// 优化配置</span>
+  <span class="hljs-attr">optimization</span>: &#123;
+    <span class="hljs-comment">// 设置生成的chunkId的算法</span>
+    <span class="hljs-comment">// development: named</span>
+    <span class="hljs-comment">// production: deterministic(确定性)</span>
+    <span class="hljs-comment">// webpack4中使用: natural</span>
+    <span class="hljs-attr">chunkIds</span>: <span class="hljs-string">&quot;deterministic&quot;</span>,
+    <span class="hljs-comment">// runtime的代码是否抽取到单独的包中(早Vue2脚手架中)</span>
+    <span class="hljs-attr">runtimeChunk</span>: &#123;
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;runtime&quot;</span>,
+    &#125;,
+    <span class="hljs-comment">// 分包插件: SplitChunksPlugin</span>
+    <span class="hljs-attr">splitChunks</span>: &#123;
+      <span class="hljs-attr">chunks</span>: <span class="hljs-string">&quot;all&quot;</span>,
+      <span class="hljs-comment">// 当一个包大于指定的大小时, 继续进行拆包</span>
+      <span class="hljs-comment">// maxSize: 20000,</span>
+      <span class="hljs-comment">// // 将包拆分成不小于minSize的包</span>
+      <span class="hljs-comment">// minSize: 10000,</span>
+      <span class="hljs-attr">minSize</span>: <span class="hljs-number">10</span>,
+
+      <span class="hljs-comment">// 自己对需要进行拆包的内容进行分包</span>
+      <span class="hljs-attr">cacheGroups</span>: &#123;
+        <span class="hljs-attr">utils</span>: &#123;
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/utils/</span>,
+          <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;js/[id]_utils.js&quot;</span>,
+        &#125;,
+        <span class="hljs-attr">vendors</span>: &#123;
+          <span class="hljs-comment">// /node_modules/</span>
+          <span class="hljs-comment">// window上面 /\</span>
+          <span class="hljs-comment">// mac上面 /</span>
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]node_modules[\\/]/</span>,
+          <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;js/[id]_vendors.js&quot;</span>,
+        &#125;,
+      &#125;,
+    &#125;,
+    <span class="hljs-comment">//为了minimizer生效。需要设置minimize为true，production模式默认会设置为true</span>
+    <span class="hljs-attr">minimize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// 代码优化: TerserPlugin =&gt; 让代码更加简单 =&gt; Terser</span>
+    <span class="hljs-attr">minimizer</span>: [
+      <span class="hljs-comment">// JS压缩的插件: TerserPlugin</span>
+      <span class="hljs-keyword">new</span> <span class="hljs-title class_">TerserPlugin</span>(&#123;
+        <span class="hljs-attr">extractComments</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-comment">//配置</span>
+        <span class="hljs-attr">terserOptions</span>: &#123;
+          <span class="hljs-comment">//压缩</span>
+          <span class="hljs-attr">compress</span>: &#123;
+            <span class="hljs-attr">arguments</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">unused</span>: <span class="hljs-literal">true</span>,
+          &#125;,
+          <span class="hljs-comment">//删除用不到的代码</span>
+          <span class="hljs-attr">mangle</span>: <span class="hljs-literal">true</span>,
+          <span class="hljs-comment">// toplevel: false</span>
+          <span class="hljs-attr">keep_fnames</span>: <span class="hljs-literal">true</span>,
+        &#125;,
+      &#125;),
+      <span class="hljs-comment">// CSS压缩的插件: CSSMinimizerPlugin</span>
+      <span class="hljs-keyword">new</span> <span class="hljs-title class_">CSSMinimizerPlugin</span>(&#123;
+        <span class="hljs-comment">// parallel: true</span>
+      &#125;),
+    ],
+  &#125;,
+  <span class="hljs-attr">module</span>: &#123;
+    <span class="hljs-attr">rules</span>: [
+      &#123;
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.jsx?$/</span>,
+        <span class="hljs-attr">use</span>: &#123;
+          <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,
+        &#125;,
+      &#125;,
+      &#123;
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.ts$/</span>,
+        <span class="hljs-attr">use</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,
+      &#125;,
+      &#123;
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>,
+        <span class="hljs-attr">use</span>: [
+          <span class="hljs-comment">// &#x27;style-loader&#x27;, 开发阶段</span>
+          <span class="hljs-title class_">MiniCssExtractPlugin</span>.<span class="hljs-property">loader</span>, <span class="hljs-comment">// 生产阶段</span>
+          <span class="hljs-string">&quot;css-loader&quot;</span>,
+        ],
+      &#125;,
+    ],
+  &#125;,
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">HtmlWebpackPlugin</span>(&#123;
+      <span class="hljs-attr">template</span>: <span class="hljs-string">&quot;./index.html&quot;</span>,
+    &#125;),
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">ProvidePlugin</span>(&#123;
+      <span class="hljs-attr">axios</span>: [<span class="hljs-string">&quot;axios&quot;</span>, <span class="hljs-string">&quot;default&quot;</span>],
+      <span class="hljs-comment">// get: [&#x27;axios&#x27;, &#x27;get&#x27;],</span>
+      <span class="hljs-attr">dayjs</span>: <span class="hljs-string">&quot;dayjs&quot;</span>,
+    &#125;),
+    <span class="hljs-comment">// 完成css的提取</span>
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">MiniCssExtractPlugin</span>(&#123;
+      <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;css/[name].css&quot;</span>,
+      <span class="hljs-attr">chunkFilename</span>: <span class="hljs-string">&quot;css/[name]_chunk.css&quot;</span>,
+    &#125;),
+  ],
+&#125;;
+</code></pre></div>
+
+
+
+<h3 id="Hash、ContentHash、ChunkHash"><a href="#Hash、ContentHash、ChunkHash" class="headerlink" title="Hash、ContentHash、ChunkHash"></a>Hash、ContentHash、ChunkHash</h3><p><strong>在我们给打包的文件进行命名的时候，会使用placeholder，placeholder中有几个属性比较相似：</strong></p>
+<p>hash、chunkhash、contenthash</p>
+<p>hash本身是通过MD4的散列函数处理后，生成一个128位的hash值（32个十六进制）；</p>
+<p><strong>hash值的生成和整个项目有关系：</strong></p>
+<p>比如我们现在有两个入口index.js和main.js； </p>
+<p>它们分别会输出到不同的bundle文件中，并且在文件名称中我们有使用hash； </p>
+<p>这个时候，如果修改了index.js文件中的内容，那么hash会发生变化；</p>
+<p>那就意味着两个文件的名称都会发生变化；</p>
+<p><strong>chunkhash可以有效的解决上面的问题，它会根据不同的入口进行借来解析来生成hash值：</strong></p>
+<p>比如我们修改了index.js，那么main.js的chunkhash是不会发生改变的；</p>
+<p><strong>contenthash表示生成的文件hash名称，只和内容有关系：</strong></p>
+<p>比如我们的index.js，引入了一个style.css，style.css有被抽取到一个独立的css文件中；</p>
+<p>这个css文件在命名时，如果我们使用的是chunkhash； </p>
+<p>那么当index.js文件的内容发生变化时，css文件的命名也会发生变化；</p>
+<p>这个时候我们可以使用contenthash；</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">MiniCssExtractPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mini-css-extract-plugin&#x27;</span>)
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;
+  <span class="hljs-attr">mode</span>: <span class="hljs-string">&#x27;development&#x27;</span>,
+  <span class="hljs-attr">entry</span>: &#123;
+    <span class="hljs-attr">index</span>: <span class="hljs-string">&#x27;./src/index.js&#x27;</span>,
+    <span class="hljs-attr">main</span>: <span class="hljs-string">&#x27;./src/main.js&#x27;</span>,
+  &#125;,
+  <span class="hljs-attr">output</span>: &#123;
+    <span class="hljs-attr">clean</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">path</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&#x27;./build&#x27;</span>),
+    <span class="hljs-attr">filename</span>: <span class="hljs-string">&#x27;[name]_[contenthash]_bundle.js&#x27;</span>,
+    <span class="hljs-attr">chunkFilename</span>: <span class="hljs-string">&#x27;[contenthash]_chunk.js&#x27;</span>
+  &#125;,
+  <span class="hljs-attr">module</span>: &#123;
+    <span class="hljs-attr">rules</span>: [
+      &#123;
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>,
+        <span class="hljs-attr">use</span>: [
+          <span class="hljs-title class_">MiniCssExtractPlugin</span>.<span class="hljs-property">loader</span>,
+          <span class="hljs-string">&#x27;css-loader&#x27;</span>
+        ]
+      &#125;
+    ]
+  &#125;,
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">MiniCssExtractPlugin</span>(&#123;
+      <span class="hljs-attr">filename</span>: <span class="hljs-string">&#x27;[contenthash]_[name].css&#x27;</span>
+    &#125;)
+  ]
+&#125;</code></pre></div>
+
+<h3 id="Terser介绍和安装"><a href="#Terser介绍和安装" class="headerlink" title="Terser介绍和安装"></a>Terser介绍和安装</h3><p><strong>什么是Terser呢？</strong></p>
+<p>Terser是一个JavaScript的解释（Parser）、Mangler（绞肉机）/Compressor（压缩机）的工具集；</p>
+<p>早期我们会使用 uglify-js来压缩、丑化我们的JavaScript代码，但是目前已经不再维护，并且不支持ES6+的语法；</p>
+<p>Terser是从 uglify-es fork 过来的，并且保留它原来的大部分API以及适配 uglify-es和uglify-js@3等；</p>
+<p><strong>也就是说，Terser可以帮助我们压缩、丑化我们的代码，让我们的bundle变得更小</strong></p>
+<p><strong>因为Terser是一个独立的工具，所以它可以单独安装：</strong></p>
+<div class="code-wrapper"><pre><code class="hljs cmake"><span class="hljs-comment"># 全局安装</span>
+npm <span class="hljs-keyword">install</span> terser -g
+<span class="hljs-comment"># 局部安装</span>
+npm <span class="hljs-keyword">install</span> terser -D</code></pre></div>
+
+<p><strong>命令行使用Terser</strong></p>
+<div class="code-wrapper"><pre><code class="hljs vim">terser [<span class="hljs-built_in">input</span> <span class="hljs-keyword">files</span>] [<span class="hljs-keyword">options</span>]
+# 举例说明
+terser js/file1.js -<span class="hljs-keyword">o</span> foo.<span class="hljs-built_in">min</span>.js -<span class="hljs-keyword">c</span> -<span class="hljs-keyword">m</span></code></pre></div>
+
+<p><strong>Compress和Mangle的options</strong></p>
+<p><strong>Compress option：</strong> </p>
+<p>arrows：class或者object中的函数，转换成箭头函数；</p>
+<p>arguments：将函数中使用 arguments[index]转成对应的形参名称；</p>
+<p>dead_code：移除不可达的代码（tree shaking）；</p>
+<p>其他属性可以查看文档；</p>
+<p><strong>Mangle option</strong></p>
+<p>toplevel：默认值是false，顶层作用域中的变量名称，进行丑化（转换）；</p>
+<p>keep_classnames：默认值是false，是否保持依赖的类名称；</p>
+<p>keep_fnames：默认值是false，是否保持原来的函数名称；</p>
+<p>其他属性可以查看文档；</p>
+<div class="code-wrapper"><pre><code class="hljs gradle">npx terser .<span class="hljs-regexp">/src/</span>abc.js -o abc.min.js -c 
+arrows,arguments=<span class="hljs-keyword">true</span>,dead_code -m 
+toplevel=<span class="hljs-keyword">true</span>,keep_classnames=<span class="hljs-keyword">true</span>,keep_fnames=<span class="hljs-keyword">true</span></code></pre></div>
+
+<h4 id="Terser在webpack中配置"><a href="#Terser在webpack中配置" class="headerlink" title="Terser在webpack中配置"></a>Terser在webpack中配置</h4><p><strong>真实开发中，我们不需要手动的通过terser来处理我们的代码，我们可以直接通过webpack来处理：</strong></p>
+<p>在webpack中有一个minimizer属性，在production模式下，默认就是使用TerserPlugin来处理我们的代码的；</p>
+<p>如果我们对默认的配置不满意，也可以自己来创建TerserPlugin的实例，并且覆盖相关的配置；</p>
+<p><strong>首先，我们需要打开minimize，让其对我们的代码进行压缩（默认production模式下已经打开了）</strong></p>
+<p><strong>其次，我们可以在minimizer创建一个TerserPlugin：</strong> </p>
+<p>extractComments：默认值为true，表示会将注释抽取到一个单独的文件中；</p>
+<p>✓ 在开发中，我们不希望保留这个注释时，可以设置为false； </p>
+<p> parallel：使用多进程并发运行提高构建的速度，默认值是true</p>
+<p>✓ 并发运行的默认数量： os.cpus().length - 1； </p>
+<p>✓ 我们也可以设置自己的个数，但是使用默认值即可；</p>
+<p> terserOptions：设置我们的terser相关的配置</p>
+<p>✓ compress：设置压缩相关的选项；</p>
+<p>✓ mangle：设置丑化相关的选项，可以直接设置为true； </p>
+<p>✓ toplevel：顶层变量是否进行转换；</p>
+<p>✓ keep_classnames：保留类的名称；</p>
+<p>✓ keep_fnames：保留函数的名称；</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 优化配置</span>
+ <span class="hljs-attr">optimization</span>: &#123;
+   <span class="hljs-comment">//为了minimizer生效。需要设置minimize为true，production模式默认会设置为true</span>
+   <span class="hljs-attr">minimize</span>: <span class="hljs-literal">true</span>,
+   <span class="hljs-comment">// 代码优化: TerserPlugin =&gt; 让代码更加简单 =&gt; Terser</span>
+   <span class="hljs-attr">minimizer</span>: [
+     <span class="hljs-comment">// JS压缩的插件: TerserPlugin</span>
+     <span class="hljs-keyword">new</span> <span class="hljs-title class_">TerserPlugin</span>(&#123;
+       <span class="hljs-attr">extractComments</span>: <span class="hljs-literal">false</span>,
+       <span class="hljs-comment">//配置</span>
+       <span class="hljs-attr">terserOptions</span>: &#123;
+         <span class="hljs-comment">//压缩</span>
+         <span class="hljs-attr">compress</span>: &#123;
+           <span class="hljs-attr">arguments</span>: <span class="hljs-literal">true</span>,
+           <span class="hljs-attr">unused</span>: <span class="hljs-literal">true</span>,
+         &#125;,
+         <span class="hljs-comment">//删除用不到的代码</span>
+         <span class="hljs-attr">mangle</span>: <span class="hljs-literal">true</span>,
+         <span class="hljs-comment">// toplevel: false</span>
+         <span class="hljs-attr">keep_fnames</span>: <span class="hljs-literal">true</span>,
+       &#125;,
+     &#125;),
+   ],
+ &#125;,</code></pre></div>
+
+<h3 id="CSS的压缩"><a href="#CSS的压缩" class="headerlink" title="CSS的压缩"></a>CSS的压缩</h3><p><strong>另一个代码的压缩是CSS：</strong> </p>
+<p>CSS压缩通常是去除无用的空格等，因为很难去修改选择器、属性的名称、值等；</p>
+<p>CSS的压缩我们可以使用另外一个插件：css-minimizer-webpack-plugin； </p>
+<p>css-minimizer-webpack-plugin是使用cssnano工具来优化、压缩CSS（也可以单独使用）；</p>
+<p><strong>第一步，安装 css-minimizer-webpack-plugin：</strong></p>
+<div class="code-wrapper"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span> css-minimizer-webpack-plugin -D</code></pre></div>
+
+<p><strong>第二步，在optimization.minimizer中配置</strong></p>
+<div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> CSS压缩的插件: CSSMinimizerPlugin
+     new CSSMinimizerPlugin(&#123;
+       <span class="hljs-regexp">//</span> parallel: true
+     &#125;),</code></pre></div>
+
+<h3 id="什么是Tree-Shaking"><a href="#什么是Tree-Shaking" class="headerlink" title="什么是Tree Shaking"></a>什么是Tree Shaking</h3><p><strong>什么是Tree Shaking呢？</strong></p>
+<p> Tree Shaking是一个术语，在计算机中表示消除死代码（dead_code）；</p>
+<p> 最早的想法起源于LISP，用于消除未调用的代码（纯函数无副作用，可以放心的消除，这也是为什么要求我们在进行函数式</p>
+<p>编程时，尽量使用纯函数的原因之一）；</p>
+<p> 后来Tree Shaking也被应用于其他的语言，比如JavaScript、Dart； </p>
+<p>◼ <strong>JavaScript的Tree Shaking：</strong> </p>
+<p> 对JavaScript进行Tree Shaking是源自打包工具rollup（后面我们也会讲的构建工具）；</p>
+<p> 这是因为Tree Shaking依赖于ES Module的静态语法分析（不执行任何的代码，可以明确知道模块的依赖关系）；</p>
+<p> webpack2正式内置支持了ES2015模块，和检测未使用模块的能力；</p>
+<p> 在webpack4正式扩展了这个能力，并且通过 package.json的 sideEffects属性作为标记，告知webpack在编译时，哪里文</p>
+<p>件可以安全的删除掉；</p>
+<p> webpack5中，也提供了对部分CommonJS的tree shaking的支持；</p>
+<p>✓ <a target="_blank" rel="noopener" href="https://github.com/webpack/changelog-v5#commonjs-tree-shaking">https://github.com/webpack/changelog-v5#commonjs-tree-shaking</a></p>
+<p><strong>webpack实现Tree Shaking</strong></p>
+<p><strong>事实上webpack实现Tree Shaking采用了两种不同的方案：</strong></p>
+<p> usedExports：通过标记某些函数是否被使用，之后通过Terser来进行优化的；</p>
+<p> sideEffects：跳过整个模块/文件，直接查看该文件是否有副作用；</p>
+<p><strong>usedExports</strong></p>
+<p><strong>将mode设置为development模式：</strong></p>
+<p> 为了可以看到 usedExports带来的效果，我们需要设置为 development 模式</p>
+<p> 因为在 production 模式下，webpack默认的一些优化会带来很大的影响。</p>
+<p>◼ <strong>设置usedExports为true和false对比打包后的代码：</strong></p>
+<p> 在usedExports设置为true时，会有一段注释：unused harmony export mul； </p>
+<p> 这段注释的意义是什么呢？告知Terser在优化时，可以删除掉这段代码；</p>
+<p>◼ <strong>这个时候，我们讲 minimize设置true：</strong> </p>
+<p> usedExports设置为false时，mul函数没有被移除掉；</p>
+<p> usedExports设置为true时，mul函数有被移除掉；</p>
+<p>◼ <strong>所以，usedExports实现Tree Shaking是结合Terser来完成的。</strong></p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 优化配置</span>
+  <span class="hljs-attr">optimization</span>: &#123;
+    <span class="hljs-comment">// 导入模块时, 分析模块中的哪些函数有被使用, 哪些函数没有被使用.</span>
+    <span class="hljs-attr">usedExports</span>: <span class="hljs-literal">true</span>,
+
+    <span class="hljs-attr">chunkIds</span>: <span class="hljs-string">&quot;deterministic&quot;</span>,
+    <span class="hljs-comment">// runtime的代码是否抽取到单独的包中(早Vue2脚手架中)</span>
+    <span class="hljs-attr">runtimeChunk</span>: &#123;
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;runtime&quot;</span>,
+    &#125;,
+    <span class="hljs-comment">// 分包插件: SplitChunksPlugin</span>
+    <span class="hljs-attr">splitChunks</span>: &#123;
+      <span class="hljs-attr">chunks</span>: <span class="hljs-string">&quot;all&quot;</span>,
+      <span class="hljs-attr">minSize</span>: <span class="hljs-number">10</span>,
+
+      <span class="hljs-comment">// 自己对需要进行拆包的内容进行分包</span>
+      <span class="hljs-attr">cacheGroups</span>: &#123;
+        <span class="hljs-attr">utils</span>: &#123;
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/utils/</span>,
+          <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;js/[id]_utils.js&quot;</span>,
+        &#125;,
+        <span class="hljs-attr">vendors</span>: &#123;
+          <span class="hljs-comment">// /node_modules/</span>
+          <span class="hljs-comment">// window上面 /\</span>
+          <span class="hljs-comment">// mac上面 /</span>
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]node_modules[\\/]/</span>,
+          <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;js/[id]_vendors.js&quot;</span>,
+        &#125;,
+      &#125;,
+    &#125;,
+    <span class="hljs-attr">minimize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// 代码优化: TerserPlugin =&gt; 让代码更加简单 =&gt; Terser</span>
+    <span class="hljs-attr">minimizer</span>: [
+      <span class="hljs-comment">// JS压缩的插件: TerserPlugin</span>
+      <span class="hljs-keyword">new</span> <span class="hljs-title class_">TerserPlugin</span>(&#123;
+        <span class="hljs-attr">extractComments</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-attr">terserOptions</span>: &#123;
+          <span class="hljs-attr">compress</span>: &#123;
+            <span class="hljs-attr">arguments</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">unused</span>: <span class="hljs-literal">true</span>,
+          &#125;,
+          <span class="hljs-attr">mangle</span>: <span class="hljs-literal">true</span>,
+          <span class="hljs-comment">// toplevel: false</span>
+          <span class="hljs-attr">keep_fnames</span>: <span class="hljs-literal">true</span>,
+        &#125;,
+      &#125;),
+      <span class="hljs-comment">// CSS压缩的插件: CSSMinimizerPlugin</span>
+      <span class="hljs-keyword">new</span> <span class="hljs-title class_">CSSMinimizerPlugin</span>(&#123;
+        <span class="hljs-comment">// parallel: true</span>
+      &#125;),
+    ],
+  &#125;,</code></pre></div>
+
+<h4 id="sideEffects"><a href="#sideEffects" class="headerlink" title="sideEffects"></a>sideEffects</h4><p><strong>sideEffects用于告知webpack compiler哪些模块时有副作用的：</strong></p>
+<p> 副作用的意思是这里面的代码有执行一些特殊的任务，不能仅仅通过export来判断这段代码的意义；</p>
+<p> 副作用的问题，在讲React的纯函数时是有讲过的；</p>
+<p>◼ <strong>在package.json中设置sideEffects的值：</strong></p>
+<p> 如果我们将sideEffects设置为false，就是告知webpack可以安全的删除未用到的exports； </p>
+<p> 如果有一些我们希望保留，可以设置为数组；</p>
+<p>◼ <strong>比如我们有一个format.js、style.css文件：</strong></p>
+<p> 该文件在导入时没有使用任何的变量来接受；</p>
+<p> 那么打包后的文件，不会保留format.js、style.css相关的任何代码；</p>
+<div class="code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">//package.json</span>
+“sideEffects”<span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span>
+	<span class="hljs-string">&quot;./src/util/format.js&quot;</span><span class="hljs-punctuation">,</span>
+	<span class="hljs-string">&quot;*.css&quot;</span>
+<span class="hljs-punctuation">]</span></code></pre></div>
+
+
+
+<h4 id="Webpack中tree-shaking的设置"><a href="#Webpack中tree-shaking的设置" class="headerlink" title="Webpack中tree shaking的设置"></a>Webpack中tree shaking的设置</h4><p><strong>所以，如何在项目中对JavaScript的代码进行TreeShaking呢（生成环境）？</strong></p>
+<p> 在optimization中配置usedExports为true，来帮助Terser进行优化；</p>
+<p> 在package.json中配置sideEffects，直接对模块进行优化；</p>
+<h4 id="CSS实现Tree-Shaking"><a href="#CSS实现Tree-Shaking" class="headerlink" title="CSS实现Tree Shaking"></a>CSS实现Tree Shaking</h4><p>Tree Shaking：PurgeCSS，也是一个帮助我们删除未使用的CSS的工具；</p>
+<div class="code-wrapper"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span> purgecss-webpack-plugin -D</code></pre></div>
+
+<h4 id="配置PurgeCss"><a href="#配置PurgeCss" class="headerlink" title="配置PurgeCss"></a>配置PurgeCss</h4><p><strong>配置这个插件（生成环境）：</strong></p>
+<p>paths：表示要检测哪些目录下的内容需要被分析，这里我们可以使用glob； </p>
+<p>默认情况下，Purgecss会将我们的html标签的样式移除掉，如果我们希望保留，可以添加一个safelist的属性；</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">new</span> <span class="hljs-title class_">PurgeCSSPlugin</span>(&#123;
+      <span class="hljs-attr">paths</span>: glob.<span class="hljs-title function_">sync</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;path.resolve(__dirname, <span class="hljs-string">&quot;../src&quot;</span>)&#125;</span>/**/*`</span>, &#123;
+        <span class="hljs-attr">nodir</span>: <span class="hljs-literal">true</span>,
+      &#125;),
+      <span class="hljs-attr">safelist</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+        <span class="hljs-keyword">return</span> &#123;
+          <span class="hljs-attr">standard</span>: [<span class="hljs-string">&quot;body&quot;</span>],<span class="hljs-comment">//排除掉这个标签</span>
+        &#125;;
+      &#125;,
+    &#125;),</code></pre></div>
+
+<p><strong>purgecss也可以对less文件进行处理（所以它是对打包后的css进行tree shaking操作）；</strong></p>
+<h4 id="Scope-Hoisting"><a href="#Scope-Hoisting" class="headerlink" title="Scope Hoisting"></a>Scope Hoisting</h4><p><strong>什么是Scope Hoisting呢？</strong></p>
+<p>Scope Hoisting从webpack3开始增加的一个新功能；</p>
+<p>功能是对作用域进行提升，并且让webpack打包后的代码更小、运行更快；</p>
+<p>◼ <strong>默认情况下webpack打包会有很多的函数作用域，包括一些（比如最外层的）IIFE：</strong> </p>
+<p> 无论是从最开始的代码运行，还是加载一个模块，都需要执行一系列的函数；</p>
+<p> Scope Hoisting可以将函数合并到一个模块中来运行；</p>
+<p>◼ <strong>使用Scope Hoisting非常的简单，webpack已经内置了对应的模块：</strong></p>
+<p> 在production模式下，默认这个模块就会启用；</p>
+<p> 在development模式下，我们需要自己来打开该模块；</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 作用域提升</span>
+   <span class="hljs-keyword">new</span> webpack.<span class="hljs-property">optimize</span>.<span class="hljs-title class_">ModuleConcatenationPlugin</span>()</code></pre></div>
+
+<h3 id="HTTP压缩"><a href="#HTTP压缩" class="headerlink" title="HTTP压缩"></a>HTTP压缩</h3><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 对打包后的文件(js/css)进行压缩</span>
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">CompressionPlugin</span>(&#123;
+      <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(js|css)$/</span>,
+      <span class="hljs-attr">algorithm</span>: <span class="hljs-string">&#x27;gzip&#x27;</span>
+    &#125;)</code></pre></div>
+
+<p><strong>目前的压缩格式非常的多：</strong></p>
+<p>compress – UNIX的“compress”程序的方法（历史性原因，不推荐大多数应用使用，应该使用gzip或deflate）；</p>
+<p>deflate – 基于deflate算法（定义于RFC 1951）的压缩，使用zlib数据格式封装；</p>
+<p>gzip – GNU zip格式（定义于RFC 1952），是目前使用比较广泛的压缩算法；</p>
+<p>br – 一种新的开源压缩算法，专为HTTP内容的编码而设计；</p>
+<h4 id="HTML文件中代码的压缩"><a href="#HTML文件中代码的压缩" class="headerlink" title="HTML文件中代码的压缩"></a>HTML文件中代码的压缩</h4><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">new</span> <span class="hljs-title class_">HtmlWebpackPlugin</span>(&#123;
+       <span class="hljs-attr">template</span>: <span class="hljs-string">&quot;./index.html&quot;</span>,
+       <span class="hljs-attr">cache</span>: <span class="hljs-literal">true</span>,
+       <span class="hljs-comment">//压缩html</span>
+       <span class="hljs-attr">minify</span>: isProdution
+         ? &#123;
+             <span class="hljs-comment">// 移除注释</span>
+             <span class="hljs-attr">removeComments</span>: <span class="hljs-literal">true</span>,
+             <span class="hljs-comment">// 移除属性</span>
+             <span class="hljs-attr">removeEmptyAttributes</span>: <span class="hljs-literal">true</span>,
+             <span class="hljs-comment">// 移除默认属性</span>
+             <span class="hljs-attr">removeRedundantAttributes</span>: <span class="hljs-literal">true</span>,
+             <span class="hljs-comment">// 折叠空白字符</span>
+             <span class="hljs-attr">collapseWhitespace</span>: <span class="hljs-literal">true</span>,
+             <span class="hljs-comment">// 压缩内联的CSS</span>
+             <span class="hljs-attr">minifyCSS</span>: <span class="hljs-literal">true</span>,
+             <span class="hljs-comment">// 压缩JavaScript</span>
+             <span class="hljs-attr">minifyJS</span>: &#123;
+               <span class="hljs-attr">mangle</span>: &#123;
+                 <span class="hljs-attr">toplevel</span>: <span class="hljs-literal">true</span>,
+               &#125;,
+             &#125;,
+           &#125;
+         : <span class="hljs-literal">false</span>,
+     &#125;),</code></pre></div>
+
+<h2 id="常见的webpack配置"><a href="#常见的webpack配置" class="headerlink" title="常见的webpack配置"></a>常见的webpack配置</h2><div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//comm.config.js 将development和production的公共配置抽离出来</span>
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">HtmlWebpackPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;html-webpack-plugin&quot;</span>);
+<span class="hljs-keyword">const</span> &#123; <span class="hljs-title class_">ProvidePlugin</span> &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack&quot;</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">MiniCssExtractPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;mini-css-extract-plugin&quot;</span>);
+<span class="hljs-keyword">const</span> &#123; merge &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack-merge&quot;</span>);
+<span class="hljs-keyword">const</span> devConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./dev.config&quot;</span>);
+<span class="hljs-keyword">const</span> prodConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./prod.config&quot;</span>);
+
+<span class="hljs-keyword">const</span> getCommonConfig = <span class="hljs-keyword">function</span> (<span class="hljs-params">isProdution</span>) &#123;
+  <span class="hljs-keyword">return</span> &#123;
+    <span class="hljs-attr">entry</span>: <span class="hljs-string">&quot;./src/demo.js&quot;</span>,
+    <span class="hljs-attr">output</span>: &#123;
+      <span class="hljs-attr">clean</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">path</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;../build&quot;</span>),
+      <span class="hljs-comment">// placeholder</span>
+      <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;js/[name]-bundle.js&quot;</span>,
+      <span class="hljs-comment">// 单独针对分包的文件进行命名</span>
+      <span class="hljs-attr">chunkFilename</span>: <span class="hljs-string">&quot;js/[name]_chunk.js&quot;</span>,
+      <span class="hljs-comment">// publicPath: &#x27;http://coderwhycdn.com/&#x27;</span>
+    &#125;,
+    <span class="hljs-attr">resolve</span>: &#123;
+      <span class="hljs-attr">extensions</span>: [<span class="hljs-string">&quot;.js&quot;</span>, <span class="hljs-string">&quot;.json&quot;</span>, <span class="hljs-string">&quot;.wasm&quot;</span>, <span class="hljs-string">&quot;.jsx&quot;</span>, <span class="hljs-string">&quot;.ts&quot;</span>],
+    &#125;,
+    <span class="hljs-attr">module</span>: &#123;
+      <span class="hljs-attr">rules</span>: [
+        &#123;
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.jsx?$/</span>,
+          <span class="hljs-attr">use</span>: &#123;
+            <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,
+          &#125;,
+        &#125;,
+        &#123;
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.ts$/</span>,
+          <span class="hljs-attr">use</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,
+        &#125;,
+        &#123;
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>,
+          <span class="hljs-attr">use</span>: [
+            <span class="hljs-comment">// // &#x27;style-loader&#x27;, //开发阶段</span>
+            <span class="hljs-comment">// MiniCssExtractPlugin.loader, // 生产阶段</span>
+            isProdution ? <span class="hljs-title class_">MiniCssExtractPlugin</span>.<span class="hljs-property">loader</span> : <span class="hljs-string">&quot;style-loader&quot;</span>,
+            <span class="hljs-string">&quot;css-loader&quot;</span>,
+          ],
+        &#125;,
+      ],
+    &#125;,
+    <span class="hljs-attr">plugins</span>: [
+      <span class="hljs-keyword">new</span> <span class="hljs-title class_">HtmlWebpackPlugin</span>(&#123;
+        <span class="hljs-attr">template</span>: <span class="hljs-string">&quot;./index.html&quot;</span>,
+        <span class="hljs-attr">cache</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-comment">//压缩html</span>
+        <span class="hljs-attr">minify</span>: isProdution
+          ? &#123;
+              <span class="hljs-comment">// 移除注释</span>
+              <span class="hljs-attr">removeComments</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-comment">// 移除属性</span>
+              <span class="hljs-attr">removeEmptyAttributes</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-comment">// 移除默认属性</span>
+              <span class="hljs-attr">removeRedundantAttributes</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-comment">// 折叠空白字符</span>
+              <span class="hljs-attr">collapseWhitespace</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-comment">// 压缩内联的CSS</span>
+              <span class="hljs-attr">minifyCSS</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-comment">// 压缩JavaScript</span>
+              <span class="hljs-attr">minifyJS</span>: &#123;
+                <span class="hljs-attr">mangle</span>: &#123;
+                  <span class="hljs-attr">toplevel</span>: <span class="hljs-literal">true</span>,
+                &#125;,
+              &#125;,
+            &#125;
+          : <span class="hljs-literal">false</span>,
+      &#125;),
+      <span class="hljs-keyword">new</span> <span class="hljs-title class_">ProvidePlugin</span>(&#123;
+        <span class="hljs-attr">axios</span>: [<span class="hljs-string">&quot;axios&quot;</span>, <span class="hljs-string">&quot;default&quot;</span>],
+        <span class="hljs-comment">// get: [&#x27;axios&#x27;, &#x27;get&#x27;],</span>
+        <span class="hljs-attr">dayjs</span>: <span class="hljs-string">&quot;dayjs&quot;</span>,
+      &#125;),
+    ],
+  &#125;;
+&#125;;
+
+<span class="hljs-comment">// webpack允许导出一个函数</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">env</span>) &#123;
+  <span class="hljs-keyword">const</span> isProduction = env.<span class="hljs-property">production</span>;
+  <span class="hljs-keyword">let</span> mergeConfig = isProduction ? prodConfig : devConfig;
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">merge</span>(<span class="hljs-title function_">getCommonConfig</span>(isProduction), mergeConfig);
+&#125;;</code></pre></div>
+
+
+
+<p>//dev.config.js</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">HtmlWebpackPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;html-webpack-plugin&#x27;</span>)
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">TerserPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;terser-webpack-plugin&#x27;</span>)
+<span class="hljs-keyword">const</span> &#123; <span class="hljs-title class_">ProvidePlugin</span> &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;webpack&#x27;</span>)
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">MiniCssExtractPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mini-css-extract-plugin&#x27;</span>)
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">CSSMinimizerPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;css-minimizer-webpack-plugin&#x27;</span>)
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;
+  <span class="hljs-attr">mode</span>: <span class="hljs-string">&#x27;development&#x27;</span>,
+  <span class="hljs-attr">devServer</span>: &#123;
+    <span class="hljs-attr">static</span>: [<span class="hljs-string">&#x27;public&#x27;</span>, <span class="hljs-string">&#x27;content&#x27;</span>],
+    <span class="hljs-attr">port</span>: <span class="hljs-number">3000</span>,
+    <span class="hljs-attr">compress</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">proxy</span>: &#123;
+      <span class="hljs-string">&#x27;/api&#x27;</span>: &#123;
+        <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;http://localhost:9000&#x27;</span>,
+        <span class="hljs-attr">pathRewrite</span>: &#123;
+          <span class="hljs-string">&#x27;^/api&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>
+        &#125;,
+        <span class="hljs-attr">changeOrigin</span>: <span class="hljs-literal">true</span>
+      &#125;
+    &#125;,
+    <span class="hljs-attr">historyApiFallback</span>: <span class="hljs-literal">true</span>
+  &#125;,
+  <span class="hljs-attr">plugins</span>: [
+  ]
+&#125;</code></pre></div>
+
+<p>//prod.config.js</p>
+<div class="code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)
+<span class="hljs-keyword">const</span> glob = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;glob&#x27;</span>)
+<span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;webpack&#x27;</span>)
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">TerserPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;terser-webpack-plugin&#x27;</span>)
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">MiniCssExtractPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mini-css-extract-plugin&#x27;</span>)
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">CSSMinimizerPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;css-minimizer-webpack-plugin&#x27;</span>)
+<span class="hljs-keyword">const</span> &#123; <span class="hljs-title class_">PurgeCSSPlugin</span> &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;purgecss-webpack-plugin&#x27;</span>)
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">CompressionPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;compression-webpack-plugin&quot;</span>)
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(glob.<span class="hljs-title function_">sync</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;path.resolve(__dirname, <span class="hljs-string">&#x27;./src&#x27;</span>)&#125;</span>/**/*`</span>, &#123; <span class="hljs-attr">nodir</span>: <span class="hljs-literal">true</span> &#125;))
+
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;
+  <span class="hljs-attr">mode</span>: <span class="hljs-string">&#x27;production&#x27;</span>,
+  <span class="hljs-attr">devtool</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-comment">// 优化配置</span>
+  <span class="hljs-attr">optimization</span>: &#123;
+    <span class="hljs-comment">// 导入模块时, 分析模块中的哪些函数有被使用, 哪些函数没有被使用.</span>
+    <span class="hljs-attr">usedExports</span>: <span class="hljs-literal">true</span>,
+    
+    <span class="hljs-attr">chunkIds</span>: <span class="hljs-string">&#x27;deterministic&#x27;</span>,
+    <span class="hljs-comment">// runtime的代码是否抽取到单独的包中(早Vue2脚手架中)</span>
+    <span class="hljs-attr">runtimeChunk</span>: &#123;
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;runtime&quot;</span>
+    &#125;,
+    <span class="hljs-comment">// 分包插件: SplitChunksPlugin</span>
+    <span class="hljs-attr">splitChunks</span>: &#123;
+      <span class="hljs-attr">chunks</span>: <span class="hljs-string">&quot;all&quot;</span>,
+      <span class="hljs-attr">minSize</span>: <span class="hljs-number">10</span>,
+
+      <span class="hljs-comment">// 自己对需要进行拆包的内容进行分包</span>
+      <span class="hljs-attr">cacheGroups</span>: &#123;
+        <span class="hljs-attr">utils</span>: &#123;
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/utils/</span>,
+          <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;js/[id]_utils.js&quot;</span>
+        &#125;,
+        <span class="hljs-attr">vendors</span>: &#123;
+          <span class="hljs-comment">// /node_modules/</span>
+          <span class="hljs-comment">// window上面 /\</span>
+          <span class="hljs-comment">// mac上面 /</span>
+          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]node_modules[\\/]/</span>,
+          <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;js/[id]_vendors.js&quot;</span>
+        &#125;
+      &#125;
+    &#125;,
+    <span class="hljs-attr">minimize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// 代码优化: TerserPlugin =&gt; 让代码更加简单 =&gt; Terser</span>
+    <span class="hljs-attr">minimizer</span>: [
+      <span class="hljs-comment">// JS压缩的插件: TerserPlugin</span>
+      <span class="hljs-keyword">new</span> <span class="hljs-title class_">TerserPlugin</span>(&#123;
+        <span class="hljs-attr">extractComments</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-attr">terserOptions</span>: &#123;
+          <span class="hljs-attr">compress</span>: &#123;
+            <span class="hljs-attr">arguments</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">unused</span>: <span class="hljs-literal">true</span>
+          &#125;,
+          <span class="hljs-attr">mangle</span>: <span class="hljs-literal">true</span>,
+          <span class="hljs-comment">// toplevel: false</span>
+          <span class="hljs-attr">keep_fnames</span>: <span class="hljs-literal">true</span>
+        &#125;
+      &#125;),
+      <span class="hljs-comment">// CSS压缩的插件: CSSMinimizerPlugin</span>
+      <span class="hljs-comment">// new CSSMinimizerPlugin(&#123;</span>
+      <span class="hljs-comment">//   // parallel: true</span>
+      <span class="hljs-comment">// &#125;)</span>
+    ],
+  &#125;,
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-comment">// 完成css的提取</span>
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">MiniCssExtractPlugin</span>(&#123;
+      <span class="hljs-attr">filename</span>: <span class="hljs-string">&#x27;css/[name].css&#x27;</span>,
+      <span class="hljs-attr">chunkFilename</span>: <span class="hljs-string">&#x27;css/[name]_chunk.css&#x27;</span>
+    &#125;),
+    <span class="hljs-comment">// 对CSS进行TreeShaking</span>
+    <span class="hljs-comment">// new PurgeCSSPlugin(&#123;</span>
+    <span class="hljs-comment">//   paths: glob.sync(`$&#123;path.resolve(__dirname, &#x27;../src&#x27;)&#125;/**/*`, &#123; nodir: true &#125;),</span>
+    <span class="hljs-comment">//   safelist: function() &#123;</span>
+    <span class="hljs-comment">//     return &#123;</span>
+    <span class="hljs-comment">//       standard: [&quot;body&quot;]</span>
+    <span class="hljs-comment">//     &#125;</span>
+    <span class="hljs-comment">//   &#125;</span>
+    <span class="hljs-comment">// &#125;),</span>
+    <span class="hljs-comment">// 作用域提升</span>
+    <span class="hljs-keyword">new</span> webpack.<span class="hljs-property">optimize</span>.<span class="hljs-title class_">ModuleConcatenationPlugin</span>(),
+    <span class="hljs-comment">// 对打包后的文件(js/css)进行压缩</span>
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">CompressionPlugin</span>(&#123;
+      <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(js|css)$/</span>,
+      <span class="hljs-attr">algorithm</span>: <span class="hljs-string">&#x27;gzip&#x27;</span>
+    &#125;)
+  ]
+&#125;</code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs json"><span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span>
+    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;webpack --config ./config/comm.config.js --env production&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;serve&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;webpack serve --config ./config/comm.config.js --env development&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;ts-check&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tsc --noEmit&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;ts-check-watch&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tsc --noEmit --watch&quot;</span>
+  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span></code></pre></div>
+
+<p>通过命令行来进行打包</p>
 
                 
               </div>
