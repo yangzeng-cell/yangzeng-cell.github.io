@@ -999,3 +999,1109 @@ btn2.onclick = function () {
 };
 ```
 
+#### 动态导入的文件命名
+
+**动态导入的文件命名：**
+
+因为动态导入通常是一定会打包成独立的文件的，所以并不会再cacheGroups中进行配置；
+
+那么它的命名我们通常会在output中，通过 chunkFilename 属性来命名；
+
+```js
+output: {
+    clean: true,
+    path: path.resolve(__dirname, "./build"),
+    // placeholder
+    filename: "[name]-bundle.js",
+    // 单独针对分包的文件进行命名
+    chunkFilename: "[id]_[name]_chunk.js",
+  },
+```
+
+通过chunkFilename来定义文件的文字,默认情况下，id和name的名字是一样的
+
+如果我们希望修改name的值，可以通过magic comments（魔法注释）的方式；
+
+```js
+import(/* webpackChunkName: "category" */ "./router/category");
+```
+
+#### optimization.chunkIds配置
+
+optimization.chunkIds配置用于告知webpack模块的id采用什么算法生成。
+
+**有三个比较常见的值：**
+
+natural：按照数字的顺序使用id； 
+
+named：development下的默认值，一个可读的名称的id； 
+
+deterministic：确定性的，在不同的编译中不变的短数字id
+
+✓ 在webpack4中是没有这个值的；
+
+✓ 那个时候如果使用natural，那么在一些编译发生变化时，就会有问题；
+
+**最佳实践：**
+
+开发过程中，我们推荐使用named； 
+
+打包过程中，我们推荐使用deterministic；
+
+#### optimization.runtimeChunk配置
+
+**配置runtime相关的代码是否抽取到一个单独的chunk中：**
+
+runtime相关的代码指的是在运行环境中，对模块进行解析、加载、模块信息相关的代码； 
+
+比如我们的component、bar两个通过import函数相关的代码加载，就是通过runtime代码完成的；
+
+**抽离出来后，有利于浏览器缓存的策略：**
+
+比如我们修改了业务代码（main），那么runtime和component、bar的chunk是不需要重新加载的；
+
+比如我们修改了component、bar的代码，那么main中的代码是不需要重新加载的；
+
+设置的值：
+
+true/multiple：针对每个入口打包一个runtime文件；
+
+single：打包一个runtime文件；
+
+对象：name属性决定runtimeChunk的名称；
+
+```js
+  // 优化配置
+  optimization: {
+    // 设置生成的chunkId的算法
+    // development: named
+    // production: deterministic(确定性)
+    // webpack4中使用: natural
+    chunkIds: "deterministic",
+    // runtime的代码是否抽取到单独的包中(早Vue2脚手架中)
+    runtimeChunk: {
+      name: "runtime",
+    },
+    // 分包插件: SplitChunksPlugin
+    splitChunks: {
+      /**
+       * 默认情况下只对异步代码进行分饱
+       */
+      chunks: "all", //initial 同步代码分包，async  异步代码分包，同步异步投分饱
+      // 当一个包大于指定的大小时, 继续进行拆包，但是必须保持包的完整性
+      // maxSize: 20000,
+      // // 将包拆分成不小于minSize的包
+      // minSize: 10000,
+      minSize: 10,
+
+      // 自己对需要进行拆包的内容进行分包
+      cacheGroups: {
+        utils: {
+          test: /utils/, //utils目录下的文件进行分饱
+          filename: "[id]_utils.js",
+        },
+        vendors: {
+          // /node_modules/
+          // window上面 /\
+          // mac上面 /
+          test: /[\\/]node_modules[\\/]/, //所有node__module 目录下的进行分包
+          filename: "[id]_vendors.js",
+        },
+      },
+    },
+    // 代码优化: TerserPlugin => 让代码更加简单 => Terser
+    minimizer: [
+      // JS代码简化
+      new TerserPlugin({
+        //这个插件webpack已经集成，
+        extractComments: false, //可以用于删除提取的注视文件
+      }),
+      // CSS代码简化
+    ],
+  },
+```
+
+#### Prefetch和Preload
+
+webpack v4.6.0+ 增加了对预获取和预加载的支持。
+
+在声明 import 时，使用下面这些内置指令，来告知浏览器
+
+**prefetch**(预获取)：将来某些导航下可能需要的资源
+
+**preload**(预加载)：当前导航下可能需要资源
+
+**与 prefetch 指令相比，preload 指令有许多不同之处：**
+
+preload chunk 会在父 chunk 加载时，以并行方式开始加载。prefetch chunk 会在父 chunk 加载结束后开始加载。
+
+preload chunk 具有中等优先级，并立即下载。prefetch chunk 在浏览器闲置时下载。
+
+preload chunk 会在父 chunk 中立即请求，用于当下时刻。prefetch chunk 会用于未来的某个时刻。
+
+```js
+btn1.onclick = function() {
+  import(
+    /* webpackChunkName: "about" */
+    /* webpackPrefetch: true */
+    './router/about').then(res => {
+    res.about()
+    res.default()
+  })
+}
+
+btn2.onclick = function() {
+  import(
+    /* webpackChunkName: "category" */
+    /* webpackPrefetch: true */
+    './router/category')
+}
+```
+
+#### CDN
+
+在开发中，我们使用CDN主要是两种方式：
+
+方式一：打包的所有静态资源，放到CDN服务器，
+
+用户所有资源都是通过CDN服务器加载的；
+
+方式二：一些第三方资源放到CDN服务器上；
+
+
+
+在开发环境中可以使用node_module中加载，在生产环境中使用cdn加载
+
+```js
+output: {
+    clean: true,
+    path: path.resolve(__dirname, "./build"),
+    // placeholder
+    filename: "[name]-bundle.js",
+    // 单独针对分包的文件进行命名
+    chunkFilename: "[name]_chunk.js",
+    publicPath: "http://coderwhycdn.com/",
+  },
+  // 排除某些包不需要进行打包
+  externals: {
+    react: "React",
+    // key属性名: 排除的框架的名称
+    // value值: 从CDN地址请求下来的js中提供对应的名称
+    axios: "axios",
+  },
+```
+
+在publicPath中配置cdn的路径，打包之后就会自动加载这个cdn地址
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Document</title>
+    <script
+      defer="defer"
+      src="http://coderwhycdn.com/runtime-bundle.js"
+    ></script>
+    <script defer="defer" src="http://coderwhycdn.com/497_utils.js"></script>
+    <script defer="defer" src="http://coderwhycdn.com/main-bundle.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.2.0/axios.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  </body>
+</html>
+```
+
+第三方的库可以使用cdn的方式进行引入，可以在webpack配置中来排出这些包，在html模版文件中使用cdn的地址
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- 排除的包，在这里手动加载这个cdn包 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.2.0/axios.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  </body>
+</html>
+```
+
+#### MiniCssExtractPlugin
+
+**MiniCssExtractPlugin可以帮助我们将css提取到一个独立的css文件中，该插件需要在webpack4+才可以使用。**
+
+**首先，我们需要安装 mini-css-extract-plugin：**
+
+```
+npm install mini-css-extract-plugin -D
+```
+
+ **配置rules和plugins：**
+
+```js
+ module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          // 'style-loader', 开发阶段
+          MiniCssExtractPlugin.loader, // 生产阶段
+          "css-loader",
+        ],
+      },
+    ],
+  },
+  plugins: [
+    // 完成css的提取
+    new MiniCssExtractPlugin({
+      filename: "css/[name].css",
+      chunkFilename: "css/[name]_chunk.css",
+    }),
+  ],
+```
+
+
+
+```js
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const { ProvidePlugin } = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CSSMinimizerPlugin = require("css-minimizer-webpack-plugin");
+
+module.exports = {
+  mode: "production",
+  devtool: false,
+  // entry: './src/index.js',
+  entry: "./src/main.js",
+  output: {
+    clean: true,
+    path: path.resolve(__dirname, "./build"),
+    // placeholder
+    filename: "js/[name]-bundle.js",
+    // 单独针对分包的文件进行命名
+    chunkFilename: "js/[name]_chunk.js",
+    // publicPath: 'http://coderwhycdn.com/'
+  },
+  // 优化配置
+  optimization: {
+    // 设置生成的chunkId的算法
+    // development: named
+    // production: deterministic(确定性)
+    // webpack4中使用: natural
+    chunkIds: "deterministic",
+    // runtime的代码是否抽取到单独的包中(早Vue2脚手架中)
+    runtimeChunk: {
+      name: "runtime",
+    },
+    // 分包插件: SplitChunksPlugin
+    splitChunks: {
+      chunks: "all",
+      // 当一个包大于指定的大小时, 继续进行拆包
+      // maxSize: 20000,
+      // // 将包拆分成不小于minSize的包
+      // minSize: 10000,
+      minSize: 10,
+
+      // 自己对需要进行拆包的内容进行分包
+      cacheGroups: {
+        utils: {
+          test: /utils/,
+          filename: "js/[id]_utils.js",
+        },
+        vendors: {
+          // /node_modules/
+          // window上面 /\
+          // mac上面 /
+          test: /[\\/]node_modules[\\/]/,
+          filename: "js/[id]_vendors.js",
+        },
+      },
+    },
+    //为了minimizer生效。需要设置minimize为true，production模式默认会设置为true
+    minimize: true,
+    // 代码优化: TerserPlugin => 让代码更加简单 => Terser
+    minimizer: [
+      // JS压缩的插件: TerserPlugin
+      new TerserPlugin({
+        extractComments: false,
+        //配置
+        terserOptions: {
+          //压缩
+          compress: {
+            arguments: true,
+            unused: true,
+          },
+          //删除用不到的代码
+          mangle: true,
+          // toplevel: false
+          keep_fnames: true,
+        },
+      }),
+      // CSS压缩的插件: CSSMinimizerPlugin
+      new CSSMinimizerPlugin({
+        // parallel: true
+      }),
+    ],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        use: {
+          loader: "babel-loader",
+        },
+      },
+      {
+        test: /\.ts$/,
+        use: "babel-loader",
+      },
+      {
+        test: /\.css$/,
+        use: [
+          // 'style-loader', 开发阶段
+          MiniCssExtractPlugin.loader, // 生产阶段
+          "css-loader",
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./index.html",
+    }),
+    new ProvidePlugin({
+      axios: ["axios", "default"],
+      // get: ['axios', 'get'],
+      dayjs: "dayjs",
+    }),
+    // 完成css的提取
+    new MiniCssExtractPlugin({
+      filename: "css/[name].css",
+      chunkFilename: "css/[name]_chunk.css",
+    }),
+  ],
+};
+
+```
+
+
+
+### Hash、ContentHash、ChunkHash
+
+**在我们给打包的文件进行命名的时候，会使用placeholder，placeholder中有几个属性比较相似：**
+
+hash、chunkhash、contenthash
+
+hash本身是通过MD4的散列函数处理后，生成一个128位的hash值（32个十六进制）；
+
+**hash值的生成和整个项目有关系：**
+
+比如我们现在有两个入口index.js和main.js； 
+
+它们分别会输出到不同的bundle文件中，并且在文件名称中我们有使用hash； 
+
+这个时候，如果修改了index.js文件中的内容，那么hash会发生变化；
+
+那就意味着两个文件的名称都会发生变化；
+
+**chunkhash可以有效的解决上面的问题，它会根据不同的入口进行借来解析来生成hash值：**
+
+比如我们修改了index.js，那么main.js的chunkhash是不会发生改变的；
+
+**contenthash表示生成的文件hash名称，只和内容有关系：**
+
+比如我们的index.js，引入了一个style.css，style.css有被抽取到一个独立的css文件中；
+
+这个css文件在命名时，如果我们使用的是chunkhash； 
+
+那么当index.js文件的内容发生变化时，css文件的命名也会发生变化；
+
+这个时候我们可以使用contenthash；
+
+```js
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+module.exports = {
+  mode: 'development',
+  entry: {
+    index: './src/index.js',
+    main: './src/main.js',
+  },
+  output: {
+    clean: true,
+    path: path.resolve(__dirname, './build'),
+    filename: '[name]_[contenthash]_bundle.js',
+    chunkFilename: '[contenthash]_chunk.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[contenthash]_[name].css'
+    })
+  ]
+}
+```
+
+### Terser介绍和安装
+
+**什么是Terser呢？**
+
+Terser是一个JavaScript的解释（Parser）、Mangler（绞肉机）/Compressor（压缩机）的工具集；
+
+早期我们会使用 uglify-js来压缩、丑化我们的JavaScript代码，但是目前已经不再维护，并且不支持ES6+的语法；
+
+Terser是从 uglify-es fork 过来的，并且保留它原来的大部分API以及适配 uglify-es和uglify-js@3等；
+
+**也就是说，Terser可以帮助我们压缩、丑化我们的代码，让我们的bundle变得更小**
+
+**因为Terser是一个独立的工具，所以它可以单独安装：**
+
+```
+# 全局安装
+npm install terser -g
+# 局部安装
+npm install terser -D
+```
+
+**命令行使用Terser**
+
+```
+terser [input files] [options]
+# 举例说明
+terser js/file1.js -o foo.min.js -c -m
+```
+
+**Compress和Mangle的options**
+
+**Compress option：** 
+
+arrows：class或者object中的函数，转换成箭头函数；
+
+arguments：将函数中使用 arguments[index]转成对应的形参名称；
+
+dead_code：移除不可达的代码（tree shaking）；
+
+其他属性可以查看文档；
+
+**Mangle option**
+
+toplevel：默认值是false，顶层作用域中的变量名称，进行丑化（转换）；
+
+keep_classnames：默认值是false，是否保持依赖的类名称；
+
+keep_fnames：默认值是false，是否保持原来的函数名称；
+
+其他属性可以查看文档；
+
+```
+npx terser ./src/abc.js -o abc.min.js -c 
+arrows,arguments=true,dead_code -m 
+toplevel=true,keep_classnames=true,keep_fnames=true
+```
+
+#### Terser在webpack中配置
+
+**真实开发中，我们不需要手动的通过terser来处理我们的代码，我们可以直接通过webpack来处理：**
+
+在webpack中有一个minimizer属性，在production模式下，默认就是使用TerserPlugin来处理我们的代码的；
+
+如果我们对默认的配置不满意，也可以自己来创建TerserPlugin的实例，并且覆盖相关的配置；
+
+**首先，我们需要打开minimize，让其对我们的代码进行压缩（默认production模式下已经打开了）**
+
+**其次，我们可以在minimizer创建一个TerserPlugin：** 
+
+extractComments：默认值为true，表示会将注释抽取到一个单独的文件中；
+
+✓ 在开发中，我们不希望保留这个注释时，可以设置为false； 
+
+ parallel：使用多进程并发运行提高构建的速度，默认值是true
+
+✓ 并发运行的默认数量： os.cpus().length - 1； 
+
+✓ 我们也可以设置自己的个数，但是使用默认值即可；
+
+ terserOptions：设置我们的terser相关的配置
+
+✓ compress：设置压缩相关的选项；
+
+✓ mangle：设置丑化相关的选项，可以直接设置为true； 
+
+✓ toplevel：顶层变量是否进行转换；
+
+✓ keep_classnames：保留类的名称；
+
+✓ keep_fnames：保留函数的名称；
+
+```js
+ // 优化配置
+  optimization: {
+    //为了minimizer生效。需要设置minimize为true，production模式默认会设置为true
+    minimize: true,
+    // 代码优化: TerserPlugin => 让代码更加简单 => Terser
+    minimizer: [
+      // JS压缩的插件: TerserPlugin
+      new TerserPlugin({
+        extractComments: false,
+        //配置
+        terserOptions: {
+          //压缩
+          compress: {
+            arguments: true,
+            unused: true,
+          },
+          //删除用不到的代码
+          mangle: true,
+          // toplevel: false
+          keep_fnames: true,
+        },
+      }),
+    ],
+  },
+```
+
+### CSS的压缩
+
+**另一个代码的压缩是CSS：** 
+
+CSS压缩通常是去除无用的空格等，因为很难去修改选择器、属性的名称、值等；
+
+CSS的压缩我们可以使用另外一个插件：css-minimizer-webpack-plugin； 
+
+css-minimizer-webpack-plugin是使用cssnano工具来优化、压缩CSS（也可以单独使用）；
+
+**第一步，安装 css-minimizer-webpack-plugin：**
+
+```
+npm install css-minimizer-webpack-plugin -D
+```
+
+**第二步，在optimization.minimizer中配置**
+
+```
+ // CSS压缩的插件: CSSMinimizerPlugin
+      new CSSMinimizerPlugin({
+        // parallel: true
+      }),
+```
+
+### 什么是Tree Shaking
+
+**什么是Tree Shaking呢？**
+
+ Tree Shaking是一个术语，在计算机中表示消除死代码（dead_code）；
+
+ 最早的想法起源于LISP，用于消除未调用的代码（纯函数无副作用，可以放心的消除，这也是为什么要求我们在进行函数式
+
+编程时，尽量使用纯函数的原因之一）；
+
+ 后来Tree Shaking也被应用于其他的语言，比如JavaScript、Dart； 
+
+◼ **JavaScript的Tree Shaking：** 
+
+ 对JavaScript进行Tree Shaking是源自打包工具rollup（后面我们也会讲的构建工具）；
+
+ 这是因为Tree Shaking依赖于ES Module的静态语法分析（不执行任何的代码，可以明确知道模块的依赖关系）；
+
+ webpack2正式内置支持了ES2015模块，和检测未使用模块的能力；
+
+ 在webpack4正式扩展了这个能力，并且通过 package.json的 sideEffects属性作为标记，告知webpack在编译时，哪里文
+
+件可以安全的删除掉；
+
+ webpack5中，也提供了对部分CommonJS的tree shaking的支持；
+
+✓ https://github.com/webpack/changelog-v5#commonjs-tree-shaking
+
+**webpack实现Tree Shaking**
+
+**事实上webpack实现Tree Shaking采用了两种不同的方案：**
+
+ usedExports：通过标记某些函数是否被使用，之后通过Terser来进行优化的；
+
+ sideEffects：跳过整个模块/文件，直接查看该文件是否有副作用；
+
+**usedExports**
+
+**将mode设置为development模式：**
+
+ 为了可以看到 usedExports带来的效果，我们需要设置为 development 模式
+
+ 因为在 production 模式下，webpack默认的一些优化会带来很大的影响。
+
+◼ **设置usedExports为true和false对比打包后的代码：**
+
+ 在usedExports设置为true时，会有一段注释：unused harmony export mul； 
+
+ 这段注释的意义是什么呢？告知Terser在优化时，可以删除掉这段代码；
+
+◼ **这个时候，我们讲 minimize设置true：** 
+
+ usedExports设置为false时，mul函数没有被移除掉；
+
+ usedExports设置为true时，mul函数有被移除掉；
+
+◼ **所以，usedExports实现Tree Shaking是结合Terser来完成的。**
+
+```js
+// 优化配置
+  optimization: {
+    // 导入模块时, 分析模块中的哪些函数有被使用, 哪些函数没有被使用.
+    usedExports: true,
+
+    chunkIds: "deterministic",
+    // runtime的代码是否抽取到单独的包中(早Vue2脚手架中)
+    runtimeChunk: {
+      name: "runtime",
+    },
+    // 分包插件: SplitChunksPlugin
+    splitChunks: {
+      chunks: "all",
+      minSize: 10,
+
+      // 自己对需要进行拆包的内容进行分包
+      cacheGroups: {
+        utils: {
+          test: /utils/,
+          filename: "js/[id]_utils.js",
+        },
+        vendors: {
+          // /node_modules/
+          // window上面 /\
+          // mac上面 /
+          test: /[\\/]node_modules[\\/]/,
+          filename: "js/[id]_vendors.js",
+        },
+      },
+    },
+    minimize: true,
+    // 代码优化: TerserPlugin => 让代码更加简单 => Terser
+    minimizer: [
+      // JS压缩的插件: TerserPlugin
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          compress: {
+            arguments: true,
+            unused: true,
+          },
+          mangle: true,
+          // toplevel: false
+          keep_fnames: true,
+        },
+      }),
+      // CSS压缩的插件: CSSMinimizerPlugin
+      new CSSMinimizerPlugin({
+        // parallel: true
+      }),
+    ],
+  },
+```
+
+#### sideEffects
+
+**sideEffects用于告知webpack compiler哪些模块时有副作用的：**
+
+ 副作用的意思是这里面的代码有执行一些特殊的任务，不能仅仅通过export来判断这段代码的意义；
+
+ 副作用的问题，在讲React的纯函数时是有讲过的；
+
+◼ **在package.json中设置sideEffects的值：**
+
+ 如果我们将sideEffects设置为false，就是告知webpack可以安全的删除未用到的exports； 
+
+ 如果有一些我们希望保留，可以设置为数组；
+
+◼ **比如我们有一个format.js、style.css文件：**
+
+ 该文件在导入时没有使用任何的变量来接受；
+
+ 那么打包后的文件，不会保留format.js、style.css相关的任何代码；
+
+```json
+//package.json
+“sideEffects”:[
+	"./src/util/format.js",
+	"*.css"
+]
+```
+
+
+
+#### Webpack中tree shaking的设置
+
+**所以，如何在项目中对JavaScript的代码进行TreeShaking呢（生成环境）？**
+
+ 在optimization中配置usedExports为true，来帮助Terser进行优化；
+
+ 在package.json中配置sideEffects，直接对模块进行优化；
+
+#### CSS实现Tree Shaking
+
+Tree Shaking：PurgeCSS，也是一个帮助我们删除未使用的CSS的工具；
+
+```
+npm install purgecss-webpack-plugin -D
+```
+
+#### 配置PurgeCss
+
+**配置这个插件（生成环境）：**
+
+paths：表示要检测哪些目录下的内容需要被分析，这里我们可以使用glob； 
+
+默认情况下，Purgecss会将我们的html标签的样式移除掉，如果我们希望保留，可以添加一个safelist的属性；
+
+```js
+new PurgeCSSPlugin({
+      paths: glob.sync(`${path.resolve(__dirname, "../src")}/**/*`, {
+        nodir: true,
+      }),
+      safelist: function () {
+        return {
+          standard: ["body"],//排除掉这个标签
+        };
+      },
+    }),
+```
+
+**purgecss也可以对less文件进行处理（所以它是对打包后的css进行tree shaking操作）；**
+
+
+
+#### Scope Hoisting
+
+**什么是Scope Hoisting呢？**
+
+Scope Hoisting从webpack3开始增加的一个新功能；
+
+功能是对作用域进行提升，并且让webpack打包后的代码更小、运行更快；
+
+◼ **默认情况下webpack打包会有很多的函数作用域，包括一些（比如最外层的）IIFE：** 
+
+ 无论是从最开始的代码运行，还是加载一个模块，都需要执行一系列的函数；
+
+ Scope Hoisting可以将函数合并到一个模块中来运行；
+
+◼ **使用Scope Hoisting非常的简单，webpack已经内置了对应的模块：**
+
+ 在production模式下，默认这个模块就会启用；
+
+ 在development模式下，我们需要自己来打开该模块；
+
+```js
+ // 作用域提升
+    new webpack.optimize.ModuleConcatenationPlugin()
+```
+
+### HTTP压缩
+
+```js
+// 对打包后的文件(js/css)进行压缩
+    new CompressionPlugin({
+      test: /\.(js|css)$/,
+      algorithm: 'gzip'
+    })
+```
+
+**目前的压缩格式非常的多：**
+
+compress – UNIX的“compress”程序的方法（历史性原因，不推荐大多数应用使用，应该使用gzip或deflate）；
+
+deflate – 基于deflate算法（定义于RFC 1951）的压缩，使用zlib数据格式封装；
+
+gzip – GNU zip格式（定义于RFC 1952），是目前使用比较广泛的压缩算法；
+
+br – 一种新的开源压缩算法，专为HTTP内容的编码而设计；
+
+
+
+#### HTML文件中代码的压缩
+
+```js
+ new HtmlWebpackPlugin({
+        template: "./index.html",
+        cache: true,
+        //压缩html
+        minify: isProdution
+          ? {
+              // 移除注释
+              removeComments: true,
+              // 移除属性
+              removeEmptyAttributes: true,
+              // 移除默认属性
+              removeRedundantAttributes: true,
+              // 折叠空白字符
+              collapseWhitespace: true,
+              // 压缩内联的CSS
+              minifyCSS: true,
+              // 压缩JavaScript
+              minifyJS: {
+                mangle: {
+                  toplevel: true,
+                },
+              },
+            }
+          : false,
+      }),
+```
+
+## 常见的webpack配置
+
+```js
+//comm.config.js 将development和production的公共配置抽离出来
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { ProvidePlugin } = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { merge } = require("webpack-merge");
+const devConfig = require("./dev.config");
+const prodConfig = require("./prod.config");
+
+const getCommonConfig = function (isProdution) {
+  return {
+    entry: "./src/demo.js",
+    output: {
+      clean: true,
+      path: path.resolve(__dirname, "../build"),
+      // placeholder
+      filename: "js/[name]-bundle.js",
+      // 单独针对分包的文件进行命名
+      chunkFilename: "js/[name]_chunk.js",
+      // publicPath: 'http://coderwhycdn.com/'
+    },
+    resolve: {
+      extensions: [".js", ".json", ".wasm", ".jsx", ".ts"],
+    },
+    module: {
+      rules: [
+        {
+          test: /\.jsx?$/,
+          use: {
+            loader: "babel-loader",
+          },
+        },
+        {
+          test: /\.ts$/,
+          use: "babel-loader",
+        },
+        {
+          test: /\.css$/,
+          use: [
+            // // 'style-loader', //开发阶段
+            // MiniCssExtractPlugin.loader, // 生产阶段
+            isProdution ? MiniCssExtractPlugin.loader : "style-loader",
+            "css-loader",
+          ],
+        },
+      ],
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: "./index.html",
+        cache: true,
+        //压缩html
+        minify: isProdution
+          ? {
+              // 移除注释
+              removeComments: true,
+              // 移除属性
+              removeEmptyAttributes: true,
+              // 移除默认属性
+              removeRedundantAttributes: true,
+              // 折叠空白字符
+              collapseWhitespace: true,
+              // 压缩内联的CSS
+              minifyCSS: true,
+              // 压缩JavaScript
+              minifyJS: {
+                mangle: {
+                  toplevel: true,
+                },
+              },
+            }
+          : false,
+      }),
+      new ProvidePlugin({
+        axios: ["axios", "default"],
+        // get: ['axios', 'get'],
+        dayjs: "dayjs",
+      }),
+    ],
+  };
+};
+
+// webpack允许导出一个函数
+module.exports = function (env) {
+  const isProduction = env.production;
+  let mergeConfig = isProduction ? prodConfig : devConfig;
+  return merge(getCommonConfig(isProduction), mergeConfig);
+};
+```
+
+
+
+//dev.config.js
+
+```js
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const { ProvidePlugin } = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CSSMinimizerPlugin = require('css-minimizer-webpack-plugin')
+
+module.exports = {
+  mode: 'development',
+  devServer: {
+    static: ['public', 'content'],
+    port: 3000,
+    compress: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9000',
+        pathRewrite: {
+          '^/api': ''
+        },
+        changeOrigin: true
+      }
+    },
+    historyApiFallback: true
+  },
+  plugins: [
+  ]
+}
+```
+
+//prod.config.js
+
+```js
+const path = require('path')
+const glob = require('glob')
+const webpack = require('webpack')
+
+const TerserPlugin = require('terser-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CSSMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const { PurgeCSSPlugin } = require('purgecss-webpack-plugin')
+const CompressionPlugin = require("compression-webpack-plugin")
+
+console.log(glob.sync(`${path.resolve(__dirname, './src')}/**/*`, { nodir: true }))
+
+
+module.exports = {
+  mode: 'production',
+  devtool: false,
+  // 优化配置
+  optimization: {
+    // 导入模块时, 分析模块中的哪些函数有被使用, 哪些函数没有被使用.
+    usedExports: true,
+    
+    chunkIds: 'deterministic',
+    // runtime的代码是否抽取到单独的包中(早Vue2脚手架中)
+    runtimeChunk: {
+      name: "runtime"
+    },
+    // 分包插件: SplitChunksPlugin
+    splitChunks: {
+      chunks: "all",
+      minSize: 10,
+
+      // 自己对需要进行拆包的内容进行分包
+      cacheGroups: {
+        utils: {
+          test: /utils/,
+          filename: "js/[id]_utils.js"
+        },
+        vendors: {
+          // /node_modules/
+          // window上面 /\
+          // mac上面 /
+          test: /[\\/]node_modules[\\/]/,
+          filename: "js/[id]_vendors.js"
+        }
+      }
+    },
+    minimize: true,
+    // 代码优化: TerserPlugin => 让代码更加简单 => Terser
+    minimizer: [
+      // JS压缩的插件: TerserPlugin
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          compress: {
+            arguments: true,
+            unused: true
+          },
+          mangle: true,
+          // toplevel: false
+          keep_fnames: true
+        }
+      }),
+      // CSS压缩的插件: CSSMinimizerPlugin
+      // new CSSMinimizerPlugin({
+      //   // parallel: true
+      // })
+    ],
+  },
+  plugins: [
+    // 完成css的提取
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[name]_chunk.css'
+    }),
+    // 对CSS进行TreeShaking
+    // new PurgeCSSPlugin({
+    //   paths: glob.sync(`${path.resolve(__dirname, '../src')}/**/*`, { nodir: true }),
+    //   safelist: function() {
+    //     return {
+    //       standard: ["body"]
+    //     }
+    //   }
+    // }),
+    // 作用域提升
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    // 对打包后的文件(js/css)进行压缩
+    new CompressionPlugin({
+      test: /\.(js|css)$/,
+      algorithm: 'gzip'
+    })
+  ]
+}
+```
+
+
+
+```json
+"scripts": {
+    "build": "webpack --config ./config/comm.config.js --env production",
+    "serve": "webpack serve --config ./config/comm.config.js --env development",
+    "ts-check": "tsc --noEmit",
+    "ts-check-watch": "tsc --noEmit --watch"
+  },
+```
+
+通过命令行来进行打包
