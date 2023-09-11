@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-18%2001.03.02.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yangzeng-cell/blogimage2/master/%E6%88%AA%E5%B1%8F2023-03-25%2014.22.49.png">
 <meta property="article:published_time" content="2023-03-04T17:25:36.000Z">
-<meta property="article:modified_time" content="2023-06-12T13:52:07.675Z">
+<meta property="article:modified_time" content="2023-09-11T14:29:08.717Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
@@ -226,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          93k 字
+          100k 字
         
       </span>
     
@@ -237,7 +237,7 @@
         
         
         
-          774 分钟
+          837 分钟
         
       </span>
     
@@ -3409,7 +3409,385 @@ Stack::<span class="hljs-built_in">Stack</span>()    <span class="hljs-comment">
 <p>每个对象都存储自己的数据，而共享类方法。如果mr_object是对象名，try_me( )是成员函数，则可以使用成员运算符句点调用成员函数：mr_object.try_me( )。在OOP中，这种函数调用被称为将try_me消息发送给mr_object对象。在try_me( )方法中引用类数据成员时，将使用mr_object对象相应的数据成员。同样，函数调用i_object.try_me( )将访问i_object对象的数据成员。 </p>
 <p>如果希望成员函数对多个对象进行操作，可以将额外的对象作为参数传递给它。如果方法需要显式地引用调用它的对象，则可以使用this 指针。由于this指针被设置为调用对象的地址，因此*this是该对象的别名</p>
 <p>类很适合用于描述ADT。公有成员函数接口提供了ADT描述的服务，类的私有部分和类方法的代码提供了实现，这些实现对类的客户隐藏</p>
-<h1 id="使用类-1"><a href="#使用类-1" class="headerlink" title="使用类"></a>使用类</h1>
+<h1 id="使用类-1"><a href="#使用类-1" class="headerlink" title="使用类"></a>使用类</h1><ul>
+<li>运算符重载。 </li>
+<li>友元函数。 </li>
+<li>重载&lt;&lt;运算符，以便用于输出。 </li>
+<li>状态成员。 </li>
+<li>使用rand( )生成随机值。 </li>
+<li>类的自动转换和强制类型转换。 </li>
+<li>类转换函数。 </li>
+</ul>
+<h2 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h2><p>运算符重载是c++多态的一种表现形式</p>
+<p>重载运算符必须是在c++中存在的运算符，</p>
+<p>在一个类中定义operate+()这样就可以使用当两个属于相同类的变量进行+处理是可以这样使用a=b+c=&gt;a=b.operate+(c)</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">//</span>
+<span class="hljs-comment">// Created by 杨曾 on 2023/9/9.</span>
+<span class="hljs-comment">//</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> CPP3_MYTIME0_H</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> CPP3_MYTIME0_H</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Time</span> &#123;
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-type">int</span> hours;
+    <span class="hljs-type">int</span> minutes;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">Time</span>();
+
+    <span class="hljs-built_in">Time</span>(<span class="hljs-type">int</span> h, <span class="hljs-type">int</span> m = <span class="hljs-number">0</span>);
+
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">AddMin</span><span class="hljs-params">(<span class="hljs-type">int</span> m)</span></span>;
+
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">AddHr</span><span class="hljs-params">(<span class="hljs-type">int</span> h)</span></span>;
+
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Reset</span><span class="hljs-params">(<span class="hljs-type">int</span> h = <span class="hljs-number">0</span>, <span class="hljs-type">int</span> m = <span class="hljs-number">0</span>)</span></span>;
+
+    <span class="hljs-function">Time <span class="hljs-title">Sum</span><span class="hljs-params">(<span class="hljs-type">const</span> Time &amp;t)</span> <span class="hljs-type">const</span></span>;
+
+    Time <span class="hljs-keyword">operator</span>+(<span class="hljs-type">const</span> Time &amp;t) <span class="hljs-type">const</span>;
+
+    Time <span class="hljs-keyword">operator</span>-(<span class="hljs-type">const</span> Time &amp;t) <span class="hljs-type">const</span>;
+
+    Time <span class="hljs-keyword">operator</span>*(<span class="hljs-type">double</span> n) <span class="hljs-type">const</span>;
+
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Show</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;
+&#125;;
+
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">//CPP3_MYTIME0_H</span></span></code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">//</span>
+<span class="hljs-comment">// Created by 杨曾 on 2023/9/9.</span>
+<span class="hljs-comment">//</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mytime0.h&quot;</span></span>
+
+Time::<span class="hljs-built_in">Time</span>() &#123;
+    hours = minutes = <span class="hljs-number">0</span>;
+&#125;
+
+Time::<span class="hljs-built_in">Time</span>(<span class="hljs-type">int</span> h, <span class="hljs-type">int</span> m) &#123;
+    hours = h;
+    minutes = m;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Time::AddMin</span><span class="hljs-params">(<span class="hljs-type">int</span> m)</span> </span>&#123;
+    minutes = m;
+    hours += minutes / <span class="hljs-number">60</span>;
+    minutes %= <span class="hljs-number">60</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Time::AddHr</span><span class="hljs-params">(<span class="hljs-type">int</span> h)</span> </span>&#123;
+    hours += h;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Time::Reset</span><span class="hljs-params">(<span class="hljs-type">int</span> h, <span class="hljs-type">int</span> m)</span> </span>&#123;
+    hours = h;
+    minutes = m;
+&#125;
+
+<span class="hljs-function">Time <span class="hljs-title">Time::Sum</span><span class="hljs-params">(<span class="hljs-type">const</span> Time &amp;t)</span> <span class="hljs-type">const</span> </span>&#123;
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / <span class="hljs-number">60</span>;
+    sum.minutes = sum.minutes % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">return</span> sum;
+&#125;
+
+Time Time::<span class="hljs-keyword">operator</span>+(<span class="hljs-type">const</span> Time &amp;t) <span class="hljs-type">const</span> &#123;
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / <span class="hljs-number">60</span>;
+    sum.minutes = sum.minutes % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">return</span> sum;
+&#125;
+
+Time Time::<span class="hljs-keyword">operator</span>-(<span class="hljs-type">const</span> Time &amp;t) <span class="hljs-type">const</span> &#123;
+    Time diff;
+    <span class="hljs-type">int</span> tot1, tot2;
+    tot1 = t.minutes + t.hours * <span class="hljs-number">60</span>;
+    tot2 = minutes + hours * <span class="hljs-number">60</span>;
+    diff.hours = (tot1 - tot2) / <span class="hljs-number">60</span>;
+    diff.minutes = (tot1 - tot2) % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">return</span> diff;
+&#125;
+
+Time Time::<span class="hljs-keyword">operator</span>*(<span class="hljs-type">double</span> mult) <span class="hljs-type">const</span> &#123;
+    Time result;
+    <span class="hljs-type">long</span> totalminutes = hours * mult * <span class="hljs-number">60</span> + minutes * mult;
+    result.hours = totalminutes / <span class="hljs-number">60</span>;
+    result.minutes = totalminutes % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">return</span> result;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Time::Show</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;
+    std::cout &lt;&lt; hours &lt;&lt; <span class="hljs-string">&quot;hour&quot;</span> &lt;&lt; minutes &lt;&lt; <span class="hljs-string">&quot; minutes&quot;</span>;
+&#125;
+</code></pre></div>
+
+<p>不要返回指向局部变量或临时对象的引用。函数执行完毕后，局部变量和临时对象将消失， 引用将指向不存在的数据。 </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mytime0.h&quot;</span></span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">using</span> std::cout;
+    <span class="hljs-keyword">using</span> std::endl;
+    Time planning;
+    <span class="hljs-function">Time <span class="hljs-title">coding</span><span class="hljs-params">(<span class="hljs-number">2</span>, <span class="hljs-number">40</span>)</span></span>;
+    <span class="hljs-function">Time <span class="hljs-title">fixing</span><span class="hljs-params">(<span class="hljs-number">5</span>, <span class="hljs-number">55</span>)</span></span>;
+    Time total;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;planning time = &quot;</span>;
+    planning.<span class="hljs-built_in">Show</span>();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;coding time = &quot;</span>;
+    coding.<span class="hljs-built_in">Show</span>();
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; <span class="hljs-string">&quot;fixing time = &quot;</span>;
+    fixing.<span class="hljs-built_in">Show</span>();
+    cout &lt;&lt; endl;
+
+    total = coding.<span class="hljs-built_in">Sum</span>(fixing);
+    cout &lt;&lt; <span class="hljs-string">&quot;coding.Sum(fixing) = &quot;</span>;
+    total.<span class="hljs-built_in">Show</span>();
+    cout &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<p>operator +( )函数的名称使得可以使用函数表示法或运算符表示法来调用它</p>
+<div class="code-wrapper"><pre><code class="hljs mipsasm"><span class="hljs-built_in">t1</span>=<span class="hljs-built_in">t2</span>+<span class="hljs-built_in">t3</span>+<span class="hljs-built_in">t4</span>
+=&gt;<span class="hljs-built_in">t1</span>=<span class="hljs-built_in">t2</span>.operator+(<span class="hljs-built_in">t3</span>+<span class="hljs-built_in">t4</span>)=&gt;<span class="hljs-built_in">t1</span>=<span class="hljs-built_in">t2</span>.operator+(<span class="hljs-built_in">t2</span>.operator+(<span class="hljs-built_in">t3</span>))</code></pre></div>
+
+<h3 id="重载限制"><a href="#重载限制" class="headerlink" title="重载限制"></a>重载限制</h3><p>多数C++运算符都可以用这样的方式重载。重载的 运算符（有些例外情况）不必是成员函数，但必须至少有一个操作数是 用户定义的类型。</p>
+<p>重载后的运算符必须至少有一个操作数是用户定义的类型，这 将防止用户为标准类型重载运算符。因此，不能将减法运算符（−）重 载为计算两个double值的和，而不是它们的差。虽然这种限制将对创造性有所影响，但可以确保程序正常运行。</p>
+<p>使用运算符时不能违反运算符原来的句法规则。例如，不能将求模运算符（%）重载成使用一个操作数： 就是不能修改操作符原来的意义不能修改操作符的优先级</p>
+<p>不能创建新的运算符</p>
+<p>不能重载以下的运算符</p>
+<ul>
+<li>sizeof：sizeof运算符。 </li>
+<li>.：成员运算符。 </li>
+<li>. *：成员指针运算符。 </li>
+<li>::：作用域解析运算符。 </li>
+<li>?:：条件运算符。 </li>
+<li>typeid：一个RTTI运算符。 </li>
+<li>const_cast：强制类型转换运算符。 </li>
+<li>dynamic_cast：强制类型转换运算符。 </li>
+<li>reinterpret_cast：强制类型转换运算符。 </li>
+<li>static_cast：强制类型转换运算符。</li>
+</ul>
+<p>大多数运算符都可以通过成员或非成员函数进行重载，但下面的运算符只能通过成员函数进行重载。 </p>
+<ul>
+<li>=：赋值运算符。 </li>
+<li>( )：函数调用运算符。 </li>
+<li>[ ]：下标运算符。 </li>
+<li>-&gt;：通过指针访问类成员的运算符。 </li>
+</ul>
+<h2 id="友元"><a href="#友元" class="headerlink" title="友元"></a>友元</h2><p>友元分为三种：</p>
+<p>友元函数； </p>
+<p>友元类； </p>
+<p>友元成员函数。</p>
+<p>在重载运算符的时候是通过成员运算符和非成员运算符来处理的，在使用成员函数的时候，会出现</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">A</span>=B*<span class="hljs-number">2</span>.<span class="hljs-number">75</span>=&gt;A=B.operator*(<span class="hljs-number">2</span>.<span class="hljs-number">75</span>)不可以A=<span class="hljs-number">2</span>.<span class="hljs-number">75</span>.operator*(B)</code></pre></div>
+
+<p>这个时候就必须使用非成员运算符</p>
+<div class="code-wrapper"><pre><code class="hljs pgsql"><span class="hljs-type">Time</span> <span class="hljs-keyword">operator</span>*(<span class="hljs-type">double</span> m,cont <span class="hljs-type">Time</span> &amp; t)</code></pre></div>
+
+<p>对于非成员重载运算符函数来说，运算符表达式左边的操作数对应于运算符函数的第一个参数，运算符表达式右边的操作数对应于运算符 函数的第二个参数。而原来的成员函数则按相反的顺序处理操作数，也就是说，double值乘以Time值。</p>
+<p>使用非成员函数可以按所需的顺序获得操作数（先是double，然后是Time），但引发了一个新问题：非成员函数不能直接访问类的私有数据，至少常规非成员函数不能访问。然而，有一类特殊的非成员函数可以访问类的私有成员，它们被称为友元函数。</p>
+<h3 id="创建友元"><a href="#创建友元" class="headerlink" title="创建友元"></a>创建友元</h3><p>创建友元函数的第一步是将其原型放在类声明中，并在原型声明前加上关键字friend：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">friend</span> Time <span class="hljs-keyword">operator</span>*(<span class="hljs-type">double</span> m,<span class="hljs-type">const</span> Time &amp; t);</code></pre></div>
+
+<p>虽然operator *( )函数是在类声明中声明的，但它不是成员函数，因此不能使用成员运算符来调用； </p>
+<p>虽然operator *( )函数不是成员函数，但它与成员函数的访问权限相同</p>
+<p>因为它不是成员函数，所以不要使用Time::限定符。另外，不要在定义中使用关键字friend，定义应该如下：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp">Time <span class="hljs-keyword">operator</span>*(<span class="hljs-type">double</span> m, <span class="hljs-type">const</span> Time &amp;t) &#123;
+    Time result;
+    <span class="hljs-type">long</span> totalminutes = t.hours * m * <span class="hljs-number">60</span> + t.minutes * m;
+    result.hours = totalminutes / <span class="hljs-number">60</span>;
+    result.minutes = totalminutes % <span class="hljs-number">60</span>;
+
+    <span class="hljs-keyword">return</span> result;
+&#125;</code></pre></div>
+
+<p>总之，类的友元函数是非成员函数，其访问权限与成员函数相同</p>
+<h3 id="常用的友元：重载-lt-lt-运算符"><a href="#常用的友元：重载-lt-lt-运算符" class="headerlink" title="常用的友元：重载**&lt;&lt;**运算符"></a>常用的友元：重载**&lt;&lt;**运算符</h3><h4 id="lt-lt-的第一种重载版本"><a href="#lt-lt-的第一种重载版本" class="headerlink" title="**&lt;&lt;**的第一种重载版本"></a>**&lt;&lt;**的第一种重载版本</h4><p>使用cout &lt;&lt; t 这样可以直接输出t的内容</p>
+<p>要使Time类知道使用cout，必须使用友元函数。这是什么原因呢？ 因为下面这样的语句使用两个对象，其中第一个是ostream类对象 </p>
+<p>（cout）： </p>
+<div class="code-wrapper"><pre><code class="hljs abnf">cout&lt;&lt;trip<span class="hljs-comment">;</span></code></pre></div>
+
+<p>如果使用一个Time成员函数来重载&lt;&lt;，Time对象将是第一个操作数，就像使用成员函数重载*运算符那样。这意味着必须这样使用&lt;&lt;：</p>
+<div class="code-wrapper"><pre><code class="hljs abnf">trip&lt;&lt;cout<span class="hljs-comment">;</span></code></pre></div>
+
+<p>这样会令人迷惑。但通过使用友元函数，可以像下面这样重载运算符：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-type">void</span> <span class="hljs-keyword">operator</span>&lt;&lt;(std::ostream &amp;os, <span class="hljs-type">const</span> Time &amp;t) &#123;
+    os &lt;&lt; t.hours &lt;&lt; <span class="hljs-string">&quot;hour&quot;</span> &lt;&lt; t.minutes &lt;&lt; <span class="hljs-string">&quot; minutes&quot;</span>;
+&#125;</code></pre></div>
+
+<p>调用cout &lt;&lt; trip应使用cout对象本身，而不是它的拷贝，因此该函数按引用（而不是按值）来传递该对象。这样，表达式cout &lt;&lt; trip将导致os成为cout的一个别名；而表达式cerr &lt;&lt; trip将导致os成为cerr的一个别名。Time对象可以按值或按引用来传递，因为这两种形式都使函数能够使用对象的值。按引用传递使用的内存和时间都比按值传递少。</p>
+<h4 id="lt-lt-的第二种重载版本"><a href="#lt-lt-的第二种重载版本" class="headerlink" title="**&lt;&lt;**的第二种重载版本"></a>**&lt;&lt;**的第二种重载版本</h4><p>上面的重载&lt;&lt;只能使用一次不能够这样用<code>cout&lt;&lt;x&lt;&lt;y</code>进行连续输出</p>
+<div class="code-wrapper"><pre><code class="hljs bash">cout&lt;&lt;<span class="hljs-string">x&lt;&lt;y=&gt;(cout&lt;&lt;x</span>)&lt;&lt;<span class="hljs-string">y</span></code></pre></div>
+
+<p>正如iosream中定义的那样，&lt;&lt;运算符要求左边是一个ostream对象。显然，因为cout是ostream对象，所以表达式cout &lt;&lt; x满足这种要 求。然而，因为表达式cout &lt;&lt; x位于&lt;&lt; y的左侧，所以输出语句也要求该表达式是一个ostream类型的对象。因此，ostream类将operator&lt;&lt;( )函数实现为返回一个指向ostream对象的引用。具体地说，它返回一个指向调用对象（这里是cout）的引用。因此，表达式(cout &lt;&lt; x)本身就是ostream对象cout，从而可以位于&lt;&lt;运算符的左侧。</p>
+<p>可以对友元函数采用相同的方法。只要修改operator&lt;&lt;( )函数，让它返回ostream对象的引用即可：</p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-keyword">friend</span> std::ostream&amp; <span class="hljs-keyword">operator</span>&lt;&lt;(std::ostream &amp;os,<span class="hljs-type">const</span> Time &amp;t);<span class="hljs-comment">//头文件</span></code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs cpp">ostream &amp;<span class="hljs-keyword">operator</span>&lt;&lt;(ostream &amp;os, <span class="hljs-type">const</span> Time &amp;t) &#123;
+    os &lt;&lt; t.hours &lt;&lt; <span class="hljs-string">&quot;hour&quot;</span> &lt;&lt; t.minutes &lt;&lt; <span class="hljs-string">&quot; minutes&quot;</span>;
+    <span class="hljs-keyword">return</span> os;
+&#125;</code></pre></div>
+
+<p>注意，返回类型是ostream &amp;。这意味着该函数返回ostream对象的引用。因为函数开始执行时，程序传递了一个对象引用给它，这样做的最终结果是，函数的返回值就是传递给它的对象</p>
+<p><strong>只有在类声明中的原型中才能使用friend关键字。除非函数定义也是原型，否则不能在函数定 义中使用该关键字。</strong> </p>
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">//</span>
+<span class="hljs-comment">// Created by 杨曾 on 2023/9/9.</span>
+<span class="hljs-comment">//</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> CPP3_MYTIME0_H</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> CPP3_MYTIME0_H</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Time</span> &#123;
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-type">int</span> hours;
+    <span class="hljs-type">int</span> minutes;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">Time</span>();
+
+    <span class="hljs-built_in">Time</span>(<span class="hljs-type">int</span> h, <span class="hljs-type">int</span> m = <span class="hljs-number">0</span>);
+
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">AddMin</span><span class="hljs-params">(<span class="hljs-type">int</span> m)</span></span>;
+
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">AddHr</span><span class="hljs-params">(<span class="hljs-type">int</span> h)</span></span>;
+
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Reset</span><span class="hljs-params">(<span class="hljs-type">int</span> h = <span class="hljs-number">0</span>, <span class="hljs-type">int</span> m = <span class="hljs-number">0</span>)</span></span>;
+
+    <span class="hljs-function">Time <span class="hljs-title">Sum</span><span class="hljs-params">(<span class="hljs-type">const</span> Time &amp;t)</span> <span class="hljs-type">const</span></span>;
+
+    Time <span class="hljs-keyword">operator</span>+(<span class="hljs-type">const</span> Time &amp;t) <span class="hljs-type">const</span>;
+
+    Time <span class="hljs-keyword">operator</span>-(<span class="hljs-type">const</span> Time &amp;t) <span class="hljs-type">const</span>;
+
+    Time <span class="hljs-keyword">operator</span>*(<span class="hljs-type">double</span> n) <span class="hljs-type">const</span>;
+
+    <span class="hljs-keyword">friend</span> Time <span class="hljs-keyword">operator</span>*(<span class="hljs-type">double</span> n, <span class="hljs-type">const</span> Time &amp;t) &#123;
+        <span class="hljs-keyword">return</span> n * t;
+    &#125;;<span class="hljs-comment">//inline definition 内连定义</span>
+
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Show</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;
+
+    <span class="hljs-keyword">friend</span> std::ostream &amp;<span class="hljs-keyword">operator</span>&lt;&lt;(std::ostream &amp;os, <span class="hljs-type">const</span> Time &amp;t);
+&#125;;
+
+<span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">//CPP3_MYTIME0_H</span></span></code></pre></div>
+
+
+
+<div class="code-wrapper"><pre><code class="hljs cpp"><span class="hljs-comment">//</span>
+<span class="hljs-comment">// Created by 杨曾 on 2023/9/9.</span>
+<span class="hljs-comment">//</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mytime0.h&quot;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+Time::<span class="hljs-built_in">Time</span>() &#123;
+    hours = minutes = <span class="hljs-number">0</span>;
+&#125;
+
+Time::<span class="hljs-built_in">Time</span>(<span class="hljs-type">int</span> h, <span class="hljs-type">int</span> m) &#123;
+    hours = h;
+    minutes = m;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Time::AddMin</span><span class="hljs-params">(<span class="hljs-type">int</span> m)</span> </span>&#123;
+    minutes = m;
+    hours += minutes / <span class="hljs-number">60</span>;
+    minutes %= <span class="hljs-number">60</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Time::AddHr</span><span class="hljs-params">(<span class="hljs-type">int</span> h)</span> </span>&#123;
+    hours += h;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Time::Reset</span><span class="hljs-params">(<span class="hljs-type">int</span> h, <span class="hljs-type">int</span> m)</span> </span>&#123;
+    hours = h;
+    minutes = m;
+&#125;
+
+<span class="hljs-function">Time <span class="hljs-title">Time::Sum</span><span class="hljs-params">(<span class="hljs-type">const</span> Time &amp;t)</span> <span class="hljs-type">const</span> </span>&#123;
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / <span class="hljs-number">60</span>;
+    sum.minutes = sum.minutes % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">return</span> sum;
+&#125;
+
+Time Time::<span class="hljs-keyword">operator</span>+(<span class="hljs-type">const</span> Time &amp;t) <span class="hljs-type">const</span> &#123;
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / <span class="hljs-number">60</span>;
+    sum.minutes = sum.minutes % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">return</span> sum;
+&#125;
+
+Time Time::<span class="hljs-keyword">operator</span>-(<span class="hljs-type">const</span> Time &amp;t) <span class="hljs-type">const</span> &#123;
+    Time diff;
+    <span class="hljs-type">int</span> tot1, tot2;
+    tot1 = t.minutes + t.hours * <span class="hljs-number">60</span>;
+    tot2 = minutes + hours * <span class="hljs-number">60</span>;
+    diff.hours = (tot1 - tot2) / <span class="hljs-number">60</span>;
+    diff.minutes = (tot1 - tot2) % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">return</span> diff;
+&#125;
+
+Time Time::<span class="hljs-keyword">operator</span>*(<span class="hljs-type">double</span> mult) <span class="hljs-type">const</span> &#123;
+    Time result;
+    <span class="hljs-type">long</span> totalminutes = hours * mult * <span class="hljs-number">60</span> + minutes * mult;
+    result.hours = totalminutes / <span class="hljs-number">60</span>;
+    result.minutes = totalminutes % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">return</span> result;
+&#125;
+
+<span class="hljs-comment">//Time operator*(double m, const Time &amp;t) &#123;</span>
+<span class="hljs-comment">//    Time result;</span>
+<span class="hljs-comment">//    long totalminutes = t.hours * m * 60 + t.minutes * m;</span>
+<span class="hljs-comment">//    result.hours = totalminutes / 60;</span>
+<span class="hljs-comment">//    result.minutes = totalminutes % 60;</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">//    return result;</span>
+<span class="hljs-comment">//&#125;</span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Time::Show</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;
+    std::cout &lt;&lt; hours &lt;&lt; <span class="hljs-string">&quot;hour&quot;</span> &lt;&lt; minutes &lt;&lt; <span class="hljs-string">&quot; minutes&quot;</span>;
+&#125;
+
+ostream &amp;<span class="hljs-keyword">operator</span>&lt;&lt;(ostream &amp;os, <span class="hljs-type">const</span> Time &amp;t) &#123;
+    os &lt;&lt; t.hours &lt;&lt; <span class="hljs-string">&quot;hour&quot;</span> &lt;&lt; t.minutes &lt;&lt; <span class="hljs-string">&quot; minutes&quot;</span>;
+    <span class="hljs-keyword">return</span> os;
+&#125;</code></pre></div>
+
+<h2 id="重载运算符：作为成员函数还是非成员函数"><a href="#重载运算符：作为成员函数还是非成员函数" class="headerlink" title="重载运算符：作为成员函数还是非成员函数"></a>重载运算符：作为成员函数还是非成员函数</h2><p>对于很多运算符来说，可以选择使用成员函数或非成员函数来实现运算符重载。一般来说，非成员函数应是友元函数，这样它才能直接访 问类的私有数据。</p>
+<p>在重载运算符的时候，要么选择成员函数，要么选择非成员函数，不能两种都实现，否则会出现二义性</p>
+<h2 id="类的自动转换和强制类型转换"><a href="#类的自动转换和强制类型转换" class="headerlink" title="类的自动转换和强制类型转换"></a>类的自动转换和强制类型转换</h2><h1 id="类继承"><a href="#类继承" class="headerlink" title="类继承"></a>类继承</h1><ul>
+<li>is-a关系的继承。 </li>
+<li>如何以公有方式从一个类派生出另一个类。 </li>
+<li>保护访问。 </li>
+<li>构造函数成员初始化列表。 </li>
+<li>向上和向下强制转换。 </li>
+<li>虚成员函数。 </li>
+<li>早期（静态）联编与晚期（动态）联编。 </li>
+<li>抽象基类。 </li>
+<li>纯虚函数。 </li>
+<li>何时及如何使用公有继承。</li>
+</ul>
+
                 
               </div>
             
