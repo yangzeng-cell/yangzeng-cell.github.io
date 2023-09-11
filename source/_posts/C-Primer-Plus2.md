@@ -4057,3 +4057,471 @@ bool Stack::pop(Item & item)
 类很适合用于描述ADT。公有成员函数接口提供了ADT描述的服务，类的私有部分和类方法的代码提供了实现，这些实现对类的客户隐藏
 
 # 使用类
+
+- 运算符重载。 
+- 友元函数。 
+- 重载<<运算符，以便用于输出。 
+- 状态成员。 
+- 使用rand( )生成随机值。 
+- 类的自动转换和强制类型转换。 
+- 类转换函数。 
+
+## 运算符重载
+
+运算符重载是c++多态的一种表现形式
+
+重载运算符必须是在c++中存在的运算符，
+
+在一个类中定义operate+()这样就可以使用当两个属于相同类的变量进行+处理是可以这样使用a=b+c=>a=b.operate+(c)
+
+```cpp
+//
+// Created by 杨曾 on 2023/9/9.
+//
+
+#ifndef CPP3_MYTIME0_H
+#define CPP3_MYTIME0_H
+
+class Time {
+private:
+    int hours;
+    int minutes;
+public:
+    Time();
+
+    Time(int h, int m = 0);
+
+    void AddMin(int m);
+
+    void AddHr(int h);
+
+    void Reset(int h = 0, int m = 0);
+
+    Time Sum(const Time &t) const;
+
+    Time operator+(const Time &t) const;
+
+    Time operator-(const Time &t) const;
+
+    Time operator*(double n) const;
+
+    void Show() const;
+};
+
+#endif //CPP3_MYTIME0_H
+```
+
+
+
+```cpp
+//
+// Created by 杨曾 on 2023/9/9.
+//
+
+#include <iostream>
+#include "mytime0.h"
+
+Time::Time() {
+    hours = minutes = 0;
+}
+
+Time::Time(int h, int m) {
+    hours = h;
+    minutes = m;
+}
+
+void Time::AddMin(int m) {
+    minutes = m;
+    hours += minutes / 60;
+    minutes %= 60;
+}
+
+void Time::AddHr(int h) {
+    hours += h;
+}
+
+void Time::Reset(int h, int m) {
+    hours = h;
+    minutes = m;
+}
+
+Time Time::Sum(const Time &t) const {
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / 60;
+    sum.minutes = sum.minutes % 60;
+    return sum;
+}
+
+Time Time::operator+(const Time &t) const {
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / 60;
+    sum.minutes = sum.minutes % 60;
+    return sum;
+}
+
+Time Time::operator-(const Time &t) const {
+    Time diff;
+    int tot1, tot2;
+    tot1 = t.minutes + t.hours * 60;
+    tot2 = minutes + hours * 60;
+    diff.hours = (tot1 - tot2) / 60;
+    diff.minutes = (tot1 - tot2) % 60;
+    return diff;
+}
+
+Time Time::operator*(double mult) const {
+    Time result;
+    long totalminutes = hours * mult * 60 + minutes * mult;
+    result.hours = totalminutes / 60;
+    result.minutes = totalminutes % 60;
+    return result;
+}
+
+void Time::Show() const {
+    std::cout << hours << "hour" << minutes << " minutes";
+}
+
+```
+
+不要返回指向局部变量或临时对象的引用。函数执行完毕后，局部变量和临时对象将消失， 引用将指向不存在的数据。 
+
+```cpp
+#include <iostream>
+#include "mytime0.h"
+
+int main() {
+    using std::cout;
+    using std::endl;
+    Time planning;
+    Time coding(2, 40);
+    Time fixing(5, 55);
+    Time total;
+
+    cout << "planning time = ";
+    planning.Show();
+    cout << endl;
+
+    cout << "coding time = ";
+    coding.Show();
+    cout << endl;
+
+    cout << "fixing time = ";
+    fixing.Show();
+    cout << endl;
+
+    total = coding.Sum(fixing);
+    cout << "coding.Sum(fixing) = ";
+    total.Show();
+    cout << endl;
+    return 0;
+}
+```
+
+operator +( )函数的名称使得可以使用函数表示法或运算符表示法来调用它
+
+```
+t1=t2+t3+t4
+=>t1=t2.operator+(t3+t4)=>t1=t2.operator+(t2.operator+(t3))
+```
+
+### 重载限制
+
+多数C++运算符都可以用这样的方式重载。重载的 运算符（有些例外情况）不必是成员函数，但必须至少有一个操作数是 用户定义的类型。
+
+重载后的运算符必须至少有一个操作数是用户定义的类型，这 将防止用户为标准类型重载运算符。因此，不能将减法运算符（−）重 载为计算两个double值的和，而不是它们的差。虽然这种限制将对创造性有所影响，但可以确保程序正常运行。
+
+使用运算符时不能违反运算符原来的句法规则。例如，不能将求模运算符（%）重载成使用一个操作数： 就是不能修改操作符原来的意义不能修改操作符的优先级
+
+不能创建新的运算符
+
+不能重载以下的运算符
+
+- sizeof：sizeof运算符。 
+- .：成员运算符。 
+- . *：成员指针运算符。 
+- ::：作用域解析运算符。 
+- ?:：条件运算符。 
+- typeid：一个RTTI运算符。 
+- const_cast：强制类型转换运算符。 
+- dynamic_cast：强制类型转换运算符。 
+- reinterpret_cast：强制类型转换运算符。 
+- static_cast：强制类型转换运算符。
+
+大多数运算符都可以通过成员或非成员函数进行重载，但下面的运算符只能通过成员函数进行重载。 
+
+- =：赋值运算符。 
+- ( )：函数调用运算符。 
+- [ ]：下标运算符。 
+- ->：通过指针访问类成员的运算符。 
+
+## 友元
+
+友元分为三种：
+
+友元函数； 
+
+友元类； 
+
+友元成员函数。
+
+在重载运算符的时候是通过成员运算符和非成员运算符来处理的，在使用成员函数的时候，会出现
+
+```
+A=B*2.75=>A=B.operator*(2.75)不可以A=2.75.operator*(B) 
+```
+
+这个时候就必须使用非成员运算符
+
+```
+Time operator*(double m,cont Time & t)
+```
+
+对于非成员重载运算符函数来说，运算符表达式左边的操作数对应于运算符函数的第一个参数，运算符表达式右边的操作数对应于运算符 函数的第二个参数。而原来的成员函数则按相反的顺序处理操作数，也就是说，double值乘以Time值。
+
+使用非成员函数可以按所需的顺序获得操作数（先是double，然后是Time），但引发了一个新问题：非成员函数不能直接访问类的私有数据，至少常规非成员函数不能访问。然而，有一类特殊的非成员函数可以访问类的私有成员，它们被称为友元函数。
+
+### 创建友元
+
+创建友元函数的第一步是将其原型放在类声明中，并在原型声明前加上关键字friend：
+
+```
+friend Time operator*(double m,const Time & t); 
+```
+
+虽然operator *( )函数是在类声明中声明的，但它不是成员函数，因此不能使用成员运算符来调用； 
+
+虽然operator *( )函数不是成员函数，但它与成员函数的访问权限相同
+
+因为它不是成员函数，所以不要使用Time::限定符。另外，不要在定义中使用关键字friend，定义应该如下：
+
+```cpp
+Time operator*(double m, const Time &t) {
+    Time result;
+    long totalminutes = t.hours * m * 60 + t.minutes * m;
+    result.hours = totalminutes / 60;
+    result.minutes = totalminutes % 60;
+
+    return result;
+}
+```
+
+总之，类的友元函数是非成员函数，其访问权限与成员函数相同
+
+### 常用的友元：重载**<<**运算符
+
+#### **<<**的第一种重载版本 
+
+使用cout << t 这样可以直接输出t的内容
+
+要使Time类知道使用cout，必须使用友元函数。这是什么原因呢？ 因为下面这样的语句使用两个对象，其中第一个是ostream类对象 
+
+（cout）： 
+
+```
+cout<<trip;
+```
+
+如果使用一个Time成员函数来重载<<，Time对象将是第一个操作数，就像使用成员函数重载*运算符那样。这意味着必须这样使用<<：
+
+```
+trip<<cout;
+```
+
+这样会令人迷惑。但通过使用友元函数，可以像下面这样重载运算符：
+
+```cpp
+void operator<<(std::ostream &os, const Time &t) {
+    os << t.hours << "hour" << t.minutes << " minutes";
+}
+```
+
+调用cout << trip应使用cout对象本身，而不是它的拷贝，因此该函数按引用（而不是按值）来传递该对象。这样，表达式cout << trip将导致os成为cout的一个别名；而表达式cerr << trip将导致os成为cerr的一个别名。Time对象可以按值或按引用来传递，因为这两种形式都使函数能够使用对象的值。按引用传递使用的内存和时间都比按值传递少。
+
+#### **<<**的第二种重载版本
+
+上面的重载<<只能使用一次不能够这样用`cout<<x<<y`进行连续输出
+
+```
+cout<<x<<y=>(cout<<x)<<y
+```
+
+正如iosream中定义的那样，<<运算符要求左边是一个ostream对象。显然，因为cout是ostream对象，所以表达式cout << x满足这种要 求。然而，因为表达式cout << x位于<< y的左侧，所以输出语句也要求该表达式是一个ostream类型的对象。因此，ostream类将operator<<( )函数实现为返回一个指向ostream对象的引用。具体地说，它返回一个指向调用对象（这里是cout）的引用。因此，表达式(cout << x)本身就是ostream对象cout，从而可以位于<<运算符的左侧。
+
+可以对友元函数采用相同的方法。只要修改operator<<( )函数，让它返回ostream对象的引用即可：
+
+```cpp
+friend std::ostream& operator<<(std::ostream &os,const Time &t);//头文件
+```
+
+
+
+```cpp
+ostream &operator<<(ostream &os, const Time &t) {
+    os << t.hours << "hour" << t.minutes << " minutes";
+    return os;
+}
+```
+
+注意，返回类型是ostream &。这意味着该函数返回ostream对象的引用。因为函数开始执行时，程序传递了一个对象引用给它，这样做的最终结果是，函数的返回值就是传递给它的对象
+
+**只有在类声明中的原型中才能使用friend关键字。除非函数定义也是原型，否则不能在函数定 义中使用该关键字。** 
+
+```cpp
+//
+// Created by 杨曾 on 2023/9/9.
+//
+
+#ifndef CPP3_MYTIME0_H
+#define CPP3_MYTIME0_H
+
+class Time {
+private:
+    int hours;
+    int minutes;
+public:
+    Time();
+
+    Time(int h, int m = 0);
+
+    void AddMin(int m);
+
+    void AddHr(int h);
+
+    void Reset(int h = 0, int m = 0);
+
+    Time Sum(const Time &t) const;
+
+    Time operator+(const Time &t) const;
+
+    Time operator-(const Time &t) const;
+
+    Time operator*(double n) const;
+
+    friend Time operator*(double n, const Time &t) {
+        return n * t;
+    };//inline definition 内连定义
+
+    void Show() const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Time &t);
+};
+
+#endif //CPP3_MYTIME0_H
+```
+
+
+
+```cpp
+//
+// Created by 杨曾 on 2023/9/9.
+//
+
+#include <iostream>
+#include "mytime0.h"
+
+using namespace std;
+
+Time::Time() {
+    hours = minutes = 0;
+}
+
+Time::Time(int h, int m) {
+    hours = h;
+    minutes = m;
+}
+
+void Time::AddMin(int m) {
+    minutes = m;
+    hours += minutes / 60;
+    minutes %= 60;
+}
+
+void Time::AddHr(int h) {
+    hours += h;
+}
+
+void Time::Reset(int h, int m) {
+    hours = h;
+    minutes = m;
+}
+
+Time Time::Sum(const Time &t) const {
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / 60;
+    sum.minutes = sum.minutes % 60;
+    return sum;
+}
+
+Time Time::operator+(const Time &t) const {
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / 60;
+    sum.minutes = sum.minutes % 60;
+    return sum;
+}
+
+Time Time::operator-(const Time &t) const {
+    Time diff;
+    int tot1, tot2;
+    tot1 = t.minutes + t.hours * 60;
+    tot2 = minutes + hours * 60;
+    diff.hours = (tot1 - tot2) / 60;
+    diff.minutes = (tot1 - tot2) % 60;
+    return diff;
+}
+
+Time Time::operator*(double mult) const {
+    Time result;
+    long totalminutes = hours * mult * 60 + minutes * mult;
+    result.hours = totalminutes / 60;
+    result.minutes = totalminutes % 60;
+    return result;
+}
+
+//Time operator*(double m, const Time &t) {
+//    Time result;
+//    long totalminutes = t.hours * m * 60 + t.minutes * m;
+//    result.hours = totalminutes / 60;
+//    result.minutes = totalminutes % 60;
+//
+//    return result;
+//}
+
+void Time::Show() const {
+    std::cout << hours << "hour" << minutes << " minutes";
+}
+
+ostream &operator<<(ostream &os, const Time &t) {
+    os << t.hours << "hour" << t.minutes << " minutes";
+    return os;
+}
+```
+
+## 重载运算符：作为成员函数还是非成员函数
+
+对于很多运算符来说，可以选择使用成员函数或非成员函数来实现运算符重载。一般来说，非成员函数应是友元函数，这样它才能直接访 问类的私有数据。
+
+在重载运算符的时候，要么选择成员函数，要么选择非成员函数，不能两种都实现，否则会出现二义性
+
+ 
+
+## 类的自动转换和强制类型转换
+
+
+
+# 类继承 
+
+- is-a关系的继承。 
+- 如何以公有方式从一个类派生出另一个类。 
+- 保护访问。 
+- 构造函数成员初始化列表。 
+- 向上和向下强制转换。 
+- 虚成员函数。 
+- 早期（静态）联编与晚期（动态）联编。 
+- 抽象基类。 
+- 纯虚函数。 
+- 何时及如何使用公有继承。
+
